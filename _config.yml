@@ -19,7 +19,7 @@ locale                   : "en-US"
 title                    : "AI프로젝트 입문"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
-name                     : "Your Name"
+name                     : "21800471 유준호"
 description              : "An amazing website."
 url                      : # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
@@ -104,11 +104,11 @@ analytics:
 
 # Site Author
 author:
-  name             : "Your Name"
+  name             : "21800471 유준호"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
-  bio              : "I am an **amazing** person."
-  location         : "Somewhere"
-  email            :
+  bio              : "AI프로젝트 입문 기사 스크랩"
+  location         : "Seoul"
+  email            : handong18@handong.ac.kr
   links:
     - label: "Email"
       icon: "fas fa-fw fa-envelope-square"
