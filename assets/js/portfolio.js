@@ -20,17 +20,25 @@
     revealItems.forEach((el) => observer.observe(el));
   }
 
+  const focusDetail = (target) => {
+    if (!target || target.tagName.toLowerCase() !== 'details') return;
+    target.setAttribute('open', '');
+    target.classList.add('is-focus');
+    setTimeout(() => target.classList.remove('is-focus'), 1200);
+  };
+
   const indexLinks = document.querySelectorAll('.project-index a');
   if (indexLinks.length) {
     indexLinks.forEach((link) => {
       link.addEventListener('click', () => {
         const target = document.querySelector(link.getAttribute('href'));
-        if (target && target.tagName.toLowerCase() === 'details') {
-          target.setAttribute('open', '');
-          target.classList.add('is-focus');
-          setTimeout(() => target.classList.remove('is-focus'), 1200);
-        }
+        focusDetail(target);
       });
     });
+  }
+
+  if (window.location.hash) {
+    const target = document.querySelector(window.location.hash);
+    focusDetail(target);
   }
 })();

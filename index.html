@@ -24,6 +24,7 @@
           <a href="#project-library">전체</a>
           <a href="#skills">스택</a>
           <a href="#experience">경험</a>
+          <a href="#activities">활동</a>
           <a href="#contact">연락</a>
         </div>
       </div>
@@ -31,7 +32,7 @@
 
     <div class="container hero-grid">
       <div class="hero-text" data-reveal>
-        <p class="eyebrow">Robotics x Computer Vision x Embedded</p>
+        <p class="eyebrow">Robotics · Computer Vision · Embedded</p>
         <h1>
           현장의 문제를 로봇과 비전으로 해결하는<br>
           시스템 통합형 개발자 <span class="accent">유준호</span>
@@ -65,7 +66,7 @@
         <div class="panel-card">
           <h2>퀵 스냅샷</h2>
           <div class="pill-grid">
-            <span>프로젝트 16+</span>
+            <span>프로젝트 16개</span>
             <span>인턴 2회</span>
             <span>ROS2/SLAM</span>
             <span>실시간 스트리밍</span>
@@ -81,7 +82,6 @@
       <div class="container about-grid" data-reveal>
         <div>
           <div class="section-head">
-            <h2>소개</h2>
             <p>로보틱스 중심의 문제 해결 흐름을 선호합니다.</p>
           </div>
           <p class="body">
@@ -170,10 +170,11 @@
               야외 환경에서 카메라 기반 자율주행으로 배달을 수행하고, 얼굴 인식으로 인수 확인까지 진행하는 로봇 서비스.
             </p>
             <ul>
-              <li>ROS2 노드 통합 및 Jetson Orin Nano에서 Isaac ROS VSLAM 구동</li>
-              <li>GPS <-> SLAM 좌표 실시간 변환으로 UI에 위치 제공</li>
+              <li>ROS2 노드 통합, Jetson Orin Nano에서 Isaac ROS VSLAM 구동</li>
+              <li>GPS <-> SLAM 좌표 실시간 변환으로 위치 데이터 제공</li>
               <li>Pure-Pursuit 기반 경로 생성/추종 및 다중 배달 동선 구성</li>
-              <li>MQTT로 서버 연동, 실시간 위치·이미지 스트리밍 구현</li>
+              <li>FaceNet 기반 얼굴 인식으로 인수 확인</li>
+              <li>MQTT로 위치·이미지 스트리밍, 관리자·고객 UI 실시간 확인</li>
             </ul>
             <div class="tag-row">
               <span>ROS2</span>
@@ -217,10 +218,10 @@
               웹 인터페이스로 Dobot 로봇팔과 컨베이어를 제어하고, RoboDK 디지털 트윈과 동기화한 자동화 공정.
             </p>
             <ul>
-              <li>ROS2 기반 영상처리 및 로봇 제어 시스템/서버 구현</li>
+              <li>ROS2 기반 영상처리 및 로봇 제어 시스템 구축</li>
               <li>Perspective Transformation으로 RoI 정렬 후 YOLOv5 불량 검출</li>
               <li>End-Effector 오프셋 문제를 FK로 보정</li>
-              <li>멀티 스레드 서버로 ROS2/TCP/Web API 비동기 통신</li>
+              <li>RoboDK 디지털 트윈과 TCP 통신, 멀티 스레드로 비동기 처리</li>
             </ul>
             <div class="tag-row">
               <span>ROS2</span>
@@ -231,8 +232,8 @@
               <span>TCP</span>
             </div>
             <div class="project-links">
-              <a class="chip-link" href="https://github.com/YooJuno/SSAFY-Smart_Factory" target="_blank" rel="noreferrer">GitHub</a>
-              <a class="chip-link" href="https://www.youtube.com/watch?v=G8R1HWxcDtk" target="_blank" rel="noreferrer">Demo Video</a>
+              <a class="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Smart_Factory" target="_blank" rel="noreferrer">GitHub</a>
+              <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=G8R1HWxcDtk" target="_blank" rel="noreferrer">Demo Video</a>
             </div>
             <div class="media-grid">
               <figure class="media-tile">
@@ -274,7 +275,7 @@
               <span>Nginx</span>
             </div>
             <div class="project-links">
-              <a class="chip-link" href="https://github.com/YooJuno/SSAFY-Web" target="_blank" rel="noreferrer">GitHub</a>
+              <a class="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Web" target="_blank" rel="noreferrer">GitHub</a>
             </div>
             <div class="media-grid">
               <figure class="media-tile">
@@ -313,11 +314,11 @@
               <span>Perspective Transform</span>
             </div>
             <div class="project-links">
-              <a class="chip-link" href="https://www.youtube.com/watch?v=-ZYTrtNs5Vk" target="_blank" rel="noreferrer">높이 추정 Demo</a>
-              <a class="chip-link" href="https://www.youtube.com/watch?v=v-8i_FkTkIU" target="_blank" rel="noreferrer">CCTV 속도 Demo</a>
-              <a class="chip-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I&t=13s" target="_blank" rel="noreferrer">블랙박스 Demo</a>
+              <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-ZYTrtNs5Vk" target="_blank" rel="noreferrer">높이 추정 Demo</a>
+              <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=v-8i_FkTkIU" target="_blank" rel="noreferrer">CCTV 속도 Demo</a>
+              <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I&t=13s" target="_blank" rel="noreferrer">블랙박스 Demo</a>
             </div>
-            <p class="note">CCTV 속도 추정 평균 오차 0.5 km/h, 블랙박스는 구간별 ±3 km/h 수준과 큰 편차 구간을 함께 분석.</p>
+            <p class="note">CCTV 속도 추정은 데이터셋 기준 평균 오차 0.5 km/h, 블랙박스는 구간별 ±3 km/h 수준과 편차 구간을 함께 분석.</p>
             <div class="media-grid">
               <figure class="media-tile">
                 <div class="media-placeholder">이미지 준비중</div>
@@ -355,7 +356,7 @@
               <span>Crontab</span>
             </div>
             <div class="project-links">
-              <a class="chip-link" href="https://github.com/InternetOfTough/CCTV_HaLow" target="_blank" rel="noreferrer">GitHub</a>
+              <a class="chip-link github icon-link" href="https://github.com/InternetOfTough/CCTV_HaLow" target="_blank" rel="noreferrer">GitHub</a>
             </div>
             <div class="media-grid">
               <figure class="media-tile">
@@ -379,7 +380,7 @@
       <div class="container">
         <div class="section-head" data-reveal>
           <h2>전체 프로젝트 라이브러리</h2>
-          <p>모든 프로젝트를 카드 형태로 정리했습니다. 항목을 클릭하면 상세 내용을 확인할 수 있습니다.</p>
+          <p>모든 프로젝트를 카드 형태로 정리했습니다. 인덱스나 항목을 클릭하면 상세 내용을 확인할 수 있습니다.</p>
         </div>
         <div class="library-grid" data-reveal>
           <aside class="project-index">
@@ -454,8 +455,8 @@
                   <span>ROS2</span><span>YOLOv5</span><span>RoboDK</span><span>OpenCV</span><span>Flask</span>
                 </div>
                 <div class="detail-links">
-                  <a class="chip-link" href="https://github.com/YooJuno/SSAFY-Smart_Factory" target="_blank" rel="noreferrer">GitHub</a>
-                  <a class="chip-link" href="https://www.youtube.com/watch?v=G8R1HWxcDtk" target="_blank" rel="noreferrer">Demo Video</a>
+                  <a class="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Smart_Factory" target="_blank" rel="noreferrer">GitHub</a>
+                  <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=G8R1HWxcDtk" target="_blank" rel="noreferrer">Demo Video</a>
                 </div>
               </div>
             </details>
@@ -476,7 +477,7 @@
                   <span>Vue.js</span><span>Node.js</span><span>YOLOv9</span><span>MySQL</span><span>Nginx</span>
                 </div>
                 <div class="detail-links">
-                  <a class="chip-link" href="https://github.com/YooJuno/SSAFY-Web" target="_blank" rel="noreferrer">GitHub</a>
+                  <a class="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Web" target="_blank" rel="noreferrer">GitHub</a>
                 </div>
               </div>
             </details>
@@ -497,7 +498,7 @@
                   <span>gRPC</span><span>Wi-Fi HaLow</span><span>Raspberry Pi</span><span>Crontab</span>
                 </div>
                 <div class="detail-links">
-                  <a class="chip-link" href="https://github.com/InternetOfTough/CCTV_HaLow" target="_blank" rel="noreferrer">GitHub</a>
+                  <a class="chip-link github icon-link" href="https://github.com/InternetOfTough/CCTV_HaLow" target="_blank" rel="noreferrer">GitHub</a>
                 </div>
               </div>
             </details>
@@ -518,7 +519,7 @@
                 </div>
                 <div class="detail-links">
                   <span class="chip-link muted">보안상 공개 불가</span>
-                  <a class="chip-link" href="https://www.youtube.com/watch?v=-ZYTrtNs5Vk" target="_blank" rel="noreferrer">Demo Video</a>
+                  <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-ZYTrtNs5Vk" target="_blank" rel="noreferrer">Demo Video</a>
                 </div>
               </div>
             </details>
@@ -539,7 +540,7 @@
                 </div>
                 <div class="detail-links">
                   <span class="chip-link muted">보안상 공개 불가</span>
-                  <a class="chip-link" href="https://www.youtube.com/watch?v=v-8i_FkTkIU" target="_blank" rel="noreferrer">Demo Video</a>
+                  <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=v-8i_FkTkIU" target="_blank" rel="noreferrer">Demo Video</a>
                 </div>
               </div>
             </details>
@@ -560,9 +561,9 @@
                 </div>
                 <div class="detail-links">
                   <span class="chip-link muted">보안상 공개 불가</span>
-                  <a class="chip-link" href="https://www.youtube.com/watch?v=_HwGZA1f8t0" target="_blank" rel="noreferrer">후방 Demo 1</a>
-                  <a class="chip-link" href="https://www.youtube.com/watch?v=oEf1EfqPtWA" target="_blank" rel="noreferrer">후방 Demo 2</a>
-                  <a class="chip-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I&t=13s" target="_blank" rel="noreferrer">전방 Demo</a>
+                  <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=_HwGZA1f8t0" target="_blank" rel="noreferrer">후방 Demo 1</a>
+                  <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=oEf1EfqPtWA" target="_blank" rel="noreferrer">후방 Demo 2</a>
+                  <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I&t=13s" target="_blank" rel="noreferrer">전방 Demo</a>
                 </div>
               </div>
             </details>
@@ -605,7 +606,7 @@
                 </div>
                 <div class="detail-links">
                   <span class="chip-link muted">보안상 공개 불가</span>
-                  <a class="chip-link" href="https://www.youtube.com/watch?v=-GKsm9lfCZk" target="_blank" rel="noreferrer">Demo Video</a>
+                  <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-GKsm9lfCZk" target="_blank" rel="noreferrer">Demo Video</a>
                 </div>
               </div>
             </details>
@@ -626,9 +627,9 @@
                   <span>PilotNet</span><span>ORB-SLAM3</span><span>YOLOv5</span><span>TCP</span>
                 </div>
                 <div class="detail-links">
-                  <a class="chip-link" href="https://github.com/YooJuno/Autonomous-Driving_E2E_SLAM" target="_blank" rel="noreferrer">GitHub</a>
+                  <a class="chip-link github icon-link" href="https://github.com/YooJuno/Autonomous-Driving_E2E_SLAM" target="_blank" rel="noreferrer">GitHub</a>
                   <a class="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" target="_blank" rel="noreferrer">논문</a>
-                  <a class="chip-link" href="https://www.youtube.com/playlist?list=PLg3p47m-psINqF_8QVGMixhW7zAv6Ir2F" target="_blank" rel="noreferrer">Demo Playlist</a>
+                  <a class="chip-link youtube icon-link" href="https://www.youtube.com/playlist?list=PLg3p47m-psINqF_8QVGMixhW7zAv6Ir2F" target="_blank" rel="noreferrer">Demo Playlist</a>
                 </div>
               </div>
             </details>
@@ -668,7 +669,7 @@
                   <span>LSTM</span><span>Upbit API</span><span>Python</span>
                 </div>
                 <div class="detail-links">
-                  <a class="chip-link" href="https://github.com/YooJuno/Upbit-Auto-Trader" target="_blank" rel="noreferrer">GitHub</a>
+                  <a class="chip-link github icon-link" href="https://github.com/YooJuno/Upbit-Auto-Trader" target="_blank" rel="noreferrer">GitHub</a>
                 </div>
               </div>
             </details>
@@ -688,8 +689,8 @@
                   <span>Boost ASIO</span><span>TCP</span><span>OpenCV</span>
                 </div>
                 <div class="detail-links">
-                  <a class="chip-link" href="https://github.com/YooJuno/PacmanGame-BoostASIO" target="_blank" rel="noreferrer">GitHub</a>
-                  <a class="chip-link" href="https://www.youtube.com/watch?v=2uh6XcFZric" target="_blank" rel="noreferrer">Demo Video</a>
+                  <a class="chip-link github icon-link" href="https://github.com/YooJuno/PacmanGame-BoostASIO" target="_blank" rel="noreferrer">GitHub</a>
+                  <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=2uh6XcFZric" target="_blank" rel="noreferrer">Demo Video</a>
                 </div>
               </div>
             </details>
@@ -709,8 +710,8 @@
                   <span>STM32</span><span>mbed OS</span><span>DMA</span><span>SPI</span>
                 </div>
                 <div class="detail-links">
-                  <a class="chip-link" href="https://github.com/YooJuno/STM32-MBED/tree/main/Final" target="_blank" rel="noreferrer">GitHub</a>
-                  <a class="chip-link" href="https://www.youtube.com/watch?v=sW-dLjTRV7A" target="_blank" rel="noreferrer">Demo Video</a>
+                  <a class="chip-link github icon-link" href="https://github.com/YooJuno/STM32-MBED/tree/main/Final" target="_blank" rel="noreferrer">GitHub</a>
+                  <a class="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=sW-dLjTRV7A" target="_blank" rel="noreferrer">Demo Video</a>
                 </div>
               </div>
             </details>
@@ -808,17 +809,17 @@
         </div>
         <div class="timeline">
           <div class="timeline-item">
+            <span class="time">2025.01-10</span>
+            <div>
+              <h3>SSAFY 임베디드 로봇 트랙</h3>
+              <p>웹·로봇 프로젝트 수행, 자동화 시스템 설계 및 로봇팔 제어 경험.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
             <span class="time">2024.07-09</span>
             <div>
               <h3>GMD SOFT 인턴 · 영상 포렌식</h3>
               <p>경쟁사 조사, gRPC 기반 분산 처리 시스템 설계, Visual-SLAM 세미나 진행.</p>
-            </div>
-          </div>
-          <div class="timeline-item">
-            <span class="time">2023.09-12</span>
-            <div>
-              <h3>자이트론 인턴 · 자율주행 교육/제품 개발</h3>
-              <p>자율주행 교육 강의 보조·진행, 경기장 관제 시스템 및 자율 주차 프로그램 개발.</p>
             </div>
           </div>
           <div class="timeline-item">
@@ -829,10 +830,10 @@
             </div>
           </div>
           <div class="timeline-item">
-            <span class="time">2025.01-10</span>
+            <span class="time">2023.09-12</span>
             <div>
-              <h3>SSAFY 임베디드 로봇 트랙</h3>
-              <p>웹·로봇 프로젝트 수행, 자동화 시스템 설계 및 로봇팔 제어 경험.</p>
+              <h3>자이트론 인턴 · 자율주행 교육/제품 개발</h3>
+              <p>자율주행 교육 강의 보조·진행, 경기장 관제 시스템 및 자율 주차 프로그램 개발.</p>
             </div>
           </div>
         </div>
@@ -885,8 +886,8 @@
           </div>
           <div class="contact-actions">
             <a class="btn primary" href="mailto:juno980220@naver.com">메일 보내기</a>
-            <a class="btn ghost" href="https://github.com/YooJuno" target="_blank" rel="noreferrer">GitHub</a>
-            <a class="btn ghost" href="https://youtube.com/@yoojuno" target="_blank" rel="noreferrer">YouTube</a>
+            <a class="btn ghost github icon-link" href="https://github.com/YooJuno" target="_blank" rel="noreferrer">GitHub</a>
+            <a class="btn ghost youtube icon-link" href="https://youtube.com/@yoojuno" target="_blank" rel="noreferrer">YouTube</a>
             <a class="btn ghost" href="https://www.notion.so/1a9302636cd781059263e5b57e11fc70" target="_blank" rel="noreferrer">Notion 이력서</a>
           </div>
         </div>
@@ -896,10 +897,10 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>(c) 2026 Yoo Juno. Robotics · Computer Vision · Embedded.</p>
+      <p>© 2026 Yoo Juno. All rights reserved.</p>
     </div>
   </footer>
 
-  <script src="assets/js/portfolio.js" defer></script>
+  <script src="assets/js/portfolio.js"></script>
 </body>
 </html>
