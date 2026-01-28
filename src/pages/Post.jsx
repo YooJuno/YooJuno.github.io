@@ -1,4 +1,4 @@
-import { Link, useParams } from 'react-router-dom'
+﻿import { Link, useParams } from 'react-router-dom'
 import { getPostBySlug } from '../lib/posts'
 
 function Post() {
@@ -9,8 +9,8 @@ function Post() {
     return (
       <main className="section">
         <div className="container">
-          <h2>?? ?? ? ????.</h2>
-          <Link className="btn ghost" to="/blog">????</Link>
+          <h2>글을 찾을 수 없습니다.</h2>
+          <Link className="btn ghost" to="/blog">블로그로 돌아가기</Link>
         </div>
       </main>
     )
@@ -23,7 +23,7 @@ function Post() {
           <p className="post-meta">
             {post.category && <span className="post-category">{post.category}</span>}
             {post.date && <span>{post.date}</span>}
-            <span>? {post.readingMinutes}?</span>
+            <span>읽는 시간 약 {post.readingMinutes}분</span>
           </p>
           <h1>{post.title}</h1>
           <div className="post-tags">
@@ -37,7 +37,7 @@ function Post() {
           dangerouslySetInnerHTML={{ __html: post.html }}
         />
         <div className="post-footer">
-          <Link className="btn ghost" to="/blog">????</Link>
+          <Link className="btn ghost" to="/blog">블로그로 돌아가기</Link>
         </div>
       </div>
     </main>

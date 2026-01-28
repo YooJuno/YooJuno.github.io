@@ -5,8 +5,8 @@
 ## 기술 스택
 
 - React 18 + Vite 5
-- 라우팅: React Router (HashRouter)
-- 블로그: Markdown + Frontmatter (gray-matter, marked)
+- 라우팅: React Router (BrowserRouter)
+- 블로그: Markdown + Frontmatter (내장 파서) + marked
 - 배포: GitHub Actions → GitHub Pages
 - Node: 20 (빌드 안정성 확보)
 
@@ -17,8 +17,6 @@
 - `/blog` : 블로그 목록 (검색/태그/카테고리)
 - `/blog/:slug` : 글 상세
 
-> GitHub Pages 환경을 고려해 HashRouter를 사용합니다.
-
 ## 폴더 구조
 
 - `src/App.jsx`: 라우팅/레이아웃
@@ -27,6 +25,8 @@
 - `src/content/blog/`: Markdown 글
 - `src/lib/posts.js`: 글 로딩/파싱
 - `.github/workflows/deploy.yml`: GitHub Actions 배포 파이프라인
+- `public/404.html`: GitHub Pages SPA 리다이렉트
+- `index.html`: SPA 리다이렉트 복구 스크립트
 
 ## 로컬 실행
 
@@ -49,6 +49,16 @@ npm run build
 
 설정 경로:
 - GitHub 저장소 → **Settings → Pages → Source: GitHub Actions**
+
+## 해시(#) 제거 적용 방식
+
+GitHub Pages는 서버 리라이트가 없어 `/portfolio` 같은 경로로 직접 접근 시 404가 발생합니다.
+이를 해결하기 위해 **BrowserRouter + 404 리다이렉트** 패턴을 적용했습니다.
+
+- `public/404.html`에서 잘못된 경로를 `sessionStorage`에 저장 후 `/`로 리다이렉트
+- `index.html`에서 `spa-redirect` 값을 읽어 원래 경로로 복구
+
+이렇게 하면 `/#/portfolio` 대신 `/portfolio`로 접근해도 정상 렌더링됩니다.
 
 ## 블로그 글 작성
 

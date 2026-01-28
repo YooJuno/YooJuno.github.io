@@ -108,6 +108,7 @@ function Portfolio() {
                   <div className="container about-grid" data-reveal>
                     <div>
                       <div className="section-head">
+                        <h2>소개</h2>
                         <p>로보틱스 중심의 문제 해결 흐름을 선호합니다.</p>
                       </div>
                       <p className="body">

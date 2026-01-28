@@ -1,7 +1,42 @@
-import matter from 'gray-matter'
 import { marked } from 'marked'
 
-const modules = import.meta.glob('../content/blog/*.md', { eager: true, as: 'raw' })
+const modules = import.meta.glob('../content/blog/*.md', {
+  eager: true,
+  query: '?raw',
+  import: 'default',
+})
+
+const FRONT_MATTER = /^---\n([\s\S]*?)\n---\n?/
+
+const parseFrontMatter = (raw) => {
+  const match = raw.match(FRONT_MATTER)
+  if (!match) {
+    return { data: {}, content: raw }
+  }
+
+  const body = match[1]
+  const content = raw.slice(match[0].length)
+  const data = {}
+
+  body.split('\n').forEach((line) => {
+    const trimmed = line.trim()
+    if (!trimmed || trimmed.startsWith('#')) return
+    const index = trimmed.indexOf(':')
+    if (index === -1) return
+    const key = trimmed.slice(0, index).trim()
+    let value = trimmed.slice(index + 1).trim()
+    if (value.startsWith('[') && value.endsWith(']')) {
+      value = value
+        .slice(1, -1)
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean)
+    }
+    data[key] = value
+  })
+
+  return { data, content }
+}
 
 const normalizeTags = (tags) => {
   if (!tags) return []
@@ -26,7 +61,7 @@ const getReadingMinutes = (content) => {
 export const posts = Object.entries(modules)
   .map(([path, raw]) => {
     const slug = path.split('/').pop().replace(/\.md$/, '')
-    const { data, content } = matter(raw)
+    const { data, content } = parseFrontMatter(raw)
     const tags = normalizeTags(data.tags)
 
     return {

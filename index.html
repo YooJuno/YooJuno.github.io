@@ -1,12 +1,12 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>유준호 | 로보틱스 · 컴퓨터비전 · 임베디드</title>
+    <title>YooJunho</title>
     <meta
       name="description"
-      content="로보틱스·컴퓨터비전·임베디드 중심의 시스템 통합형 개발자 유준호 포트폴리오."
+      content="濡쒕낫?깆뒪쨌而댄벂?곕퉬?꽷룹엫踰좊뵒??以묒떖???쒖뒪???듯빀??媛쒕컻???좎????ы듃?대━??"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,9 +14,21 @@
       href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script>
+      (function () {
+        var redirect = sessionStorage.getItem('spa-redirect')
+        if (redirect) {
+          sessionStorage.removeItem('spa-redirect')
+          window.history.replaceState(null, '', redirect)
+        }
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
+
+
+

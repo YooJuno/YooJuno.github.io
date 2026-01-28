@@ -1,4 +1,4 @@
-﻿import { HashRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
+﻿import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Home from './pages/Home.jsx'
 import Portfolio from './pages/Portfolio.jsx'
@@ -14,6 +14,9 @@ const ScrollToTop = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0)
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur()
+    }
   }, [location.pathname, location.search])
 
   return null
@@ -37,9 +40,15 @@ const SiteNav = () => (
             <Link to="/portfolio?section=contact">연락</Link>
           </div>
         </div>
-        <Link className="nav-link" to="/major">전공</Link>
-        <Link className="nav-link" to="/music">음악</Link>
-        <Link className="nav-link" to="/travel">여행</Link>
+        <div className="nav-item dropdown">
+          <Link className="nav-link" to="/blog">블로그</Link>
+          <div className="dropdown-menu">
+            <Link to="/blog">전체</Link>
+            <Link to="/blog?category=개발">개발</Link>
+            <Link to="/blog?category=음악">음악</Link>
+            <Link to="/blog?category=여행">여행</Link>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -47,7 +56,7 @@ const SiteNav = () => (
 
 function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <div className="page">
         <div className="bg-noise" aria-hidden="true"></div>
         <SiteNav />
@@ -68,8 +77,10 @@ function App() {
           </div>
         </footer>
       </div>
-    </HashRouter>
+    </BrowserRouter>
   )
 }
 
 export default App
+
+

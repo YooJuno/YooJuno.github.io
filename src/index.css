@@ -164,6 +164,15 @@ img {
   z-index: 30;
 }
 
+.dropdown-menu::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+}
+
 .nav-item.dropdown:hover .dropdown-menu,
 .nav-item.dropdown:focus-within .dropdown-menu {
   opacity: 1;
