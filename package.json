@@ -1,0 +1,31 @@
+{
+  "name": "yoojuno-portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "npx -p node@20 node node_modules/vite/bin/vite.js",
+    "build": "npx -p node@20 node node_modules/vite/bin/vite.js build",
+    "lint": "eslint .",
+    "preview": "npx -p node@20 node node_modules/vite/bin/vite.js preview",
+    "predeploy": "npm run build",
+    "deploy": "npx -p node@20 gh-pages -d dist"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@rollup/wasm-node": "^4.57.0",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "gh-pages": "^6.3.0",
+    "globals": "^16.5.0",
+    "vite": "^5.4.10"
+  }
+}

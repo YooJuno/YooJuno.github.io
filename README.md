@@ -1,31 +1,30 @@
-﻿# Yoo Juno Portfolio
+﻿# YooJuno.github.io (React + Vite)
 
-로보틱스·컴퓨터비전·임베디드 중심의 개인 포트폴리오 웹페이지입니다.
+유준호 포트폴리오 사이트의 React 버전입니다.
 
-## Live
-- https://<GitHub아이디>.github.io
+## 로컬 실행
 
-## Stack
-- HTML / CSS / JavaScript (Vanilla)
-- GitHub Pages
-
-## Structure
-- `index.html` : 메인 페이지
-- `assets/css/portfolio.css` : 스타일
-- `assets/js/portfolio.js` : 인터랙션
-- `assets/images/` : 이미지(추가 예정)
-- `포트폴리오_유준호.pdf`, `이력서_유준호.pdf`
-
-## Update Guide
-- 이미지 교체: `index.html`의 `<figure class="media-tile">` 안 `div.media-placeholder`를 `<img>`로 교체
-- 내용 수정: `index.html` 텍스트 편집
-- 스타일 조정: `assets/css/portfolio.css`
-
-## Deploy
 ```bash
-git add -A
-git commit -m "update"
-git push
+npm install
+npm run dev
 ```
 
-GitHub Pages: Settings -> Pages -> main / root
+스크립트는 Node 20 환경으로 실행되도록 설정되어 있습니다. (Node 24에서 Vite 빌드가 충돌하는 이슈 대응)
+
+## 빌드
+
+```bash
+npm run build
+```
+
+## GitHub Pages 배포 (gh-pages 브랜치)
+
+```bash
+npm run deploy
+```
+
+GitHub 저장소 설정에서 Pages 소스를 `gh-pages` 브랜치 / 루트로 설정하세요.
+
+## 정적 파일
+
+PDF(이력서/포트폴리오)와 `.nojekyll`은 `public/`에 두면 빌드 결과에 포함됩니다.
