@@ -1315,3 +1315,18 @@ summary:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
+
+.ad-container {
+  width: min(1200px, 92vw);
+  margin: 32px auto 12px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 10px 26px rgba(30, 20, 12, 0.06);
+}
+
+.ad-container .adsbygoogle {
+  min-height: 120px;
+}
