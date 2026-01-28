@@ -492,6 +492,12 @@ function Portfolio() {
                             <div className="detail-links">
                               <a className="chip-link github icon-link" href="https://github.com/YooJuno/LiNKY" target="_blank" rel="noreferrer">GitHub</a>
                             </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
+                            </div>
                           </div>
                         </details>
 
@@ -514,6 +520,12 @@ function Portfolio() {
                               <a className="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Smart_Factory" target="_blank" rel="noreferrer">GitHub</a>
                               <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=G8R1HWxcDtk" target="_blank" rel="noreferrer">Demo Video</a>
                             </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
+                            </div>
                           </div>
                         </details>
 
@@ -534,6 +546,12 @@ function Portfolio() {
                             </div>
                             <div className="detail-links">
                               <a className="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Web" target="_blank" rel="noreferrer">GitHub</a>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
                             </div>
                           </div>
                         </details>
@@ -556,6 +574,12 @@ function Portfolio() {
                             <div className="detail-links">
                               <a className="chip-link github icon-link" href="https://github.com/InternetOfTough/CCTV_HaLow" target="_blank" rel="noreferrer">GitHub</a>
                             </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
+                            </div>
                           </div>
                         </details>
 
@@ -577,6 +601,12 @@ function Portfolio() {
                               <span className="chip-link muted">보안상 공개 불가</span>
                               <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-ZYTrtNs5Vk" target="_blank" rel="noreferrer">Demo Video</a>
                             </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
+                            </div>
                           </div>
                         </details>
 
@@ -597,6 +627,12 @@ function Portfolio() {
                             <div className="detail-links">
                               <span className="chip-link muted">보안상 공개 불가</span>
                               <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=v-8i_FkTkIU" target="_blank" rel="noreferrer">Demo Video</a>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
                             </div>
                           </div>
                         </details>
@@ -621,6 +657,12 @@ function Portfolio() {
                               <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=oEf1EfqPtWA" target="_blank" rel="noreferrer">후방 Demo 2</a>
                               <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I" target="_blank" rel="noreferrer">전방 Demo</a>
                             </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
+                            </div>
                           </div>
                         </details>
 
@@ -641,6 +683,12 @@ function Portfolio() {
                             </div>
                             <div className="detail-links">
                               <span className="chip-link muted">보안상 공개 불가</span>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
                             </div>
                           </div>
                         </details>
@@ -663,6 +711,12 @@ function Portfolio() {
                             <div className="detail-links">
                               <span className="chip-link muted">보안상 공개 불가</span>
                               <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-GKsm9lfCZk" target="_blank" rel="noreferrer">Demo Video</a>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
                             </div>
                           </div>
                         </details>
@@ -687,6 +741,12 @@ function Portfolio() {
                               <a className="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" target="_blank" rel="noreferrer">논문</a>
                               <a className="chip-link youtube icon-link" href="https://www.youtube.com/playlist?list=PLg3p47m-psINqF_8QVGMixhW7zAv6Ir2F" target="_blank" rel="noreferrer">Demo Playlist</a>
                             </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
+                            </div>
                           </div>
                         </details>
 
@@ -707,6 +767,12 @@ function Portfolio() {
                             <div className="detail-links">
                               <span className="chip-link muted">보안상 공개 불가</span>
                             </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
+                            </div>
                           </div>
                         </details>
 
@@ -726,6 +792,12 @@ function Portfolio() {
                             </div>
                             <div className="detail-links">
                               <a className="chip-link github icon-link" href="https://github.com/YooJuno/Upbit-Auto-Trader" target="_blank" rel="noreferrer">GitHub</a>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
                             </div>
                           </div>
                         </details>
@@ -748,6 +820,12 @@ function Portfolio() {
                               <a className="chip-link github icon-link" href="https://github.com/YooJuno/PacmanGame-BoostASIO" target="_blank" rel="noreferrer">GitHub</a>
                               <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=2uh6XcFZric" target="_blank" rel="noreferrer">Demo Video</a>
                             </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
+                            </div>
                           </div>
                         </details>
 
@@ -769,6 +847,12 @@ function Portfolio() {
                               <a className="chip-link github icon-link" href="https://github.com/YooJuno/STM32-MBED/tree/main/Final" target="_blank" rel="noreferrer">GitHub</a>
                               <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=sW-dLjTRV7A" target="_blank" rel="noreferrer">Demo Video</a>
                             </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
+                            </div>
                           </div>
                         </details>
 
@@ -788,6 +872,12 @@ function Portfolio() {
                             </div>
                             <div className="detail-links">
                               <span className="chip-link muted">보안상 공개 불가</span>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
                             </div>
                           </div>
                         </details>
@@ -809,6 +899,12 @@ function Portfolio() {
                             </div>
                             <div className="detail-links">
                               <span className="chip-link muted">보안상 공개 불가</span>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                                <figcaption>이미지 준비중</figcaption>
+                              </figure>
                             </div>
                           </div>
                         </details>
