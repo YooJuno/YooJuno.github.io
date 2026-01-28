@@ -372,7 +372,7 @@ function Portfolio() {
                         <div className="project-links">
                           <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-ZYTrtNs5Vk" target="_blank" rel="noreferrer">높이 추정 Demo</a>
                           <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=v-8i_FkTkIU" target="_blank" rel="noreferrer">CCTV 속도 Demo</a>
-                          <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I&t=13s" target="_blank" rel="noreferrer">블랙박스 Demo</a>
+                          <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I" target="_blank" rel="noreferrer">블랙박스 Demo</a>
                         </div>
                         <p className="note">CCTV 속도 추정은 데이터셋 기준 평균 오차 0.5 km/h, 블랙박스는 구간별 ±3 km/h 수준과 편차 구간을 함께 분석.</p>
                         <div className="media-grid">
@@ -619,7 +619,7 @@ function Portfolio() {
                               <span className="chip-link muted">보안상 공개 불가</span>
                               <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=_HwGZA1f8t0" target="_blank" rel="noreferrer">후방 Demo 1</a>
                               <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=oEf1EfqPtWA" target="_blank" rel="noreferrer">후방 Demo 2</a>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I&t=13s" target="_blank" rel="noreferrer">전방 Demo</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I" target="_blank" rel="noreferrer">전방 Demo</a>
                             </div>
                           </div>
                         </details>
