@@ -6,7 +6,7 @@ const useReveal = () => {
     const revealItems = document.querySelectorAll('[data-reveal]')
     let observer
 
-    if (prefersReduced) {
+    if (prefersReduced || typeof IntersectionObserver === 'undefined') {
       revealItems.forEach((el) => el.classList.add('is-visible'))
       return undefined
     }

@@ -4,6 +4,9 @@ import Home from './pages/Home.jsx'
 import Portfolio from './pages/Portfolio.jsx'
 import Blog from './pages/Blog.jsx'
 import Post from './pages/Post.jsx'
+import Major from './pages/Major.jsx'
+import Music from './pages/Music.jsx'
+import Travel from './pages/Travel.jsx'
 import NotFound from './pages/NotFound.jsx'
 
 const ScrollToTop = () => {
@@ -34,9 +37,9 @@ const SiteNav = () => (
             <Link to="/portfolio?section=contact">연락</Link>
           </div>
         </div>
-        <span className="nav-disabled">준비중</span>
-        <span className="nav-disabled">준비중</span>
-        <span className="nav-disabled">준비중</span>
+        <Link className="nav-link" to="/major">전공</Link>
+        <Link className="nav-link" to="/music">음악</Link>
+        <Link className="nav-link" to="/travel">여행</Link>
       </div>
     </div>
   </nav>
@@ -54,6 +57,9 @@ function App() {
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<Post />} />
+          <Route path="/major" element={<Major />} />
+          <Route path="/music" element={<Music />} />
+          <Route path="/travel" element={<Travel />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <footer className="site-footer">
