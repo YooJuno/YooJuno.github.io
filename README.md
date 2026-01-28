@@ -2,6 +2,8 @@
 
 유준호 포트폴리오 + 기술 블로그를 위한 React 기반 정적 사이트입니다.
 
+https://yoojuno.github.io/
+
 ## 기술 스택
 
 - React 18 + Vite 5
