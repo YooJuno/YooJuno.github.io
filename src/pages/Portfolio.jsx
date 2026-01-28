@@ -1076,13 +1076,13 @@ function Portfolio() {
                         <p>PilotNet 성능 향상을 위한 SLAM과 YOLO 활용 (대한전자공학회, 2023.06)</p>
                         <div className="detail-links">
                           <a className="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" target="_blank" rel="noreferrer">논문 링크</a>
-                          <a className="chip-link" href="/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf" target="_blank" rel="noreferrer">논문 PDF</a>
+                          <a className="chip-link" href="/public/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf" target="_blank" rel="noreferrer">논문 PDF</a>
                         </div>
                       </div>
                       <div className="mini-card">
                         <h3>수상</h3>
                         <p>캡스톤 디자인 페스티벌 우수상 (한동대학교, 2023.05)</p>
-                        <a href="/캡스톤 경진대회.pdf" target="_blank" rel="noreferrer">상장 PDF</a>
+                        <a href="/public/캡스톤 경진대회.pdf" target="_blank" rel="noreferrer">상장 PDF</a>
                       </div>
                     </div>
                   </div>
