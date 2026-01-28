@@ -1,4 +1,484 @@
----
-layout: home
-author_profile: true
----
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>유준호 | 로보틱스 · 컴퓨터비전 · 임베디드</title>
+  <meta name="description" content="로보틱스·컴퓨터비전·임베디드 중심의 시스템 통합형 개발자 유준호 포트폴리오.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/portfolio.css">
+</head>
+<body>
+  <div class="bg-noise" aria-hidden="true"></div>
+
+  <header class="site-hero" id="top">
+    <nav class="site-nav">
+      <div class="container nav-inner">
+        <a class="brand" href="#top">Yoo Juno</a>
+        <div class="nav-links">
+          <a href="#about">소개</a>
+          <a href="#focus">우선순위</a>
+          <a href="#projects">프로젝트</a>
+          <a href="#skills">스택</a>
+          <a href="#experience">경험</a>
+          <a href="#contact">연락</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container hero-grid">
+      <div class="hero-text" data-reveal>
+        <p class="eyebrow">Robotics × Computer Vision × Embedded</p>
+        <h1>
+          현장의 문제를 로봇과 비전으로 해결하는<br>
+          시스템 통합형 개발자 <span class="accent">유준호</span>
+        </h1>
+        <p class="lead">
+          ROS2 기반 자율주행, SLAM, 실시간 스트리밍, 임베디드 통신까지 하나의 흐름으로 연결합니다.
+          야외 자율주행 배달 로봇부터 CCTV 기반 측정, 스마트 팩토리 자동화까지 직접 설계하고 구현해 왔습니다.
+        </p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#projects">대표 프로젝트 보기</a>
+          <a class="btn ghost" href="#contact">협업 문의</a>
+        </div>
+        <div class="hero-tags">
+          <span>ROS2</span>
+          <span>SLAM</span>
+          <span>YOLO</span>
+          <span>Jetson · ESP32 · STM32</span>
+          <span>MQTT · gRPC</span>
+        </div>
+      </div>
+
+      <div class="hero-panel" data-reveal>
+        <div class="panel-card">
+          <h2>핵심 요약</h2>
+          <ul>
+            <li>야외 자율주행 배달 로봇 팀장/PM 경험</li>
+            <li>컴퓨터비전 기반 속도·높이 추정 알고리즘 개발</li>
+            <li>임베디드-서버-웹 실시간 파이프라인 구축</li>
+          </ul>
+        </div>
+        <div class="panel-card">
+          <h2>퀵 스냅샷</h2>
+          <div class="pill-grid">
+            <span>프로젝트 16+</span>
+            <span>인턴 2회</span>
+            <span>ROS2/SLAM</span>
+            <span>실시간 스트리밍</span>
+            <span>시스템 통합</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section" id="about">
+      <div class="container about-grid" data-reveal>
+        <div>
+          <div class="section-head">
+            <h2>소개</h2>
+            <p>로보틱스 중심의 문제 해결 흐름을 선호합니다.</p>
+          </div>
+          <p class="body">
+            모형차 자율주행 대회를 계기로 컴퓨터비전과 로보틱스에 집중해 왔습니다.
+            연구실·산학과제·인턴십에서 SLAM, 객체 인식, 경로 계획을 반복적으로 다루며
+            실제 환경의 제약을 해결하는 설계를 쌓아왔습니다.
+          </p>
+          <p class="body">
+            특히 단일 기술보다 시스템 전체의 안정성과 실시간성을 우선합니다.
+            로봇, 서버, 클라이언트, 센서가 하나의 동작 흐름으로 이어지는 구조를 만드는 것이 목표입니다.
+          </p>
+          <div class="interest">
+            <h3>관심 직무</h3>
+            <div class="chip-list">
+              <span>시스템 엔지니어</span>
+              <span>AI/ML 엔지니어</span>
+              <span>이미지 프로세싱</span>
+              <span>펌웨어/하드웨어</span>
+              <span>네트워크</span>
+            </div>
+          </div>
+        </div>
+        <div class="about-card">
+          <h3>기본 정보</h3>
+          <ul class="info-list">
+            <li><span>학력</span> 한동대학교 AI 컴퓨터공학 심화 (2018.02-2024.08)</li>
+            <li><span>GPA</span> 3.12 / 4.5</li>
+            <li><span>교육</span> SSAFY 임베디드 로봇 트랙 (2025.01-2025.10)</li>
+            <li><span>언어</span> OPIc IM1 (2025.03)</li>
+            <li><span>자격</span> 1종보통운전면허 (2020.10)</li>
+            <li><span>병역</span> 육군 병장 만기전역 (2019.01-2020.08)</li>
+          </ul>
+          <div class="about-links">
+            <a class="btn ghost" href="포트폴리오_유준호.pdf" target="_blank" rel="noreferrer">포트폴리오 PDF</a>
+            <a class="btn ghost" href="이력서_유준호.pdf" target="_blank" rel="noreferrer">이력서 PDF</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="focus">
+      <div class="container" data-reveal>
+        <div class="section-head">
+          <h2>우선순위</h2>
+          <p>역량의 중심을 로보틱스에 두고 단계적으로 확장합니다.</p>
+        </div>
+        <div class="priority-grid">
+          <article class="priority-card">
+            <h3>1. 로보틱스</h3>
+            <p>ROS2 기반 자율주행, 로봇팔 제어, 경로 생성/추종 및 시스템 통합.</p>
+          </article>
+          <article class="priority-card">
+            <h3>2. 컴퓨터비전</h3>
+            <p>SLAM, YOLO, SfM, Perspective Transformation으로 측정/인식 문제 해결.</p>
+          </article>
+          <article class="priority-card">
+            <h3>3. 임베디드</h3>
+            <p>Jetson·ESP32·STM32·Raspberry Pi 기반 센서/통신/제어 시스템 구축.</p>
+          </article>
+          <article class="priority-card">
+            <h3>4. 풀스택</h3>
+            <p>실시간 데이터 파이프라인과 웹 시각화, 서버 통신 구조 설계.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="section-head" data-reveal>
+          <h2>대표 프로젝트</h2>
+          <p>로보틱스 중심 프로젝트와 CV 기반 분석 경험을 선별했습니다.</p>
+        </div>
+
+        <article class="project-card feature" data-reveal>
+          <div class="project-info">
+            <div class="meta-row">
+              <span class="badge">Robotics</span>
+              <span>SSAFY · 2025.07-08 · 6인 · 팀장/PM/Robotics</span>
+            </div>
+            <h3>한강 자율주행 배달 로봇 LiNKY</h3>
+            <p class="summary">
+              야외 환경에서 카메라 기반 자율주행으로 배달을 수행하고, 얼굴 인식으로 인수 확인까지 진행하는 로봇 서비스.
+            </p>
+            <ul>
+              <li>ROS2 노드 통합 및 Jetson Orin Nano에서 Isaac ROS VSLAM 구동</li>
+              <li>GPS <-> SLAM 좌표 실시간 변환으로 UI에 위치 제공</li>
+              <li>Pure-Pursuit 기반 경로 생성/추종 및 다중 배달 동선 구성</li>
+              <li>MQTT로 서버 연동, 실시간 위치·이미지 스트리밍 구현</li>
+            </ul>
+            <div class="tag-row">
+              <span>ROS2</span>
+              <span>Isaac ROS VSLAM</span>
+              <span>Jetson Orin Nano</span>
+              <span>MQTT</span>
+              <span>FaceNet</span>
+              <span>Docker</span>
+            </div>
+            <p class="note">gRPC -> REST/SSE 구조 변경, WebRTC 대신 base64 MQTT 스트리밍으로 전환.</p>
+          </div>
+          <div class="project-visual">
+            <div class="visual-label">이미지 준비중</div>
+            <div class="visual-caption">LiNKY 정면 / 시스템 아키텍처 / 주행 경로</div>
+          </div>
+        </article>
+
+        <div class="project-grid two" data-reveal>
+          <article class="project-card">
+            <div class="meta-row">
+              <span class="badge">Robotics</span>
+              <span>SSAFY · 2025.04-05 · 3인 · 팀장/PM</span>
+            </div>
+            <h3>스마트 팩토리 로봇팔 자동화 & 디지털 트윈</h3>
+            <p class="summary">
+              웹 인터페이스로 Dobot 로봇팔과 컨베이어를 제어하고, RoboDK 디지털 트윈과 동기화한 자동화 공정.
+            </p>
+            <ul>
+              <li>ROS2 기반 영상처리 및 로봇 제어 시스템/서버 구현</li>
+              <li>Perspective Transformation으로 RoI 정렬 후 YOLOv5 불량 검출</li>
+              <li>End-Effector 오프셋 문제를 FK로 보정</li>
+              <li>멀티 스레드 서버로 ROS2/TCP/Web API 비동기 통신</li>
+            </ul>
+            <div class="tag-row">
+              <span>ROS2</span>
+              <span>YOLOv5</span>
+              <span>RoboDK</span>
+              <span>OpenCV</span>
+              <span>Flask</span>
+              <span>TCP</span>
+            </div>
+            <div class="image-placeholder small">이미지 준비중</div>
+          </article>
+
+          <article class="project-card">
+            <div class="meta-row">
+              <span class="badge">Full Stack</span>
+              <span>SSAFY · 2025.02-03 · 1인</span>
+            </div>
+            <h3>로봇 센서·영상 실시간 분석 웹</h3>
+            <p class="summary">
+              로봇에서 수집한 센서/영상 데이터를 서버에서 분산 처리하고 웹에서 실시간 차트와 영상을 제공.
+            </p>
+            <ul>
+              <li>Vue 기반 실시간 차트/스트리밍 UI 구현</li>
+              <li>Node.js 서버에서 YOLOv9 파이프라인 연동</li>
+              <li>비동기 처리로 통신 지연 최소화</li>
+              <li>MySQL 로그 저장 및 Nginx 배포 적용</li>
+            </ul>
+            <div class="tag-row">
+              <span>Vue.js</span>
+              <span>Node.js</span>
+              <span>YOLOv9</span>
+              <span>WebSocket</span>
+              <span>MySQL</span>
+              <span>Nginx</span>
+            </div>
+            <div class="image-placeholder small">이미지 준비중</div>
+          </article>
+        </div>
+
+        <article class="project-card" data-reveal>
+          <div class="meta-row">
+            <span class="badge">Embedded</span>
+            <span>2024.01-02 · 4인</span>
+          </div>
+          <h3>무선 CCTV 웹 스트리밍 (Wi-Fi HaLow)</h3>
+          <p class="summary">
+            유선 연결이 어려운 환경에서 CCTV 노드 다수를 무선으로 연결해 실시간 웹 스트리밍을 제공.
+          </p>
+          <ul>
+            <li>Raspberry Pi 기반 노드/게이트웨이 구성</li>
+            <li>Wi-Fi HaLow(900MHz) 모듈로 장거리 통신 확보</li>
+            <li>gRPC 송신 + Crontab 자동 실행/복구 설계</li>
+          </ul>
+          <div class="tag-row">
+            <span>gRPC</span>
+            <span>Wi-Fi HaLow</span>
+            <span>Raspberry Pi</span>
+            <span>Crontab</span>
+          </div>
+          <div class="image-placeholder small">이미지 준비중</div>
+        </article>
+
+        <div class="project-series" data-reveal>
+          <div class="series-head">
+            <h3>GMD SOFT 컴퓨터비전 시리즈</h3>
+            <p>객체 높이·속도 추정을 다양한 환경(CCTV/블랙박스)에서 실험하고 한계와 개선점을 정리했습니다.</p>
+          </div>
+          <div class="project-grid three">
+            <article class="project-card compact">
+              <div class="meta-row">
+                <span class="badge">Vision</span>
+                <span>2024.01-04 · 산학 과제</span>
+              </div>
+              <h4>CCTV 영상 내 객체 높이 추정</h4>
+              <p class="summary">Vanishing Point/Line 기반 Single View Geometry로 키/높이 추정.</p>
+              <ul>
+                <li>PyQT 입력 GUI로 기준선/참조선 정의</li>
+                <li>Vanishing Line으로 스케일 계산</li>
+              </ul>
+              <div class="tag-row">
+                <span>OpenCV</span>
+                <span>Single View Geometry</span>
+                <span>PyQT</span>
+              </div>
+              <div class="image-placeholder tiny">이미지 준비중</div>
+            </article>
+
+            <article class="project-card compact">
+              <div class="meta-row">
+                <span class="badge">Vision</span>
+                <span>2024.04-06 · 산학 과제</span>
+              </div>
+              <h4>CCTV 영상 내 차량 속도 추정</h4>
+              <p class="summary">Perspective Transformation 기반 속도 측정 파이프라인 설계.</p>
+              <ul>
+                <li>Rectification 대신 단순 PT로 안정화</li>
+                <li>데이터셋 기준 평균 오차 0.5 km/h</li>
+              </ul>
+              <div class="tag-row">
+                <span>OpenCV</span>
+                <span>Perspective Transform</span>
+                <span>Dataset</span>
+              </div>
+              <div class="image-placeholder tiny">이미지 준비중</div>
+            </article>
+
+            <article class="project-card compact">
+              <div class="meta-row">
+                <span class="badge">Vision</span>
+                <span>2024.07-08 · 인턴 (1인)</span>
+              </div>
+              <h4>블랙박스 영상 속도 추정</h4>
+              <p class="summary">COLMAP 3D 재구성 + Real-to-Pixel 스케일로 속도 계산.</p>
+              <ul>
+                <li>차량 보닛 마스킹으로 Point Cloud 품질 개선</li>
+                <li>구간별 ±3 km/h 수준 / 장거리 오차 분석</li>
+              </ul>
+              <div class="tag-row">
+                <span>COLMAP</span>
+                <span>SfM</span>
+                <span>OpenCV</span>
+              </div>
+              <div class="image-placeholder tiny">이미지 준비중</div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="skills">
+      <div class="container" data-reveal>
+        <div class="section-head">
+          <h2>기술 스택</h2>
+          <p>로보틱스 중심의 실전 경험을 기반으로 기술을 구성합니다.</p>
+        </div>
+        <div class="stack-grid">
+          <div class="stack-card">
+            <h3>Robotics & Autonomy</h3>
+            <div class="chip-list">
+              <span>ROS2</span><span>Nav2</span><span>Pure-Pursuit</span><span>Path Planning</span><span>RoboDK</span><span>Dobot</span>
+            </div>
+          </div>
+          <div class="stack-card">
+            <h3>Computer Vision</h3>
+            <div class="chip-list">
+              <span>Isaac ROS VSLAM</span><span>ORB-SLAM3</span><span>RTAB-MAP</span><span>YOLOv5/9</span><span>COLMAP</span><span>OpenCV</span>
+            </div>
+          </div>
+          <div class="stack-card">
+            <h3>Embedded & Hardware</h3>
+            <div class="chip-list">
+              <span>Jetson Orin Nano</span><span>ESP32</span><span>STM32</span><span>Raspberry Pi</span><span>nRF52840</span><span>RealSense D435i</span>
+            </div>
+          </div>
+          <div class="stack-card">
+            <h3>Networking & Web</h3>
+            <div class="chip-list">
+              <span>MQTT</span><span>gRPC</span><span>TCP/UDP</span><span>Vue.js</span><span>Node.js</span><span>Express</span><span>MySQL</span><span>Nginx</span>
+            </div>
+          </div>
+          <div class="stack-card">
+            <h3>Languages & Tools</h3>
+            <div class="chip-list">
+              <span>C++</span><span>Python</span><span>Docker</span><span>Linux</span><span>Git</span><span>Jira</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="experience">
+      <div class="container" data-reveal>
+        <div class="section-head">
+          <h2>경험 · 연구 · 교육</h2>
+          <p>산학과제와 현장 프로젝트를 통해 실전형 문제 해결 역량을 확장했습니다.</p>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="time">2024.07-09</span>
+            <div>
+              <h3>GMD SOFT 인턴 · 영상 포렌식</h3>
+              <p>경쟁사(MAGNET Automate) 조사, gRPC 기반 분산 처리 시스템 설계, Visual-SLAM 세미나 진행.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <span class="time">2023.09-12</span>
+            <div>
+              <h3>자이트론 인턴 · 자율주행 교육/제품 개발</h3>
+              <p>자율주행 교육 강의 보조·진행, 경기장 관제 시스템 및 자율 주차 프로그램 개발.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <span class="time">2022.07-2024.06</span>
+            <div>
+              <h3>한동대학교 CGV LAB 학부 연구생</h3>
+              <p>컴퓨터비전/로보틱스 연구 프로젝트 다수 수행.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <span class="time">2022.09-2023.02</span>
+            <div>
+              <h3>RIST 산학과제 · 파노라마 작업자 위치 추정</h3>
+              <p>ORB·SIFT 매칭 기반 위치 추정, RANSAC/부분 매칭으로 안정성 개선.</p>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <span class="time">2025.01-10</span>
+            <div>
+              <h3>SSAFY 임베디드 로봇 트랙</h3>
+              <p>웹·로봇 프로젝트 수행, 자동화 시스템 설계 및 로봇팔 제어 경험.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="split-cards">
+          <div class="mini-card">
+            <h3>논문 · 발표</h3>
+            <p>PilotNet 성능 향상을 위한 SLAM과 YOLO 활용 (대한전자공학회, 2023.06)</p>
+            <a href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" target="_blank" rel="noreferrer">논문 보기</a>
+          </div>
+          <div class="mini-card">
+            <h3>수상</h3>
+            <p>캡스톤 디자인 페스티벌 우수상 (한동대학교, 2023.05)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="activities">
+      <div class="container" data-reveal>
+        <div class="section-head">
+          <h2>활동</h2>
+          <p>기술을 나누며 커뮤니케이션 역량을 확장했습니다.</p>
+        </div>
+        <div class="activity-grid">
+          <article>
+            <h3>상상이상 사이언스 상상교사</h3>
+            <p>포스코 1% 나눔재단 (2022.06-2023.07)</p>
+            <p>중학교 대상 과학·IT 체험 교육 8개 학교 진행. AR/코딩 체험 수업 설계.</p>
+          </article>
+          <article>
+            <h3>컴퓨터비전 전공 조교</h3>
+            <p>수업 자료 정리 및 학습 지원. 피처 매칭 알고리즘 이해 심화.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container" data-reveal>
+        <div class="contact-card">
+          <div>
+            <h2>함께 문제를 풀어가고 싶습니다</h2>
+            <p>로보틱스/컴퓨터비전/임베디드 프로젝트 협업이나 채용 관련 문의를 기다립니다.</p>
+            <div class="contact-info">
+              <span>Seoul, KR</span>
+              <span>juno980220@naver.com</span>
+              <span>010-3792-6395</span>
+            </div>
+          </div>
+          <div class="contact-actions">
+            <a class="btn primary" href="mailto:juno980220@naver.com">메일 보내기</a>
+            <a class="btn ghost" href="https://github.com/YooJuno" target="_blank" rel="noreferrer">GitHub</a>
+            <a class="btn ghost" href="https://youtube.com/@yoojuno" target="_blank" rel="noreferrer">YouTube</a>
+            <a class="btn ghost" href="https://www.notion.so/1a9302636cd781059263e5b57e11fc70" target="_blank" rel="noreferrer">Notion 이력서</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>(c) 2026 Yoo Juno. Robotics · Computer Vision · Embedded.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/portfolio.js" defer></script>
+</body>
+</html>
