@@ -1,30 +1,39 @@
 ﻿# YooJuno.github.io (React + Vite)
 
-유준호 포트폴리오 웹사이트의 React 기반 구현입니다. 단일 페이지(Static SPA)이며 GitHub Pages로 배포됩니다.
+유준호 포트폴리오 + 기술 블로그를 위한 React 기반 정적 사이트입니다.
 
 ## 기술 스택
 
 - React 18 + Vite 5
-- CSS: 전역 단일 파일 (`src/index.css`)
+- 라우팅: React Router (HashRouter)
+- 블로그: Markdown + Frontmatter (gray-matter, marked)
 - 배포: GitHub Actions → GitHub Pages
 - Node: 20 (빌드 안정성 확보)
 
-## 구조 요약
+## 라우팅 구조
 
-- `src/App.jsx`: 전체 페이지 마크업/콘텐츠
+- `/` : 홈 (간단 소개)
+- `/portfolio` : 포트폴리오 전체
+- `/blog` : 블로그 목록 (검색/태그/카테고리)
+- `/blog/:slug` : 글 상세
+
+> GitHub Pages 환경을 고려해 HashRouter를 사용합니다.
+
+## 폴더 구조
+
+- `src/App.jsx`: 라우팅/레이아웃
+- `src/pages/`: 홈/포트폴리오/블로그 페이지
 - `src/index.css`: 전역 스타일
-- `src/main.jsx`: React 진입점
-- `public/`: 정적 자산 (PDF, `.nojekyll` 등)
-- `.github/workflows/deploy.yml`: Pages 자동 배포 파이프라인
+- `src/content/blog/`: Markdown 글
+- `src/lib/posts.js`: 글 로딩/파싱
+- `.github/workflows/deploy.yml`: GitHub Actions 배포 파이프라인
 
-## 개발 환경
+## 로컬 실행
 
 ```bash
 npm install
 npm run dev
 ```
-
-> 스크립트는 Node 20으로 실행되도록 구성되어 있습니다. (Node 24에서 Vite 빌드 충돌 이슈 대응)
 
 ## 빌드
 
@@ -36,29 +45,34 @@ npm run build
 
 ## GitHub Actions 배포
 
-`main` 브랜치에 푸시하면 Actions가 아래 순서로 자동 배포합니다.
-
-1) `npm ci`
-2) `npm run build`
-3) `dist/`를 Pages 아티팩트로 업로드
-4) GitHub Pages 배포
+`main` 브랜치에 푸시하면 Actions가 자동으로 배포합니다.
 
 설정 경로:
 - GitHub 저장소 → **Settings → Pages → Source: GitHub Actions**
 
-## 정적 파일 규칙
+## 블로그 글 작성
 
-- PDF/이미지 등 정적 파일은 `public/`에 둡니다.
-- 링크는 절대 경로(`/파일명`)를 사용합니다.
-  - 예: `/포트폴리오_유준호.pdf`, `/이력서_유준호.pdf`
+`src/content/blog/`에 Markdown 파일을 추가합니다.
 
-## 내용 수정 가이드
+Frontmatter 예시:
 
-- 프로젝트/문구 수정: `src/App.jsx`
-- 색상/레이아웃 수정: `src/index.css`
-- 이미지 추가: `public/` 또는 `src/assets/` 후 경로 수정
+```md
+---
+title: "글 제목"
+date: "2026-01-28"
+category: "카테고리"
+tags:
+  - tag1
+  - tag2
+summary: "글 요약"
+---
 
-## 트러블슈팅
+본문 내용...
+```
 
-- 로컬 빌드가 실패하면 Node 버전을 먼저 확인하세요. (`node -v`)
-- Actions 실패 시, Actions 탭의 로그에서 `npm ci` / `npm run build` 단계 확인
+- `summary`가 없으면 본문 일부가 자동 요약으로 사용됩니다.
+- 목록 페이지에서 검색/태그/카테고리 필터가 동작합니다.
+
+## 정적 파일
+
+PDF(이력서/포트폴리오)와 `.nojekyll`은 `public/`에 두면 빌드 결과에 포함됩니다.
