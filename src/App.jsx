@@ -43,7 +43,6 @@ const SiteNav = () => (
         <div className="nav-item dropdown">
           <Link className="nav-link" to="/blog">블로그</Link>
           <div className="dropdown-menu">
-            <Link to="/blog">전체</Link>
             <Link to="/blog?category=개발">개발</Link>
             <Link to="/blog?category=음악">음악</Link>
             <Link to="/blog?category=여행">여행</Link>

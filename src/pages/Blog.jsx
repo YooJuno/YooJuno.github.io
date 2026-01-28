@@ -77,7 +77,7 @@ function Blog() {
             value={activeCategory}
             onChange={(event) => updateCategory(event.target.value)}
           >
-            <option value="">전체 카테고리</option>
+            <option value="">카테고리 선택</option>
             {categories.map((category) => (
               <option key={category} value={category}>
                 {category}
