@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import useReveal from '../hooks/useReveal'
 
 function Portfolio() {
   const containerRef = useRef(null)
   const location = useLocation()
+  const [lightbox, setLightbox] = useState(null)
   useReveal()
 
   useEffect(() => {
@@ -18,7 +19,19 @@ function Portfolio() {
       window.setTimeout(() => target.classList.remove('is-focus'), 1200)
     }
 
-    const handleAnchorClick = (event) => {
+    const handleClick = (event) => {
+      const image = event.target.closest('.media-tile img')
+      if (image) {
+        event.preventDefault()
+        const src = image.currentSrc || image.src
+        if (!src) return
+        setLightbox({
+          src,
+          alt: image.alt || '프로젝트 이미지',
+          hasAlt: Boolean(image.alt),
+        })
+        return
+      }
       const link = event.target.closest('a[href^="#"]')
       if (!link) return
       const href = link.getAttribute('href')
@@ -30,12 +43,28 @@ function Portfolio() {
       target.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
 
-    container.addEventListener('click', handleAnchorClick)
+    container.addEventListener('click', handleClick)
 
     return () => {
-      container.removeEventListener('click', handleAnchorClick)
+      container.removeEventListener('click', handleClick)
     }
   }, [])
+
+  useEffect(() => {
+    if (!lightbox) return undefined
+    const handleKey = (event) => {
+      if (event.key === 'Escape') {
+        setLightbox(null)
+      }
+    }
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', handleKey)
+    return () => {
+      window.removeEventListener('keydown', handleKey)
+      document.body.style.overflow = prevOverflow
+    }
+  }, [lightbox])
 
   useEffect(() => {
     const params = new URLSearchParams(location.search)
@@ -921,6 +950,27 @@ function Portfolio() {
                   </div>
                 </section>
               </main>
+              {lightbox && (
+                <div className="lightbox" role="dialog" aria-modal="true">
+                  <div
+                    className="lightbox-backdrop"
+                    onClick={() => setLightbox(null)}
+                    aria-hidden="true"
+                  />
+                  <figure className="lightbox-content">
+                    <button
+                      className="lightbox-close"
+                      type="button"
+                      onClick={() => setLightbox(null)}
+                      aria-label="닫기"
+                    >
+                      ×
+                    </button>
+                    <img src={lightbox.src} alt={lightbox.alt} />
+                    {lightbox.hasAlt && <figcaption>{lightbox.alt}</figcaption>}
+                  </figure>
+                </div>
+              )}
     </div>
   )
 }

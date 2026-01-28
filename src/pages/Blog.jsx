@@ -1,39 +1,21 @@
 ﻿import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { posts, getAllTags, getAllCategories } from '../lib/posts'
+import { posts, getAllTags } from '../lib/posts'
 import useReveal from '../hooks/useReveal'
-
-const DEFAULT_CATEGORIES = ['개발', '음악', '여행']
 
 function Blog() {
   useReveal()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const [searchParams] = useSearchParams()
   const [query, setQuery] = useState('')
   const [activeTag, setActiveTag] = useState('')
   const [activeCategory, setActiveCategory] = useState('')
 
   const tags = getAllTags()
 
-  const categories = useMemo(() => {
-    const merged = [...DEFAULT_CATEGORIES, ...getAllCategories()]
-    return Array.from(new Set(merged)).filter(Boolean)
-  }, [])
-
   useEffect(() => {
     const category = searchParams.get('category') || ''
     setActiveCategory(category)
   }, [searchParams])
-
-  const updateCategory = (value) => {
-    setActiveCategory(value)
-    const next = new URLSearchParams(searchParams)
-    if (value) {
-      next.set('category', value)
-    } else {
-      next.delete('category')
-    }
-    setSearchParams(next, { replace: true })
-  }
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -62,6 +44,9 @@ function Blog() {
         <div className="section-head">
           <h2>블로그</h2>
           <p>전공, 음악, 여행 그리고 기술 메모를 차분하게 기록합니다.</p>
+          {activeCategory && (
+            <p className="category-note">현재 카테고리: {activeCategory}</p>
+          )}
         </div>
 
         <div className="blog-controls">
@@ -72,18 +57,6 @@ function Blog() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <select
-            className="blog-select"
-            value={activeCategory}
-            onChange={(event) => updateCategory(event.target.value)}
-          >
-            <option value="">카테고리 선택</option>
-            {categories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
         </div>
 
         <div className="blog-tags">
