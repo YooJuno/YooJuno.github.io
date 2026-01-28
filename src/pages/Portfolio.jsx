@@ -6,16 +6,38 @@ function Portfolio() {
   const containerRef = useRef(null)
   const location = useLocation()
   const [lightbox, setLightbox] = useState(null)
+  const [activeProjectId, setActiveProjectId] = useState('')
+  const [activeSectionId, setActiveSectionId] = useState('')
   useReveal()
+  const placeholderImage = new URL(
+    '../assets/portfolio-placeholder.svg',
+    import.meta.url
+  ).href
+  const pilotNetPdf = new URL(
+    '../assets/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf',
+    import.meta.url
+  ).href
+  const capstonePdf = new URL(
+    '../assets/캡스톤 경진대회.pdf',
+    import.meta.url
+  ).href
+  const getIndexClass = (id) => (
+    activeProjectId === id ? 'index-link is-active' : 'index-link'
+  )
+
+  const getSectionClass = (id) => (
+    activeSectionId === id ? 'index-link is-active' : 'index-link'
+  )
 
   useEffect(() => {
     const container = containerRef.current
-    if (!container) return () => {}
+    if (!container) return undefined
 
     const focusDetail = (target) => {
       if (!target || target.tagName.toLowerCase() !== 'details') return
       target.setAttribute('open', '')
       target.classList.add('is-focus')
+      setActiveProjectId(target.id)
       window.setTimeout(() => target.classList.remove('is-focus'), 1200)
     }
 
@@ -44,9 +66,73 @@ function Portfolio() {
     }
 
     container.addEventListener('click', handleClick)
-
     return () => {
       container.removeEventListener('click', handleClick)
+    }
+  }, [])
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return undefined
+    const targets = Array.from(
+      container.querySelectorAll(
+        '#about, #focus, #featured, #project-library, #skills, #experience, #activities, #contact'
+      )
+    )
+    if (!targets.length) return undefined
+
+    if (typeof IntersectionObserver === 'undefined') {
+      setActiveSectionId(targets[0].id)
+      return undefined
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+        if (visible.length) {
+          setActiveSectionId(visible[0].target.id)
+        }
+      },
+      { rootMargin: '-20% 0px -55% 0px', threshold: [0.1, 0.3, 0.6] }
+    )
+
+    targets.forEach((target) => observer.observe(target))
+
+    return () => {
+      observer.disconnect()
+    }
+  }, [])
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return undefined
+    const items = Array.from(
+      container.querySelectorAll('#project-library .project-detail')
+    )
+    if (!items.length) return undefined
+    setActiveProjectId(items[0].id)
+
+    if (typeof IntersectionObserver === 'undefined') {
+      return undefined
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+        if (visible.length) {
+          setActiveProjectId(visible[0].target.id)
+        }
+      },
+      { rootMargin: '-10% 0px -70% 0px', threshold: [0.1, 0.35, 0.6] }
+    )
+
+    items.forEach((item) => observer.observe(item))
+    return () => {
+      observer.disconnect()
     }
   }, [])
 
@@ -76,6 +162,7 @@ function Portfolio() {
     if (!target) return
     if (target.tagName.toLowerCase() === 'details') {
       target.setAttribute('open', '')
+      setActiveProjectId(target.id)
     }
     target.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }, [location.search])
@@ -132,7 +219,20 @@ function Portfolio() {
                 </div>
               </header>
 
-              <main>
+              <main className="portfolio-main">
+                <aside className="portfolio-index" data-reveal>
+                  <h3>Index</h3>
+                  <nav className="index-group">
+                    <a className={getSectionClass("about")} href="#about">소개</a>
+                    <a className={getSectionClass("focus")} href="#focus">우선순위</a>
+                    <a className={getSectionClass("featured")} href="#featured">대표 프로젝트</a>
+                    <a className={getSectionClass("project-library")} href="#project-library">전체 프로젝트</a>
+                    <a className={getSectionClass("skills")} href="#skills">기술 스택</a>
+                    <a className={getSectionClass("experience")} href="#experience">경험</a>
+                    <a className={getSectionClass("activities")} href="#activities">활동</a>
+                    <a className={getSectionClass("contact")} href="#contact">연락</a>
+                  </nav>
+                </aside>
                 <section className="section" id="about">
                   <div className="container about-grid" data-reveal>
                     <div>
@@ -248,15 +348,15 @@ function Portfolio() {
                       <div className="project-media">
                         <div className="media-grid">
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>로봇 정면</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>시스템 아키텍처</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>주행 경로</figcaption>
                           </figure>
                         </div>
@@ -293,15 +393,15 @@ function Portfolio() {
                         </div>
                         <div className="media-grid">
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>웹 인터페이스</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>로봇팔/컨베이어</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>프로세스 플로우</figcaption>
                           </figure>
                         </div>
@@ -335,15 +435,15 @@ function Portfolio() {
                         </div>
                         <div className="media-grid">
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>실시간 대시보드</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>객체 검출 결과</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>시스템 아키텍처</figcaption>
                           </figure>
                         </div>
@@ -377,15 +477,15 @@ function Portfolio() {
                         <p className="note">CCTV 속도 추정은 데이터셋 기준 평균 오차 0.5 km/h, 블랙박스는 구간별 ±3 km/h 수준과 편차 구간을 함께 분석.</p>
                         <div className="media-grid">
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>높이 추정</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>CCTV 속도</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>블랙박스 속도</figcaption>
                           </figure>
                         </div>
@@ -416,15 +516,15 @@ function Portfolio() {
                         </div>
                         <div className="media-grid">
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>시스템 아키텍처</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>노드 구성</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
+                            <img src={placeholderImage} alt="이미지 준비중" />
                             <figcaption>스트리밍 화면</figcaption>
                           </figure>
                         </div>
@@ -444,31 +544,31 @@ function Portfolio() {
                         <p>총 16개</p>
                         <div className="index-group">
                           <h4>로보틱스</h4>
-                          <a href="#proj-hangang">한강 자율주행 배달 로봇</a>
-                          <a href="#proj-smart-factory">스마트 팩토리 자동화</a>
-                          <a href="#proj-ssaweb">로봇 센서·영상 분석 웹</a>
-                          <a href="#proj-zytron-control">자율주행 경기장 관제</a>
-                          <a href="#proj-autopark">자율 주차 프로그램</a>
-                          <a href="#proj-pilotnet">PilotNet + SLAM + YOLO</a>
-                          <a href="#proj-drone">자율 주행 드론</a>
-                          <a href="#proj-modelcar">모형차 자율주행 대회</a>
+                          <a className={getIndexClass("proj-hangang")} href="#proj-hangang">한강 자율주행 배달 로봇</a>
+                          <a className={getIndexClass("proj-smart-factory")} href="#proj-smart-factory">스마트 팩토리 자동화</a>
+                          <a className={getIndexClass("proj-ssaweb")} href="#proj-ssaweb">로봇 센서·영상 분석 웹</a>
+                          <a className={getIndexClass("proj-zytron-control")} href="#proj-zytron-control">자율주행 경기장 관제</a>
+                          <a className={getIndexClass("proj-autopark")} href="#proj-autopark">자율 주차 프로그램</a>
+                          <a className={getIndexClass("proj-pilotnet")} href="#proj-pilotnet">PilotNet + SLAM + YOLO</a>
+                          <a className={getIndexClass("proj-drone")} href="#proj-drone">자율 주행 드론</a>
+                          <a className={getIndexClass("proj-modelcar")} href="#proj-modelcar">모형차 자율주행 대회</a>
                         </div>
                         <div className="index-group">
                           <h4>컴퓨터비전</h4>
-                          <a href="#proj-cctv-height">CCTV 객체 높이 추정</a>
-                          <a href="#proj-cctv-speed">CCTV 차량 속도 추정</a>
-                          <a href="#proj-blackbox-speed">블랙박스 속도 추정</a>
-                          <a href="#proj-rist">파노라마 작업자 위치 추정</a>
+                          <a className={getIndexClass("proj-cctv-height")} href="#proj-cctv-height">CCTV 객체 높이 추정</a>
+                          <a className={getIndexClass("proj-cctv-speed")} href="#proj-cctv-speed">CCTV 차량 속도 추정</a>
+                          <a className={getIndexClass("proj-blackbox-speed")} href="#proj-blackbox-speed">블랙박스 속도 추정</a>
+                          <a className={getIndexClass("proj-rist")} href="#proj-rist">파노라마 작업자 위치 추정</a>
                         </div>
                         <div className="index-group">
                           <h4>임베디드/시스템</h4>
-                          <a href="#proj-cctv-halow">무선 CCTV 웹 스트리밍</a>
-                          <a href="#proj-stm32">STM32 LED 피아노</a>
+                          <a className={getIndexClass("proj-cctv-halow")} href="#proj-cctv-halow">무선 CCTV 웹 스트리밍</a>
+                          <a className={getIndexClass("proj-stm32")} href="#proj-stm32">STM32 LED 피아노</a>
                         </div>
                         <div className="index-group">
                           <h4>기타</h4>
-                          <a href="#proj-trader">가상화폐 자동 매매</a>
-                          <a href="#proj-pacman">Online Pacman</a>
+                          <a className={getIndexClass("proj-trader")} href="#proj-trader">가상화폐 자동 매매</a>
+                          <a className={getIndexClass("proj-pacman")} href="#proj-pacman">Online Pacman</a>
                         </div>
                       </aside>
 
@@ -494,15 +594,15 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="로봇 주행 장면" />
+                                <img src={placeholderImage} alt="로봇 주행 장면" />
                                 <figcaption>로봇 주행 장면</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="시스템 구성" />
+                                <img src={placeholderImage} alt="시스템 구성" />
                                 <figcaption>시스템 구성</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="운영 흐름" />
+                                <img src={placeholderImage} alt="운영 흐름" />
                                 <figcaption>운영 흐름</figcaption>
                               </figure>
                             </div>
@@ -530,15 +630,15 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="로봇팔 작업 셀" />
+                                <img src={placeholderImage} alt="로봇팔 작업 셀" />
                                 <figcaption>로봇팔 작업 셀</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="디지털 트윈 화면" />
+                                <img src={placeholderImage} alt="디지털 트윈 화면" />
                                 <figcaption>디지털 트윈 화면</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="검출 결과" />
+                                <img src={placeholderImage} alt="검출 결과" />
                                 <figcaption>검출 결과</figcaption>
                               </figure>
                             </div>
@@ -565,15 +665,15 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="실시간 대시보드" />
+                                <img src={placeholderImage} alt="실시간 대시보드" />
                                 <figcaption>실시간 대시보드</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="영상 스트리밍" />
+                                <img src={placeholderImage} alt="영상 스트리밍" />
                                 <figcaption>영상 스트리밍</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="데이터 파이프라인" />
+                                <img src={placeholderImage} alt="데이터 파이프라인" />
                                 <figcaption>데이터 파이프라인</figcaption>
                               </figure>
                             </div>
@@ -600,15 +700,15 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="노드 구성" />
+                                <img src={placeholderImage} alt="노드 구성" />
                                 <figcaption>노드 구성</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="게이트웨이 흐름" />
+                                <img src={placeholderImage} alt="게이트웨이 흐름" />
                                 <figcaption>게이트웨이 흐름</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="스트리밍 화면" />
+                                <img src={placeholderImage} alt="스트리밍 화면" />
                                 <figcaption>스트리밍 화면</figcaption>
                               </figure>
                             </div>
@@ -635,11 +735,11 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="높이 추정 결과" />
+                                <img src={placeholderImage} alt="높이 추정 결과" />
                                 <figcaption>높이 추정 결과</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="기하 보정 라인" />
+                                <img src={placeholderImage} alt="기하 보정 라인" />
                                 <figcaption>기하 보정 라인</figcaption>
                               </figure>
                             </div>
@@ -666,11 +766,11 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="속도 추정 프레임" />
+                                <img src={placeholderImage} alt="속도 추정 프레임" />
                                 <figcaption>속도 추정 프레임</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="트래킹 결과" />
+                                <img src={placeholderImage} alt="트래킹 결과" />
                                 <figcaption>트래킹 결과</figcaption>
                               </figure>
                             </div>
@@ -699,11 +799,11 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="구간 속도 추정" />
+                                <img src={placeholderImage} alt="구간 속도 추정" />
                                 <figcaption>구간 속도 추정</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="3D 재구성" />
+                                <img src={placeholderImage} alt="3D 재구성" />
                                 <figcaption>3D 재구성</figcaption>
                               </figure>
                             </div>
@@ -730,11 +830,11 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="관제 UI" />
+                                <img src={placeholderImage} alt="관제 UI" />
                                 <figcaption>관제 UI</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="로봇 상태 맵" />
+                                <img src={placeholderImage} alt="로봇 상태 맵" />
                                 <figcaption>로봇 상태 맵</figcaption>
                               </figure>
                             </div>
@@ -762,11 +862,11 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="주차 경로" />
+                                <img src={placeholderImage} alt="주차 경로" />
                                 <figcaption>주차 경로</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="시뮬레이터 화면" />
+                                <img src={placeholderImage} alt="시뮬레이터 화면" />
                                 <figcaption>시뮬레이터 화면</figcaption>
                               </figure>
                             </div>
@@ -795,11 +895,11 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="SLAM+YOLO 파이프라인" />
+                                <img src={placeholderImage} alt="SLAM+YOLO 파이프라인" />
                                 <figcaption>SLAM+YOLO 파이프라인</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="주행 데모" />
+                                <img src={placeholderImage} alt="주행 데모" />
                                 <figcaption>주행 데모</figcaption>
                               </figure>
                             </div>
@@ -825,11 +925,11 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="파노라마 매칭" />
+                                <img src={placeholderImage} alt="파노라마 매칭" />
                                 <figcaption>파노라마 매칭</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="작업자 위치 추정" />
+                                <img src={placeholderImage} alt="작업자 위치 추정" />
                                 <figcaption>작업자 위치 추정</figcaption>
                               </figure>
                             </div>
@@ -855,11 +955,11 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="매매 대시보드" />
+                                <img src={placeholderImage} alt="매매 대시보드" />
                                 <figcaption>매매 대시보드</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="전략 흐름" />
+                                <img src={placeholderImage} alt="전략 흐름" />
                                 <figcaption>전략 흐름</figcaption>
                               </figure>
                             </div>
@@ -886,11 +986,11 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="게임 화면" />
+                                <img src={placeholderImage} alt="게임 화면" />
                                 <figcaption>게임 화면</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="네트워크 구조" />
+                                <img src={placeholderImage} alt="네트워크 구조" />
                                 <figcaption>네트워크 구조</figcaption>
                               </figure>
                             </div>
@@ -917,11 +1017,11 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="LED 피아노 보드" />
+                                <img src={placeholderImage} alt="LED 피아노 보드" />
                                 <figcaption>LED 피아노 보드</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="패턴 출력" />
+                                <img src={placeholderImage} alt="패턴 출력" />
                                 <figcaption>패턴 출력</figcaption>
                               </figure>
                             </div>
@@ -947,11 +1047,11 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="드론 주행" />
+                                <img src={placeholderImage} alt="드론 주행" />
                                 <figcaption>드론 주행</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="객체 추적" />
+                                <img src={placeholderImage} alt="객체 추적" />
                                 <figcaption>객체 추적</figcaption>
                               </figure>
                             </div>
@@ -978,11 +1078,11 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="차선 인식" />
+                                <img src={placeholderImage} alt="차선 인식" />
                                 <figcaption>차선 인식</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/placeholders/portfolio-placeholder.svg" alt="주행 테스트" />
+                                <img src={placeholderImage} alt="주행 테스트" />
                                 <figcaption>주행 테스트</figcaption>
                               </figure>
                             </div>
@@ -1076,13 +1176,13 @@ function Portfolio() {
                         <p>PilotNet 성능 향상을 위한 SLAM과 YOLO 활용 (대한전자공학회, 2023.06)</p>
                         <div className="detail-links">
                           <a className="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" target="_blank" rel="noreferrer">논문 링크</a>
-                          <a className="chip-link" href="/public/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf" target="_blank" rel="noreferrer">논문 PDF</a>
+                          <a className="chip-link" href={pilotNetPdf} target="_blank" rel="noreferrer">논문 PDF</a>
                         </div>
                       </div>
                       <div className="mini-card">
                         <h3>수상</h3>
                         <p>캡스톤 디자인 페스티벌 우수상 (한동대학교, 2023.05)</p>
-                        <a href="/public/캡스톤 경진대회.pdf" target="_blank" rel="noreferrer">상장 PDF</a>
+                        <a href={capstonePdf} target="_blank" rel="noreferrer">상장 PDF</a>
                       </div>
                     </div>
                   </div>
