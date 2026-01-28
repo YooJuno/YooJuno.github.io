@@ -61,14 +61,22 @@ function App() {
             <div className="container nav-inner">
               <a className="brand" href="#top">Yoo Juno</a>
               <div className="nav-links">
-                <a href="#about">소개</a>
-                <a href="#focus">우선순위</a>
-                <a href="#featured">대표</a>
-                <a href="#project-library">전체</a>
-                <a href="#skills">스택</a>
-                <a href="#experience">경험</a>
-                <a href="#activities">활동</a>
-                <a href="#contact">연락</a>
+                <div className="nav-item dropdown">
+                  <a className="nav-link" href="/">?????</a>
+                  <div className="dropdown-menu">
+                    <a href="#about">??</a>
+                    <a href="#focus">????</a>
+                    <a href="#featured">??</a>
+                    <a href="#project-library">??</a>
+                    <a href="#skills">??</a>
+                    <a href="#experience">??</a>
+                    <a href="#activities">??</a>
+                    <a href="#contact">??</a>
+                  </div>
+                </div>
+                <span className="nav-disabled">???</span>
+                <span className="nav-disabled">???</span>
+                <span className="nav-disabled">???</span>
               </div>
             </div>
           </nav>
@@ -940,7 +948,7 @@ function App() {
 
         <footer className="site-footer">
           <div className="container">
-            <p>© 2026 Yoo Juno. All rights reserved.</p>
+            <p>© 2026 Junho Yoo. All rights reserved.</p>
           </div>
         </footer>
     </div>

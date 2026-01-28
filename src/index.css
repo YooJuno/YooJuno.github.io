@@ -116,19 +116,82 @@ img {
   gap: 16px;
   font-size: 14px;
   color: #000;
+  align-items: center;
   flex-wrap: wrap;
 }
 
-.nav-links a {
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
   padding: 6px 10px;
   border-radius: 999px;
   transition: background 0.2s ease, color 0.2s ease;
   color: #000;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.nav-links a:hover {
+.nav-item.dropdown .nav-link::after {
+  content: "▾";
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.nav-link:hover {
   background: rgba(30, 91, 89, 0.12);
   color: var(--ink);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 180px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  pointer-events: none;
+  z-index: 30;
+}
+
+.nav-item.dropdown:hover .dropdown-menu,
+.nav-item.dropdown:focus-within .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.dropdown-menu a {
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: var(--ink);
+  font-size: 13px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+  background: rgba(30, 91, 89, 0.12);
+  color: var(--ink);
+}
+
+.nav-disabled {
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px dashed var(--border);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
 }
 
 .site-hero {
