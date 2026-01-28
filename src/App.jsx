@@ -228,7 +228,7 @@ function App() {
                     <span>Docker</span>
                   </div>
                   <div className="project-links">
-                    <span className="chip-link muted">보안상 공개 불가</span>
+                    <a className="chip-link github icon-link" href="https://github.com/YooJuno/LiNKY" target="_blank" rel="noreferrer">GitHub</a>
                   </div>
                   <p className="note">gRPC에서 REST/SSE로 전환, WebRTC 대신 base64 MQTT 스트리밍으로 변경.</p>
                 </div>
@@ -477,7 +477,7 @@ function App() {
                         <span>ROS2</span><span>Isaac ROS VSLAM</span><span>MQTT</span><span>FaceNet</span><span>Docker</span>
                       </div>
                       <div className="detail-links">
-                        <span className="chip-link muted">보안상 공개 불가</span>
+                        <a className="chip-link github icon-link" href="https://github.com/YooJuno/LiNKY" target="_blank" rel="noreferrer">GitHub</a>
                       </div>
                     </div>
                   </details>

@@ -17,13 +17,11 @@ npm run dev
 npm run build
 ```
 
-## GitHub Pages 배포 (gh-pages 브랜치)
+## GitHub Pages 배포 (GitHub Actions)
 
-```bash
-npm run deploy
-```
+`main` 브랜치에 푸시하면 GitHub Actions가 자동으로 빌드 후 배포합니다.
 
-GitHub 저장소 설정에서 Pages 소스를 `gh-pages` 브랜치 / 루트로 설정하세요.
+저장소 설정에서 Pages 소스를 **GitHub Actions**로 설정하세요.
 
 ## 정적 파일
 
