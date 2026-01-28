@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-label="Placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f4ece1"/>
+      <stop offset="100%" stop-color="#f0ddd0"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#1e5b59" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#d26a3d" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <rect x="80" y="80" width="1120" height="560" rx="28" fill="#ffffff" opacity="0.8" stroke="#d6c9bd" stroke-width="3"/>
+  <rect x="140" y="150" width="1000" height="16" rx="8" fill="url(#accent)"/>
+  <rect x="140" y="210" width="680" height="14" rx="7" fill="#e0d6ce"/>
+  <rect x="140" y="250" width="520" height="14" rx="7" fill="#e0d6ce"/>
+  <circle cx="960" cy="360" r="140" fill="#efe7db" stroke="#d6c9bd" stroke-width="3"/>
+  <path d="M900 360h120m-60-60v120" stroke="#c8b9ac" stroke-width="8" stroke-linecap="round"/>
+  <text x="640" y="585" font-family="Space Grotesk, Arial, sans-serif" font-size="28" fill="#8d8279" text-anchor="middle" letter-spacing="2">
+    PLACEHOLDER
+  </text>
+</svg>

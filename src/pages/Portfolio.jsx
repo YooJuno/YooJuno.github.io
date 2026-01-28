@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+﻿import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import useReveal from '../hooks/useReveal'
 
@@ -248,15 +248,15 @@ function Portfolio() {
                       <div className="project-media">
                         <div className="media-grid">
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>로봇 정면</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>시스템 아키텍처</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>주행 경로</figcaption>
                           </figure>
                         </div>
@@ -293,15 +293,15 @@ function Portfolio() {
                         </div>
                         <div className="media-grid">
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>웹 인터페이스</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>로봇팔/컨베이어</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>프로세스 플로우</figcaption>
                           </figure>
                         </div>
@@ -335,15 +335,15 @@ function Portfolio() {
                         </div>
                         <div className="media-grid">
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>실시간 대시보드</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>객체 검출 결과</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>시스템 아키텍처</figcaption>
                           </figure>
                         </div>
@@ -377,15 +377,15 @@ function Portfolio() {
                         <p className="note">CCTV 속도 추정은 데이터셋 기준 평균 오차 0.5 km/h, 블랙박스는 구간별 ±3 km/h 수준과 편차 구간을 함께 분석.</p>
                         <div className="media-grid">
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>높이 추정</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>CCTV 속도</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>블랙박스 속도</figcaption>
                           </figure>
                         </div>
@@ -416,15 +416,15 @@ function Portfolio() {
                         </div>
                         <div className="media-grid">
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>시스템 아키텍처</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>노드 구성</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <div className="media-placeholder">이미지 준비중</div>
+                            <img src="/placeholders/portfolio-placeholder.svg" alt="이미지 준비중" />
                             <figcaption>스트리밍 화면</figcaption>
                           </figure>
                         </div>
@@ -976,3 +976,4 @@ function Portfolio() {
 }
 
 export default Portfolio
+
