@@ -46,6 +46,7 @@ const SiteNav = () => (
             <Link to="/blog?category=개발">개발</Link>
             <Link to="/blog?category=음악">음악</Link>
             <Link to="/blog?category=여행">여행</Link>
+            <Link to="/blog?category=코딩테스트">코딩테스트</Link>
           </div>
         </div>
       </div>
