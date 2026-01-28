@@ -9,22 +9,59 @@ const modules = import.meta.glob('../content/blog/*.md', {
 const FRONT_MATTER = /^---\n([\s\S]*?)\n---\n?/
 
 const parseFrontMatter = (raw) => {
-  const match = raw.match(FRONT_MATTER)
+  const cleaned = raw.replace(/^\uFEFF/, '')
+  const match = cleaned.match(FRONT_MATTER)
   if (!match) {
-    return { data: {}, content: raw }
+    return { data: {}, content: cleaned }
   }
 
   const body = match[1]
-  const content = raw.slice(match[0].length)
+  const content = cleaned.slice(match[0].length)
   const data = {}
+  const lines = body.split('\n')
 
-  body.split('\n').forEach((line) => {
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i]
     const trimmed = line.trim()
-    if (!trimmed || trimmed.startsWith('#')) return
+    if (!trimmed || trimmed.startsWith('#')) continue
     const index = trimmed.indexOf(':')
-    if (index === -1) return
+    if (index === -1) continue
     const key = trimmed.slice(0, index).trim()
     let value = trimmed.slice(index + 1).trim()
+
+    if (!value) {
+      const list = []
+      let j = i + 1
+      while (j < lines.length) {
+        const next = lines[j].trim()
+        if (!next) {
+          j += 1
+          continue
+        }
+        if (next.startsWith('-')) {
+          list.push(next.replace(/^-+/, '').trim())
+          j += 1
+          continue
+        }
+        if (next.includes(':')) break
+        break
+      }
+      if (list.length) {
+        data[key] = list
+        i = j - 1
+        continue
+      }
+      data[key] = ''
+      continue
+    }
+
+    if (
+      (value.startsWith('"') && value.endsWith('"')) ||
+      (value.startsWith("'") && value.endsWith("'"))
+    ) {
+      value = value.slice(1, -1)
+    }
+
     if (value.startsWith('[') && value.endsWith(']')) {
       value = value
         .slice(1, -1)
@@ -33,7 +70,7 @@ const parseFrontMatter = (raw) => {
         .filter(Boolean)
     }
     data[key] = value
-  })
+  }
 
   return { data, content }
 }
