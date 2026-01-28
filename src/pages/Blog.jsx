@@ -97,19 +97,6 @@ function Blog() {
               #{tag}
             </button>
           ))}
-          {(activeTag || activeCategory || query) && (
-            <button
-              type="button"
-              className="tag-chip clear"
-              onClick={() => {
-                setActiveTag('')
-                setQuery('')
-                updateCategory('')
-              }}
-            >
-              필터 초기화
-            </button>
-          )}
         </div>
 
         <div className="blog-grid">
@@ -146,4 +133,3 @@ function Blog() {
 }
 
 export default Blog
-
