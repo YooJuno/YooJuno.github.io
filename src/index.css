@@ -1,15 +1,15 @@
 ﻿:root {
-  --bg: #ffffff;
-  --bg-alt: #eff1f3;
-  --ink: #0b1320;
-  --muted: #4b5563;
-  --accent: #1e3a8a;
-  --accent-soft: #3056b5;
-  --accent-2: #4f8ef7;
-  --accent-3: #9bbcf6;
+  --bg: #f7f3ed;
+  --bg-alt: #efe7db;
+  --ink: #1a1917;
+  --muted: #5f5a52;
+  --accent: #0f4f4f;
+  --accent-soft: #2f6f6d;
+  --accent-2: #d26a3d;
+  --accent-3: #e9c064;
   --card: #ffffff;
-  --border: rgba(15, 23, 32, 0.12);
-  --shadow: 0 22px 60px rgba(14, 21, 31, 0.12);
+  --border: rgba(27, 26, 24, 0.12);
+  --shadow: 0 22px 60px rgba(31, 24, 18, 0.12);
   --radius-lg: 28px;
   --radius: 18px;
   --radius-sm: 12px;
@@ -28,8 +28,8 @@ html {
 body {
   font-family: "Noto Sans KR", sans-serif;
   color: var(--ink);
-  background: radial-gradient(circle at 20% 20%, rgba(79, 142, 247, 0.06), transparent 55%),
-              radial-gradient(circle at 80% 0%, rgba(30, 58, 138, 0.06), transparent 50%),
+  background: radial-gradient(circle at 20% 20%, rgba(226, 112, 58, 0.15), transparent 55%),
+              radial-gradient(circle at 80% 0%, rgba(30, 91, 89, 0.12), transparent 50%),
               linear-gradient(180deg, var(--bg), var(--bg-alt));
   line-height: 1.6;
   font-size: 16px;
@@ -91,11 +91,10 @@ img {
   right: 0;
   z-index: 20;
   backdrop-filter: blur(12px);
-  background: rgba(236, 242, 249, 0.94);
+  background: rgba(245, 241, 232, 0.94);
   border-bottom: 1px solid rgba(27, 26, 24, 0.08);
   color: #000;
 }
-
 
 .nav-inner {
   display: flex;
@@ -128,7 +127,7 @@ img {
 }
 
 .nav-links a:hover {
-  background: rgba(30, 58, 138, 0.12);
+  background: rgba(30, 91, 89, 0.12);
   color: var(--ink);
 }
 
@@ -187,7 +186,7 @@ img {
 .btn.primary {
   background: var(--accent);
   color: #fff;
-  box-shadow: 0 12px 26px rgba(30, 58, 138, 0.25);
+  box-shadow: 0 12px 26px rgba(30, 91, 89, 0.25);
 }
 
 .btn.ghost {
@@ -208,7 +207,7 @@ img {
 .hero-tags span {
   padding: 6px 12px;
   border-radius: 999px;
-  background: rgba(30, 58, 138, 0.12);
+  background: rgba(30, 91, 89, 0.12);
   color: var(--accent);
   font-size: 13px;
   font-weight: 600;
@@ -224,7 +223,7 @@ img {
   padding: 22px;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  border: 1px solid rgba(30, 58, 138, 0.08);
+  border: 1px solid rgba(30, 91, 89, 0.08);
 }
 
 .panel-card h2 {
@@ -248,7 +247,7 @@ img {
 .pill-grid span {
   padding: 8px 12px;
   border-radius: 999px;
-  background: rgba(79, 142, 247, 0.12);
+  background: rgba(226, 112, 58, 0.12);
   color: var(--accent-2);
   font-weight: 600;
   font-size: 13px;
@@ -300,7 +299,7 @@ img {
   border-radius: var(--radius-lg);
   padding: 26px;
   box-shadow: var(--shadow);
-  border: 1px solid rgba(79, 142, 247, 0.18);
+  border: 1px solid rgba(226, 112, 58, 0.18);
 }
 
 .info-list {
@@ -353,7 +352,7 @@ img {
   background: var(--card);
   border-radius: var(--radius-lg);
   padding: 28px;
-  border: 1px solid rgba(30, 58, 138, 0.12);
+  border: 1px solid rgba(30, 91, 89, 0.12);
   box-shadow: 0 18px 45px rgba(30, 20, 12, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -411,7 +410,7 @@ img {
 }
 
 .badge {
-  background: rgba(30, 58, 138, 0.15);
+  background: rgba(30, 91, 89, 0.15);
   color: var(--accent);
   padding: 4px 10px;
   border-radius: 999px;
@@ -535,7 +534,7 @@ img {
 .chip-list span {
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(30, 58, 138, 0.12);
+  background: rgba(30, 91, 89, 0.12);
   color: var(--accent);
   font-size: 12px;
 }
@@ -578,10 +577,10 @@ img {
 }
 
 .mini-card {
-  background: rgba(79, 142, 247, 0.08);
+  background: rgba(226, 112, 58, 0.08);
   border-radius: var(--radius);
   padding: 18px;
-  border: 1px solid rgba(79, 142, 247, 0.2);
+  border: 1px solid rgba(226, 112, 58, 0.2);
 }
 
 .mini-card a {
@@ -621,7 +620,7 @@ img {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
   align-items: center;
-  border: 1px solid rgba(30, 58, 138, 0.2);
+  border: 1px solid rgba(30, 91, 89, 0.2);
   box-shadow: var(--shadow);
 }
 
@@ -964,7 +963,7 @@ a.chip-link:hover {
   grid-column: 1;
 }
 .site-nav {
-  background: rgba(123, 168, 219, 0.98);
+  background: rgba(247, 243, 237, 0.96);
 }
 
 a:focus-visible,
