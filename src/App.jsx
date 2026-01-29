@@ -5,6 +5,10 @@ import Portfolio from './pages/Portfolio.jsx'
 import Blog from './pages/Blog.jsx'
 import Post from './pages/Post.jsx'
 import WebService from './pages/WebService.jsx'
+import WebServiceBlog from './pages/WebServiceBlog.jsx'
+import WebServiceCctv from './pages/WebServiceCctv.jsx'
+import WebServiceVideo from './pages/WebServiceVideo.jsx'
+import WebServiceBtc from './pages/WebServiceBtc.jsx'
 import Major from './pages/Major.jsx'
 import Music from './pages/Music.jsx'
 import Travel from './pages/Travel.jsx'
@@ -77,8 +81,14 @@ const SiteNav = () => (
             <Link to="/blog?category=코딩테스트">코딩테스트</Link>
           </div>
         </div>
-        <div className="nav-item">
+        <div className="nav-item dropdown">
           <Link className="nav-link" to="/web-service">웹서비스</Link>
+          <div className="dropdown-menu">
+            <Link to="/web-service/blog">블로그</Link>
+            <Link to="/web-service/cctv-streaming">CCTV Streaming</Link>
+            <Link to="/web-service/video-chatting">Video Chatting</Link>
+            <Link to="/web-service/bitcoin-auto-trader">Bitcoin Auto Trader</Link>
+          </div>
         </div>
       </div>
     </div>
@@ -98,6 +108,10 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<Post />} />
           <Route path="/web-service" element={<WebService />} />
+          <Route path="/web-service/blog" element={<WebServiceBlog />} />
+          <Route path="/web-service/cctv-streaming" element={<WebServiceCctv />} />
+          <Route path="/web-service/video-chatting" element={<WebServiceVideo />} />
+          <Route path="/web-service/bitcoin-auto-trader" element={<WebServiceBtc />} />
           <Route path="/major" element={<Major />} />
           <Route path="/music" element={<Music />} />
           <Route path="/travel" element={<Travel />} />
