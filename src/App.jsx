@@ -4,6 +4,7 @@ import Home from './pages/Home.jsx'
 import Portfolio from './pages/Portfolio.jsx'
 import Blog from './pages/Blog.jsx'
 import Post from './pages/Post.jsx'
+import WebService from './pages/WebService.jsx'
 import Major from './pages/Major.jsx'
 import Music from './pages/Music.jsx'
 import Travel from './pages/Travel.jsx'
@@ -76,6 +77,9 @@ const SiteNav = () => (
             <Link to="/blog?category=코딩테스트">코딩테스트</Link>
           </div>
         </div>
+        <div className="nav-item">
+          <Link className="nav-link" to="/web-service">웹서비스</Link>
+        </div>
       </div>
     </div>
   </nav>
@@ -93,6 +97,7 @@ function App() {
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<Post />} />
+          <Route path="/web-service" element={<WebService />} />
           <Route path="/major" element={<Major />} />
           <Route path="/music" element={<Music />} />
           <Route path="/travel" element={<Travel />} />
