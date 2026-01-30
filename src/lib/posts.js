@@ -6,7 +6,7 @@ const modules = import.meta.glob('../content/blog/*.md', {
   import: 'default',
 })
 
-const FRONT_MATTER = /^---\n([\s\S]*?)\n---\n?/
+const FRONT_MATTER = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/
 
 const parseFrontMatter = (raw) => {
   const cleaned = raw.replace(/^\uFEFF/, '')
