@@ -1,29 +1,25 @@
 ---
 title: "SLAM, Where Am I"
 date: "2024-08-30"
-category: "??"
+category: "개발"
 tags:
   - SLAM
   - Localization
   - Mapping
   - Robotics
   - Computer Vision
-summary: "SLAM? ⇒ Where Am I? SLAM의 기본 개념과 동작 원리, Visual SLAM과 LiDAR SLAM의 차이점에 대해 알아봅니다."
+summary: "SLAM의 기본 개념과 동작 원리, Visual SLAM과 LiDAR SLAM의 차이점에 대해 알아봅니다."
 ---
 
 # SLAM? ⇒ Where Am I?
 
-| 일시 | 2024년 8월 30일 14:00 |
-| --- | --- |
-| 발표자 | 개발 1팀 인턴 유준호 |
-
-# Simultaneous Localization And Mapping
+## Simultaneous Localization And Mapping
 
 **[Navigation]**
 
 길을 잃었을 때 사람들은 네비게이션을 사용한다. GPS로 찾은 나의 위치로부터 도착 지점까지 네비게이션이 안내한다. 그런데, GPS는 비교적 약 5~10m 정도의 오차 범위를 가지며 상황에 따라 더욱 커질 수도 있다. 이로 인해 정확한 위치 추정을 필요로 하는 분야에서의 GPS 사용은 위험해 보인다. 또 다른 위치 추정 방식인 SLAM은 GPS보다 작은 오차 범위를 가지며, 그 오차 범위를 지속적으로 줄여나가 정확한 위치 추정을 하는 데에 목적을 두는 알고리즘이다.
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image.png)
+![](/content/blog/slam-where-am-i/image.png)
 
 **[So, where am i?]**
 
@@ -31,11 +27,11 @@ summary: "SLAM? ⇒ Where Am I? SLAM의 기본 개념과 동작 원리, Visual S
 
 [상대적 위치]
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_1.png)
+![](/content/blog/slam-where-am-i/image_1.png)
 
 [수리적 위치 이지만 전 우주적으로 바라봤을 때는…]
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_2.png)
+![](/content/blog/slam-where-am-i/image_2.png)
 
 ### 실제 적용 사례
 
@@ -45,11 +41,11 @@ summary: "SLAM? ⇒ Where Am I? SLAM의 기본 개념과 동작 원리, Visual S
 
 ### 2. 드론
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_3.png)
+![](/content/blog/slam-where-am-i/image_3.png)
 
 ### 3. 로봇 청소기
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_4.png)
+![](/content/blog/slam-where-am-i/image_4.png)
 
 ### 4. 물류, 서빙 로봇
 
@@ -59,7 +55,7 @@ summary: "SLAM? ⇒ Where Am I? SLAM의 기본 개념과 동작 원리, Visual S
 
 어느 날 자고 일어났더니 내 방이 아닌 미국의 어느 한 마을에서 눈을 뜨게 됐다. 이 순간 우리는 **“1) 여기는 어디인가”** 라는 질문과 함께 마을을 둘러볼 것이다. 내가 깨어난 지점으로부터 다녀온 길에 대해 상대적인 위치 감각이 생기게 되고 나름의 마을 **“2) 지도가 머릿속에 생성”**된다. 정처 없이 떠돌다가 **“3) 이전에 지나쳤던 곳으로 돌아오게 되면서 막연했던 머릿속 지도의 범위와 크기가 보다 더욱 견고해졌다.”** 꿈이었음을 깨달으며 잠에서 깨고, 다음 날 똑같은 장소에서 일어난다. **“4) 전 날에 와봤던 곳이기 때문에 금방 내가 어디에 있는지 알아차린다.”**
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_5.png)
+![](/content/blog/slam-where-am-i/image_5.png)
 
 - **1)** 현재 위치가 어디인지 판별하는 **Localization**을 의미.
 - **2)** 현재 들어오는 Input을 이용하여 실시간으로 지도를 생성하는 **Local Mapping**
@@ -68,7 +64,7 @@ summary: "SLAM? ⇒ Where Am I? SLAM의 기본 개념과 동작 원리, Visual S
 
 **[실제 SLAM이 위의 과정을 진행하는 Pipeline]**
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_6.png)
+![](/content/blog/slam-where-am-i/image_6.png)
 
 ⇒ **즉!** SLAM은 자신이 어디에 있는지 끊임 없이 추정함과 동시에 주변 3차원 정보를 지도로 만들어 다시 방문했을 때 빠르게 위치를 파악할 수 있도록 한다. 사전에 만들어둔 지도가 있다면 이를 사용하여 위치를 추정(**Relocalization**)하지만 없다면 처음부터 만들어 나간다. 불러온 지도에 현재 입력을 추가하여 보완할 수도 있다. 입력 데이터의 종류에 따라 이름과 동작 방식에 차이를 보이며, 크게 **Visual SLAM**과 **LiDAR SLAM**으로 나뉜다.
 
@@ -94,7 +90,7 @@ Monocular를 제외한 두 방식은 한 번의 입력으로 깊이 정보를 �
 
 2D 세계인 이미지와 3D 세계인 실제 세계와의 관계를 설명한다. 즉 아래의 성분들을 안다면 2D ↔︎ 3D 변환이 가능하다.
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_7.png)
+![](/content/blog/slam-where-am-i/image_7.png)
 
 **A : Intrinsic Parameters**
 
@@ -113,7 +109,7 @@ Monocular를 제외한 두 방식은 한 번의 입력으로 깊이 정보를 �
 1. **fx, fy : 초점거리(focal length)**
     - 렌즈의 중심으로부터 이미지 센서까지의 거리
     
-    ![](SLAM%20%E2%87%92%20Where%20Am%20I/image_8.png)
+    ![](/content/blog/slam-where-am-i/image_8.png)
     
 
 1. **cx, cy : 주점(principal point)**
@@ -122,18 +118,18 @@ Monocular를 제외한 두 방식은 한 번의 입력으로 깊이 정보를 �
     - 이미지 센서의 cell array의 y축이 기울어진 정도
     - 요즘은 공정 기술이 좋아져서 대부분 0의 값을 가짐.
     
-    ![](SLAM%20%E2%87%92%20Where%20Am%20I/image_9.png)
+    ![](/content/blog/slam-where-am-i/image_9.png)
     
     image.png
     
 
 **Intrinsic Parameters 구하는 방법.**
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_10.png)
+![](/content/blog/slam-where-am-i/image_10.png)
 
 - Camera Calibration Tool, OpenCV 등 Camera Intrinsic Parameters를 구해주는 프로그램에 다양한 각도에서 찍힌 checkerboard 사진을 입력하여 알아낼 수 있다.
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_11.png)
+![](/content/blog/slam-where-am-i/image_11.png)
 
 [출처] https://darkpgmr.tistory.com/32
 
@@ -154,7 +150,7 @@ Monocular를 제외한 두 방식은 한 번의 입력으로 깊이 정보를 �
 
 서로 다른 시점에서 점 P를 바라보는 매칭쌍의 관계를 이용하여 점 P의 3차원 위치 정보를 알아낸다.
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_12.png)
+![](/content/blog/slam-where-am-i/image_12.png)
 
 - 이 때 이미지 상의 점 p1, p2는 Feature Extraction으로 획득하며, Feature Matching을 통해 이 두 점이 같은 같은 Feature임을 알 수 있다.
 - 이 과정을 다 수 반복하여 다수의 3차원 점을 획득한다.
@@ -167,7 +163,7 @@ Computer Vision에서는 특징이 가지는 픽셀을 표현하고 있음.
     
     이미지 상에서 특징을 보이는 픽셀을 추출하는 과정이다. 가로등의 꼭지점, 책상의 모서리 등 픽셀 주변의 밝기 변화가 급격하게 나타나는 곳을 Feature라 판단하여 추출한다. Feature는 **Descriptor** 값을 갖고 있으며, Descriptor를 통해 Feature의 구분 및 분류가 가능하다. 추출하는 방식은 다양하며 대표적으로 **ORB, SIFT** 추출 방식이 존재한다.
     
-    ![](SLAM%20%E2%87%92%20Where%20Am%20I/image_13.png)
+    ![](/content/blog/slam-where-am-i/image_13.png)
     
     - **SIFT** : 이미지 피라미드를 이용하여 특징점의 크기 변화에도 추출이 용이함.
     - **ORB** : 속도에 중점을 두는 알고리즘으로 비교적 빠른 추출 속도를 보임.
@@ -179,13 +175,13 @@ Computer Vision에서는 특징이 가지는 픽셀을 표현하고 있음.
     
     추출한 이미지의 Feature를 사용하여 이미지 간의 동일한 Feature를 검출해낸다. Feature는 다른 각도에서 보여도 그 고유함을 잃지 않기 때문에 이미지들 간의 위치 변화로 현재 위치를 추정하는 SLAM에서 빼놓을 수 없는 기술이다.
     
-    ![](SLAM%20%E2%87%92%20Where%20Am%20I/image_14.png)
+    ![](/content/blog/slam-where-am-i/image_14.png)
     
     - 위의 사진처럼 Feature 쌍을 추출하여 Triangulation을 거쳐 점 P의 좌표를 얻어낼 수 있다.
 
 이 처럼 **feature**를 추출하여 사용하는 SLAM을 **feature-based SLAM**이라 한다. 이와는 다르게 영상에서 feature를 추출하지 않고 Pixel정보를 그대로 사용하는 방식을 **Direct SLAM**이라 한다. ORB feature를 사용하는 ORB-SLAM은 feature-base SLAM 방식이며 아래에서는 ORB-SLAM에 대해 더 자세히 다룰 예정이다.
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_15.png)
+![](/content/blog/slam-where-am-i/image_15.png)
 
 [https://youtu.be/GnuQzP3gty4?si=UZGX4CCgn8pb8-_x&t=134](https://youtu.be/GnuQzP3gty4?si=UZGX4CCgn8pb8-_x&t=134)
 
@@ -202,7 +198,7 @@ https://jaehoon-daddy.tistory.com/42
 
 **Triangulation**을 통해 알아낸 다수의 3차원 점을 사용하여 3차원 공간에서 카메라의 위치, 자세 성분을 알아낼 수 있다.
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_16.png)
+![](/content/blog/slam-where-am-i/image_16.png)
 
 - 주어진 3D 점들과 이들의 2D 이미지 상의 대응점을 기반으로 초기 카메라의 회전과 위치를 추정
 - 이 과정은 **“PnP를 푼다”** 라고 불린다 (OpenCV 함수 중 이를 담당하는 **SolvePnP()** 존재)
@@ -216,7 +212,7 @@ https://jaehoon-daddy.tistory.com/48
 
 초기 위치, 자세 추정이 끝났다면 이 후에 들어오는 전체 이미지에 대한 위치, 자세를 최적화 하여 오차를 수정해야한다. SLAM 에서는 **BA** 방식을 사용하여 3D Point들의 오차와 Camera Parameter의 오차를 줄여나가 위치 및 자세를 최적화 한다.
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_17.png)
+![](/content/blog/slam-where-am-i/image_17.png)
 
 ## SLAM Pipeline
 
@@ -224,7 +220,7 @@ https://jaehoon-daddy.tistory.com/48
 
 ### **Tracking,** **Local Mapping**, **Loop Closing 세 개의 쓰레드로 구성**
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_6%201.png)
+![](/content/blog/slam-where-am-i/image_6%201.png)
 
 [출처] https://www.researchgate.net/figure/ORB-SLAM-system-overview-showing-all-the-steps-performed-by-the-tracking-local-mapping_fig1_271823237
 
@@ -318,21 +314,21 @@ Map에 대해 중복되는 Key frame과 Tracking 후의 point들을 최적화 �
 | SfM | 한 번에 입력 | X | 사실적인 3D 재구성 |
 | Visual SLAM | 한 장씩 입력 | O | 카메라 위치 추정 및 지도 생성 |
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_18.png)
+![](/content/blog/slam-where-am-i/image_18.png)
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_19.png)
+![](/content/blog/slam-where-am-i/image_19.png)
 
 **[블랙박스 영상을 활용한 봇들교 3D 복원물]**
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_20.png)
+![](/content/blog/slam-where-am-i/image_20.png)
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_21.png)
+![](/content/blog/slam-where-am-i/image_21.png)
 
 # LiDAR SLAM
 
 ### LiDAR 센서 정보를 입력으로 사용
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/a77d17f5-a60a-4ba4-9a3a-44af62b32bf8.png)
+![](/content/blog/slam-where-am-i/a77d17f5-a60a-4ba4-9a3a-44af62b32bf8.png)
 
 사진 : 벨로다인 제조사의 라이다 센서
 
@@ -347,15 +343,15 @@ Map에 대해 중복되는 Key frame과 Tracking 후의 point들을 최적화 �
 
 ## LiDAR 센서를 이용한 SLAM
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_22.png)
+![](/content/blog/slam-where-am-i/image_22.png)
 
 image.png
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_23.png)
+![](/content/blog/slam-where-am-i/image_23.png)
 
 image.png
 
-![](SLAM%20%E2%87%92%20Where%20Am%20I/image_24.png)
+![](/content/blog/slam-where-am-i/image_24.png)
 
 image.png
 
