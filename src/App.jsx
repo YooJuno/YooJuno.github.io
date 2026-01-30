@@ -4,7 +4,7 @@ import Home from './pages/Home.jsx'
 
 import Portfolio from './pages/Portfolio.jsx'
 import Blog from './pages/blog/Blog.jsx'
-import Post from './pages/Post.jsx'
+import Post from './pages/blog/Post.jsx'
 
 import WebService from './pages/webservice/WebService.jsx'
 import WebServiceBlog from './pages/webservice/WebServiceBlog.jsx'
