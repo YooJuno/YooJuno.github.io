@@ -1,4 +1,4 @@
-import useReveal from '../hooks/useReveal'
+import useReveal from '../../hooks/useReveal'
 
 function WebServiceBtc() {
   useReveal()

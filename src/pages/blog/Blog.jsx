@@ -1,7 +1,7 @@
 ﻿import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { posts, getAllTags } from '../lib/posts'
-import useReveal from '../hooks/useReveal'
+import { posts, getAllTags } from '../../lib/posts'
+import useReveal from '../../hooks/useReveal'
 
 function Blog() {
   useReveal()
@@ -72,7 +72,7 @@ function Blog() {
           ))}
         </div>
 
-        <div className="blog-grid">
+        <div className="blog-grid blog-list">
           {filtered.length === 0 && (
             <div className="empty">
               {activeCategory
@@ -81,7 +81,12 @@ function Blog() {
             </div>
           )}
           {filtered.map((post) => (
-            <article className="post-card" key={post.slug}>
+            <Link
+              className="post-card post-link-card"
+              key={post.slug}
+              to={`/blog/${post.slug}`}
+              aria-label={`${post.title} 자세히 보기`}
+            >
               <div className="post-meta">
                 {post.category && <span className="post-category">{post.category}</span>}
                 {post.date && <span>{post.date}</span>}
@@ -94,10 +99,7 @@ function Blog() {
                   <span key={tag}>#{tag}</span>
                 ))}
               </div>
-              <Link className="post-link" to={`/blog/${post.slug}`}>
-                자세히 보기
-              </Link>
-            </article>
+            </Link>
           ))}
         </div>
       </div>

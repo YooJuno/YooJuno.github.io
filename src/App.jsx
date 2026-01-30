@@ -1,17 +1,21 @@
 ﻿import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Home from './pages/Home.jsx'
+
 import Portfolio from './pages/Portfolio.jsx'
-import Blog from './pages/Blog.jsx'
+import Blog from './pages/blog/Blog.jsx'
 import Post from './pages/Post.jsx'
-import WebService from './pages/WebService.jsx'
-import WebServiceBlog from './pages/WebServiceBlog.jsx'
-import WebServiceCctv from './pages/WebServiceCctv.jsx'
-import WebServiceVideo from './pages/WebServiceVideo.jsx'
-import WebServiceBtc from './pages/WebServiceBtc.jsx'
-import Major from './pages/Major.jsx'
-import Music from './pages/Music.jsx'
-import Travel from './pages/Travel.jsx'
+
+import WebService from './pages/webservice/WebService.jsx'
+import WebServiceBlog from './pages/webservice/WebServiceBlog.jsx'
+import WebServiceCctv from './pages/webservice/WebServiceCctv.jsx'
+import WebServiceVideo from './pages/webservice/WebServiceVideo.jsx'
+import WebServiceBtc from './pages/webservice/WebServiceBtc.jsx'
+
+import Major from './pages/blog/Major.jsx'
+import Music from './pages/blog/Music.jsx'
+import Travel from './pages/blog/Travel.jsx'
+
 import NotFound from './pages/NotFound.jsx'
 
 const ScrollToTop = () => {
