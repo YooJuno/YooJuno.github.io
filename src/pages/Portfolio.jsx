@@ -256,7 +256,6 @@ function Portfolio() {
                       <h3>기본 정보</h3>
                       <ul className="info-list">
                         <li><span>학력</span> 한동대학교 AI 컴퓨터공학 심화 (2018.02-2024.08)</li>
-                        <li><span>GPA</span> 3.52 / 4.5</li>
                         <li><span>교육</span> SSAFY 임베디드 로봇 트랙 (2025.01-2025.10)</li>
                         <li><span>언어</span> OPIc IM1 (2025.03)</li>
                         <li><span>자격</span> 1종보통운전면허 (2020.10)</li>
