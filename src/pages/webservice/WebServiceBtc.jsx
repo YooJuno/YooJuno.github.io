@@ -9,6 +9,11 @@ function WebServiceBtc() {
           <h2>웹서비스 · Bitcoin Auto Trader</h2>
           <p>데이터 기반 전략을 자동화해 운영 효율을 높이는 트레이딩 프로젝트입니다.</p>
         </div>
+        <div>
+          <figure className="media-tile"> 
+            <img src="/content/images/btc-automation.png" alt="" />    
+          </figure>
+        </div>
 
         <section className="section">
           <div className="section-head">
@@ -46,6 +51,12 @@ function WebServiceBtc() {
             <span>Backtesting (예정)</span>
             <span>Scheduler (예정)</span>
             <span>Logging/Alert (예정)</span>
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="section-head">
+            <h3>기능 명세서</h3>
           </div>
         </section>
 

@@ -28,8 +28,8 @@ html {
 body {
   font-family: "Noto Sans KR", sans-serif;
   color: var(--ink);
-  background: radial-gradient(circle at 20% 20%, rgba(226, 112, 58, 0.15), transparent 55%),
-              radial-gradient(circle at 80% 0%, rgba(30, 91, 89, 0.12), transparent 50%),
+  background: radial-gradient(circle at 20% 20%, rgba(226, 112, 58, 0.15), transparent 25%),
+              radial-gradient(circle at 80% 0%, rgba(53, 117, 115, 0.12), transparent 50%),
               linear-gradient(180deg, var(--bg), var(--bg-alt));
   line-height: 1.6;
   font-size: 16px;
