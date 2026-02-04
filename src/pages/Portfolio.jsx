@@ -1,6 +1,7 @@
 ﻿import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import useReveal from '../hooks/useReveal'
+import '../styles/pages/portfolio.css'
 
 function Portfolio() {
   const containerRef = useRef(null)

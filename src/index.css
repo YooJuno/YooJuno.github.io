@@ -1,8 +1,6 @@
 @import "./styles/base.css";
 @import "./styles/layout.css";
-@import "./styles/components/index.css";
-@import "./styles/pages/home.css";
-@import "./styles/pages/portfolio.css";
-@import "./styles/pages/blog.css";
-@import "./styles/pages/webservice.css";
-@import "./styles/responsive.css";
+@import "./styles/components/navigation.css";
+@import "./styles/components/ui.css";
+@import "./styles/components/media.css";
+@import "./styles/responsive.css";  /* 맨 밑에 둬야 좋음 */

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import useReveal from '../../hooks/useReveal'
+import '../../styles/pages/webservice.css'
 
 function WebService() {
   useReveal()

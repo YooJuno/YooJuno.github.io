@@ -1,5 +1,6 @@
 ﻿import { Link } from 'react-router-dom'
 import useReveal from '../hooks/useReveal'
+import '../styles/pages/home.css'
 
 function Home() {
   useReveal()

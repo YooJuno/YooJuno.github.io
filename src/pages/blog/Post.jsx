@@ -1,5 +1,6 @@
 ﻿import { Link, useParams } from 'react-router-dom'
 import { getPostBySlug } from '../../lib/posts'
+import '../../styles/pages/blog.css'
 
 function Post() {
   const { slug } = useParams()
