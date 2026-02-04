@@ -254,7 +254,7 @@
 }
 
 .project-info ul li::before {
-  content: "?";
+  content: "\2022";
   margin-right: 8px;
   color: var(--accent-2);
 }
@@ -642,7 +642,7 @@
 }
 
 .detail-body ul li::before {
-  content: "?";
+  content: "\2022";
   margin-right: 8px;
   color: var(--accent-2);
 }
