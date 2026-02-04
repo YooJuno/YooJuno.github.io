@@ -1,0 +1,54 @@
+:root {
+  --bg: #f7f3ed;
+  --bg-alt: #efe7db;
+  --ink: #1a1917;
+  --muted: #5f5a52;
+  --accent: #0f4f4f;
+  --accent-soft: #2f6f6d;
+  --accent-2: #d26a3d;
+  --accent-3: #e9c064;
+  --card: #ffffff;
+  --border: rgba(27, 26, 24, 0.12);
+  --shadow: 0 22px 60px rgba(31, 24, 18, 0.12);
+  --radius-lg: 28px;
+  --radius: 18px;
+  --radius-sm: 12px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Noto Sans KR", sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 20% 20%, rgba(226, 112, 58, 0.15), transparent 25%),
+              radial-gradient(circle at 80% 0%, rgba(53, 117, 115, 0.12), transparent 50%),
+              linear-gradient(180deg, var(--bg), var(--bg-alt));
+  line-height: 1.6;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a:focus-visible,
+summary:focus-visible {
+  outline: 2px solid rgba(210, 106, 61, 0.6);
+  outline-offset: 3px;
+}
