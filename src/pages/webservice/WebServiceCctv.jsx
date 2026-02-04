@@ -1,4 +1,5 @@
 import useReveal from '../../hooks/useReveal'
+import '../../styles/pages/webservice.css'
 
 function WebServiceCctv() {
   useReveal()

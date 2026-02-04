@@ -2,6 +2,7 @@
 import { Link, useSearchParams } from 'react-router-dom'
 import { posts, getAllTags } from '../../lib/posts'
 import useReveal from '../../hooks/useReveal'
+import '../../styles/pages/blog.css'
 
 function Blog() {
   useReveal()

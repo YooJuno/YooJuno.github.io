@@ -1,4 +1,5 @@
 import useReveal from '../../hooks/useReveal'
+import '../../styles/pages/webservice.css'
 
 function WebServiceBlog() {
   useReveal()
@@ -31,7 +32,7 @@ function WebServiceBlog() {
                   <span>구성</span> Home / Portfolio / Blog / WebService
                 </li>
                 <li>
-                  <span>데이터</span> `src/content/blog/*.md` 정적 콘텐츠
+                  <span>데이터</span> `src/content/blog/&lt;slug&gt;/index.md` 정적 콘텐츠
                 </li>
                 <li>
                   <span>라우팅</span> BrowserRouter 기반 페이지 이동
