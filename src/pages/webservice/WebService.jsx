@@ -11,7 +11,11 @@ function WebService() {
           <p>서비스별 핵심 기능과 구조를 요약해둔 페이지 모음입니다.</p>
         </div>
         <div className="project-grid one service-list">
-          <article className="project-card compact service-card">
+          <Link
+            className="project-card compact service-card service-link"
+            to="/web-service/blog"
+            aria-label="블로그 전체 사이트 정리 페이지 보기"
+          >
             <div className="service-row">
               <div className="service-main">
                 <h3>블로그(전체 사이트 정리)</h3>
@@ -23,10 +27,13 @@ function WebService() {
                   <span>범위: 전체 사이트</span>
                 </div>
               </div>
-              <Link className="btn ghost" to="/web-service/blog">페이지 보기</Link>
             </div>
-          </article>
-          <article className="project-card compact service-card">
+          </Link>
+          <Link
+            className="project-card compact service-card service-link"
+            to="/web-service/cctv-streaming"
+            aria-label="CCTV Streaming 페이지 보기"
+          >
             <div className="service-row">
               <div className="service-main">
                 <h3>CCTV Streaming</h3>
@@ -36,10 +43,13 @@ function WebService() {
                   <span>엣지/스트리밍</span>
                 </div>
               </div>
-              <Link className="btn ghost" to="/web-service/cctv-streaming">페이지 보기</Link>
             </div>
-          </article>
-          <article className="project-card compact service-card">
+          </Link>
+          <Link
+            className="project-card compact service-card service-link"
+            to="/web-service/video-chatting"
+            aria-label="Video Chatting 페이지 보기"
+          >
             <div className="service-row">
               <div className="service-main">
                 <h3>Video Chatting</h3>
@@ -49,10 +59,13 @@ function WebService() {
                   <span>WebRTC</span>
                 </div>
               </div>
-              <Link className="btn ghost" to="/web-service/video-chatting">페이지 보기</Link>
             </div>
-          </article>
-          <article className="project-card compact service-card">
+          </Link>
+          <Link
+            className="project-card compact service-card service-link"
+            to="/web-service/bitcoin-auto-trader"
+            aria-label="Bitcoin Auto Trader 페이지 보기"
+          >
             <div className="service-row">
               <div className="service-main">
                 <h3>Bitcoin Auto Trader</h3>
@@ -62,9 +75,8 @@ function WebService() {
                   <span>Upbit API</span>
                 </div>
               </div>
-              <Link className="btn ghost" to="/web-service/bitcoin-auto-trader">페이지 보기</Link>
             </div>
-          </article>
+          </Link>
         </div>
       </div>
     </main>

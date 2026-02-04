@@ -576,6 +576,10 @@ img {
   white-space: nowrap;
 }
 
+.service-link {
+  display: block;
+}
+
 .project-card.compact {
   padding: 20px;
   border-radius: var(--radius);
