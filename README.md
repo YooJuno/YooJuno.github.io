@@ -24,7 +24,8 @@ https://yoojuno.github.io/
 - `src/App.jsx`: 라우팅/레이아웃
 - `src/pages/`: 홈/포트폴리오/블로그 페이지
 - `src/index.css`: 전역 스타일
-- `src/content/blog/`: Markdown 글
+- `src/content/blog/<slug>/index.md`: Markdown 글 + Frontmatter
+- `src/content/blog/<slug>/*`: 글에 사용하는 이미지
 - `src/lib/posts.js`: 글 로딩/파싱
 - `.github/workflows/deploy.yml`: GitHub Actions 배포 파이프라인
 - `public/404.html`: GitHub Pages SPA 리다이렉트
@@ -64,7 +65,7 @@ GitHub Pages는 서버 리라이트가 없어 `/portfolio` 같은 경로로 직�
 
 ## 블로그 글 작성
 
-`src/content/blog/`에 Markdown 파일을 추가합니다.
+`src/content/blog/<slug>/index.md` 구조로 글을 추가합니다.
 
 Frontmatter 예시:
 
@@ -82,8 +83,18 @@ summary: "글 요약"
 본문 내용...
 ```
 
+이미지 예시:
+
+```md
+![](./image.png)
+![](./images/diagram.png)
+```
+
+- 이미지 파일은 같은 폴더에 두거나 하위 폴더(`images/`)에 둡니다.
+
 - `summary`가 없으면 본문 일부가 자동 요약으로 사용됩니다.
 - 목록 페이지에서 검색/태그/카테고리 필터가 동작합니다.
+- `slug`를 Frontmatter에 넣으면 폴더명 대신 해당 값이 사용됩니다.
 
 ## 정적 파일
 
