@@ -263,8 +263,8 @@ function Portfolio() {
                         <li><span>병역</span> 육군 병장 만기전역 (2019.01-2020.08)</li>
                       </ul>
                       <div className="about-links">
-                        <a className="btn ghost" href="/content/portfolio/pdfs/포트폴리오_유준호.pdf" target="_blank" rel="noreferrer">포트폴리오 PDF</a>
-                        <a className="btn ghost" href="/content/portfolio/pdfs/이력서_유준호.pdf" target="_blank" rel="noreferrer">이력서 PDF</a>
+                        <a className="btn ghost" href="https://drive.google.com/file/d/1TZL7Uzh63LOdcYgKJznvCYh8l3yT4oa0/view?usp=drive_link" target="_blank" rel="noreferrer">포트폴리오 PDF</a>
+                        <a className="btn ghost" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" target="_blank" rel="noreferrer">이력서 PDF</a>
                       </div>
                     </div>
                   </div>
