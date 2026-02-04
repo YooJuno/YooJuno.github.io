@@ -72,7 +72,7 @@ function Blog() {
           ))}
         </div>
 
-        <div className="blog-grid blog-list">
+        <div className="blog-grid blog-list single">
           {filtered.length === 0 && (
             <div className="empty">
               {activeCategory

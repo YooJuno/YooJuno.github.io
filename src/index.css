@@ -1280,6 +1280,10 @@ summary:focus-visible {
   gap: 18px;
 }
 
+.blog-grid.single {
+  grid-template-columns: 1fr;
+}
+
 .post-card {
   background: var(--card);
   border-radius: var(--radius);

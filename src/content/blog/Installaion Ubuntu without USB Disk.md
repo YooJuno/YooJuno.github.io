@@ -1,3 +1,14 @@
+---
+title: "부팅 디스크 없이 Ubuntu 설치"
+date: "2026-02-04"
+category: "개발"
+tags:
+    - Ubuntu
+    - Installation
+    - Linux
+
+summary: "부팅 디스크 없이 Ubuntu를 설치하는 방법에 대해 설명합니다."
+---
 # 부팅 디스크 없이 Ubuntu 설치
 
 ## 0. Ubuntu iso 파일 다운로드
