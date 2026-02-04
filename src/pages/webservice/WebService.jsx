@@ -39,7 +39,7 @@ function WebService() {
                 <h3>CCTV Streaming</h3>
                 <p className="summary">장거리 환경에서도 안정적인 영상 모니터링.</p>
                 <div className="meta-row">
-                  <span className="badge badge-prototype">프로토타입</span>
+                  <span className="badge badge-dev">설계/구현 중</span>
                   <span>엣지/스트리밍</span>
                 </div>
               </div>
