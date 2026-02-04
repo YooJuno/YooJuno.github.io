@@ -1,8 +1,14 @@
 import { marked } from 'marked'
 
-const modules = import.meta.glob('../content/blog/*.md', {
+const modules = import.meta.glob('../content/blog/**/index.md', {
   eager: true,
   query: '?raw',
+  import: 'default',
+})
+
+const imageModules = import.meta.glob('../content/blog/**/*.{png,jpg,jpeg,webp,svg,gif,avif}', {
+  eager: true,
+  query: '?url',
   import: 'default',
 })
 
@@ -90,10 +96,43 @@ const getExcerpt = (content, summary) => {
   return plain.length > 160 ? `${plain.slice(0, 160)}...` : plain
 }
 
+const isExternalLink = (value) =>
+  /^https?:\/\//.test(value) ||
+  value.startsWith('//') ||
+  value.startsWith('data:') ||
+  value.startsWith('mailto:') ||
+  value.startsWith('tel:')
+
+const resolveImageSrc = (href, baseDir) => {
+  if (!href || typeof href !== 'string') return href
+  if (href.startsWith('/') || isExternalLink(href)) return href
+  const [pathPart, suffix = ''] = href.split(/(?=[?#])/)
+  const cleaned = pathPart.replace(/^\.\//, '')
+  if (cleaned.startsWith('../')) return href
+  const key = `${baseDir}${cleaned}`
+  const resolved = imageModules[key]
+  if (!resolved) return href
+  return `${resolved}${suffix}`
+}
+
+const createRenderer = (baseDir) => {
+  const renderer = new marked.Renderer()
+  const originalImage = renderer.image.bind(renderer)
+  renderer.image = (token) => {
+    if (!token || typeof token !== 'object') return originalImage(token)
+    const resolved = resolveImageSrc(token.href, baseDir)
+    return originalImage({ ...token, href: resolved })
+  }
+  return renderer
+}
+
 export const posts = Object.entries(modules)
   .map(([path, raw]) => {
-    const slug = path.split('/').pop().replace(/\.md$/, '')
     const { data, content } = parseFrontMatter(raw)
+    const parts = path.split('/')
+    const slugFromPath = parts[parts.length - 2]
+    const slug = data.slug ? String(data.slug) : slugFromPath
+    const baseDir = path.slice(0, path.lastIndexOf('/') + 1)
     const tags = normalizeTags(data.tags)
 
     return {
@@ -103,7 +142,7 @@ export const posts = Object.entries(modules)
       category: data.category || '',
       tags,
       summary: getExcerpt(content, data.summary),
-      html: marked.parse(content),
+      html: marked.parse(content, { renderer: createRenderer(baseDir) }),
       raw: content,
     }
   })
