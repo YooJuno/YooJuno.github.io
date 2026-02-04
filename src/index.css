@@ -482,11 +482,24 @@ img {
 }
 
 .badge {
-  background: rgba(30, 91, 89, 0.15);
-  color: var(--accent);
   padding: 4px 10px;
   border-radius: 999px;
   font-weight: 600;
+}
+
+.badge-prototype {
+  background: rgba(91, 30, 43, 0.15);
+  color: rgba(91, 30, 43, 0.85);
+}
+
+.badge-running {
+  background: rgba(30, 91, 89, 0.15);
+  color: #0f4f4f
+}
+
+.badge-dev {
+  background: rgba(25, 32, 133, 0.15);
+  color: rgba(25, 32, 133, 0.85);
 }
 
 .tag-row {

@@ -23,7 +23,7 @@ function WebService() {
                   사이트 전체 구조와 기능을 문서화한 요약 페이지.
                 </p>
                 <div className="meta-row">
-                  <span className="badge">운영중</span>
+                  <span className="badge badge-running">운영중</span>
                   <span>범위: 전체 사이트</span>
                 </div>
               </div>
@@ -39,7 +39,7 @@ function WebService() {
                 <h3>CCTV Streaming</h3>
                 <p className="summary">장거리 환경에서도 안정적인 영상 모니터링.</p>
                 <div className="meta-row">
-                  <span className="badge">프로토타입</span>
+                  <span className="badge badge-prototype">프로토타입</span>
                   <span>엣지/스트리밍</span>
                 </div>
               </div>
@@ -55,7 +55,7 @@ function WebService() {
                 <h3>Video Chatting</h3>
                 <p className="summary">브라우저 기반 실시간 영상 통화.</p>
                 <div className="meta-row">
-                  <span className="badge">설계/구현 중</span>
+                  <span className="badge badge-dev">설계/구현 중</span>
                   <span>WebRTC</span>
                 </div>
               </div>
@@ -71,7 +71,7 @@ function WebService() {
                 <h3>Bitcoin Auto Trader</h3>
                 <p className="summary">전략 추천부터 자동매매 실행까지 통합.</p>
                 <div className="meta-row">
-                  <span className="badge">설계/구현 중</span>
+                  <span className="badge badge-dev">설계/구현 중</span>
                   <span>Upbit API</span>
                 </div>
               </div>
