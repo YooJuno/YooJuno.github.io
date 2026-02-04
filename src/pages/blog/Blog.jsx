@@ -90,7 +90,6 @@ function Blog() {
               <div className="post-meta">
                 {post.category && <span className="post-category">{post.category}</span>}
                 {post.date && <span>{post.date}</span>}
-                <span>읽는 시간 약 {post.readingMinutes}분</span>
               </div>
               <h3>{post.title}</h3>
               <p>{post.summary}</p>

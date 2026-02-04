@@ -201,7 +201,7 @@ function WebServiceBlog() {
                     <span className="meta">Markdown 수집/파싱</span>
                   </summary>
                   <div className="detail-body">
-                    <p>Front Matter 파싱 → 요약/태그/읽는 시간 계산.</p>
+                    <p>Front Matter 파싱 → 요약/태그 생성.</p>
                     <ul>
                       <li>import.meta.glob로 콘텐츠 자동 수집</li>
                       <li>marked로 HTML 변환</li>

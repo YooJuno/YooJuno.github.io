@@ -90,11 +90,6 @@ const getExcerpt = (content, summary) => {
   return plain.length > 160 ? `${plain.slice(0, 160)}...` : plain
 }
 
-const getReadingMinutes = (content) => {
-  const words = content.split(/\s+/).filter(Boolean).length
-  return Math.max(1, Math.round(words / 220))
-}
-
 export const posts = Object.entries(modules)
   .map(([path, raw]) => {
     const slug = path.split('/').pop().replace(/\.md$/, '')
@@ -108,7 +103,6 @@ export const posts = Object.entries(modules)
       category: data.category || '',
       tags,
       summary: getExcerpt(content, data.summary),
-      readingMinutes: getReadingMinutes(content),
       html: marked.parse(content),
       raw: content,
     }
