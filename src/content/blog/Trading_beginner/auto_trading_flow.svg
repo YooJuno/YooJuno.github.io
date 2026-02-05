@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="260" viewBox="0 0 900 260">
+  <rect width="900" height="260" fill="#f7f7f2"/>
+  <text x="30" y="30" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#222">Simple Auto-Trading Flow</text>
+
+  <rect x="50" y="80" width="140" height="60" rx="10" fill="#e2f0fd" stroke="#338" stroke-width="1.5"/>
+  <text x="70" y="115" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Market Data</text>
+
+  <rect x="230" y="80" width="140" height="60" rx="10" fill="#e8f7e4" stroke="#2a7" stroke-width="1.5"/>
+  <text x="255" y="115" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Strategy</text>
+
+  <rect x="410" y="80" width="160" height="60" rx="10" fill="#fff3cd" stroke="#b58900" stroke-width="1.5"/>
+  <text x="430" y="115" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Risk Control</text>
+
+  <rect x="610" y="80" width="140" height="60" rx="10" fill="#fde2e2" stroke="#d33" stroke-width="1.5"/>
+  <text x="650" y="115" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Order</text>
+
+  <rect x="770" y="80" width="120" height="60" rx="10" fill="#f1e7ff" stroke="#73a" stroke-width="1.5"/>
+  <text x="790" y="115" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Monitor</text>
+
+  <line x1="190" y1="110" x2="230" y2="110" stroke="#333" stroke-width="2"/>
+  <line x1="370" y1="110" x2="410" y2="110" stroke="#333" stroke-width="2"/>
+  <line x1="570" y1="110" x2="610" y2="110" stroke="#333" stroke-width="2"/>
+  <line x1="750" y1="110" x2="770" y2="110" stroke="#333" stroke-width="2"/>
+
+  <text x="50" y="190" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#444">
+    Data → Signal → Risk Gate → Execution → Tracking/Logs
+  </text>
+</svg>
