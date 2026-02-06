@@ -1,7 +1,7 @@
 ﻿---
 title: "트레이딩 입문"
 date: "2026-02-05"
-category: "금융"
+category: "트레이딩"
 tags:
     - 트레이딩
     - 투자
