@@ -83,6 +83,7 @@ const SiteNav = () => (
             <Link to="/blog?category=음악">음악</Link>
             <Link to="/blog?category=여행">여행</Link>
             <Link to="/blog?category=코딩테스트">코딩테스트</Link>
+            <Link to="/blog?category=트레이딩">트레이딩</Link>
           </div>
         </div>
         <div className="nav-item dropdown">
@@ -116,9 +117,6 @@ function App() {
           <Route path="/web-service/cctv-streaming" element={<WebServiceCctv />} />
           <Route path="/web-service/video-chatting" element={<WebServiceVideo />} />
           <Route path="/web-service/bitcoin-auto-trader" element={<WebServiceBtc />} />
-          <Route path="/major" element={<Major />} />
-          <Route path="/music" element={<Music />} />
-          <Route path="/travel" element={<Travel />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <AdSlot />
