@@ -477,16 +477,16 @@ function Portfolio() {
                         <p className="note">CCTV 속도 추정은 데이터셋 기준 평균 오차 0.5 km/h, 블랙박스는 구간별 ±3 km/h 수준과 편차 구간을 함께 분석.</p>
                         <div className="media-grid">
                           <figure className="media-tile">
-                            <img src="/content/portfolio/gmdsoft/sfm_result.png" alt="System Architecture" />
-                            <figcaption>System Architecture</figcaption>
+                            <img src="/content/portfolio/gmdsoft/sfm_result.png" alt="SfM" />
+                            <figcaption>SfM-COLMAP</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/content/portfolio/gmdsoft/result.png" alt="System Architecture" />
-                            <figcaption>System Architecture</figcaption>
+                            <img src="/content/portfolio/gmdsoft/result.png" alt="Demo Result" />
+                            <figcaption>Demo Result</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/content/portfolio/gmdsoft/preprocessing.png" alt="System Architecture" />
-                            <figcaption>System Architecture</figcaption>
+                            <img src="/content/portfolio/gmdsoft/preprocessing.png" alt="Pre Processing" />
+                            <figcaption>Pre Processing</figcaption>
                           </figure>
                         </div>
                       </article>
@@ -494,7 +494,7 @@ function Portfolio() {
                       <article className="project-card">
                         <div className="meta-row">
                           <span className="badge">Embedded</span>
-                          <span>2024.01-02 · 4인</span>
+                          <span>Handong · 2024.01-02 · 4인 · 자발적 프로젝트</span>
                         </div>
                         <h3>무선 CCTV 웹 스트리밍 (Wi-Fi HaLow)</h3>
                         <p className="summary">
@@ -516,16 +516,16 @@ function Portfolio() {
                         </div>
                         <div className="media-grid">
                           <figure className="media-tile">
-                            <img src="/content/placeholder.svg" alt="이미지 준비중" />
+                            <img src="/content/portfolio/cctv-halow/system-architecture.png" alt="System Architecture" />
                             <figcaption>시스템 아키텍처</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/content/placeholder.svg" alt="이미지 준비중" />
-                            <figcaption>노드 구성</figcaption>
+                            <img src="/content/portfolio/cctv-halow/cctv-module.jpeg" alt="cctv module" />
+                            <figcaption>CCTV Module</figcaption>
                           </figure>
                           <figure className="media-tile">
-                            <img src="/content/placeholder.svg" alt="이미지 준비중" />
-                            <figcaption>스트리밍 화면</figcaption>
+                            <img src="/content/portfolio/cctv-halow/gateway.jpeg" alt="gateway" />
+                            <figcaption>gateway</figcaption>
                           </figure>
                         </div>
                       </article>
