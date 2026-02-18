@@ -494,7 +494,7 @@ function Portfolio() {
                       <article className="project-card">
                         <div className="meta-row">
                           <span className="badge">Embedded</span>
-                          <span>2024.01-02 · 4인</span>
+                          <span>Handong · 2024.01-02 · 4인 · 자발적 프로젝트</span>
                         </div>
                         <h3>무선 CCTV 웹 스트리밍 (Wi-Fi HaLow)</h3>
                         <p className="summary">
