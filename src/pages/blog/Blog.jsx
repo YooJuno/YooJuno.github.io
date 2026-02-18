@@ -1,4 +1,4 @@
-﻿import { useEffect, useMemo, useState } from 'react'
+﻿import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { posts, getAllTags } from '../../lib/posts'
 import useReveal from '../../hooks/useReveal'
@@ -9,14 +9,9 @@ function Blog() {
   const [searchParams] = useSearchParams()
   const [query, setQuery] = useState('')
   const [activeTag, setActiveTag] = useState('')
-  const [activeCategory, setActiveCategory] = useState('')
 
   const tags = getAllTags()
-
-  useEffect(() => {
-    const category = searchParams.get('category') || ''
-    setActiveCategory(category)
-  }, [searchParams])
+  const activeCategory = searchParams.get('category') || ''
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()

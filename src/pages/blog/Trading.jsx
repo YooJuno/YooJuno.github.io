@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router-dom'
 
-function Music() {
+function Trading() {
   return <Navigate to="/blog?category=트레이딩" replace />
 }
 
-export default Music
+export default Trading

@@ -12,10 +12,6 @@ import WebServiceCctv from './pages/webservice/WebServiceCctv.jsx'
 import WebServiceVideo from './pages/webservice/WebServiceVideo.jsx'
 import WebServiceBtc from './pages/webservice/WebServiceBtc.jsx'
 
-import Major from './pages/blog/Major.jsx'
-import Music from './pages/blog/Music.jsx'
-import Travel from './pages/blog/Travel.jsx'
-
 import NotFound from './pages/NotFound.jsx'
 
 const ScrollToTop = () => {
@@ -39,7 +35,7 @@ const AdSlot = () => {
         window.adsbygoogle = window.adsbygoogle || []
         window.adsbygoogle.push({})
       }
-    } catch (err) {
+    } catch {
       // ignore ad errors during development
     }
   }, [])
@@ -131,5 +127,3 @@ function App() {
 }
 
 export default App
-
-
