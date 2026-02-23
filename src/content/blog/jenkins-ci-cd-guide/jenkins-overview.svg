@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Jenkins CI/CD Overview</title>
+  <desc id="desc">Developer pushes code to repository, Jenkins runs pipeline on agent and deploys to server.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#93c5fd"/>
+    </marker>
+    <style>
+      .title { font: 700 44px 'Segoe UI', Arial, sans-serif; fill: #f8fafc; }
+      .subtitle { font: 500 22px 'Segoe UI', Arial, sans-serif; fill: #cbd5e1; }
+      .card { fill: url(#card); stroke: #334155; stroke-width: 2; rx: 18; }
+      .card-title { font: 700 24px 'Segoe UI', Arial, sans-serif; fill: #e2e8f0; }
+      .card-text { font: 500 18px 'Segoe UI', Arial, sans-serif; fill: #94a3b8; }
+      .flow { stroke: #93c5fd; stroke-width: 4; fill: none; marker-end: url(#arrow); }
+      .note { font: 600 16px 'Segoe UI', Arial, sans-serif; fill: #7dd3fc; }
+    </style>
+  </defs>
+
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text x="60" y="80" class="title">Jenkins CI/CD Architecture</text>
+  <text x="60" y="115" class="subtitle">From code push to automated build, test, and deploy</text>
+
+  <rect x="70" y="180" width="220" height="120" class="card"/>
+  <text x="180" y="230" text-anchor="middle" class="card-title">Developer</text>
+  <text x="180" y="260" text-anchor="middle" class="card-text">git push</text>
+
+  <rect x="360" y="180" width="260" height="120" class="card"/>
+  <text x="490" y="230" text-anchor="middle" class="card-title">Git Repository</text>
+  <text x="490" y="260" text-anchor="middle" class="card-text">GitHub / GitLab</text>
+
+  <rect x="710" y="150" width="280" height="150" class="card"/>
+  <text x="850" y="205" text-anchor="middle" class="card-title">Jenkins Controller</text>
+  <text x="850" y="235" text-anchor="middle" class="card-text">Webhook + Pipeline</text>
+  <text x="850" y="262" text-anchor="middle" class="card-text">Jenkinsfile</text>
+
+  <rect x="710" y="370" width="280" height="150" class="card"/>
+  <text x="850" y="425" text-anchor="middle" class="card-title">Jenkins Agent</text>
+  <text x="850" y="455" text-anchor="middle" class="card-text">Build / Test / Package</text>
+  <text x="850" y="482" text-anchor="middle" class="card-text">Node + JDK</text>
+
+  <rect x="1060" y="150" width="170" height="150" class="card"/>
+  <text x="1145" y="215" text-anchor="middle" class="card-title">Artifacts</text>
+  <text x="1145" y="245" text-anchor="middle" class="card-text">JAR</text>
+  <text x="1145" y="270" text-anchor="middle" class="card-text">dist/</text>
+
+  <rect x="1060" y="370" width="170" height="150" class="card"/>
+  <text x="1145" y="425" text-anchor="middle" class="card-title">Prod Server</text>
+  <text x="1145" y="455" text-anchor="middle" class="card-text">Caddy + Systemd</text>
+  <text x="1145" y="482" text-anchor="middle" class="card-text">scripts/build.sh</text>
+
+  <path d="M 290 240 L 360 240" class="flow"/>
+  <path d="M 620 240 L 710 225" class="flow"/>
+  <path d="M 850 300 L 850 370" class="flow"/>
+  <path d="M 990 225 L 1060 225" class="flow"/>
+  <path d="M 990 445 L 1060 445" class="flow"/>
+
+  <text x="630" y="210" class="note">Webhook trigger</text>
+  <text x="875" y="345" class="note">Execute stages</text>
+  <text x="1068" y="340" class="note">Optional deploy via SSH</text>
+</svg>
