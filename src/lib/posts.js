@@ -151,7 +151,23 @@ export const posts = Object.entries(modules)
     return new Date(b.date).getTime() - new Date(a.date).getTime()
   })
 
-export const getPostBySlug = (slug) => posts.find((post) => post.slug === slug)
+const normalizeSlugValue = (value) => {
+  if (!value) return ''
+  let normalized = String(value)
+    .trim()
+    .replace(/^\/+|\/+$/g, '')
+  try {
+    normalized = decodeURIComponent(normalized)
+  } catch {
+    // keep original when URI decoding fails
+  }
+  return normalized.toLowerCase()
+}
+
+export const getPostBySlug = (slug) => {
+  const target = normalizeSlugValue(slug)
+  return posts.find((post) => normalizeSlugValue(post.slug) === target)
+}
 
 export const getAllTags = () => {
   const set = new Set()
