@@ -65,7 +65,7 @@ function Portfolio() {
     if (!container) return undefined
     const targets = Array.from(
       container.querySelectorAll(
-        '#about, #focus, #featured, #project-library, #skills, #experience, #activities, #contact'
+        '#about, #featured, #project-library, #skills, #experience, #activities, #contact'
       )
     )
     if (!targets.length) return undefined
@@ -158,51 +158,28 @@ function Portfolio() {
 
   return (
     <div ref={containerRef}>
-      <header className="site-hero" id="top">
+      <header className="site-hero portfolio-hero" id="top">
 
 
                 <div className="container hero-grid">
                   <div className="hero-text" data-reveal>
-                    <p className="eyebrow">Robotics · Computer Vision · Embedded</p>
-                    <h1>
-                      현장의 문제를 로봇과 비전으로 해결하는<br />
-                      시스템 통합형 개발자 <span className="accent">유준호</span>
-                    </h1>
-                    <p className="lead">
-                      ROS2 기반 자율주행, SLAM, 실시간 스트리밍, 임베디드 통신까지 하나의 흐름으로 연결합니다.
-                      야외 자율주행 배달 로봇부터 CCTV 기반 측정, 스마트 팩토리 자동화까지 직접 설계하고 구현해 왔습니다.
-                    </p>
+                    <p className="eyebrow">Portfolio</p>
+                    <h1>유준호</h1>
+                    <p className="lead">로보틱스 · 컴퓨터 비전 · 임베디드</p>
                     <div className="hero-actions">
-                      <a className="btn primary" href="#featured">대표 프로젝트 보기</a>
-                      <a className="btn ghost" href="#project-library">전체 프로젝트 보기</a>
-                    </div>
-                    <div className="hero-tags">
-                      <span>ROS2</span>
-                      <span>SLAM</span>
-                      <span>YOLO</span>
-                      <span>Jetson · ESP32 · STM32</span>
-                      <span>MQTT · gRPC</span>
+                      <a className="btn primary" href="#featured">대표 프로젝트</a>
+                      <a className="btn ghost" href="#project-library">전체 프로젝트</a>
                     </div>
                   </div>
 
                   <div className="hero-panel" data-reveal>
                     <div className="panel-card">
-                      <h2>핵심 요약</h2>
+                      <h2>주요 경험</h2>
                       <ul>
-                        <li>야외 자율주행 배달 로봇 팀장/PM 경험</li>
-                        <li>컴퓨터비전 기반 속도·높이 추정 알고리즘 개발</li>
-                        <li>임베디드-서버-웹 실시간 파이프라인 구축</li>
+                        <li>ROS2 자율주행 로봇</li>
+                        <li>영상 기반 측정 알고리즘</li>
+                        <li>임베디드·웹 실시간 통신</li>
                       </ul>
-                    </div>
-                    <div className="panel-card">
-                      <h2>퀵 스냅샷</h2>
-                      <div className="pill-grid">
-                        <span>프로젝트 16개</span>
-                        <span>인턴 2회</span>
-                        <span>ROS2/SLAM</span>
-                        <span>실시간 스트리밍</span>
-                        <span>시스템 통합</span>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -210,10 +187,9 @@ function Portfolio() {
 
               <main className="portfolio-main">
                 <aside className="portfolio-index" data-reveal>
-                  <h3>Index</h3>
+                  <h3>목차</h3>
                   <nav className="index-group">
                     <a className={getSectionClass("about")} href="#about">소개</a>
-                    <a className={getSectionClass("focus")} href="#focus">우선순위</a>
                     <a className={getSectionClass("featured")} href="#featured">대표 프로젝트</a>
                     <a className={getSectionClass("project-library")} href="#project-library">전체 프로젝트</a>
                     <a className={getSectionClass("skills")} href="#skills">기술 스택</a>
@@ -227,31 +203,12 @@ function Portfolio() {
                     <div>
                       <div className="section-head">
                         <h2>소개</h2>
-                        <p>로보틱스 중심의 문제 해결 흐름을 선호합니다.</p>
+                        <p>로보틱스와 컴퓨터 비전을 중심으로 개발합니다.</p>
                       </div>
                       <p className="body">
-                        모형차 자율주행 대회를 계기로 컴퓨터비전과 로보틱스에 집중해 왔습니다.
-                        연구실·산학과제·인턴십에서 SLAM, 객체 인식, 경로 계획을 반복적으로 다루며
-                        실제 환경의 제약을 해결하는 설계를 쌓아왔습니다.
+                        연구실, 인턴십, 팀 프로젝트에서 SLAM, 객체 인식, 경로 계획,
+                        센서·서버 통신을 구현했습니다.
                       </p>
-                      <p className="body">
-                        단일 기술보다 시스템 전체의 안정성과 실시간성을 우선합니다.
-                        로봇, 서버, 클라이언트, 센서가 하나의 동작 흐름으로 이어지는 구조를 만드는 것이 목표입니다.
-                      </p>
-                      <div className="strength-grid">
-                        <div className="strength-card">
-                          <h3>시스템 통합</h3>
-                          <p>로봇 제어, 센서, 서버, UI까지 전체 흐름을 설계하고 구현합니다.</p>
-                        </div>
-                        <div className="strength-card">
-                          <h3>실시간 처리</h3>
-                          <p>통신 구조와 스트리밍 파이프라인을 최적화해 지연을 줄입니다.</p>
-                        </div>
-                        <div className="strength-card">
-                          <h3>현장 문제 해결</h3>
-                          <p>측정 정확도, 경로 추종, 좌표 변환 등 현실 제약을 다룹니다.</p>
-                        </div>
-                      </div>
                     </div>
                     <div className="about-card">
                       <h3>기본 정보</h3>
@@ -270,37 +227,11 @@ function Portfolio() {
                   </div>
                 </section>
 
-                <section className="section" id="focus">
-                  <div className="container" data-reveal>
-                    <div className="section-head">
-                      <h2>우선순위</h2>
-                      <p>역량의 중심을 로보틱스에 두고 단계적으로 확장합니다.</p>
-                    </div>
-                    <div className="priority-grid">
-                      <article className="priority-card">
-                        <h3>1. 로보틱스</h3>
-                        <p>ROS2 기반 자율주행, 로봇팔 제어, 경로 생성/추종 및 시스템 통합.</p>
-                      </article>
-                      <article className="priority-card">
-                        <h3>2. 컴퓨터비전</h3>
-                        <p>SLAM, YOLO, SfM, Perspective Transformation으로 측정/인식 문제 해결.</p>
-                      </article>
-                      <article className="priority-card">
-                        <h3>3. 임베디드</h3>
-                        <p>Jetson · ESP32 · STM32 · Raspberry Pi 기반 센서/통신/제어 시스템 구축.</p>
-                      </article>
-                      <article className="priority-card">
-                        <h3>4. 풀스택</h3>
-                        <p>실시간 데이터 파이프라인과 웹 시각화, 서버 통신 구조 설계.</p>
-                      </article>
-                    </div>
-                  </div>
-                </section>
                 <section className="section" id="featured">
                   <div className="container">
                     <div className="section-head" data-reveal>
                       <h2>대표 프로젝트</h2>
-                      <p>가장 중요도가 높은 5개의 프로젝트를 선별했습니다.</p>
+                      <p>주요 작업 5개를 정리했습니다.</p>
                     </div>
 
                     <article className="project-card feature" data-reveal>
@@ -535,12 +466,12 @@ function Portfolio() {
                 <section className="section" id="project-library">
                   <div className="container">
                     <div className="section-head" data-reveal>
-                      <h2>전체 프로젝트 라이브러리</h2>
-                      <p>모든 프로젝트를 카드 형태로 정리했습니다. 인덱스나 항목을 클릭하면 상세 내용을 확인할 수 있습니다.</p>
+                      <h2>전체 프로젝트</h2>
+                      <p>항목을 선택하면 상세 내용을 볼 수 있습니다.</p>
                     </div>
                     <div className="library-grid" data-reveal>
                       <aside className="project-index">
-                        <h3>프로젝트 인덱스</h3>
+                        <h3>프로젝트</h3>
                         <p>총 16개</p>
                         <div className="index-group">
                           <h4>로보틱스</h4>
@@ -1136,8 +1067,8 @@ function Portfolio() {
                 <section className="section" id="experience">
                   <div className="container" data-reveal>
                     <div className="section-head">
-                      <h2>경험 · 연구 · 교육</h2>
-                      <p>산학과제와 현장 프로젝트를 통해 실전형 문제 해결 역량을 확장했습니다.</p>
+                      <h2>경험</h2>
+                      <p>교육, 연구, 인턴십 이력입니다.</p>
                     </div>
                     <div className="timeline">
                       <div className="timeline-item">
@@ -1192,7 +1123,7 @@ function Portfolio() {
                   <div className="container" data-reveal>
                     <div className="section-head">
                       <h2>활동</h2>
-                      <p>기술을 나누며 커뮤니케이션 역량을 확장했습니다.</p>
+                      <p>교육 및 조교 활동입니다.</p>
                     </div>
                     <div className="activity-grid">
                       <article>
@@ -1212,8 +1143,8 @@ function Portfolio() {
                   <div className="container" data-reveal>
                     <div className="contact-card">
                       <div>
-                        <h2>함께 문제를 풀어가고 싶습니다</h2>
-                        <p>로보틱스/컴퓨터비전/임베디드 프로젝트 협업이나 채용 관련 문의를 기다립니다.</p>
+                        <h2>연락처</h2>
+                        <p>프로젝트 및 채용 문의</p>
                         <div className="contact-info">
                           <span>Seoul, KR</span>
                           <span>juno980220@naver.com</span>

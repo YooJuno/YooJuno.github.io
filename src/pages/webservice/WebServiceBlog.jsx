@@ -7,8 +7,8 @@ function WebServiceBlog() {
     <main className="section">
       <div className="container is-visible" data-reveal>
         <div className="section-head">
-          <h2>웹서비스 · 전체 사이트 정리</h2>
-          <p>포트폴리오/블로그/웹서비스를 하나의 흐름으로 구성한 정적 사이트입니다.</p>
+          <h2>Portfolio & Blog</h2>
+          <p>현재 포트폴리오와 블로그의 구성입니다.</p>
           <div className="meta-row">
             <span className="badge">상태: 운영 중</span>
             <span>스택: React + Vite + React Router</span>
@@ -19,7 +19,7 @@ function WebServiceBlog() {
         <section className="section" id="overview">
           <div className="project-card feature">
             <div className="project-info">
-              <h3>핵심 한눈에 보기</h3>
+              <h3>개요</h3>
               <p className="summary">
                 홈에서 아이덴티티를 보여주고, 포트폴리오/블로그/웹서비스로
                 상세 정보를 확장하는 구조입니다.
@@ -65,13 +65,13 @@ function WebServiceBlog() {
 
         <div className="library-grid">
           <aside className="project-index">
-            <h3>빠른 목차</h3>
-            <p>필요한 섹션으로 바로 이동할 수 있어요.</p>
+            <h3>목차</h3>
+            <p>섹션 바로가기</p>
             <div className="index-group">
               <h4>사이트</h4>
               <a className="index-link" href="#features">핵심 기능</a>
               <a className="index-link" href="#flow">사용자 흐름</a>
-              <a className="index-link" href="#ui">UI/인터페이스</a>
+              <a className="index-link" href="#ui">화면</a>
             </div>
             <div className="index-group">
               <h4>데이터</h4>
@@ -83,8 +83,8 @@ function WebServiceBlog() {
             <div className="index-group">
               <h4>설계</h4>
               <a className="index-link" href="#security">보안/안정성</a>
-              <a className="index-link" href="#intent">구현 의도</a>
-              <a className="index-link" href="#roadmap">한계/로드맵</a>
+              <a className="index-link" href="#intent">설계</a>
+              <a className="index-link" href="#roadmap">향후 계획</a>
             </div>
           </aside>
 
@@ -146,7 +146,7 @@ function WebServiceBlog() {
 
             <section className="section" id="ui">
               <div className="section-head">
-                <h3>UI/인터페이스</h3>
+                <h3>화면</h3>
                 <p>사이트 핵심 화면과 상호작용입니다.</p>
               </div>
               <div className="media-grid">
@@ -319,7 +319,7 @@ function WebServiceBlog() {
 
             <section className="section" id="intent">
               <div className="section-head">
-                <h3>구현 의도/근거</h3>
+                <h3>설계</h3>
                 <p>관리 비용을 줄이면서도 상세한 정보를 전달합니다.</p>
               </div>
               <div className="project-card">
@@ -330,14 +330,13 @@ function WebServiceBlog() {
                     <li>검색/필터 중심으로 콘텐츠 접근성 강화</li>
                   </ul>
                 </div>
-                <p className="note">작은 글도 빠르게 쌓이는 구조가 목표입니다.</p>
               </div>
             </section>
 
             <section className="section" id="roadmap">
               <div className="section-head">
-                <h3>한계/로드맵</h3>
-                <p>현재 사이트 구조와 확장 포인트를 정리합니다.</p>
+                <h3>향후 계획</h3>
+                <p>콘텐츠 관리와 검색 기능을 개선할 예정입니다.</p>
               </div>
               <div className="project-grid two">
                 <article className="project-card compact">

@@ -94,7 +94,6 @@ const SiteNav = () => {
             <NavLink className={navClass} to="/portfolio">포트폴리오</NavLink>
             <div className="dropdown-menu">
               <Link to="/portfolio?section=about">소개</Link>
-              <Link to="/portfolio?section=focus">우선순위</Link>
               <Link to="/portfolio?section=featured">대표 프로젝트</Link>
               <Link to="/portfolio?section=project-library">전체 프로젝트</Link>
               <Link to="/portfolio?section=skills">기술 스택</Link>

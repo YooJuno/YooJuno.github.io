@@ -7,7 +7,7 @@ function WebServiceVideo() {
     <main className="section">
       <div className="container is-visible" data-reveal>
         <div className="section-head">
-          <h2>웹서비스 · Video Chatting</h2>
+          <h2>Video Chatting</h2>
           <p>브라우저에서 바로 연결되는 실시간 영상 통화 서비스입니다.</p>
           <div className="meta-row">
             <span className="badge">상태: 설계/구현 중</span>
@@ -19,7 +19,7 @@ function WebServiceVideo() {
         <section className="section" id="overview">
           <div className="project-card feature">
             <div className="project-info">
-              <h3>핵심 한눈에 보기</h3>
+              <h3>개요</h3>
               <p className="summary">
                 설치 없이 바로 연결되는 영상 통화 경험을 제공하고,
                 확장 가능한 회의 구조를 설계합니다.
@@ -65,13 +65,13 @@ function WebServiceVideo() {
 
         <div className="library-grid">
           <aside className="project-index">
-            <h3>빠른 목차</h3>
-            <p>필요한 섹션으로 바로 이동할 수 있어요.</p>
+            <h3>목차</h3>
+            <p>섹션 바로가기</p>
             <div className="index-group">
               <h4>제품</h4>
               <a className="index-link" href="#features">핵심 기능</a>
               <a className="index-link" href="#flow">사용자 흐름</a>
-              <a className="index-link" href="#ui">UI/인터페이스</a>
+              <a className="index-link" href="#ui">화면</a>
             </div>
             <div className="index-group">
               <h4>기술</h4>
@@ -83,8 +83,8 @@ function WebServiceVideo() {
             <div className="index-group">
               <h4>설계</h4>
               <a className="index-link" href="#security">보안/안정성</a>
-              <a className="index-link" href="#intent">구현 의도</a>
-              <a className="index-link" href="#roadmap">한계/로드맵</a>
+              <a className="index-link" href="#intent">설계</a>
+              <a className="index-link" href="#roadmap">향후 계획</a>
             </div>
           </aside>
 
@@ -146,7 +146,7 @@ function WebServiceVideo() {
 
             <section className="section" id="ui">
               <div className="section-head">
-                <h3>UI/인터페이스</h3>
+                <h3>화면</h3>
                 <p>참여자 상태와 제어 버튼 중심의 구성입니다.</p>
               </div>
               <div className="media-grid">
@@ -316,8 +316,8 @@ function WebServiceVideo() {
 
             <section className="section" id="intent">
               <div className="section-head">
-                <h3>구현 의도/근거</h3>
-                <p>빠른 접속과 확장성을 동시에 확보합니다.</p>
+                <h3>설계</h3>
+                <p>접속 과정과 미디어 연결 단계를 분리했습니다.</p>
               </div>
               <div className="project-card">
                 <div className="project-info">
@@ -327,13 +327,12 @@ function WebServiceVideo() {
                     <li>낮은 지연과 안정성을 균형 있게 설계</li>
                   </ul>
                 </div>
-                <p className="note">사용성 우선의 통화 경험을 지향합니다.</p>
               </div>
             </section>
 
             <section className="section" id="roadmap">
               <div className="section-head">
-                <h3>한계/향후 계획</h3>
+                <h3>향후 계획</h3>
                 <p>협업 기능과 기록 기능을 강화할 예정입니다.</p>
               </div>
               <div className="project-grid two">

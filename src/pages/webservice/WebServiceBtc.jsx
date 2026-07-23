@@ -7,8 +7,8 @@ function WebServiceBtc() {
     <main className="section">
       <div className="container is-visible" data-reveal>
         <div className="section-head">
-          <h2>웹서비스 · Bitcoin Auto Trader</h2>
-          <p>장벽 없는 자동매매 경험으로 사용자 매매 자유도를 높입니다.</p>
+          <h2>Bitcoin Auto Trader</h2>
+          <p>전략 설정과 자동매매 실행을 연결한 서비스입니다.</p>
           <div className="meta-row">
             <span className="badge">상태: 설계/구현 중</span>
             <span>플랫폼: Web · API</span>
@@ -19,7 +19,7 @@ function WebServiceBtc() {
         <section className="section" id="overview">
           <div className="project-card feature">
             <div className="project-info">
-              <h3>핵심 한눈에 보기</h3>
+              <h3>개요</h3>
               <p className="summary">
                 종목 추천부터 전략 선택, 자동 실행까지 한 번에 연결해
                 누구나 손쉽게 자동매매를 시작할 수 있도록 설계합니다.
@@ -65,13 +65,13 @@ function WebServiceBtc() {
 
         <div className="library-grid">
           <aside className="project-index">
-            <h3>빠른 목차</h3>
-            <p>필요한 섹션으로 바로 이동할 수 있어요.</p>
+            <h3>목차</h3>
+            <p>섹션 바로가기</p>
             <div className="index-group">
               <h4>제품</h4>
               <a className="index-link" href="#features">핵심 기능</a>
               <a className="index-link" href="#flow">사용자 흐름</a>
-              <a className="index-link" href="#ui">UI/인터페이스</a>
+              <a className="index-link" href="#ui">화면</a>
             </div>
             <div className="index-group">
               <h4>기술</h4>
@@ -83,8 +83,8 @@ function WebServiceBtc() {
             <div className="index-group">
               <h4>설계</h4>
               <a className="index-link" href="#security">보안/안정성</a>
-              <a className="index-link" href="#intent">구현 의도</a>
-              <a className="index-link" href="#roadmap">한계/로드맵</a>
+              <a className="index-link" href="#intent">설계</a>
+              <a className="index-link" href="#roadmap">향후 계획</a>
             </div>
           </aside>
 
@@ -92,7 +92,7 @@ function WebServiceBtc() {
             <section className="section" id="features">
               <div className="section-head">
                 <h3>핵심 기능</h3>
-                <p>사용자가 체감하는 핵심 기능을 한눈에 정리합니다.</p>
+                <p>전략 설정, 실행, 결과 확인 기능입니다.</p>
               </div>
               <div className="project-grid two">
                 <article className="project-card compact">
@@ -146,7 +146,7 @@ function WebServiceBtc() {
 
             <section className="section" id="ui">
               <div className="section-head">
-                <h3>UI/인터페이스</h3>
+                <h3>화면</h3>
                 <p>대표 화면과 핵심 인터랙션을 요약합니다.</p>
               </div>
               <div className="media-grid">
@@ -319,8 +319,8 @@ function WebServiceBtc() {
 
             <section className="section" id="intent">
               <div className="section-head">
-                <h3>구현 의도/근거</h3>
-                <p>장벽을 낮추고 확장성을 확보하는 설계를 목표로 합니다.</p>
+                <h3>설계</h3>
+                <p>전략과 실행 로직을 분리해 확장할 수 있도록 구성했습니다.</p>
               </div>
               <div className="project-card">
                 <div className="project-info">
@@ -336,8 +336,8 @@ function WebServiceBtc() {
 
             <section className="section" id="roadmap">
               <div className="section-head">
-                <h3>한계/향후 계획</h3>
-                <p>현재 범위와 확장 방향을 투명하게 공유합니다.</p>
+                <h3>향후 계획</h3>
+                <p>백테스트와 리스크 관리 기능을 추가할 예정입니다.</p>
               </div>
               <div className="project-grid two">
                 <article className="project-card compact">

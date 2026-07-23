@@ -7,7 +7,7 @@ function WebServiceCctv() {
     <main className="section">
       <div className="container is-visible" data-reveal>
         <div className="section-head">
-          <h2>웹서비스 · CCTV Streaming</h2>
+          <h2>CCTV Streaming</h2>
           <p>장거리 환경에서도 안정적으로 현장을 모니터링합니다.</p>
           <div className="meta-row">
             <span className="badge">상태: 프로토타입</span>
@@ -19,7 +19,7 @@ function WebServiceCctv() {
         <section className="section" id="overview">
           <div className="project-card feature">
             <div className="project-info">
-              <h3>핵심 한눈에 보기</h3>
+              <h3>개요</h3>
               <p className="summary">
                 저전력 장거리 무선 환경에서 다중 스트림을 안정적으로 제공하고,
                 상태 이상을 자동으로 감지합니다.
@@ -65,13 +65,13 @@ function WebServiceCctv() {
 
         <div className="library-grid">
           <aside className="project-index">
-            <h3>빠른 목차</h3>
-            <p>필요한 섹션으로 바로 이동할 수 있어요.</p>
+            <h3>목차</h3>
+            <p>섹션 바로가기</p>
             <div className="index-group">
               <h4>제품</h4>
               <a className="index-link" href="#features">핵심 기능</a>
               <a className="index-link" href="#flow">사용자 흐름</a>
-              <a className="index-link" href="#ui">UI/인터페이스</a>
+              <a className="index-link" href="#ui">화면</a>
             </div>
             <div className="index-group">
               <h4>기술</h4>
@@ -83,8 +83,8 @@ function WebServiceCctv() {
             <div className="index-group">
               <h4>설계</h4>
               <a className="index-link" href="#security">보안/안정성</a>
-              <a className="index-link" href="#intent">구현 의도</a>
-              <a className="index-link" href="#roadmap">한계/로드맵</a>
+              <a className="index-link" href="#intent">설계</a>
+              <a className="index-link" href="#roadmap">향후 계획</a>
             </div>
           </aside>
 
@@ -146,7 +146,7 @@ function WebServiceCctv() {
 
             <section className="section" id="ui">
               <div className="section-head">
-                <h3>UI/인터페이스</h3>
+                <h3>화면</h3>
                 <p>멀티 뷰와 상태 정보 중심의 화면 구성입니다.</p>
               </div>
               <div className="media-grid">
@@ -316,7 +316,7 @@ function WebServiceCctv() {
 
             <section className="section" id="intent">
               <div className="section-head">
-                <h3>구현 의도/근거</h3>
+                <h3>설계</h3>
                 <p>현장 안정성과 운영 편의성에 집중합니다.</p>
               </div>
               <div className="project-card">
@@ -333,7 +333,7 @@ function WebServiceCctv() {
 
             <section className="section" id="roadmap">
               <div className="section-head">
-                <h3>한계/향후 계획</h3>
+                <h3>향후 계획</h3>
                 <p>저장과 분석 기능을 단계적으로 확장합니다.</p>
               </div>
               <div className="project-grid two">
