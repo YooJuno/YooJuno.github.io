@@ -1,18 +1,18 @@
 :root {
-  --bg: #f7f3ed;
-  --bg-alt: #efe7db;
-  --ink: #1a1917;
-  --muted: #5f5a52;
-  --accent: #0f4f4f;
-  --accent-soft: #2f6f6d;
-  --accent-2: #d26a3d;
-  --accent-3: #e9c064;
+  --bg: #f6f7f9;
+  --bg-alt: #eef1f4;
+  --ink: #161b22;
+  --muted: #667085;
+  --accent: #3157d5;
+  --accent-soft: #5271dc;
+  --accent-2: #3157d5;
+  --accent-3: #dbe3ff;
   --card: #ffffff;
-  --border: rgba(27, 26, 24, 0.12);
-  --shadow: 0 22px 60px rgba(31, 24, 18, 0.12);
-  --radius-lg: 28px;
-  --radius: 18px;
-  --radius-sm: 12px;
+  --border: #e1e5ea;
+  --shadow: 0 12px 30px rgba(22, 27, 34, 0.07);
+  --radius-lg: 16px;
+  --radius: 12px;
+  --radius-sm: 8px;
 }
 
 * {
@@ -28,9 +28,7 @@ html {
 body {
   font-family: "Noto Sans KR", sans-serif;
   color: var(--ink);
-  background: radial-gradient(circle at 20% 20%, rgba(226, 112, 58, 0.15), transparent 25%),
-              radial-gradient(circle at 80% 0%, rgba(53, 117, 115, 0.12), transparent 50%),
-              linear-gradient(180deg, var(--bg), var(--bg-alt));
+  background: var(--bg);
   line-height: 1.6;
   font-size: 16px;
   letter-spacing: -0.01em;
@@ -49,6 +47,6 @@ img {
 
 a:focus-visible,
 summary:focus-visible {
-  outline: 2px solid rgba(210, 106, 61, 0.6);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }

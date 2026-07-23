@@ -20,7 +20,7 @@
 .media-placeholder {
   flex: 1;
   border-radius: 10px;
-  background: linear-gradient(140deg, rgba(15, 79, 79, 0.08), rgba(210, 106, 61, 0.08));
+  background: #f0f2f5;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -1,5 +1,5 @@
-﻿import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route, Link, NavLink, useLocation } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import Home from './pages/Home.jsx'
 
 import Portfolio from './pages/Portfolio.jsx'
@@ -18,15 +18,18 @@ const ScrollToTop = () => {
   const location = useLocation()
 
   useEffect(() => {
-    window.scrollTo(0, 0)
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur()
+    }
+    const isPortfolioAnchor = location.pathname === '/portfolio'
+      && new URLSearchParams(location.search).has('section')
+    if (!isPortfolioAnchor) {
+      window.scrollTo(0, 0)
     }
   }, [location.pathname, location.search])
 
   return null
 }
-
 
 const AdSlot = () => {
   useEffect(() => {
@@ -36,7 +39,7 @@ const AdSlot = () => {
         window.adsbygoogle.push({})
       }
     } catch {
-      // ignore ad errors during development
+      // Ignore ad errors during development.
     }
   }, [])
 
@@ -54,53 +57,81 @@ const AdSlot = () => {
   )
 }
 
-const SiteNav = () => (
-  <nav className="site-nav">
-    <div className="container nav-inner">
-      <Link className="brand" to="/">Yoo Juno</Link>
-      <div className="nav-links">
-        <div className="nav-item dropdown">
-          <Link className="nav-link" to="/portfolio">포트폴리오</Link>
-          <div className="dropdown-menu">
-            <Link to="/portfolio?section=about">소개</Link>
-            <Link to="/portfolio?section=focus">우선순위</Link>
-            <Link to="/portfolio?section=featured">대표</Link>
-            <Link to="/portfolio?section=project-library">전체</Link>
-            <Link to="/portfolio?section=skills">스택</Link>
-            <Link to="/portfolio?section=experience">경험</Link>
-            <Link to="/portfolio?section=activities">활동</Link>
-            <Link to="/portfolio?section=contact">연락</Link>
+const SiteNav = () => {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const navClass = ({ isActive }) => `nav-link${isActive ? ' is-active' : ''}`
+
+  return (
+    <nav className="site-nav" aria-label="주요 메뉴">
+      <div className="container nav-inner">
+        <Link className="brand" to="/" aria-label="홈으로 이동">
+          <span className="brand-mark" aria-hidden="true">YJ</span>
+          <span>Yoo Juno</span>
+        </Link>
+
+        <button
+          className={`nav-toggle${isOpen ? ' is-open' : ''}`}
+          type="button"
+          aria-label={isOpen ? '메뉴 닫기' : '메뉴 열기'}
+          aria-expanded={isOpen}
+          aria-controls="primary-navigation"
+          onClick={() => setIsOpen((open) => !open)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div
+          className={`nav-links${isOpen ? ' is-open' : ''}`}
+          id="primary-navigation"
+          onClick={(event) => {
+            if (event.target.closest('a')) setIsOpen(false)
+          }}
+        >
+          <div className="nav-item dropdown">
+            <NavLink className={navClass} to="/portfolio">포트폴리오</NavLink>
+            <div className="dropdown-menu">
+              <Link to="/portfolio?section=about">소개</Link>
+              <Link to="/portfolio?section=focus">우선순위</Link>
+              <Link to="/portfolio?section=featured">대표 프로젝트</Link>
+              <Link to="/portfolio?section=project-library">전체 프로젝트</Link>
+              <Link to="/portfolio?section=skills">기술 스택</Link>
+              <Link to="/portfolio?section=experience">경험</Link>
+              <Link to="/portfolio?section=activities">활동</Link>
+              <Link to="/portfolio?section=contact">연락</Link>
+            </div>
           </div>
-        </div>
-        <div className="nav-item dropdown">
-          <Link className="nav-link" to="/blog">블로그</Link>
-          <div className="dropdown-menu">
-            <Link to="/blog?category=개발">개발</Link>
-            <Link to="/blog?category=음악">음악</Link>
-            <Link to="/blog?category=여행">여행</Link>
-            <Link to="/blog?category=코딩테스트">코딩테스트</Link>
-            <Link to="/blog?category=트레이딩">트레이딩</Link>
+          <div className="nav-item dropdown">
+            <NavLink className={navClass} to="/blog">블로그</NavLink>
+            <div className="dropdown-menu">
+              <Link to="/blog?category=개발">개발</Link>
+              <Link to="/blog?category=음악">음악</Link>
+              <Link to="/blog?category=여행">여행</Link>
+              <Link to="/blog?category=코딩테스트">코딩테스트</Link>
+              <Link to="/blog?category=트레이딩">트레이딩</Link>
+            </div>
           </div>
-        </div>
-        <div className="nav-item dropdown">
-          <Link className="nav-link" to="/web-service">웹서비스</Link>
-          <div className="dropdown-menu">
-            <Link to="/web-service/blog">블로그</Link>
-            <Link to="/web-service/cctv-streaming">CCTV Streaming</Link>
-            <Link to="/web-service/video-chatting">Video Chatting</Link>
-            <Link to="/web-service/bitcoin-auto-trader">Bitcoin Auto Trader</Link>
+          <div className="nav-item dropdown">
+            <NavLink className={navClass} to="/web-service">웹서비스</NavLink>
+            <div className="dropdown-menu">
+              <Link to="/web-service/blog">블로그</Link>
+              <Link to="/web-service/cctv-streaming">CCTV Streaming</Link>
+              <Link to="/web-service/video-chatting">Video Chatting</Link>
+              <Link to="/web-service/bitcoin-auto-trader">Bitcoin Auto Trader</Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </nav>
-)
+    </nav>
+  )
+}
 
 function App() {
   return (
     <BrowserRouter>
       <div className="page">
-        <div className="bg-noise" aria-hidden="true"></div>
         <SiteNav />
         <ScrollToTop />
         <Routes>

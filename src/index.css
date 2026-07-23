@@ -3,4 +3,5 @@
 @import "./styles/components/navigation.css";
 @import "./styles/components/ui.css";
 @import "./styles/components/media.css";
-@import "./styles/responsive.css";  /* 맨 밑에 둬야 좋음 */
+@import "./styles/responsive.css";
+@import "./styles/modern.css";
