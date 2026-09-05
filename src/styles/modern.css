@@ -1211,6 +1211,12 @@ a.chip-link:hover {
   max-width: 100%;
 }
 
+/* width/height 속성으로 가로세로비를 알려주되 실제 표시는 폭에 맞춘다.
+   height:auto 가 없으면 속성값이 그대로 높이가 되어 이미지가 찌그러진다. */
+.post-content img {
+  height: auto;
+}
+
 .post-content table {
   display: block;
   overflow-x: auto;

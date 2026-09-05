@@ -43,6 +43,73 @@ const readBlogEntries = () => {
     .filter(Boolean)
 }
 
+// 이미지의 실제 픽셀 크기를 읽는다. PNG 는 IHDR, JPEG 는 SOF 마커,
+// SVG 는 width/height 또는 viewBox 에서 얻는다. 외부 의존성 없이 처리한다.
+const readImageSize = (file) => {
+  if (/\.svg$/i.test(file)) {
+    const text = fs.readFileSync(file, 'utf8').slice(0, 2000)
+    const w = text.match(/\bwidth\s*=\s*"([\d.]+)/)
+    const h = text.match(/\bheight\s*=\s*"([\d.]+)/)
+    if (w && h) return { width: Math.round(+w[1]), height: Math.round(+h[1]) }
+    const vb = text.match(/viewBox\s*=\s*"\s*[\d.-]+\s+[\d.-]+\s+([\d.]+)\s+([\d.]+)/)
+    if (vb) return { width: Math.round(+vb[1]), height: Math.round(+vb[2]) }
+    return null
+  }
+
+  const buf = fs.readFileSync(file)
+  if (buf.length > 24 && buf.toString('ascii', 12, 16) === 'IHDR') {
+    return { width: buf.readUInt32BE(16), height: buf.readUInt32BE(20) }
+  }
+  if (buf[0] === 0xff && buf[1] === 0xd8) {
+    let i = 2
+    while (i < buf.length - 9) {
+      if (buf[i] !== 0xff) { i += 1; continue }
+      const marker = buf[i + 1]
+      if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) {
+        return { height: buf.readUInt16BE(i + 5), width: buf.readUInt16BE(i + 7) }
+      }
+      i += 2 + buf.readUInt16BE(i + 2)
+    }
+  }
+  return null
+}
+
+// src/lib/posts.js 의 import.meta.glob 키와 같은 형태로 크기 표를 만든다.
+// (예: ../content/blog/slam-where-am-i/image_1.png)
+const collectBlogImageSizes = () => {
+  const blogDir = path.join(rootDir, 'src/content/blog')
+  const sizes = {}
+  if (!fs.existsSync(blogDir)) return sizes
+
+  const walk = (dir, prefix) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name)
+      if (entry.isDirectory()) { walk(full, `${prefix}${entry.name}/`); continue }
+      if (!/\.(png|jpe?g|webp|svg|gif|avif)$/i.test(entry.name)) continue
+      const size = readImageSize(full)
+      if (size) sizes[`${prefix}${entry.name}`] = size
+    }
+  }
+  walk(blogDir, '../content/blog/')
+  return sizes
+}
+
+// 본문 이미지에 width/height 를 넣어 로딩 중 레이아웃이 밀리는 것을 막는다.
+// 브라우저에서는 파일 크기를 알 수 없으므로 빌드 시 계산해 넘긴다.
+const VIRTUAL_SIZES = 'virtual:blog-image-sizes'
+const RESOLVED_SIZES = `\0${VIRTUAL_SIZES}`
+
+const imageSizesPlugin = () => ({
+  name: 'blog-image-sizes',
+  resolveId(id) {
+    return id === VIRTUAL_SIZES ? RESOLVED_SIZES : null
+  },
+  load(id) {
+    if (id !== RESOLVED_SIZES) return null
+    return `export default ${JSON.stringify(collectBlogImageSizes())}`
+  },
+})
+
 // 사이트가 제공하는 모든 경로와 각 경로의 head 값
 const collectPages = () => [
   ...Object.entries(ROUTE_META).map(([route, meta]) => ({ route, ...meta, date: '' })),
@@ -137,5 +204,5 @@ const prerenderPlugin = () => ({
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
-  plugins: [react(), prerenderPlugin()],
+  plugins: [react(), imageSizesPlugin(), prerenderPlugin()],
 })

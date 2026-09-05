@@ -1,4 +1,5 @@
 import { marked } from 'marked'
+import imageSizes from 'virtual:blog-image-sizes'
 
 const modules = import.meta.glob('../content/blog/**/index.md', {
   eager: true,
@@ -103,31 +104,59 @@ const isExternalLink = (value) =>
   value.startsWith('mailto:') ||
   value.startsWith('tel:')
 
-const resolveImageSrc = (href, baseDir) => {
-  if (!href || typeof href !== 'string') return href
-  if (href.startsWith('/') || isExternalLink(href)) return href
+// 번들된 이미지 URL 과 실제 픽셀 크기를 함께 돌려준다.
+// 크기는 vite.config.js 의 blog-image-sizes 플러그인이 빌드 시 계산한다.
+const resolveImage = (href, baseDir) => {
+  if (!href || typeof href !== 'string') return { src: href, size: null }
+  if (href.startsWith('/') || isExternalLink(href)) return { src: href, size: null }
   const [pathPart, suffix = ''] = href.split(/(?=[?#])/)
   const cleaned = pathPart.replace(/^\.\//, '')
-  if (cleaned.startsWith('../')) return href
+  if (cleaned.startsWith('../')) return { src: href, size: null }
   const key = `${baseDir}${cleaned}`
   const resolved = imageModules[key]
-  if (!resolved) return href
-  return `${resolved}${suffix}`
+  if (!resolved) return { src: href, size: null }
+  return { src: `${resolved}${suffix}`, size: imageSizes[key] || null }
 }
 
-// 본문 이미지는 화면에 들어올 때 로드한다.
-// 이미지가 많은 글(예: SLAM 글 25장, 13MB)에서 진입 즉시 전부 받는 것을 막는다.
-const withLazyLoading = (html) =>
-  html.replace(/^<img /, '<img loading="lazy" decoding="async" ')
+// 제목에 붙일 id 를 만든다. 같은 글 안에서 중복되면 뒤에 번호를 붙인다.
+const slugify = (text) =>
+  String(text)
+    .toLowerCase()
+    .replace(/<[^>]*>/g, '')
+    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .trim()
+    .replace(/\s+/g, '-') || 'section'
 
 const createRenderer = (baseDir) => {
   const renderer = new marked.Renderer()
   const originalImage = renderer.image.bind(renderer)
+  const originalHeading = renderer.heading.bind(renderer)
+  const used = new Map()
+
+  // 본문 이미지는 화면에 들어올 때 로드하고, 실제 크기를 함께 지정해
+  // 로딩 중 본문이 밀리지 않게 한다. (CSS 의 height:auto 와 함께 동작)
   renderer.image = (token) => {
     if (!token || typeof token !== 'object') return originalImage(token)
-    const resolved = resolveImageSrc(token.href, baseDir)
-    return withLazyLoading(originalImage({ ...token, href: resolved }))
+    const { src, size } = resolveImage(token.href, baseDir)
+    const attrs = ['loading="lazy"', 'decoding="async"']
+    if (size) attrs.push(`width="${size.width}"`, `height="${size.height}"`)
+    return originalImage({ ...token, href: src }).replace(
+      /^<img /,
+      `<img ${attrs.join(' ')} `,
+    )
   }
+
+  // marked v7 부터 제목 id 를 자동으로 만들지 않는다. 긴 글에서 특정 절을
+  // 링크로 가리킬 수 있도록 직접 붙인다.
+  renderer.heading = (token) => {
+    const html = originalHeading(token)
+    const base = slugify(token.text)
+    const count = used.get(base) || 0
+    used.set(base, count + 1)
+    const id = count ? `${base}-${count}` : base
+    return html.replace(/^<h([1-6])/, `<h$1 id="${id}"`)
+  }
+
   return renderer
 }
 
