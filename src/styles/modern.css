@@ -366,6 +366,35 @@
   color: var(--muted);
 }
 
+.detail-note {
+  margin: 14px 0;
+  padding: 12px 14px;
+  border-left: 2px solid #d8dfea;
+  border-radius: 0 8px 8px 0;
+  background: #f7f9fc;
+}
+
+.detail-note h4 {
+  margin-bottom: 6px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.detail-note p + p {
+  margin-top: 8px;
+}
+
+.detail-note strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.detail-note ul {
+  margin: 0;
+}
+
 .detail-body ul {
   margin: 12px 0;
   list-style: none;

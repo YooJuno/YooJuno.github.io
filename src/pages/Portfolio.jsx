@@ -517,11 +517,61 @@ function Portfolio() {
                             <span className="meta">2024.07-08 · 인턴 · 1인</span>
                           </summary>
                           <div className="detail-body">
-                            <p>COLMAP 3D 재구성 기반 Real-to-Pixel 스케일을 활용한 속도 추정.</p>
+                            <p>
+                              단속 카메라가 없는 사고 구간에서 과속 여부를 가리기 위해, 블랙박스
+                              영상만으로 차량 속도를 추정했습니다. GMD SOFT 인턴 기간에 1인으로
+                              진행했습니다.
+                            </p>
                             <ul>
-                              <li>차량 보닛 마스킹으로 Point Cloud 품질 개선</li>
-                              <li>구간별 ±3 km/h 수준과 큰 편차 구간을 함께 분석</li>
+                              <li>블랙박스 영상을 마스킹 전처리한 뒤 COLMAP 으로 3D 재구성</li>
+                              <li>현실 1m 가 재구성 공간에서 몇 픽셀인지(Real-to-Pixel) 계산</li>
+                              <li>프레임 간 이동 거리와 시간 차로 실제 속도 산출</li>
                             </ul>
+
+                            <div className="detail-note">
+                              <h4>문제 해결</h4>
+                              <p>
+                                <strong>문제</strong> 3D 재구성이 불규칙하게 이루어져 Point Cloud
+                                품질이 나빴습니다.
+                              </p>
+                              <p>
+                                <strong>원인</strong> 영상 상단의 블랙박스 정보 표시와 하단의 차량
+                                보닛이 매 프레임 같은 자리에 찍혀 재구성에 노이즈로 작용했습니다.
+                              </p>
+                              <p>
+                                <strong>해결</strong> 해당 영역을 마스킹해 제거하자 훨씬 안정적인
+                                Point Cloud 를 얻었습니다.
+                              </p>
+                            </div>
+
+                            <div className="detail-note">
+                              <h4>스케일 산출 방법</h4>
+                              <ul>
+                                <li>구간 내 눈에 띄는 랜드마크(주로 가로등 간격)를 골라 지도로 실제 길이 측정</li>
+                                <li>재구성한 공간에서 같은 랜드마크의 픽셀 길이 측정</li>
+                                <li>두 값의 비율로 m 당 픽셀 수를 구해 프레임 간 속도 계산에 사용</li>
+                              </ul>
+                            </div>
+
+                            <div className="detail-note">
+                              <h4>결과와 한계</h4>
+                              <p>
+                                주행 영상 세 편 모두 일정 구간에서는 ±3 km/h 수준의 오차를 보였고, 그
+                                구간은 대부분 랜드마크를 측정한 지점 근처였습니다. 반면 랜드마크에서
+                                멀어질수록 오차가 커져 후방 카메라에서는 250 km/h 까지 벌어졌습니다.
+                              </p>
+                              <p>
+                                <strong>원인 분석</strong> COLMAP 은 사실적인 재구성에 강하지만, 직선
+                                주행 영상에서는 카메라가 이동하면서 재구성 공간의 스케일 자체가
+                                달라집니다. 이것이 Real-to-Pixel 변환에 그대로 오차로 반영됩니다.
+                              </p>
+                              <p>
+                                <strong>회고</strong> 3D 재구성을 어떻게 수행하느냐에 따라 결과가 크게
+                                바뀝니다. COLMAP 을 더 깊이 다루거나 다른 재구성 도구를 쓰면 정밀도를
+                                높일 여지가 있습니다.
+                              </p>
+                            </div>
+
                             <div className="tag-row">
                               <span>COLMAP</span><span>SfM</span><span>OpenCV</span>
                             </div>
