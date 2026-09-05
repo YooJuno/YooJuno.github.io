@@ -90,7 +90,7 @@ function Blog() {
             >
               <div className="post-meta">
                 {post.category && <span className="post-category">{post.category}</span>}
-                {post.date && <span>{post.date}</span>}
+                {post.date && <time dateTime={post.date}>{post.date}</time>}
               </div>
               <h3>{post.title}</h3>
               <p>{post.summary}</p>

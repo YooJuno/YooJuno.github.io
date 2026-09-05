@@ -27,7 +27,7 @@ function Post() {
         <div className="post-header">
           <p className="post-meta">
             {post.category && <span className="post-category">{post.category}</span>}
-            {post.date && <span>{post.date}</span>}
+            {post.date && <time dateTime={post.date}>{post.date}</time>}
           </p>
           <h1>{post.title}</h1>
           <div className="post-tags">

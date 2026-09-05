@@ -15,6 +15,7 @@ const findInContainer = (container, id) => {
 
 function Portfolio() {
   const containerRef = useRef(null)
+  const lightboxCloseRef = useRef(null)
   const location = useLocation()
   const [lightbox, setLightbox] = useState(null)
   const [activeProjectId, setActiveProjectId] = useState('')
@@ -138,17 +139,30 @@ function Portfolio() {
 
   useEffect(() => {
     if (!lightbox) return undefined
+
+    // 열기 전 포커스를 기억했다가 닫을 때 되돌린다.
+    const previouslyFocused = document.activeElement
     const handleKey = (event) => {
       if (event.key === 'Escape') {
         setLightbox(null)
+        return
+      }
+      // 대화상자 안에서 이동 가능한 요소는 닫기 버튼 하나뿐이므로
+      // Tab 이 배경으로 빠져나가지 않게 붙잡아 둔다.
+      if (event.key === 'Tab') {
+        event.preventDefault()
+        lightboxCloseRef.current?.focus()
       }
     }
     const prevOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     window.addEventListener('keydown', handleKey)
+    lightboxCloseRef.current?.focus()
+
     return () => {
       window.removeEventListener('keydown', handleKey)
       document.body.style.overflow = prevOverflow
+      if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus()
     }
   }, [lightbox])
 
@@ -955,7 +969,12 @@ function Portfolio() {
                 </section>
               </main>
               {lightbox && (
-                <div className="lightbox" role="dialog" aria-modal="true">
+                <div
+                  className="lightbox"
+                  role="dialog"
+                  aria-modal="true"
+                  aria-label={lightbox.alt || '이미지 확대 보기'}
+                >
                   <div
                     className="lightbox-backdrop"
                     onClick={() => setLightbox(null)}
@@ -965,6 +984,7 @@ function Portfolio() {
                     <button
                       className="lightbox-close"
                       type="button"
+                      ref={lightboxCloseRef}
                       onClick={() => setLightbox(null)}
                       aria-label="닫기"
                     >
