@@ -32,7 +32,8 @@ https://yoojuno.github.io/
 - `src/lib/routeMeta.js`: 라우트별 제목/설명 단일 출처 (런타임·빌드 공용)
 - `src/hooks/useDocumentTitle.js`: 라우트별 `<title>`/meta description 갱신
 - `src/components/ErrorBoundary.jsx`: 페이지 예외를 가둬 사이트 전체 백지화를 막음
-- `vite.config.js`: 빌드 시 라우트별 HTML 프리렌더 + `sitemap.xml` 생성 플러그인 포함
+- `vite.config.js`: 빌드 플러그인 모음 (라우트별 HTML 프리렌더, `sitemap.xml` 생성,
+  블로그 이미지 크기 주입, slug 중복 검사)
 - `public/robots.txt`: 크롤러 안내 + sitemap 위치
 - `public/og-card.png`: SNS 링크 미리보기 카드 (원본: `tools/og-card/card.html`)
 - `.github/workflows/deploy.yml`: GitHub Actions 배포 파이프라인
@@ -105,6 +106,17 @@ summary: "글 요약"
 - `summary`가 없으면 본문 일부가 자동 요약으로 사용됩니다.
 - 목록 페이지에서 검색/태그/카테고리 필터가 동작합니다.
 - `slug`를 Frontmatter에 넣으면 폴더명 대신 해당 값이 사용됩니다.
+  글끼리 `slug`가 겹치면 빌드가 실패합니다.
+- 본문 이미지에는 빌드 시 실제 크기(`width`/`height`)가 자동으로 들어갑니다.
+  덕분에 이미지가 늦게 떠도 본문이 밀리지 않습니다. 직접 적을 필요는 없습니다.
+- 본문의 각 제목에는 자동으로 `id`가 붙어 `/blog/<slug>/#제목-슬러그` 형태로
+  특정 절을 바로 가리킬 수 있습니다.
+
+## 성능
+
+- 라우트별로 코드를 나눠(`React.lazy`) 첫 화면에서 필요 없는 코드를 받지 않습니다.
+  특히 블로그 청크에는 `marked`와 모든 글 본문이 들어 있어 분리 효과가 큽니다.
+- 포트폴리오와 블로그 본문 이미지는 화면에 들어올 때 로드합니다(`loading="lazy"`).
 
 ## SEO / 프리렌더링
 
