@@ -579,12 +579,12 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="높이 추정 결과" loading="lazy" decoding="async" />
-                                <figcaption>높이 추정 결과</figcaption>
+                                <img src="/content/portfolio/cctv-height/single-view.jpg" alt="Single View Metrology" loading="lazy" decoding="async" />
+                                <figcaption>Single View Metrology</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="기하 보정 라인" loading="lazy" decoding="async" />
-                                <figcaption>기하 보정 라인</figcaption>
+                                <img src="/content/portfolio/cctv-height/sign.jpg" alt="표지판 높이 추정 (오차 +1.7cm)" loading="lazy" decoding="async" />
+                                <figcaption>표지판 높이 추정 (오차 +1.7cm)</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -655,12 +655,12 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="속도 추정 프레임" loading="lazy" decoding="async" />
-                                <figcaption>속도 추정 프레임</figcaption>
+                                <img src="/content/portfolio/cctv-speed/perspective.jpg" alt="원근 제거 과정" loading="lazy" decoding="async" />
+                                <figcaption>원근 제거 과정</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="트래킹 결과" loading="lazy" decoding="async" />
-                                <figcaption>트래킹 결과</figcaption>
+                                <img src="/content/portfolio/cctv-speed/result.jpg" alt="16km/h 구간 추정 결과" loading="lazy" decoding="async" />
+                                <figcaption>16km/h 구간 추정 결과</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -798,12 +798,12 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="관제 UI" loading="lazy" decoding="async" />
-                                <figcaption>관제 UI</figcaption>
+                                <img src="/content/portfolio/zytron/architecture.jpg" alt="시스템 구성" loading="lazy" decoding="async" />
+                                <figcaption>시스템 구성</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="로봇 상태 맵" loading="lazy" decoding="async" />
-                                <figcaption>로봇 상태 맵</figcaption>
+                                <img src="/content/portfolio/zytron/gui.jpg" alt="상황판 GUI" loading="lazy" decoding="async" />
+                                <figcaption>상황판 GUI</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -854,12 +854,12 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="주차 경로" loading="lazy" decoding="async" />
-                                <figcaption>주차 경로</figcaption>
+                                <img src="/content/portfolio/autopark/paths.jpg" alt="Pose 별 생성 경로" loading="lazy" decoding="async" />
+                                <figcaption>Pose 별 생성 경로</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="시뮬레이터 화면" loading="lazy" decoding="async" />
-                                <figcaption>시뮬레이터 화면</figcaption>
+                                <img src="/content/portfolio/autopark/sim.jpg" alt="2차원 시뮬레이션" loading="lazy" decoding="async" />
+                                <figcaption>2차원 시뮬레이션</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -900,12 +900,16 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="SLAM+YOLO 파이프라인" loading="lazy" decoding="async" />
-                                <figcaption>SLAM+YOLO 파이프라인</figcaption>
+                                <img src="/content/portfolio/pilotnet/architecture.jpg" alt="서버-클라이언트 구조" loading="lazy" decoding="async" />
+                                <figcaption>서버-클라이언트 구조</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="주행 데모" loading="lazy" decoding="async" />
-                                <figcaption>주행 데모</figcaption>
+                                <img src="/content/portfolio/pilotnet/slam-map.jpg" alt="ORB-SLAM3 3D 맵" loading="lazy" decoding="async" />
+                                <figcaption>ORB-SLAM3 3D 맵</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/pilotnet/vehicle.jpg" alt="주행에 사용한 전동차" loading="lazy" decoding="async" />
+                                <figcaption>주행에 사용한 전동차</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -954,12 +958,12 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="파노라마 매칭" loading="lazy" decoding="async" />
-                                <figcaption>파노라마 매칭</figcaption>
+                                <img src="/content/portfolio/rist/odometry.jpg" alt="Visual Odometry" loading="lazy" decoding="async" />
+                                <figcaption>Visual Odometry</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="작업자 위치 추정" loading="lazy" decoding="async" />
-                                <figcaption>작업자 위치 추정</figcaption>
+                                <img src="/content/portfolio/rist/radius-matching.jpg" alt="Radius Matching" loading="lazy" decoding="async" />
+                                <figcaption>Radius Matching</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -1008,12 +1012,12 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="매매 대시보드" loading="lazy" decoding="async" />
-                                <figcaption>매매 대시보드</figcaption>
+                                <img src="/content/portfolio/trader/lstm.jpg" alt="LSTM 모델 구성" loading="lazy" decoding="async" />
+                                <figcaption>LSTM 모델 구성</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="전략 흐름" loading="lazy" decoding="async" />
-                                <figcaption>전략 흐름</figcaption>
+                                <img src="/content/portfolio/trader/strategy.jpg" alt="변동성 돌파 전략" loading="lazy" decoding="async" />
+                                <figcaption>변동성 돌파 전략</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -1056,12 +1060,12 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="게임 화면" loading="lazy" decoding="async" />
+                                <img src="/content/portfolio/pacman/game.jpg" alt="게임 화면" loading="lazy" decoding="async" />
                                 <figcaption>게임 화면</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="네트워크 구조" loading="lazy" decoding="async" />
-                                <figcaption>네트워크 구조</figcaption>
+                                <img src="/content/portfolio/pacman/multi.jpg" alt="다중 클라이언트 동시 접속" loading="lazy" decoding="async" />
+                                <figcaption>다중 클라이언트 동시 접속</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -1100,12 +1104,12 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="LED 피아노 보드" loading="lazy" decoding="async" />
-                                <figcaption>LED 피아노 보드</figcaption>
+                                <img src="/content/portfolio/stm32/architecture.jpg" alt="시스템 구성" loading="lazy" decoding="async" />
+                                <figcaption>시스템 구성</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="패턴 출력" loading="lazy" decoding="async" />
-                                <figcaption>패턴 출력</figcaption>
+                                <img src="/content/portfolio/stm32/board.jpg" alt="피아노 회로" loading="lazy" decoding="async" />
+                                <figcaption>피아노 회로</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -1136,12 +1140,8 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="드론 주행" loading="lazy" decoding="async" />
-                                <figcaption>드론 주행</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="객체 추적" loading="lazy" decoding="async" />
-                                <figcaption>객체 추적</figcaption>
+                                <img src="/content/portfolio/drone/tello.jpg" alt="사용한 Tello 드론" loading="lazy" decoding="async" />
+                                <figcaption>사용한 Tello 드론</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -1170,12 +1170,8 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="차선 인식" loading="lazy" decoding="async" />
-                                <figcaption>차선 인식</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="주행 테스트" loading="lazy" decoding="async" />
-                                <figcaption>주행 테스트</figcaption>
+                                <img src="/content/portfolio/modelcar/car.jpg" alt="모형차" loading="lazy" decoding="async" />
+                                <figcaption>모형차</figcaption>
                               </figure>
                             </div>
                           </div>
