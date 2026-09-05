@@ -1,7 +1,6 @@
 @import "./styles/base.css";
 @import "./styles/layout.css";
 @import "./styles/components/navigation.css";
-@import "./styles/components/ui.css";
+@import "./styles/modern.css";
 @import "./styles/components/media.css";
 @import "./styles/responsive.css";
-@import "./styles/modern.css";

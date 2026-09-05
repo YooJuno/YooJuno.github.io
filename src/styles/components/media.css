@@ -6,9 +6,6 @@
 }
 
 .media-tile {
-  background: rgba(255, 255, 255, 0.85);
-  border-radius: var(--radius-sm);
-  border: 1px dashed rgba(27, 26, 24, 0.18);
   padding: 10px;
   min-height: 140px;
   display: flex;
@@ -20,11 +17,9 @@
 .media-placeholder {
   flex: 1;
   border-radius: 10px;
-  background: #f0f2f5;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--muted);
   font-size: 12px;
   font-weight: 600;
   min-height: 90px;
@@ -64,9 +59,7 @@
   position: relative;
   z-index: 1;
   background: var(--card);
-  border-radius: var(--radius);
   padding: 12px;
-  box-shadow: var(--shadow);
   display: grid;
   gap: 10px;
   max-width: min(960px, 92vw);
