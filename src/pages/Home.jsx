@@ -17,7 +17,7 @@ function Home() {
               ROS2 자율주행, 컴퓨터 비전, 임베디드 시스템을 개발합니다.
             </p>
             <div className="hero-actions">
-              <Link className="btn primary" to="/portfolio">프로젝트</Link>
+              <Link className="btn primary" to="/portfolio">포트폴리오</Link>
               <Link className="btn ghost" to="/blog">블로그</Link>
             </div>
           </div>
