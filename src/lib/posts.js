@@ -115,13 +115,18 @@ const resolveImageSrc = (href, baseDir) => {
   return `${resolved}${suffix}`
 }
 
+// 본문 이미지는 화면에 들어올 때 로드한다.
+// 이미지가 많은 글(예: SLAM 글 25장, 13MB)에서 진입 즉시 전부 받는 것을 막는다.
+const withLazyLoading = (html) =>
+  html.replace(/^<img /, '<img loading="lazy" decoding="async" ')
+
 const createRenderer = (baseDir) => {
   const renderer = new marked.Renderer()
   const originalImage = renderer.image.bind(renderer)
   renderer.image = (token) => {
     if (!token || typeof token !== 'object') return originalImage(token)
     const resolved = resolveImageSrc(token.href, baseDir)
-    return originalImage({ ...token, href: resolved })
+    return withLazyLoading(originalImage({ ...token, href: resolved }))
   }
   return renderer
 }
