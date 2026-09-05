@@ -111,15 +111,32 @@ const imageSizesPlugin = () => ({
 })
 
 // 사이트가 제공하는 모든 경로와 각 경로의 head 값
-const collectPages = () => [
-  ...Object.entries(ROUTE_META).map(([route, meta]) => ({ route, ...meta, date: '' })),
-  ...readBlogEntries().map((post) => ({
-    route: `/blog/${post.slug}`,
-    title: post.title,
-    description: post.description,
-    date: post.date,
-  })),
-]
+const collectPages = () => {
+  const entries = readBlogEntries()
+
+  // slug 가 겹치면 프리렌더 파일이 서로 덮어써 글 하나가 조용히 사라지고,
+  // getPostBySlug 도 앞의 것만 돌려준다. 빌드에서 바로 잡는다.
+  const seen = new Map()
+  for (const post of entries) {
+    if (seen.has(post.slug)) {
+      throw new Error(
+        `블로그 slug 가 중복됩니다: "${post.slug}". ` +
+          'Frontmatter 의 slug 를 바꾸거나 폴더 이름을 조정하세요.',
+      )
+    }
+    seen.set(post.slug, true)
+  }
+
+  return [
+    ...Object.entries(ROUTE_META).map(([route, meta]) => ({ route, ...meta, date: '' })),
+    ...entries.map((post) => ({
+      route: `/blog/${post.slug}`,
+      title: post.title,
+      description: post.description,
+      date: post.date,
+    })),
+  ]
+}
 
 // GitHub Pages 는 하위 디렉터리 경로를 슬래시 붙은 주소로 301 리다이렉트한다.
 // (/portfolio -> /portfolio/) sitemap 과 canonical 은 리다이렉트되지 않는

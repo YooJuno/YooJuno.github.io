@@ -4,6 +4,7 @@ import {
   DEFAULT_DESCRIPTION,
   ROUTE_META,
   formatTitle,
+  normalizePathname,
 } from '../lib/routeMeta'
 
 // 라우트별 <title>과 meta description을 갱신한다.
@@ -13,14 +14,9 @@ import {
 //
 // 빌드 시 vite.config.js 가 같은 값으로 각 경로의 HTML 을 미리 만들어 두므로
 // 최초 응답과 이 훅이 설정하는 값이 일치한다.
-// 프리렌더된 경로는 하위 디렉터리로 제공되어 /portfolio/ 처럼 끝에 슬래시가
-// 붙은 채 들어올 수 있다. ROUTE_META 키와 맞도록 정규화한다.
-const normalize = (pathname) =>
-  pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
-
 const useDocumentTitle = (title, description) => {
   const { pathname } = useLocation()
-  const meta = ROUTE_META[normalize(pathname)]
+  const meta = ROUTE_META[normalizePathname(pathname)]
   const resolvedTitle = title ?? meta?.title ?? ''
   const resolvedDescription = description ?? meta?.description ?? DEFAULT_DESCRIPTION
 

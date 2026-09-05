@@ -17,6 +17,7 @@ const WebServiceBtc = lazy(() => import('./pages/webservice/WebServiceBtc.jsx'))
 
 const NotFound = lazy(() => import('./pages/NotFound.jsx'))
 import ErrorBoundary from './components/ErrorBoundary.jsx'
+import { normalizePathname } from './lib/routeMeta'
 
 const ScrollToTop = () => {
   const location = useLocation()
@@ -25,7 +26,8 @@ const ScrollToTop = () => {
     if (document.activeElement instanceof HTMLElement) {
       document.activeElement.blur()
     }
-    const isPortfolioAnchor = location.pathname === '/portfolio'
+    // 프리렌더 도입 후 /portfolio/ 처럼 끝 슬래시가 붙은 주소로도 들어온다.
+    const isPortfolioAnchor = normalizePathname(location.pathname) === '/portfolio'
       && new URLSearchParams(location.search).has('section')
     if (!isPortfolioAnchor) {
       window.scrollTo(0, 0)

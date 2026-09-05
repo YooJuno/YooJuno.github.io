@@ -51,3 +51,8 @@ export const ROUTE_META = {
 
 // 페이지 제목을 문서 <title> 형태로 만든다.
 export const formatTitle = (title) => (title ? `${title} · ${SITE_NAME}` : HOME_TITLE)
+
+// 프리렌더된 경로는 하위 디렉터리로 제공되어 /portfolio/ 처럼 끝에 슬래시가
+// 붙은 채 들어온다. 경로를 비교할 때는 항상 이 함수를 거쳐야 한다.
+export const normalizePathname = (pathname) =>
+  pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
