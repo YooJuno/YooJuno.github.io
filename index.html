@@ -11,10 +11,11 @@
     <link rel="icon" href="/favicon.ico" />
     <link rel="canonical" href="https://yoojuno.github.io/" />
 
-    <!-- SNS 링크 미리보기용 정적 태그.
-         카카오톡/슬랙/X 등의 크롤러는 JS를 실행하지 않아 라우트별 값을 읽지 못한다.
-         따라서 사이트 공통 값으로 고정한다. (라우트별 title/description은
-         src/hooks/useDocumentTitle.js 가 담당하며 검색엔진·브라우저에만 반영된다.)
+    <!-- 아래 값은 홈(/)의 기본값이다.
+         빌드 시 vite.config.js 의 프리렌더 플러그인이 라우트마다 이 HTML 을 복사하면서
+         title/description/canonical/og 를 해당 경로 값으로 바꾼다. 따라서 JS 를
+         실행하지 않는 SNS 크롤러도 글마다 다른 링크 미리보기를 얻는다.
+         값의 출처는 src/lib/routeMeta.js 와 각 글의 Frontmatter 다.
          TODO: og:image 는 1200x630 브랜드 카드로 교체 권장. 현재는 기존 이미지 임시 사용. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Yoo Juno" />
