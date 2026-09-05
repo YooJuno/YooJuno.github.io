@@ -13,6 +13,7 @@ import WebServiceVideo from './pages/webservice/WebServiceVideo.jsx'
 import WebServiceBtc from './pages/webservice/WebServiceBtc.jsx'
 
 import NotFound from './pages/NotFound.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 const ScrollToTop = () => {
   const location = useLocation()
@@ -101,24 +102,36 @@ const SiteNav = () => {
   )
 }
 
+// 오류 경계를 경로별로 두어, 한 페이지에서 예외가 나도 네비게이션/푸터는 살아 있고
+// 다른 경로로 이동하면 key 변경으로 경계가 다시 마운트되며 자동 복구된다.
+const AppRoutes = () => {
+  const location = useLocation()
+
+  return (
+    <ErrorBoundary key={location.pathname}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<Post />} />
+        <Route path="/web-service" element={<WebService />} />
+        <Route path="/web-service/blog" element={<WebServiceBlog />} />
+        <Route path="/web-service/cctv-streaming" element={<WebServiceCctv />} />
+        <Route path="/web-service/video-chatting" element={<WebServiceVideo />} />
+        <Route path="/web-service/bitcoin-auto-trader" element={<WebServiceBtc />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </ErrorBoundary>
+  )
+}
+
 function App() {
   return (
     <BrowserRouter>
       <div className="page">
         <SiteNav />
         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<Post />} />
-          <Route path="/web-service" element={<WebService />} />
-          <Route path="/web-service/blog" element={<WebServiceBlog />} />
-          <Route path="/web-service/cctv-streaming" element={<WebServiceCctv />} />
-          <Route path="/web-service/video-chatting" element={<WebServiceVideo />} />
-          <Route path="/web-service/bitcoin-auto-trader" element={<WebServiceBtc />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AppRoutes />
         <footer className="site-footer">
           <div className="container">
             <p>© 2026 Junho Yoo. All rights reserved.</p>
