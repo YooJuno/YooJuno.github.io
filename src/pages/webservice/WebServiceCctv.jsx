@@ -4,7 +4,7 @@ import '../../styles/pages/webservice.css'
 
 function WebServiceCctv() {
   useReveal()
-  useDocumentTitle('CCTV Streaming', '장거리 무선 환경을 위한 영상 모니터링 서비스.')
+  useDocumentTitle()
   return (
     <main className="section">
       <div className="container is-visible" data-reveal>

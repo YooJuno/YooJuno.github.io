@@ -4,7 +4,7 @@ import '../../styles/pages/webservice.css'
 
 function WebServiceVideo() {
   useReveal()
-  useDocumentTitle('Video Chatting', '브라우저 기반 실시간 영상 통화 서비스.')
+  useDocumentTitle()
   return (
     <main className="section">
       <div className="container is-visible" data-reveal>

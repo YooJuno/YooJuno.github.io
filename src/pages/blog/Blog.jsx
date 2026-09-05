@@ -14,10 +14,7 @@ function Blog() {
   const tags = getAllTags()
   const activeCategory = searchParams.get('category') || ''
 
-  useDocumentTitle(
-    activeCategory ? `블로그 · ${activeCategory}` : '블로그',
-    '개발 과정과 기술 메모를 기록합니다.',
-  )
+  useDocumentTitle(activeCategory ? `블로그 · ${activeCategory}` : undefined)
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()

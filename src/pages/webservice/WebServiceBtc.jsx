@@ -4,7 +4,7 @@ import '../../styles/pages/webservice.css'
 
 function WebServiceBtc() {
   useReveal()
-  useDocumentTitle('Bitcoin Auto Trader', '전략 설정과 자동매매 실행을 연결한 서비스.')
+  useDocumentTitle()
   return (
     <main className="section">
       <div className="container is-visible" data-reveal>

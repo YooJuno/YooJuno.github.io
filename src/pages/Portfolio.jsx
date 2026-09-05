@@ -20,7 +20,7 @@ function Portfolio() {
   const [activeProjectId, setActiveProjectId] = useState('')
   const [activeSectionId, setActiveSectionId] = useState('')
   useReveal()
-  useDocumentTitle('포트폴리오', '로보틱스·컴퓨터비전·임베디드 프로젝트와 경험을 정리한 포트폴리오입니다.')
+  useDocumentTitle()
   const getIndexClass = (id) => (
     activeProjectId === id ? 'index-link is-active' : 'index-link'
   )

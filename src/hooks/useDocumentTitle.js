@@ -1,25 +1,35 @@
 import { useEffect } from 'react'
-
-const SITE_NAME = 'Yoo Juno'
-const HOME_TITLE = 'Yoo Juno · 로보틱스·컴퓨터비전 개발자'
-const DEFAULT_DESCRIPTION =
-  '로보틱스·컴퓨터비전·임베디드 중심의 시스템 통합 개발자 유준호 포트폴리오'
+import { useLocation } from 'react-router-dom'
+import {
+  DEFAULT_DESCRIPTION,
+  ROUTE_META,
+  formatTitle,
+} from '../lib/routeMeta'
 
 // 라우트별 <title>과 meta description을 갱신한다.
 //
-// 이 사이트는 클라이언트 렌더링 SPA라 적용 범위에 한계가 있다.
-// - 반영됨: 브라우저 탭/북마크/방문기록, JS를 실행하는 검색엔진(Google 등)
-// - 반영 안 됨: JS를 실행하지 않는 SNS 링크 미리보기 크롤러
-//   (카카오톡/슬랙/X 등) → index.html의 정적 og 태그가 대신 처리한다.
-const useDocumentTitle = (title, description) => {
-  useEffect(() => {
-    document.title = title ? `${title} · ${SITE_NAME}` : HOME_TITLE
+// 인자를 주지 않으면 현재 경로에 해당하는 routeMeta 값을 쓴다.
+// 글 상세처럼 값이 동적인 화면만 인자로 직접 넘긴다.
+//
+// 빌드 시 vite.config.js 가 같은 값으로 각 경로의 HTML 을 미리 만들어 두므로
+// 최초 응답과 이 훅이 설정하는 값이 일치한다.
+// 프리렌더된 경로는 하위 디렉터리로 제공되어 /portfolio/ 처럼 끝에 슬래시가
+// 붙은 채 들어올 수 있다. ROUTE_META 키와 맞도록 정규화한다.
+const normalize = (pathname) =>
+  pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
 
-    const meta = document.querySelector('meta[name="description"]')
-    if (meta) {
-      meta.setAttribute('content', description || DEFAULT_DESCRIPTION)
-    }
-  }, [title, description])
+const useDocumentTitle = (title, description) => {
+  const { pathname } = useLocation()
+  const meta = ROUTE_META[normalize(pathname)]
+  const resolvedTitle = title ?? meta?.title ?? ''
+  const resolvedDescription = description ?? meta?.description ?? DEFAULT_DESCRIPTION
+
+  useEffect(() => {
+    document.title = formatTitle(resolvedTitle)
+
+    const tag = document.querySelector('meta[name="description"]')
+    if (tag) tag.setAttribute('content', resolvedDescription)
+  }, [resolvedTitle, resolvedDescription])
 }
 
 export default useDocumentTitle

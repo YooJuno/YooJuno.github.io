@@ -29,9 +29,10 @@ https://yoojuno.github.io/
 - `src/content/blog/<slug>/index.md`: Markdown 글 + Frontmatter
 - `src/content/blog/<slug>/*`: 글에 사용하는 이미지
 - `src/lib/posts.js`: 글 로딩/파싱
+- `src/lib/routeMeta.js`: 라우트별 제목/설명 단일 출처 (런타임·빌드 공용)
 - `src/hooks/useDocumentTitle.js`: 라우트별 `<title>`/meta description 갱신
 - `src/components/ErrorBoundary.jsx`: 페이지 예외를 가둬 사이트 전체 백지화를 막음
-- `vite.config.js`: 빌드 시 `sitemap.xml` 자동 생성 플러그인 포함
+- `vite.config.js`: 빌드 시 라우트별 HTML 프리렌더 + `sitemap.xml` 생성 플러그인 포함
 - `public/robots.txt`: 크롤러 안내 + sitemap 위치
 - `.github/workflows/deploy.yml`: GitHub Actions 배포 파이프라인
 - `public/404.html`: GitHub Pages SPA 리다이렉트
@@ -104,15 +105,23 @@ summary: "글 요약"
 - 목록 페이지에서 검색/태그/카테고리 필터가 동작합니다.
 - `slug`를 Frontmatter에 넣으면 폴더명 대신 해당 값이 사용됩니다.
 
-## SEO
+## SEO / 프리렌더링
 
-- 라우트별 `<title>`/meta description은 `src/hooks/useDocumentTitle.js`가 갱신합니다.
-  JS를 실행하는 검색엔진(Google 등)과 브라우저 탭/북마크에 반영됩니다.
-- SNS 링크 미리보기 크롤러(카카오톡/슬랙/X 등)는 JS를 실행하지 않으므로
-  `index.html`의 정적 og 태그가 사이트 공통 값으로 처리합니다.
-  글별 미리보기까지 필요하면 프리렌더링(SSG) 도입이 필요합니다.
-- `sitemap.xml`은 빌드할 때 `vite.config.js`의 플러그인이 생성합니다.
-  글을 추가하면 자동 반영되지만, **라우트를 추가하면 `STATIC_ROUTES`에도 추가**해야 합니다.
+GitHub Pages는 실제 파일이 없는 경로에 404를 반환합니다. 따라서 빌드할 때
+`vite.config.js`의 플러그인이 **라우트마다 HTML 파일을 생성**합니다.
+(`/portfolio` → `dist/portfolio/index.html`)
+
+- 모든 경로가 200으로 응답하며, `404.html` 리다이렉트는 진짜 없는 주소에만 쓰입니다.
+- 각 HTML의 `<title>`, description, og 태그, canonical이 경로별 값으로 채워집니다.
+  JS를 실행하지 않는 SNS 크롤러도 글마다 다른 링크 미리보기를 얻습니다.
+- `sitemap.xml`도 같은 플러그인이 생성합니다.
+
+라우트 메타데이터의 단일 출처는 `src/lib/routeMeta.js`입니다.
+런타임에서는 `useDocumentTitle`이, 빌드 시에는 프리렌더 플러그인이 같은 값을 읽으므로
+**라우트를 추가하거나 문구를 바꿀 때는 이 파일만 수정**하면 됩니다.
+블로그 글은 Frontmatter의 `title`/`summary`/`date`를 그대로 사용합니다.
+
+본문은 여전히 클라이언트에서 렌더링됩니다. 프리렌더되는 것은 `<head>`입니다.
 
 ## 정적 파일
 

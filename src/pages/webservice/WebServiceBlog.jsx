@@ -4,7 +4,7 @@ import '../../styles/pages/webservice.css'
 
 function WebServiceBlog() {
   useReveal()
-  useDocumentTitle('Portfolio & Blog', '포트폴리오와 기술 기록을 관리하는 사이트의 구조와 기능 정리.')
+  useDocumentTitle()
   return (
     <main className="section">
       <div className="container is-visible" data-reveal>

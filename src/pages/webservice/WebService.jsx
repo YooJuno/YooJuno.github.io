@@ -40,7 +40,7 @@ const services = [
 
 function WebService() {
   useReveal()
-  useDocumentTitle('웹서비스', '개발하거나 운영 중인 웹서비스 모음입니다.')
+  useDocumentTitle()
 
   return (
     <main className="section">
