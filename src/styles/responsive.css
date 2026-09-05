@@ -49,6 +49,10 @@
     transition: none;
   }
 
+  .dropdown-toggle::after {
+    transition: none;
+  }
+
   .project-card:hover {
     transform: none;
   }

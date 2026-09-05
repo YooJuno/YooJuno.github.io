@@ -32,8 +32,56 @@ const ScrollToTop = () => {
   return null
 }
 
+// 네비게이션 구조. 모바일에서는 아코디언으로 하위 메뉴를 접어 둔다.
+const NAV_SECTIONS = [
+  {
+    id: 'portfolio',
+    to: '/portfolio',
+    label: '포트폴리오',
+    items: [
+      { to: '/portfolio?section=about', label: '소개' },
+      { to: '/portfolio?section=featured', label: '대표 프로젝트' },
+      { to: '/portfolio?section=project-library', label: '전체 프로젝트' },
+      { to: '/portfolio?section=skills', label: '기술 스택' },
+      { to: '/portfolio?section=experience', label: '경험' },
+      { to: '/portfolio?section=activities', label: '활동' },
+      { to: '/portfolio?section=contact', label: '연락' },
+    ],
+  },
+  {
+    id: 'blog',
+    to: '/blog',
+    label: '블로그',
+    items: [
+      { to: '/blog?category=개발', label: '개발' },
+      { to: '/blog?category=음악', label: '음악' },
+      { to: '/blog?category=여행', label: '여행' },
+      { to: '/blog?category=코딩테스트', label: '코딩테스트' },
+      { to: '/blog?category=트레이딩', label: '트레이딩' },
+    ],
+  },
+  {
+    id: 'web-service',
+    to: '/web-service',
+    label: '웹서비스',
+    items: [
+      { to: '/web-service/blog', label: '블로그' },
+      { to: '/web-service/cctv-streaming', label: 'CCTV Streaming' },
+      { to: '/web-service/video-chatting', label: 'Video Chatting' },
+      { to: '/web-service/bitcoin-auto-trader', label: 'Bitcoin Auto Trader' },
+    ],
+  },
+]
+
 const SiteNav = () => {
   const [isOpen, setIsOpen] = useState(false)
+  // 모바일에서 펼쳐 둔 섹션. 한 번에 하나만 연다.
+  const [expandedId, setExpandedId] = useState('')
+
+  const closeMenu = () => {
+    setIsOpen(false)
+    setExpandedId('')
+  }
 
   const navClass = ({ isActive }) => `nav-link${isActive ? ' is-active' : ''}`
 
@@ -51,7 +99,10 @@ const SiteNav = () => {
           aria-label={isOpen ? '메뉴 닫기' : '메뉴 열기'}
           aria-expanded={isOpen}
           aria-controls="primary-navigation"
-          onClick={() => setIsOpen((open) => !open)}
+          onClick={() => {
+            setIsOpen((open) => !open)
+            setExpandedId('')
+          }}
         >
           <span></span>
           <span></span>
@@ -62,40 +113,39 @@ const SiteNav = () => {
           className={`nav-links${isOpen ? ' is-open' : ''}`}
           id="primary-navigation"
           onClick={(event) => {
-            if (event.target.closest('a')) setIsOpen(false)
+            if (event.target.closest('a')) closeMenu()
           }}
         >
-          <div className="nav-item dropdown">
-            <NavLink className={navClass} to="/portfolio">포트폴리오</NavLink>
-            <div className="dropdown-menu">
-              <Link to="/portfolio?section=about">소개</Link>
-              <Link to="/portfolio?section=featured">대표 프로젝트</Link>
-              <Link to="/portfolio?section=project-library">전체 프로젝트</Link>
-              <Link to="/portfolio?section=skills">기술 스택</Link>
-              <Link to="/portfolio?section=experience">경험</Link>
-              <Link to="/portfolio?section=activities">활동</Link>
-              <Link to="/portfolio?section=contact">연락</Link>
-            </div>
-          </div>
-          <div className="nav-item dropdown">
-            <NavLink className={navClass} to="/blog">블로그</NavLink>
-            <div className="dropdown-menu">
-              <Link to="/blog?category=개발">개발</Link>
-              <Link to="/blog?category=음악">음악</Link>
-              <Link to="/blog?category=여행">여행</Link>
-              <Link to="/blog?category=코딩테스트">코딩테스트</Link>
-              <Link to="/blog?category=트레이딩">트레이딩</Link>
-            </div>
-          </div>
-          <div className="nav-item dropdown">
-            <NavLink className={navClass} to="/web-service">웹서비스</NavLink>
-            <div className="dropdown-menu">
-              <Link to="/web-service/blog">블로그</Link>
-              <Link to="/web-service/cctv-streaming">CCTV Streaming</Link>
-              <Link to="/web-service/video-chatting">Video Chatting</Link>
-              <Link to="/web-service/bitcoin-auto-trader">Bitcoin Auto Trader</Link>
-            </div>
-          </div>
+          {NAV_SECTIONS.map((section) => {
+            const expanded = expandedId === section.id
+
+            return (
+              <div
+                className={`nav-item dropdown${expanded ? ' is-expanded' : ''}`}
+                key={section.id}
+              >
+                <NavLink className={navClass} to={section.to}>
+                  {section.label}
+                </NavLink>
+                {/* 데스크톱에서는 hover 로 열리므로 숨긴다. 모바일 전용 토글. */}
+                <button
+                  className="dropdown-toggle"
+                  type="button"
+                  aria-label={`${section.label} 하위 메뉴 ${expanded ? '접기' : '펼치기'}`}
+                  aria-expanded={expanded}
+                  aria-controls={`nav-menu-${section.id}`}
+                  onClick={() => setExpandedId(expanded ? '' : section.id)}
+                ></button>
+                <div className="dropdown-menu" id={`nav-menu-${section.id}`}>
+                  {section.items.map((item) => (
+                    <Link key={item.to} to={item.to}>
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </nav>
