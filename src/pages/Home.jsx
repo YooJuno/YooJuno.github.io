@@ -18,7 +18,7 @@ function Home() {
             </p>
             <div className="hero-actions">
               <Link className="btn primary" to="/portfolio">프로젝트</Link>
-              <Link className="btn ghost" to="/blog">기록</Link>
+              <Link className="btn ghost" to="/blog">블로그</Link>
             </div>
           </div>
         </div>
