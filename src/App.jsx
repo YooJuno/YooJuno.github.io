@@ -31,32 +31,6 @@ const ScrollToTop = () => {
   return null
 }
 
-const AdSlot = () => {
-  useEffect(() => {
-    try {
-      if (typeof window !== 'undefined') {
-        window.adsbygoogle = window.adsbygoogle || []
-        window.adsbygoogle.push({})
-      }
-    } catch {
-      // Ignore ad errors during development.
-    }
-  }, [])
-
-  return (
-    <div className="ad-container">
-      <ins
-        className="adsbygoogle"
-        style={{ display: 'block' }}
-        data-ad-client="ca-pub-9290056343148248"
-        data-ad-slot="0000000000"
-        data-ad-format="auto"
-        data-full-width-responsive="true"
-      ></ins>
-    </div>
-  )
-}
-
 const SiteNav = () => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -145,7 +119,6 @@ function App() {
           <Route path="/web-service/bitcoin-auto-trader" element={<WebServiceBtc />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
-        <AdSlot />
         <footer className="site-footer">
           <div className="container">
             <p>© 2026 Junho Yoo. All rights reserved.</p>

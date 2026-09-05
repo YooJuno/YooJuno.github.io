@@ -724,19 +724,6 @@ a.chip-link:hover {
   transform: translateY(-50%);
 }
 
-.ad-container {
-  min-height: 0;
-  margin-top: 24px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.ad-container .adsbygoogle {
-  min-height: 0;
-}
-
 .site-footer {
   margin-top: 40px;
   padding: 28px 0;
