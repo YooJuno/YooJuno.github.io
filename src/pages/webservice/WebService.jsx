@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import useReveal from '../../hooks/useReveal'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import '../../styles/pages/webservice.css'
 
 const services = [
@@ -39,6 +40,7 @@ const services = [
 
 function WebService() {
   useReveal()
+  useDocumentTitle('웹서비스', '개발하거나 운영 중인 웹서비스 모음입니다.')
 
   return (
     <main className="section">

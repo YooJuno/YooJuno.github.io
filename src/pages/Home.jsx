@@ -1,9 +1,11 @@
 ﻿import { Link } from 'react-router-dom'
 import useReveal from '../hooks/useReveal'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 import '../styles/pages/home.css'
 
 function Home() {
   useReveal()
+  useDocumentTitle()
   return (
     <main className="home-main">
       <section className="site-hero">

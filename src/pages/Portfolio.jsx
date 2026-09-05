@@ -1,6 +1,7 @@
 ﻿import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import useReveal from '../hooks/useReveal'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 import '../styles/pages/portfolio.css'
 
 // id 문자열을 CSS 선택자로 조합하지 않고 조회한다.
@@ -19,6 +20,7 @@ function Portfolio() {
   const [activeProjectId, setActiveProjectId] = useState('')
   const [activeSectionId, setActiveSectionId] = useState('')
   useReveal()
+  useDocumentTitle('포트폴리오', '로보틱스·컴퓨터비전·임베디드 프로젝트와 경험을 정리한 포트폴리오입니다.')
   const getIndexClass = (id) => (
     activeProjectId === id ? 'index-link is-active' : 'index-link'
   )

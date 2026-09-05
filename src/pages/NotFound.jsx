@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 
 function NotFound() {
+  useDocumentTitle('페이지를 찾을 수 없습니다')
+
   return (
     <main className="section">
       <div className="container empty-page">

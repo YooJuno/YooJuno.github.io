@@ -1,10 +1,14 @@
 ﻿import { Link, useParams } from 'react-router-dom'
 import { getPostBySlug } from '../../lib/posts'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 import '../../styles/pages/blog.css'
 
 function Post() {
   const { slug } = useParams()
   const post = getPostBySlug(slug)
+
+  // 훅은 조건부 반환보다 먼저, 항상 같은 순서로 호출한다.
+  useDocumentTitle(post ? post.title : '글을 찾을 수 없습니다', post?.summary)
 
   if (!post) {
     return (
