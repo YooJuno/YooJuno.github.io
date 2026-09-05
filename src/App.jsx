@@ -1,18 +1,21 @@
 import { BrowserRouter, Routes, Route, Link, NavLink, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import Home from './pages/Home.jsx'
 
-import Portfolio from './pages/Portfolio.jsx'
-import Blog from './pages/blog/Blog.jsx'
-import Post from './pages/blog/Post.jsx'
+// 첫 화면(Home)만 즉시 불러오고 나머지는 방문할 때 받는다.
+// 특히 블로그는 marked 와 모든 글의 본문을 함께 들고 있어, 이걸 나누지 않으면
+// 홈만 봐도 글 전체를 내려받게 된다.
+const Portfolio = lazy(() => import('./pages/Portfolio.jsx'))
+const Blog = lazy(() => import('./pages/blog/Blog.jsx'))
+const Post = lazy(() => import('./pages/blog/Post.jsx'))
 
-import WebService from './pages/webservice/WebService.jsx'
-import WebServiceBlog from './pages/webservice/WebServiceBlog.jsx'
-import WebServiceCctv from './pages/webservice/WebServiceCctv.jsx'
-import WebServiceVideo from './pages/webservice/WebServiceVideo.jsx'
-import WebServiceBtc from './pages/webservice/WebServiceBtc.jsx'
+const WebService = lazy(() => import('./pages/webservice/WebService.jsx'))
+const WebServiceBlog = lazy(() => import('./pages/webservice/WebServiceBlog.jsx'))
+const WebServiceCctv = lazy(() => import('./pages/webservice/WebServiceCctv.jsx'))
+const WebServiceVideo = lazy(() => import('./pages/webservice/WebServiceVideo.jsx'))
+const WebServiceBtc = lazy(() => import('./pages/webservice/WebServiceBtc.jsx'))
 
-import NotFound from './pages/NotFound.jsx'
+const NotFound = lazy(() => import('./pages/NotFound.jsx'))
 import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 const ScrollToTop = () => {
@@ -158,18 +161,20 @@ const AppRoutes = () => {
 
   return (
     <ErrorBoundary key={location.pathname}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:slug" element={<Post />} />
-        <Route path="/web-service" element={<WebService />} />
-        <Route path="/web-service/blog" element={<WebServiceBlog />} />
-        <Route path="/web-service/cctv-streaming" element={<WebServiceCctv />} />
-        <Route path="/web-service/video-chatting" element={<WebServiceVideo />} />
-        <Route path="/web-service/bitcoin-auto-trader" element={<WebServiceBtc />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Suspense fallback={<main className="section" aria-busy="true" />}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<Post />} />
+          <Route path="/web-service" element={<WebService />} />
+          <Route path="/web-service/blog" element={<WebServiceBlog />} />
+          <Route path="/web-service/cctv-streaming" element={<WebServiceCctv />} />
+          <Route path="/web-service/video-chatting" element={<WebServiceVideo />} />
+          <Route path="/web-service/bitcoin-auto-trader" element={<WebServiceBtc />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
     </ErrorBoundary>
   )
 }
