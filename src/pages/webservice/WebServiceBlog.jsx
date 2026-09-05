@@ -9,7 +9,7 @@ function WebServiceBlog() {
     <main className="section">
       <div className="container is-visible" data-reveal>
         <div className="section-head">
-          <h2>Portfolio & Blog</h2>
+          <h1>Portfolio & Blog</h1>
           <p>현재 포트폴리오와 블로그의 구성입니다.</p>
           <div className="meta-row">
             <span className="badge">상태: 운영 중</span>

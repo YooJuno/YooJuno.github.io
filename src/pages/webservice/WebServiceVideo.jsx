@@ -9,7 +9,7 @@ function WebServiceVideo() {
     <main className="section">
       <div className="container is-visible" data-reveal>
         <div className="section-head">
-          <h2>Video Chatting</h2>
+          <h1>Video Chatting</h1>
           <p>브라우저에서 바로 연결되는 실시간 영상 통화 서비스입니다.</p>
           <div className="meta-row">
             <span className="badge">상태: 설계/구현 중</span>

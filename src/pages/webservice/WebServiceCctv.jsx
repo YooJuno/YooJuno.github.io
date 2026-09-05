@@ -9,7 +9,7 @@ function WebServiceCctv() {
     <main className="section">
       <div className="container is-visible" data-reveal>
         <div className="section-head">
-          <h2>CCTV Streaming</h2>
+          <h1>CCTV Streaming</h1>
           <p>장거리 환경에서도 안정적으로 현장을 모니터링합니다.</p>
           <div className="meta-row">
             <span className="badge">상태: 프로토타입</span>

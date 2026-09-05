@@ -41,7 +41,7 @@ function Blog() {
     <main className="section blog-main">
       <div className="container" data-reveal>
         <div className="section-head">
-          <h2>블로그</h2>
+          <h1>블로그</h1>
           <p>개발 과정과 기술 메모를 기록합니다.</p>
           {activeCategory && (
             <p className="category-note">현재 카테고리: {activeCategory}</p>

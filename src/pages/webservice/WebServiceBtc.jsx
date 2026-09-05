@@ -9,7 +9,7 @@ function WebServiceBtc() {
     <main className="section">
       <div className="container is-visible" data-reveal>
         <div className="section-head">
-          <h2>Bitcoin Auto Trader</h2>
+          <h1>Bitcoin Auto Trader</h1>
           <p>전략 설정과 자동매매 실행을 연결한 서비스입니다.</p>
           <div className="meta-row">
             <span className="badge">상태: 설계/구현 중</span>

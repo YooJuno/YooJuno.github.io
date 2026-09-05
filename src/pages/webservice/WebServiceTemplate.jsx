@@ -6,7 +6,7 @@ function WebServiceTemplate() {
     <main className="section">
       <div className="container" data-reveal>
         <div className="section-head">
-          <h2>웹서비스 · [페이지명]</h2>
+          <h1>웹서비스 · [페이지명]</h1>
           <p>
             한 줄 요약: [문제 + 해결 + 가치]를 15~20자 내외로 정리합니다.
           </p>

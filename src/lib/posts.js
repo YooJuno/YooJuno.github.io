@@ -179,11 +179,3 @@ export const getAllTags = () => {
   posts.forEach((post) => post.tags.forEach((tag) => set.add(tag)))
   return Array.from(set)
 }
-
-export const getAllCategories = () => {
-  const set = new Set()
-  posts.forEach((post) => {
-    if (post.category) set.add(post.category)
-  })
-  return Array.from(set)
-}
