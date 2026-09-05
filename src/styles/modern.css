@@ -1136,7 +1136,6 @@ a.chip-link:hover {
 .post-category {
   border: 1px solid var(--border);
   border-radius: 6px;
-  background: #fff;
 }
 
 .tag-chip:hover {
