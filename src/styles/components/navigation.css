@@ -113,11 +113,3 @@
   color: var(--ink);
 }
 
-.nav-disabled {
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px dashed var(--border);
-  color: var(--muted);
-  background: rgba(255, 255, 255, 0.7);
-  font-size: 13px;
-}
