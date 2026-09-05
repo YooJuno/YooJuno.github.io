@@ -52,6 +52,7 @@ function Blog() {
           <input
             className="blog-search"
             type="search"
+            aria-label="글 검색"
             placeholder="검색어를 입력하세요"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
@@ -64,6 +65,7 @@ function Blog() {
               type="button"
               key={tag}
               className={`tag-chip${activeTag === tag ? ' is-active' : ''}`}
+              aria-pressed={activeTag === tag}
               onClick={() => setActiveTag(activeTag === tag ? '' : tag)}
             >
               #{tag}
