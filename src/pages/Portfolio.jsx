@@ -244,8 +244,8 @@ function Portfolio() {
                         <li><span>병역</span> 육군 병장 만기전역 (2019.01-2020.08)</li>
                       </ul>
                       <div className="about-links">
-                        <a className="btn ghost" href="https://drive.google.com/file/d/1TZL7Uzh63LOdcYgKJznvCYh8l3yT4oa0/view?usp=drive_link" target="_blank" rel="noreferrer">포트폴리오 PDF</a>
-                        <a className="btn ghost" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" target="_blank" rel="noreferrer">이력서 PDF</a>
+                        <a className="btn ghost" href="https://drive.google.com/file/d/1TZL7Uzh63LOdcYgKJznvCYh8l3yT4oa0/view?usp=drive_link" aria-label="포트폴리오 PDF (새 창)" target="_blank" rel="noreferrer">포트폴리오 PDF</a>
+                        <a className="btn ghost" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" aria-label="이력서 PDF (새 창)" target="_blank" rel="noreferrer">이력서 PDF</a>
                       </div>
                     </div>
                   </div>
@@ -308,7 +308,7 @@ function Portfolio() {
                               <span>ROS2</span><span>Isaac ROS VSLAM</span><span>MQTT</span><span>FaceNet</span><span>Docker</span>
                             </div>
                             <div className="detail-links">
-                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/LiNKY" target="_blank" rel="noreferrer">GitHub</a>
+                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/LiNKY" aria-label="한강 자율주행 배달 로봇 LiNKY GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
@@ -351,8 +351,8 @@ function Portfolio() {
                               <span>ROS2</span><span>YOLOv5</span><span>RoboDK</span><span>OpenCV</span><span>Flask</span>
                             </div>
                             <div className="detail-links">
-                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Smart_Factory" target="_blank" rel="noreferrer">GitHub</a>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=G8R1HWxcDtk" target="_blank" rel="noreferrer">Demo Video</a>
+                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Smart_Factory" aria-label="스마트 팩토리 로봇팔 자동화 & 디지털 트윈 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=G8R1HWxcDtk" aria-label="스마트 팩토리 로봇팔 자동화 & 디지털 트윈 Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
@@ -399,7 +399,7 @@ function Portfolio() {
                               <span>Vue.js</span><span>Node.js</span><span>YOLOv9</span><span>MySQL</span><span>Nginx</span>
                             </div>
                             <div className="detail-links">
-                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Web" target="_blank" rel="noreferrer">GitHub</a>
+                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Web" aria-label="로봇 센서·영상 실시간 분석 웹 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
@@ -430,7 +430,7 @@ function Portfolio() {
                               <span>gRPC</span><span>Wi-Fi HaLow</span><span>Raspberry Pi</span><span>Crontab</span>
                             </div>
                             <div className="detail-links">
-                              <a className="chip-link github icon-link" href="https://github.com/InternetOfTough/CCTV_HaLow" target="_blank" rel="noreferrer">GitHub</a>
+                              <a className="chip-link github icon-link" href="https://github.com/InternetOfTough/CCTV_HaLow" aria-label="무선 CCTV 웹 스트리밍 (Wi-Fi HaLow) GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
@@ -465,7 +465,7 @@ function Portfolio() {
                             </div>
                             <div className="detail-links">
                               <span className="chip-link muted">보안상 공개 불가</span>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-ZYTrtNs5Vk" target="_blank" rel="noreferrer">Demo Video</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-ZYTrtNs5Vk" aria-label="CCTV 영상 내 객체 높이 추정 Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
@@ -496,7 +496,7 @@ function Portfolio() {
                             </div>
                             <div className="detail-links">
                               <span className="chip-link muted">보안상 공개 불가</span>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=v-8i_FkTkIU" target="_blank" rel="noreferrer">Demo Video</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=v-8i_FkTkIU" aria-label="CCTV 영상 내 차량 속도 추정 Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
@@ -527,9 +527,9 @@ function Portfolio() {
                             </div>
                             <div className="detail-links">
                               <span className="chip-link muted">보안상 공개 불가</span>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=_HwGZA1f8t0" target="_blank" rel="noreferrer">후방 Demo 1</a>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=oEf1EfqPtWA" target="_blank" rel="noreferrer">후방 Demo 2</a>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I" target="_blank" rel="noreferrer">전방 Demo</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=_HwGZA1f8t0" aria-label="블랙박스 영상 속도 추정 후방 Demo 1 (새 창)" target="_blank" rel="noreferrer">후방 Demo 1</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=oEf1EfqPtWA" aria-label="블랙박스 영상 속도 추정 후방 Demo 2 (새 창)" target="_blank" rel="noreferrer">후방 Demo 2</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I" aria-label="블랙박스 영상 속도 추정 전방 Demo (새 창)" target="_blank" rel="noreferrer">전방 Demo</a>
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
@@ -596,7 +596,7 @@ function Portfolio() {
                             </div>
                             <div className="detail-links">
                               <span className="chip-link muted">보안상 공개 불가</span>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-GKsm9lfCZk" target="_blank" rel="noreferrer">Demo Video</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-GKsm9lfCZk" aria-label="자율 주차 프로그램 개발 Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
@@ -627,9 +627,9 @@ function Portfolio() {
                               <span>PilotNet</span><span>ORB-SLAM3</span><span>YOLOv5</span><span>TCP</span>
                             </div>
                             <div className="detail-links">
-                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/Autonomous-Driving_E2E_SLAM" target="_blank" rel="noreferrer">GitHub</a>
-                              <a className="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" target="_blank" rel="noreferrer">논문</a>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/playlist?list=PLg3p47m-psINqF_8QVGMixhW7zAv6Ir2F" target="_blank" rel="noreferrer">Demo Playlist</a>
+                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/Autonomous-Driving_E2E_SLAM" aria-label="PilotNet 성능 향상을 위한 SLAM + YOLO GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
+                              <a className="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" aria-label="PilotNet 성능 향상을 위한 SLAM + YOLO 논문 (새 창)" target="_blank" rel="noreferrer">논문</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/playlist?list=PLg3p47m-psINqF_8QVGMixhW7zAv6Ir2F" aria-label="PilotNet 성능 향상을 위한 SLAM + YOLO Demo Playlist (새 창)" target="_blank" rel="noreferrer">Demo Playlist</a>
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
@@ -689,7 +689,7 @@ function Portfolio() {
                               <span>LSTM</span><span>Upbit API</span><span>Python</span>
                             </div>
                             <div className="detail-links">
-                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/Upbit-Auto-Trader" target="_blank" rel="noreferrer">GitHub</a>
+                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/Upbit-Auto-Trader" aria-label="딥러닝 가상화폐 자동 매매 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
@@ -719,8 +719,8 @@ function Portfolio() {
                               <span>Boost ASIO</span><span>TCP</span><span>OpenCV</span>
                             </div>
                             <div className="detail-links">
-                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/PacmanGame-BoostASIO" target="_blank" rel="noreferrer">GitHub</a>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=2uh6XcFZric" target="_blank" rel="noreferrer">Demo Video</a>
+                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/PacmanGame-BoostASIO" aria-label="Online Pacman (Boost ASIO) GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=2uh6XcFZric" aria-label="Online Pacman (Boost ASIO) Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
@@ -750,8 +750,8 @@ function Portfolio() {
                               <span>STM32</span><span>mbed OS</span><span>DMA</span><span>SPI</span>
                             </div>
                             <div className="detail-links">
-                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/STM32-MBED/tree/main/Final" target="_blank" rel="noreferrer">GitHub</a>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=sW-dLjTRV7A" target="_blank" rel="noreferrer">Demo Video</a>
+                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/STM32-MBED/tree/main/Final" aria-label="STM32 기반 LED 피아노 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=sW-dLjTRV7A" aria-label="STM32 기반 LED 피아노 Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
@@ -913,14 +913,14 @@ function Portfolio() {
                         <h3>논문 · 발표</h3>
                         <p>PilotNet 성능 향상을 위한 SLAM과 YOLO 활용 (대한전자공학회, 2023.06)</p>
                         <div className="detail-links">
-                          <a className="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" target="_blank" rel="noreferrer">논문 링크</a>
-                          <a className="chip-link" href="/content/portfolio/pdfs/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf" target="_blank" rel="noreferrer">논문 PDF</a>
+                          <a className="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" aria-label="논문 링크 (새 창)" target="_blank" rel="noreferrer">논문 링크</a>
+                          <a className="chip-link" href="/content/portfolio/pdfs/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf" aria-label="논문 PDF (새 창)" target="_blank" rel="noreferrer">논문 PDF</a>
                         </div>
                       </div>
                       <div className="mini-card">
                         <h3>수상</h3>
                         <p>캡스톤 디자인 페스티벌 우수상 (한동대학교, 2023.05)</p>
-                        <a className="chip-link" href="/content/portfolio/pdfs/캡스톤 경진대회.pdf" target="_blank" rel="noreferrer">상장 PDF</a>
+                        <a className="chip-link" href="/content/portfolio/pdfs/캡스톤 경진대회.pdf" aria-label="상장 PDF (새 창)" target="_blank" rel="noreferrer">상장 PDF</a>
                       </div>
                     </div>
                   </div>
@@ -960,9 +960,9 @@ function Portfolio() {
                       </div>
                       <div className="contact-actions">
                         <a className="btn primary" href="mailto:juno980220@naver.com">메일 보내기</a>
-                        <a className="btn ghost github icon-link" href="https://github.com/YooJuno" target="_blank" rel="noreferrer">GitHub</a>
-                        <a className="btn ghost youtube icon-link" href="https://youtube.com/@yoojuno" target="_blank" rel="noreferrer">YouTube</a>
-                        <a className="btn ghost" href="https://www.notion.so/1a9302636cd781059263e5b57e11fc70" target="_blank" rel="noreferrer">Notion 이력서</a>
+                        <a className="btn ghost github icon-link" href="https://github.com/YooJuno" aria-label="유준호 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
+                        <a className="btn ghost youtube icon-link" href="https://youtube.com/@yoojuno" aria-label="유준호 YouTube (새 창)" target="_blank" rel="noreferrer">YouTube</a>
+                        <a className="btn ghost" href="https://www.notion.so/1a9302636cd781059263e5b57e11fc70" aria-label="유준호 Notion 이력서 (새 창)" target="_blank" rel="noreferrer">Notion 이력서</a>
                       </div>
                     </div>
                   </div>
