@@ -76,7 +76,7 @@ function Portfolio() {
     if (!container) return undefined
     const targets = Array.from(
       container.querySelectorAll(
-        '#about, #featured, #project-library, #skills, #experience, #activities, #contact'
+        '#about, #project-library, #skills, #experience, #activities, #contact'
       )
     )
     if (!targets.length) return undefined
@@ -178,8 +178,8 @@ function Portfolio() {
                     <h1>유준호</h1>
                     <p className="lead">로보틱스 · 컴퓨터 비전 · 임베디드</p>
                     <div className="hero-actions">
-                      <a className="btn primary" href="#featured">대표 프로젝트</a>
-                      <a className="btn ghost" href="#project-library">전체 프로젝트</a>
+                      <a className="btn primary" href="#project-library">프로젝트 보기</a>
+                      <a className="btn ghost" href="#contact">연락하기</a>
                     </div>
                   </div>
 
@@ -201,8 +201,7 @@ function Portfolio() {
                   <h3>목차</h3>
                   <nav className="index-group">
                     <a className={getSectionClass("about")} href="#about">소개</a>
-                    <a className={getSectionClass("featured")} href="#featured">대표 프로젝트</a>
-                    <a className={getSectionClass("project-library")} href="#project-library">전체 프로젝트</a>
+                    <a className={getSectionClass("project-library")} href="#project-library">프로젝트</a>
                     <a className={getSectionClass("skills")} href="#skills">기술 스택</a>
                     <a className={getSectionClass("experience")} href="#experience">경험</a>
                     <a className={getSectionClass("activities")} href="#activities">활동</a>
@@ -237,247 +236,10 @@ function Portfolio() {
                     </div>
                   </div>
                 </section>
-
-                <section className="section" id="featured">
-                  <div className="container">
-                    <div className="section-head" data-reveal>
-                      <h2>대표 프로젝트</h2>
-                      <p>주요 작업 5개를 정리했습니다.</p>
-                    </div>
-
-                    <article className="project-card feature" data-reveal>
-                      <div className="project-info">
-                        <div className="meta-row">
-                          <span className="badge">Robotics</span>
-                          <span>SSAFY · 2025.07-08 · 6인 · 팀장/PM/Robotics</span>
-                        </div>
-                        <h3>한강 자율주행 배달 로봇 LiNKY</h3>
-                        <p className="summary">
-                          야외 환경에서 카메라 기반 자율주행으로 배달을 수행하고, 얼굴 인식으로 인수 확인까지 진행하는 로봇 서비스.
-                        </p>
-                        <ul>
-                          <li>ROS2 노드 통합, Jetson Orin Nano에서 Isaac ROS VSLAM 구동</li>
-                          <li>GPS &lt;-&gt; SLAM 좌표 실시간 변환으로 위치 데이터 제공</li>
-                          <li>Pure-Pursuit 기반 경로 생성/추종 및 다중 배달 동선 구성</li>
-                          <li>FaceNet 기반 얼굴 인식으로 인수 확인</li>
-                          <li>MQTT로 위치·이미지 스트리밍, 관리자·고객 UI 실시간 확인</li>
-                        </ul>
-                        <div className="tag-row">
-                          <span>ROS2</span>
-                          <span>Isaac ROS VSLAM</span>
-                          <span>Jetson Orin Nano</span>
-                          <span>MQTT</span>
-                          <span>FaceNet</span>
-                          <span>Docker</span>
-                        </div>
-                        <div className="project-links">
-                          <a className="chip-link github icon-link" href="https://github.com/YooJuno/LiNKY" target="_blank" rel="noreferrer">GitHub</a>
-                        </div>
-                        <p className="note">gRPC에서 REST/SSE로 전환, WebRTC 대신 base64 MQTT 스트리밍으로 변경.</p>
-                      </div>
-                      <div className="project-media">
-                        <div className="media-grid">
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/linky/front.png" alt="front" loading="lazy" decoding="async" />
-                            <figcaption>로봇 정면</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/linky/system_architecture.png" alt="System Architecture" loading="lazy" decoding="async" />
-                            <figcaption>시스템 아키텍처</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/linky/ui.png" alt="UI" loading="lazy" decoding="async" />
-                            <figcaption>UI</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/linky/slam_map.png" alt="Visual Slam Map" loading="lazy" decoding="async" />
-                            <figcaption>Visual Slam Map</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/linky/face_recognition.png" alt="Face Recognition" loading="lazy" decoding="async" />
-                            <figcaption>Face Recognition</figcaption>
-                          </figure>
-                        </div>
-                      </div>
-                    </article>
-
-                    <div className="project-grid two" data-reveal>
-                      <article className="project-card">
-                        <div className="meta-row">
-                          <span className="badge">Robotics</span>
-                          <span>SSAFY · 2025.04-05 · 3인 · 팀장/PM</span>
-                        </div>
-                        <h3>스마트 팩토리 로봇팔 자동화 & 디지털 트윈</h3>
-                        <p className="summary">
-                          웹 인터페이스로 Dobot 로봇팔과 컨베이어를 제어하고, RoboDK 디지털 트윈과 동기화한 자동화 공정.
-                        </p>
-                        <ul>
-                          <li>ROS2 기반 영상처리 및 로봇 제어 시스템 구축</li>
-                          <li>Perspective Transformation으로 RoI 정렬 후 YOLOv5 불량 검출</li>
-                          <li>End-Effector 오프셋 문제를 FK로 보정</li>
-                          <li>RoboDK 디지털 트윈과 TCP 통신, 멀티 스레드로 비동기 처리</li>
-                        </ul>
-                        <div className="tag-row">
-                          <span>ROS2</span>
-                          <span>YOLOv5</span>
-                          <span>RoboDK</span>
-                          <span>OpenCV</span>
-                          <span>Flask</span>
-                          <span>TCP</span>
-                        </div>
-                        <div className="project-links">
-                          <a className="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Smart_Factory" target="_blank" rel="noreferrer">GitHub</a>
-                          <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=G8R1HWxcDtk" target="_blank" rel="noreferrer">Demo Video</a>
-                        </div>
-                        <div className="media-grid">
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/smart_factory/workspace.png" alt="Workspace" loading="lazy" decoding="async" />
-                            <figcaption>Workspace</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/smart_factory/ui.png" alt="Web interface" loading="lazy" decoding="async" />
-                            <figcaption>Web interface</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/smart_factory/system_architecture.png" alt="System Architecture" loading="lazy" decoding="async" />
-                            <figcaption>System Architecture</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/smart_factory/thread.png" alt="Multi Thread" loading="lazy" decoding="async" />
-                            <figcaption>Multi Thread</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/smart_factory/yolo.png" alt="yolo" loading="lazy" decoding="async" />
-                            <figcaption>YOLO</figcaption>
-                          </figure>
-                        </div>
-                      </article>
-
-                      <article className="project-card">
-                        <div className="meta-row">
-                          <span className="badge">Full Stack</span>
-                          <span>SSAFY · 2025.02-03 · 1인</span>
-                        </div>
-                        <h3>로봇 센서·영상 실시간 분석 웹</h3>
-                        <p className="summary">
-                          로봇에서 수집한 센서/영상 데이터를 서버에서 분산 처리하고 웹에서 실시간 차트와 영상을 제공.
-                        </p>
-                        <ul>
-                          <li>Vue 기반 실시간 차트/스트리밍 UI 구현</li>
-                          <li>Node.js 서버에서 YOLOv9 파이프라인 연동</li>
-                          <li>비동기 처리로 통신 지연 최소화</li>
-                          <li>MySQL 로그 저장 및 Nginx 배포 적용</li>
-                        </ul>
-                        <div className="tag-row">
-                          <span>Vue.js</span>
-                          <span>Node.js</span>
-                          <span>YOLOv9</span>
-                          <span>WebSocket</span>
-                          <span>MySQL</span>
-                          <span>Nginx</span>
-                        </div>
-                        <div className="project-links">
-                          <a className="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Web" target="_blank" rel="noreferrer">GitHub</a>
-                        </div>
-                        <div className="media-grid">
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/web-pjt/ui.png" alt="Web UI" loading="lazy" decoding="async" />
-                            <figcaption>Web UI</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/web-pjt/system_architecture.png" alt="System Architecture" loading="lazy" decoding="async" />
-                            <figcaption>System Architecture</figcaption>
-                          </figure>
-                        </div>
-                      </article>
-                    </div>
-
-                    <div className="project-grid two" data-reveal>
-                      <article className="project-card">
-                        <div className="meta-row">
-                          <span className="badge">Vision</span>
-                          <span>GMD SOFT · 2024.01-08 · 산학/인턴</span>
-                        </div>
-                        <h3>GMD SOFT 컴퓨터비전 시리즈</h3>
-                        <p className="summary">CCTV/블랙박스 영상 기반 속도·높이 추정 알고리즘을 개발했습니다.</p>
-                        <ul>
-                          <li>객체 높이 추정: Vanishing Point/Line 기반 Single View Geometry</li>
-                          <li>CCTV 속도 추정: Perspective Transformation 기반 파이프라인</li>
-                          <li>블랙박스 속도 추정: COLMAP 3D 재구성 + Real-to-Pixel 스케일</li>
-                        </ul>
-                        <div className="tag-row">
-                          <span>OpenCV</span>
-                          <span>COLMAP</span>
-                          <span>Single View Geometry</span>
-                          <span>Perspective Transform</span>
-                        </div>
-                        <div className="project-links">
-                          <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-ZYTrtNs5Vk" target="_blank" rel="noreferrer">높이 추정 Demo</a>
-                          <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=v-8i_FkTkIU" target="_blank" rel="noreferrer">CCTV 속도 Demo</a>
-                          <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I" target="_blank" rel="noreferrer">블랙박스 Demo</a>
-                        </div>
-                        <p className="note">CCTV 속도 추정은 데이터셋 기준 평균 오차 0.5 km/h, 블랙박스는 구간별 ±3 km/h 수준과 편차 구간을 함께 분석.</p>
-                        <div className="media-grid">
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/gmdsoft/sfm_result.png" alt="SfM" loading="lazy" decoding="async" />
-                            <figcaption>SfM-COLMAP</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/gmdsoft/result.png" alt="Demo Result" loading="lazy" decoding="async" />
-                            <figcaption>Demo Result</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/gmdsoft/preprocessing.png" alt="Pre Processing" loading="lazy" decoding="async" />
-                            <figcaption>Pre Processing</figcaption>
-                          </figure>
-                        </div>
-                      </article>
-
-                      <article className="project-card">
-                        <div className="meta-row">
-                          <span className="badge">Embedded</span>
-                          <span>Handong · 2024.01-02 · 4인 · 자발적 프로젝트</span>
-                        </div>
-                        <h3>무선 CCTV 웹 스트리밍 (Wi-Fi HaLow)</h3>
-                        <p className="summary">
-                          유선 연결이 어려운 환경에서 CCTV 노드 다수를 무선으로 연결해 실시간 웹 스트리밍을 제공.
-                        </p>
-                        <ul>
-                          <li>Raspberry Pi 기반 노드/게이트웨이 구성</li>
-                          <li>Wi-Fi HaLow(900MHz) 모듈로 장거리 통신 확보</li>
-                          <li>gRPC 송신 + Crontab 자동 실행/복구 설계</li>
-                        </ul>
-                        <div className="tag-row">
-                          <span>gRPC</span>
-                          <span>Wi-Fi HaLow</span>
-                          <span>Raspberry Pi</span>
-                          <span>Crontab</span>
-                        </div>
-                        <div className="project-links">
-                          <a className="chip-link github icon-link" href="https://github.com/InternetOfTough/CCTV_HaLow" target="_blank" rel="noreferrer">GitHub</a>
-                        </div>
-                        <div className="media-grid">
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/cctv-halow/system-architecture.png" alt="System Architecture" loading="lazy" decoding="async" />
-                            <figcaption>시스템 아키텍처</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/cctv-halow/cctv-module.jpeg" alt="cctv module" loading="lazy" decoding="async" />
-                            <figcaption>CCTV Module</figcaption>
-                          </figure>
-                          <figure className="media-tile">
-                            <img src="/content/portfolio/cctv-halow/gateway.jpeg" alt="gateway" loading="lazy" decoding="async" />
-                            <figcaption>gateway</figcaption>
-                          </figure>
-                        </div>
-                      </article>
-                    </div>
-                  </div>
-                </section>
                 <section className="section" id="project-library">
                   <div className="container">
                     <div className="section-head" data-reveal>
-                      <h2>전체 프로젝트</h2>
+                      <h2>프로젝트</h2>
                       <p>항목을 선택하면 상세 내용을 볼 수 있습니다.</p>
                     </div>
                     <div className="library-grid" data-reveal>
@@ -536,16 +298,24 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="로봇 주행 장면" loading="lazy" decoding="async" />
-                                <figcaption>로봇 주행 장면</figcaption>
+                                <img src="/content/portfolio/linky/front.png" alt="로봇 정면" loading="lazy" decoding="async" />
+                                <figcaption>로봇 정면</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="시스템 구성" loading="lazy" decoding="async" />
-                                <figcaption>시스템 구성</figcaption>
+                                <img src="/content/portfolio/linky/system_architecture.png" alt="시스템 아키텍처" loading="lazy" decoding="async" />
+                                <figcaption>시스템 아키텍처</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="운영 흐름" loading="lazy" decoding="async" />
-                                <figcaption>운영 흐름</figcaption>
+                                <img src="/content/portfolio/linky/ui.png" alt="관제 UI" loading="lazy" decoding="async" />
+                                <figcaption>관제 UI</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/linky/slam_map.png" alt="Visual SLAM 맵" loading="lazy" decoding="async" />
+                                <figcaption>Visual SLAM 맵</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/linky/face_recognition.png" alt="얼굴 인식" loading="lazy" decoding="async" />
+                                <figcaption>얼굴 인식</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -583,6 +353,18 @@ function Portfolio() {
                                 <img src="/content/portfolio/smart_factory/yolo.png" alt="검출 결과" loading="lazy" decoding="async" />
                                 <figcaption>검출 결과</figcaption>
                               </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/smart_factory/system_architecture.png" alt="시스템 아키텍처" loading="lazy" decoding="async" />
+                                <figcaption>시스템 아키텍처</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/smart_factory/thread.png" alt="멀티 스레드 구조" loading="lazy" decoding="async" />
+                                <figcaption>멀티 스레드 구조</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/smart_factory/ui.png" alt="웹 인터페이스" loading="lazy" decoding="async" />
+                                <figcaption>웹 인터페이스</figcaption>
+                              </figure>
                             </div>
                           </div>
                         </details>
@@ -607,16 +389,12 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="실시간 대시보드" loading="lazy" decoding="async" />
-                                <figcaption>실시간 대시보드</figcaption>
+                                <img src="/content/portfolio/web-pjt/ui.png" alt="웹 UI" loading="lazy" decoding="async" />
+                                <figcaption>웹 UI</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="영상 스트리밍" loading="lazy" decoding="async" />
-                                <figcaption>영상 스트리밍</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="데이터 파이프라인" loading="lazy" decoding="async" />
-                                <figcaption>데이터 파이프라인</figcaption>
+                                <img src="/content/portfolio/web-pjt/system_architecture.png" alt="시스템 아키텍처" loading="lazy" decoding="async" />
+                                <figcaption>시스템 아키텍처</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -642,16 +420,16 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="노드 구성" loading="lazy" decoding="async" />
-                                <figcaption>노드 구성</figcaption>
+                                <img src="/content/portfolio/cctv-halow/system-architecture.png" alt="시스템 아키텍처" loading="lazy" decoding="async" />
+                                <figcaption>시스템 아키텍처</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="게이트웨이 흐름" loading="lazy" decoding="async" />
-                                <figcaption>게이트웨이 흐름</figcaption>
+                                <img src="/content/portfolio/cctv-halow/cctv-module.jpeg" alt="CCTV 모듈" loading="lazy" decoding="async" />
+                                <figcaption>CCTV 모듈</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="스트리밍 화면" loading="lazy" decoding="async" />
-                                <figcaption>스트리밍 화면</figcaption>
+                                <img src="/content/portfolio/cctv-halow/gateway.jpeg" alt="게이트웨이" loading="lazy" decoding="async" />
+                                <figcaption>게이트웨이</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -741,12 +519,16 @@ function Portfolio() {
                             </div>
                             <div className="media-grid">
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="구간 속도 추정" loading="lazy" decoding="async" />
-                                <figcaption>구간 속도 추정</figcaption>
+                                <img src="/content/portfolio/gmdsoft/preprocessing.png" alt="RoI 마스크 설정" loading="lazy" decoding="async" />
+                                <figcaption>RoI 마스크 설정</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/placeholder.svg" alt="3D 재구성" loading="lazy" decoding="async" />
-                                <figcaption>3D 재구성</figcaption>
+                                <img src="/content/portfolio/gmdsoft/result.png" alt="GPS 속도 대비 추정 결과" loading="lazy" decoding="async" />
+                                <figcaption>GPS 속도 대비 추정 결과</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/gmdsoft/sfm_result.png" alt="COLMAP 3D 재구성" loading="lazy" decoding="async" />
+                                <figcaption>COLMAP 3D 재구성</figcaption>
                               </figure>
                             </div>
                           </div>
