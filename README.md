@@ -34,6 +34,7 @@ https://yoojuno.github.io/
 - `src/components/ErrorBoundary.jsx`: 페이지 예외를 가둬 사이트 전체 백지화를 막음
 - `vite.config.js`: 빌드 시 라우트별 HTML 프리렌더 + `sitemap.xml` 생성 플러그인 포함
 - `public/robots.txt`: 크롤러 안내 + sitemap 위치
+- `public/og-card.png`: SNS 링크 미리보기 카드 (원본: `tools/og-card/card.html`)
 - `.github/workflows/deploy.yml`: GitHub Actions 배포 파이프라인
 - `public/404.html`: GitHub Pages SPA 리다이렉트
 - `index.html`: SPA 리다이렉트 복구 스크립트
@@ -122,6 +123,9 @@ GitHub Pages는 실제 파일이 없는 경로에 404를 반환합니다. 따라
 블로그 글은 Frontmatter의 `title`/`summary`/`date`를 그대로 사용합니다.
 
 본문은 여전히 클라이언트에서 렌더링됩니다. 프리렌더되는 것은 `<head>`입니다.
+
+SNS 미리보기 카드는 `public/og-card.png` (1200x630) 하나를 전 페이지가 공유합니다.
+원본은 `tools/og-card/card.html`이며, 파일 상단 주석에 재생성 명령이 있습니다.
 
 ## 정적 파일
 

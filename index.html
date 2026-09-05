@@ -16,7 +16,7 @@
          title/description/canonical/og 를 해당 경로 값으로 바꾼다. 따라서 JS 를
          실행하지 않는 SNS 크롤러도 글마다 다른 링크 미리보기를 얻는다.
          값의 출처는 src/lib/routeMeta.js 와 각 글의 Frontmatter 다.
-         TODO: og:image 는 1200x630 브랜드 카드로 교체 권장. 현재는 기존 이미지 임시 사용. -->
+         og:image 는 전 페이지 공통 브랜드 카드(public/og-card.png, 1200x630)를 쓴다. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Yoo Juno" />
     <meta property="og:title" content="Yoo Juno · 로보틱스·컴퓨터비전 개발자" />
@@ -25,11 +25,15 @@
       content="로보틱스·컴퓨터비전·임베디드 중심의 시스템 통합 개발자 유준호 포트폴리오"
     />
     <meta property="og:url" content="https://yoojuno.github.io/" />
+    <meta property="og:image" content="https://yoojuno.github.io/og-card.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta
-      property="og:image"
-      content="https://yoojuno.github.io/content/portfolio/smart_factory/system_architecture.png"
+      property="og:image:alt"
+      content="유준호 · 로보틱스, 컴퓨터 비전, 임베디드 개발자 소개 카드"
     />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://yoojuno.github.io/og-card.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
