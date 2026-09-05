@@ -3,6 +3,15 @@ import { useLocation } from 'react-router-dom'
 import useReveal from '../hooks/useReveal'
 import '../styles/pages/portfolio.css'
 
+// id 문자열을 CSS 선택자로 조합하지 않고 조회한다.
+// querySelector(`#${id}`)는 CSS 식별자로 유효하지 않은 값(예: 숫자로 시작하는 "1")에서
+// DOMException을 던지고, 이 예외가 useEffect 안에서 발생하면 앱 전체가 언마운트된다.
+const findInContainer = (container, id) => {
+  if (!container || !id) return null
+  const target = document.getElementById(id)
+  return target && container.contains(target) ? target : null
+}
+
 function Portfolio() {
   const containerRef = useRef(null)
   const location = useLocation()
@@ -47,7 +56,7 @@ function Portfolio() {
       if (!link) return
       const href = link.getAttribute('href')
       if (!href || href.length < 2) return
-      const target = container.querySelector(href)
+      const target = findInContainer(container, href.slice(1))
       if (!target) return
       event.preventDefault()
       focusDetail(target)
@@ -147,7 +156,7 @@ function Portfolio() {
     if (!section) return
     const container = containerRef.current
     if (!container) return
-    const target = container.querySelector(`#${section}`)
+    const target = findInContainer(container, section)
     if (!target) return
     if (target.tagName.toLowerCase() === 'details') {
       target.setAttribute('open', '')
