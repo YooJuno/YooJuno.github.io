@@ -578,7 +578,7 @@ function Portfolio() {
                                 <figcaption>디지털 트윈 화면</figcaption>
                               </figure>
                               <figure className="media-tile">
-                                <img src="/content/portfolio/smart_factory/.png" alt="검출 결과" />
+                                <img src="/content/portfolio/smart_factory/yolo.png" alt="검출 결과" />
                                 <figcaption>검출 결과</figcaption>
                               </figure>
                             </div>
