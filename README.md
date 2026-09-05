@@ -6,11 +6,11 @@ https://yoojuno.github.io/
 
 ## 기술 스택
 
-- React 18 + Vite 5
-- 라우팅: React Router (BrowserRouter)
+- React 18 + Vite 7
+- 라우팅: React Router 7 (BrowserRouter)
 - 블로그: Markdown + Frontmatter (내장 파서) + marked
 - 배포: GitHub Actions → GitHub Pages
-- Node: 20 (빌드 안정성 확보)
+- Node: 20 (`.nvmrc`) — Vite 7 요구사항은 `^20.19.0 || >=22.12.0`
 
 ## 라우팅 구조
 
@@ -18,6 +18,8 @@ https://yoojuno.github.io/
 - `/portfolio` : 포트폴리오 전체
 - `/blog` : 블로그 목록 (검색/태그/카테고리)
 - `/blog/:slug` : 글 상세
+- `/web-service` : 웹서비스 목록
+- `/web-service/:name` : 웹서비스 상세 (blog / cctv-streaming / video-chatting / bitcoin-auto-trader)
 
 ## 폴더 구조
 
@@ -27,6 +29,10 @@ https://yoojuno.github.io/
 - `src/content/blog/<slug>/index.md`: Markdown 글 + Frontmatter
 - `src/content/blog/<slug>/*`: 글에 사용하는 이미지
 - `src/lib/posts.js`: 글 로딩/파싱
+- `src/hooks/useDocumentTitle.js`: 라우트별 `<title>`/meta description 갱신
+- `src/components/ErrorBoundary.jsx`: 페이지 예외를 가둬 사이트 전체 백지화를 막음
+- `vite.config.js`: 빌드 시 `sitemap.xml` 자동 생성 플러그인 포함
+- `public/robots.txt`: 크롤러 안내 + sitemap 위치
 - `.github/workflows/deploy.yml`: GitHub Actions 배포 파이프라인
 - `public/404.html`: GitHub Pages SPA 리다이렉트
 - `index.html`: SPA 리다이렉트 복구 스크립트
@@ -49,6 +55,8 @@ npm run build
 ## GitHub Actions 배포
 
 `main` 브랜치에 푸시하면 Actions가 자동으로 배포합니다.
+배포 경로는 이 워크플로 하나뿐입니다. (`gh-pages` 수동 배포 스크립트는 제거했습니다.)
+워크플로는 `npm ci` → `npm run lint` → `npm run build` 순으로 실행합니다.
 
 설정 경로:
 - GitHub 저장소 → **Settings → Pages → Source: GitHub Actions**
@@ -95,6 +103,16 @@ summary: "글 요약"
 - `summary`가 없으면 본문 일부가 자동 요약으로 사용됩니다.
 - 목록 페이지에서 검색/태그/카테고리 필터가 동작합니다.
 - `slug`를 Frontmatter에 넣으면 폴더명 대신 해당 값이 사용됩니다.
+
+## SEO
+
+- 라우트별 `<title>`/meta description은 `src/hooks/useDocumentTitle.js`가 갱신합니다.
+  JS를 실행하는 검색엔진(Google 등)과 브라우저 탭/북마크에 반영됩니다.
+- SNS 링크 미리보기 크롤러(카카오톡/슬랙/X 등)는 JS를 실행하지 않으므로
+  `index.html`의 정적 og 태그가 사이트 공통 값으로 처리합니다.
+  글별 미리보기까지 필요하면 프리렌더링(SSG) 도입이 필요합니다.
+- `sitemap.xml`은 빌드할 때 `vite.config.js`의 플러그인이 생성합니다.
+  글을 추가하면 자동 반영되지만, **라우트를 추가하면 `STATIC_ROUTES`에도 추가**해야 합니다.
 
 ## 정적 파일
 
