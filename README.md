@@ -1,175 +1,163 @@
-﻿# YooJuno.github.io (React + Vite)
+# YooJuno.github.io
 
-유준호 포트폴리오 + 기술 블로그를 위한 React 기반 정적 사이트입니다.
+개인 포트폴리오와 기술 기록을 운영하기 위한 React 기반 정적 웹사이트입니다.
 
-https://yoojuno.github.io/
+[운영 사이트](https://yoojuno.github.io/) · 이 문서는 사이트의 구현 방식과 설계 시 중점적으로 다룬 내용을 설명합니다.
 
-## 기술 스택
+## 개발 목표
 
-- React 18 + Vite 7
-- 라우팅: React Router 7 (BrowserRouter)
-- 블로그: Markdown + Frontmatter (내장 파서) + marked
-- 배포: GitHub Actions → GitHub Pages
-- Node: 20 (`.nvmrc`) — Vite 7 요구사항은 `^20.19.0 || >=22.12.0`
+- **서버 없이 운영:** GitHub Pages의 정적 호스팅 환경에서도 SPA의 직접 주소 접근과 링크 공유가 동작하도록 구성합니다.
+- **콘텐츠 유지보수 비용 감소:** 글과 이미지를 함께 관리하고, 동일한 프로젝트 정보를 여러 곳에서 수정하지 않도록 합니다.
+- **탐색 안정성과 읽기 경험:** 긴 내용을 단계적으로 펼쳐 보여주되, 주소·브라우저 이력·키보드 탐색을 유지합니다.
 
-## 라우팅 구조
+## 기술 구성
 
-- `/` : 홈 (간단 소개)
-- `/portfolio` : 포트폴리오 전체
-- `/blog` : 블로그 목록 (검색/태그/카테고리)
-- `/blog/:slug` : 글 상세
-- `/web-service` : 웹서비스 목록
-- `/web-service/:name` : 웹서비스 상세 (blog / cctv-streaming / video-chatting / bitcoin-auto-trader)
+| 영역 | 사용 기술 | 역할 |
+| --- | --- | --- |
+| 화면 | React 18 · JavaScript / JSX | 페이지·컴포넌트 구성 |
+| 빌드 | Vite 7 | 개발 서버, 번들 분리, 정적 파일 생성 |
+| 라우팅 | React Router 7 · BrowserRouter | 페이지 이동과 URL 기반 탐색 |
+| 콘텐츠 | Markdown · Frontmatter · marked | 파일 기반 글 관리와 HTML 변환 |
+| 스타일 | CSS · 미디어 쿼리 | 공통 스타일과 반응형 레이아웃 |
+| 검증·배포 | ESLint · GitHub Actions · GitHub Pages | 코드 검사와 정적 사이트 배포 |
 
-### 포트폴리오 탐색
+백엔드·DB·CMS 없이 저장소의 콘텐츠를 빌드해 배포합니다.
+`/web-service`의 페이지들은 프로젝트 소개이며, 여기서 각 서비스의 백엔드를 실행하는 것은 아닙니다.
 
-- 소개 → 경력 → 프로젝트 → 기술 역량 → 연락·자료 순서로 구성합니다.
-- 대표 프로젝트 카드는 따로 관리하지 않으며, 프로젝트 본문과 펼침 목록만 유지합니다.
-- 프로젝트는 분야별 분류 없이 시작 시점 기준 최신순으로 한 열에 표시합니다.
-  목차의 제목·기간·순서는 프로젝트 본문 정보에서 자동으로 생성합니다.
-- 섹션·프로젝트를 선택하면 `/portfolio/#career`, `/portfolio/#proj-hangang`처럼 주소에 반영됩니다.
-- 해당 주소를 공유하거나 새로고침해도 선택한 위치로 이동하며, 프로젝트 상세가 자동으로 펼쳐집니다.
-- 브라우저 뒤로가기·앞으로가기로 이전에 선택한 위치를 다시 탐색할 수 있습니다.
-- 기존 `/portfolio?section=career` 형태의 링크도 지원합니다.
-- 경력·인턴십·연구·교육은 하나의 타임라인으로 표시하며, 기간·기관·역할만 먼저 보여줍니다.
-- 상세 업무·장비 목록은 PC·모바일 모두 기본적으로 접혀 있고, 각 카드에서 펼칠 수 있습니다.
-  상세 정보가 없는 이력은 펼치기 버튼 없이 표시합니다.
-- 논문·수상·교육·조교 활동과 학력·기본 정보는 경력 아래 하나의 영역에 두 줄로 묶습니다.
-  각 줄은 독립적으로 펼쳐지며, 기본적으로 접혀 있습니다.
-  기존 `#activities`와 `?section=activities` 링크는 활동 영역을 자동으로 펼칩니다.
-- 이력서·포트폴리오 PDF와 외부 프로필 링크는 연락 영역에서 제공합니다.
-- 기술 역량은 분야별 행으로 정리하며, 사용 기술과 실제 적용 사례를 함께 표시합니다.
-- `/portfolio/#career-wego`처럼 특정 이력으로 직접 이동하면 해당 상세가 자동으로 펼쳐집니다.
-  기존 `#experience`와 `?section=experience` 링크는 첫 교육 이력(SSAFY)으로 이동합니다.
+## 구조와 처리 흐름
 
-## 폴더 구조
+```text
+작성
+├─ portfolio.js + ProjectEntry → 포트폴리오 데이터와 상세 내용
+└─ 글별 index.md + 이미지      → 블로그 콘텐츠
 
-- `src/content/portfolio.js`: 경력·인턴·연구·교육, 논문·수상·활동, 기본 정보, 기술 역량 데이터
-- `src/App.jsx`: 라우팅/레이아웃
-- `src/pages/`: 홈/포트폴리오/블로그 페이지
-- `src/index.css`: 전역 스타일
-- `src/content/blog/<slug>/index.md`: Markdown 글 + Frontmatter
-- `src/content/blog/<slug>/*`: 글에 사용하는 이미지
-- `src/lib/posts.js`: 글 로딩/파싱
-- `src/lib/routeMeta.js`: 라우트별 제목/설명 단일 출처 (런타임·빌드 공용)
-- `src/hooks/useDocumentTitle.js`: 라우트별 `<title>`/meta description 갱신
-- `src/components/ErrorBoundary.jsx`: 페이지 예외를 가둬 사이트 전체 백지화를 막음
-- `vite.config.js`: 빌드 플러그인 모음 (라우트별 HTML 프리렌더, `sitemap.xml` 생성,
-  블로그 이미지 크기 주입, slug 중복 검사)
-- `public/robots.txt`: 크롤러 안내 + sitemap 위치
-- `public/og-card.png`: SNS 링크 미리보기 카드 (원본: `tools/og-card/card.html`)
-- `.github/workflows/deploy.yml`: GitHub Actions 배포 파이프라인
-- `public/404.html`: GitHub Pages SPA 리다이렉트
-- `index.html`: SPA 리다이렉트 복구 스크립트
+빌드 (Vite)
+├─ React 앱                   → 라우트별 JavaScript / CSS 청크
+├─ 글 이미지 크기             → 가상 모듈로 전달
+└─ routeMeta + 글 메타데이터   → 경로별 HTML의 head + sitemap.xml
 
-## 로컬 실행
+배포 (GitHub Actions)
+└─ dist/ → GitHub Pages → 브라우저에서 React 앱 실행
+```
+
+## 핵심 설계와 구현
+
+### 1. 정적 호스팅에서의 라우팅과 메타데이터
+
+GitHub Pages에는 SPA용 서버 리라이트가 없으므로, 클라이언트 라우터만으로는 하위 주소에 직접 접근하는 문제를 해결할 수 없습니다.
+빌드에 등록된 경로마다 `index.html`을 생성하고, 해당 경로의 메타데이터를 미리 넣는 방식으로 대응합니다.
+
+- `/portfolio/`, `/blog/<slug>/` 등에 대응하는 HTML 파일을 빌드 결과에 생성합니다.
+- `title`, description, Open Graph, canonical과 `sitemap.xml`을 경로별로 구성합니다.
+- 정적 페이지 메타데이터는 `routeMeta.js`를 빌드와 런타임에서 공유합니다. 글별 값은 Frontmatter에서 가져옵니다.
+- canonical·sitemap은 끝 슬래시가 있는 주소를 사용하고, 런타임 경로 비교에서는 슬래시를 정규화합니다.
+- 미리 생성되지 않은 주소는 `404.html` → `sessionStorage` → 루트 페이지 복구 흐름으로 원래 경로·쿼리·해시를 React Router에 전달합니다.
+
+**본문 SSR이나 전체 페이지 SSG는 아닙니다.** 경로별 HTML의 `head`를 사전 생성하며, 실제 본문은 브라우저에서 React로 렌더링합니다.
+
+구현: [빌드 플러그인](vite.config.js), [공통 메타데이터](src/lib/routeMeta.js), [런타임 갱신](src/hooks/useDocumentTitle.js), [404 복구](public/404.html).
+
+### 2. 글과 이미지를 함께 관리하는 콘텐츠 파이프라인
+
+블로그 글은 `src/content/blog/<slug>/index.md`에 두고, 해당 글의 이미지도 같은 폴더 또는 하위 폴더에 둡니다.
+본문에서는 `./image.png` 같은 상대 경로를 사용합니다.
+
+- Vite의 `import.meta.glob`으로 Markdown 원문과 이미지 URL을 수집합니다.
+- 필요한 문자열·목록 메타데이터를 내장 Frontmatter 파서로 읽고, `marked`의 커스텀 렌더러로 본문을 변환합니다.
+- 상대 이미지 경로를 번들된 URL로 변환하고 `loading="lazy"`, `decoding="async"`를 추가합니다.
+- 빌드에서 크기를 확인할 수 있는 PNG·JPEG·SVG 이미지에는 `width`·`height`도 넣어 로딩 중 레이아웃 이동을 줄입니다.
+- 본문 제목에는 중복을 구분하는 ID를 생성해 특정 절을 직접 링크할 수 있게 합니다.
+- 빌드 시 중복 slug를 검사해 HTML 파일이 조용히 덮어써지는 것을 막습니다.
+
+구현: [글 로딩·렌더링](src/lib/posts.js), [이미지 크기·slug 검사](vite.config.js).
+
+### 3. 데이터 중복을 줄이는 포트폴리오 구성
+
+경력·활동·학력·기술 정보는 `portfolio.js`에 모으고, 컴포넌트는 해당 데이터를 렌더링하도록 분리했습니다.
+프로젝트는 `ProjectEntry`에 제목·기간·기관·역할과 상세 내용을 함께 정의합니다.
+
+`ProjectLibrary`는 같은 항목에서 **목차와 본문 목록을 함께 생성**하고, 시작 시점 내림차순으로 정렬합니다.
+시작 시점이 같으면 종료 시점이 최신인 항목을 먼저 표시합니다.
+목차용 제목이나 별도의 대표 프로젝트 데이터를 다시 관리하지 않습니다.
+
+상세 내용은 네이티브 `<details>`·`<summary>`로 구현합니다.
+간단한 열기·닫기 상태를 별도 React 상태로 중복 관리하지 않고, 기관·역할 또는 프로젝트 제목을 먼저 읽은 뒤 필요한 내용만 펼칠 수 있도록 했습니다.
+
+구현: [포트폴리오 데이터](src/content/portfolio.js), [항목·목차 컴포넌트](src/pages/Portfolio.jsx).
+
+### 4. URL과 연결된 탐색, 접근성, 오류 대응
+
+- 포트폴리오의 위치를 `#career`, `#proj-hangang` 같은 URL 해시에 반영합니다. 새로고침과 뒤로가기·앞으로가기에서도 해당 위치를 탐색합니다.
+- 숨겨진 상세 영역으로 직접 접근하면 먼저 펼치고, 모바일 목차가 닫힌 뒤의 레이아웃을 기준으로 스크롤합니다.
+- 기존 `?section=...` 링크를 유지하며, ID는 CSS 선택자 문자열 대신 `getElementById`로 조회해 잘못된 해시가 선택자 예외로 이어지지 않도록 합니다.
+- 이미지 확대 화면은 키보드로 열 수 있고, Tab 포커스를 대화상자 안에 유지합니다. Escape로 닫으면 원래 이미지에 포커스를 돌려줍니다.
+- 토글의 `aria-expanded`, 현재 위치의 `aria-current`, 포커스 표시와 `prefers-reduced-motion` 대응을 적용합니다.
+- 라우트 영역에 오류 경계를 두어 페이지 렌더링 오류가 전체 탐색 메뉴·푸터까지 제거하지 않도록 합니다. 다른 경로로 이동하면 경계를 다시 마운트합니다.
+
+구현: [탐색·이미지 확대](src/pages/Portfolio.jsx), [라우팅·메뉴](src/App.jsx), [오류 경계](src/components/ErrorBoundary.jsx), [모션 처리](src/hooks/useReveal.js).
+
+### 5. 초기 로딩과 이미지 표시
+
+홈은 즉시 로드하고, 포트폴리오·블로그·웹서비스 페이지는 `React.lazy`와 `Suspense`로 분리했습니다.
+홈만 방문할 때 블로그 파서와 모든 글 본문까지 함께 내려받지 않도록 하는 것이 목적입니다.
+
+본문 이미지에는 지연 로딩을 적용하고, 블로그의 확인 가능한 이미지 크기는 빌드에서 계산합니다.
+다만 블로그 모듈 자체는 현재 모든 글을 eager 방식으로 수집·변환합니다. **글별 본문까지 개별 지연 로딩하는 구조는 아닙니다.**
+
+구현: [라우트 분리](src/App.jsx), [이미지 렌더링](src/lib/posts.js).
+
+### 6. 검증을 통과한 빌드만 배포
+
+`main` 푸시 또는 수동 워크플로 실행 시 아래 순서로 배포합니다.
+
+```text
+Node 20 → npm ci → ESLint → Vite build → dist 아티팩트 업로드 → Pages 배포
+```
+
+- 잠금 파일 기반으로 의존성을 설치하고, 린트·빌드 실패 시 배포 단계로 넘어가지 않습니다.
+- ESLint로 미정의 JSX 컴포넌트 참조와 React Hooks 규칙 등을 검사합니다.
+- Pages 배포는 GitHub Actions 워크플로로 관리하며, 같은 배포 그룹의 중복 실행은 취소합니다.
+- 개발은 `dev`에서 작업 브랜치를 만들어 진행하고, 검증 후 `dev`에 병합합니다. `main` 반영이 공개 사이트 배포로 이어집니다.
+
+구현: [ESLint 설정](eslint.config.js), [배포 워크플로](.github/workflows/deploy.yml).
+
+## 로컬 개발
+
+Node 버전은 `.nvmrc`의 20을 기준으로 합니다. `package.json`의 허용 범위는 `^20.19.0 || >=22.12.0`입니다.
 
 ```bash
-npm install
+nvm use
+npm ci
 npm run dev
 ```
 
-## 포트폴리오 내용 수정
+`nvm`을 사용하지 않는다면 호환되는 Node 버전을 직접 설치한 뒤 `npm ci`부터 실행합니다.
 
-- 경력·활동·학력·기술 정보는 `src/content/portfolio.js`에서 수정합니다.
-- 프로젝트는 `src/pages/Portfolio.jsx`의 해당 `ProjectEntry`에서 수정합니다.
-  `title`은 제목, `start`·`end`는 `YYYY-MM` 형식의 기간, `meta`는 기관·팀 규모·역할입니다.
-  상세 설명·이미지는 그 안의 `detail-body`에서 수정합니다.
-  제목·기간을 변경하면 목차와 최신순 배치에도 반영되므로 별도 목차나 대표 카드 수정은 필요하지 않습니다.
-- PDF·프로필 링크는 `src/pages/Portfolio.jsx`의 `contact` 영역에서 수정합니다.
+| 명령 | 용도 |
+| --- | --- |
+| `npm run lint` | 코드 정적 검사 |
+| `npm run build` | 배포 파일을 `dist/`에 생성 |
+| `npm run preview` | 빌드 결과를 로컬에서 확인 |
 
-## 빌드
+GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 설정합니다.
 
-```bash
-npm run build
-```
+## 수정 지점
 
-빌드 결과는 `dist/`에 생성되며, Pages 배포 시 이 디렉터리가 업로드됩니다.
+| 변경 대상 | 위치·규칙 |
+| --- | --- |
+| 경력·활동·학력·기술 | `src/content/portfolio.js` |
+| 프로젝트 제목·기간·역할 | `src/pages/Portfolio.jsx`의 `ProjectEntry`: `title`, `start`, `end`, `meta`. 기간은 `YYYY-MM` 형식 |
+| 프로젝트 상세·이미지·외부 링크 | 해당 `ProjectEntry`의 `detail-body`와 `contact` 영역 |
+| 블로그 글·이미지 | `src/content/blog/<slug>/index.md`와 같은 글 폴더. 메타데이터는 `title`, `date`, `category`, `tags`, `summary`, 선택적인 `slug` |
+| 새 페이지·메타데이터 | `src/App.jsx`의 라우트와 `src/lib/routeMeta.js`의 메타데이터를 함께 추가 |
+| 스타일 | `src/styles/`의 공통·페이지별 CSS |
+| 고정 URL로 제공할 파일 | `public/`. 빌드 시 파일명·경로를 유지해 복사 |
 
-## GitHub Actions 배포
+`src`의 글 이미지처럼 코드에서 참조하는 자산은 Vite가 처리하고, `public`의 프로젝트 이미지·PDF 등은 고정 URL로 제공합니다.
+따라서 모든 콘텐츠를 한쪽에 몰아넣기보다 **참조 방식과 배포 경로**를 기준으로 구분합니다.
 
-`main` 브랜치에 푸시하면 Actions가 자동으로 배포합니다.
-배포 경로는 이 워크플로 하나뿐입니다. (`gh-pages` 수동 배포 스크립트는 제거했습니다.)
-워크플로는 `npm ci` → `npm run lint` → `npm run build` 순으로 실행합니다.
+## 현재 범위와 한계
 
-설정 경로:
-- GitHub 저장소 → **Settings → Pages → Source: GitHub Actions**
-
-## 해시 라우팅 제거 적용 방식
-
-GitHub Pages는 서버 리라이트가 없어 `/portfolio` 같은 경로로 직접 접근 시 404가 발생합니다.
-이를 해결하기 위해 **BrowserRouter + 404 리다이렉트** 패턴을 적용했습니다.
-
-- `public/404.html`에서 잘못된 경로를 `sessionStorage`에 저장 후 `/`로 리다이렉트
-- `index.html`에서 `spa-redirect` 값을 읽어 원래 경로로 복구
-
-이렇게 하면 `/#/portfolio` 대신 `/portfolio`로 접근해도 정상 렌더링됩니다.
-
-## 블로그 글 작성
-
-`src/content/blog/<slug>/index.md` 구조로 글을 추가합니다.
-
-Frontmatter 예시:
-
-```md
----
-title: "글 제목"
-date: "2026-01-28"
-category: "카테고리"
-tags:
-  - tag1
-  - tag2
-summary: "글 요약"
----
-
-본문 내용...
-```
-
-이미지 예시:
-
-```md
-![](./image.png)
-![](./images/diagram.png)
-```
-
-- 이미지 파일은 같은 폴더에 두거나 하위 폴더(`images/`)에 둡니다.
-
-- `summary`가 없으면 본문 일부가 자동 요약으로 사용됩니다.
-- 목록 페이지에서 검색/태그/카테고리 필터가 동작합니다.
-- `slug`를 Frontmatter에 넣으면 폴더명 대신 해당 값이 사용됩니다.
-  글끼리 `slug`가 겹치면 빌드가 실패합니다.
-- 본문 이미지에는 빌드 시 실제 크기(`width`/`height`)가 자동으로 들어갑니다.
-  덕분에 이미지가 늦게 떠도 본문이 밀리지 않습니다. 직접 적을 필요는 없습니다.
-- 본문의 각 제목에는 자동으로 `id`가 붙어 `/blog/<slug>/#제목-슬러그` 형태로
-  특정 절을 바로 가리킬 수 있습니다.
-
-## 성능
-
-- 라우트별로 코드를 나눠(`React.lazy`) 첫 화면에서 필요 없는 코드를 받지 않습니다.
-  특히 블로그 청크에는 `marked`와 모든 글 본문이 들어 있어 분리 효과가 큽니다.
-- 포트폴리오와 블로그 본문 이미지는 화면에 들어올 때 로드합니다(`loading="lazy"`).
-
-## SEO / 프리렌더링
-
-GitHub Pages는 실제 파일이 없는 경로에 404를 반환합니다. 따라서 빌드할 때
-`vite.config.js`의 플러그인이 **라우트마다 HTML 파일을 생성**합니다.
-(`/portfolio` → `dist/portfolio/index.html`)
-
-- 모든 경로가 200으로 응답하며, `404.html` 리다이렉트는 진짜 없는 주소에만 쓰입니다.
-- 각 HTML의 `<title>`, description, og 태그, canonical이 경로별 값으로 채워집니다.
-  JS를 실행하지 않는 SNS 크롤러도 글마다 다른 링크 미리보기를 얻습니다.
-- `sitemap.xml`도 같은 플러그인이 생성합니다.
-
-라우트 메타데이터의 단일 출처는 `src/lib/routeMeta.js`입니다.
-런타임에서는 `useDocumentTitle`이, 빌드 시에는 프리렌더 플러그인이 같은 값을 읽으므로
-**라우트를 추가하거나 문구를 바꿀 때는 이 파일만 수정**하면 됩니다.
-블로그 글은 Frontmatter의 `title`/`summary`/`date`를 그대로 사용합니다.
-
-본문은 여전히 클라이언트에서 렌더링됩니다. 프리렌더되는 것은 `<head>`입니다.
-
-SNS 미리보기 카드는 `public/og-card.png` (1200x630) 하나를 전 페이지가 공유합니다.
-원본은 `tools/og-card/card.html`이며, 파일 상단 주석에 재생성 명령이 있습니다.
-
-## 정적 파일
-
-PDF(이력서/포트폴리오)와 `.nojekyll`은 `public/`에 두면 빌드 결과에 포함됩니다.
+- Frontmatter 파서는 이 저장소에서 사용하는 간단한 문자열·목록 형식을 위한 것으로, 완전한 YAML 파서는 아닙니다.
+- Markdown HTML은 저장소 작성자를 신뢰하는 전제입니다. 별도 HTML 정화(sanitization)는 없으므로 외부 사용자 입력을 그대로 렌더링하는 용도로 사용하지 않습니다.
+- CI 검증 범위는 린트와 빌드입니다. 저장소에 상시 실행되는 단위·E2E 테스트나 성능 점수 기준은 아직 구성하지 않았습니다.
