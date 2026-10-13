@@ -2,14 +2,13 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import useReveal from '../hooks/useReveal'
 import useDocumentTitle from '../hooks/useDocumentTitle'
-import { EXPERIENCES, PROFILE_FACTS, SKILL_GROUPS, SUPPLEMENTARY_RECORDS } from '../content/portfolio'
+import { EXPERIENCES, PROFILE_FACTS, SUPPLEMENTARY_RECORDS } from '../content/portfolio'
 import '../styles/pages/portfolio.css'
 
 const SECTIONS = [
   { id: 'about', label: '소개' },
   { id: 'career', label: '경력' },
   { id: 'project-library', label: '프로젝트' },
-  { id: 'skills', label: '기술 역량' },
   { id: 'contact', label: '연락' },
 ]
 
@@ -114,9 +113,45 @@ function ProjectEntry({ id, title, start, end, meta, children }) {
 }
 
 function ProjectLibrary({ children, activeProjectId, isIndexOpen, onIndexToggle }) {
+  const indexContentRef = useRef(null)
   const projects = Children.toArray(children).sort((left, right) => (
     right.props.start.localeCompare(left.props.start) || right.props.end.localeCompare(left.props.end)
   ))
+
+  useEffect(() => {
+    const content = indexContentRef.current
+    if (!content) return undefined
+    let animationFrame
+
+    const revealActiveProject = () => {
+      animationFrame = undefined
+      const activeLink = content.querySelector('[aria-current="location"]')
+      if (!activeLink || !content.clientHeight || content.scrollHeight <= content.clientHeight) return
+      const contentBounds = content.getBoundingClientRect()
+      const linkBounds = activeLink.getBoundingClientRect()
+      let shift = 0
+      if (linkBounds.top < contentBounds.top + 8) {
+        shift = linkBounds.top - contentBounds.top - 8
+      } else if (linkBounds.bottom > contentBounds.bottom - 8) {
+        shift = linkBounds.bottom - contentBounds.bottom + 8
+      }
+      if (shift) content.scrollBy({ top: shift, behavior: 'instant' })
+    }
+
+    const scheduleReveal = () => {
+      if (animationFrame === undefined) animationFrame = window.requestAnimationFrame(revealActiveProject)
+    }
+
+    scheduleReveal()
+    window.addEventListener('resize', scheduleReveal)
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(scheduleReveal)
+    observer?.observe(content)
+    return () => {
+      window.removeEventListener('resize', scheduleReveal)
+      observer?.disconnect()
+      if (animationFrame !== undefined) window.cancelAnimationFrame(animationFrame)
+    }
+  }, [activeProjectId, isIndexOpen])
 
   return (
     <div className="library-grid">
@@ -130,7 +165,7 @@ function ProjectLibrary({ children, activeProjectId, isIndexOpen, onIndexToggle 
             {isIndexOpen ? '목차 접기' : '목차 펼치기'} <span aria-hidden="true">{isIndexOpen ? '−' : '+'}</span>
           </button>
         </div>
-        <nav className="project-index-content" id="portfolio-project-index-content" aria-label="프로젝트 목록">
+        <nav className="project-index-content" id="portfolio-project-index-content" aria-label="프로젝트 목록" ref={indexContentRef}>
           <ol className="project-index-list">
             {projects.map((project) => (
               <li key={project.props.id}>
@@ -288,27 +323,40 @@ function Portfolio() {
       container.querySelectorAll('#project-library .project-detail')
     )
     if (!items.length) return undefined
-    setActiveProjectId(items[0].id)
+    let animationFrame
 
-    if (typeof IntersectionObserver === 'undefined') {
-      return undefined
+    const updateActiveProject = () => {
+      animationFrame = undefined
+      const navigation = container.querySelector('.portfolio-section-nav')
+      const siteNavigation = document.querySelector('.site-nav')
+      const readingTop = (siteNavigation?.getBoundingClientRect().bottom || 68)
+        + (navigation?.getBoundingClientRect().height || 58) + 24
+      let active = items[0]
+      for (const item of items) {
+        if (item.getBoundingClientRect().top > readingTop + 1) break
+        active = item
+      }
+      setActiveProjectId(active.id)
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
-        if (visible.length) {
-          setActiveProjectId(visible[0].target.id)
-        }
-      },
-      { rootMargin: '-10% 0px -70% 0px', threshold: [0.1, 0.35, 0.6] }
-    )
+    const scheduleUpdate = () => {
+      if (animationFrame === undefined) animationFrame = window.requestAnimationFrame(updateActiveProject)
+    }
 
-    items.forEach((item) => observer.observe(item))
+    updateActiveProject()
+    window.addEventListener('scroll', scheduleUpdate, { passive: true })
+    window.addEventListener('resize', scheduleUpdate)
+    container.addEventListener('toggle', scheduleUpdate, true)
+    container.addEventListener('load', scheduleUpdate, true)
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(scheduleUpdate)
+    observer?.observe(container)
     return () => {
-      observer.disconnect()
+      window.removeEventListener('scroll', scheduleUpdate)
+      window.removeEventListener('resize', scheduleUpdate)
+      container.removeEventListener('toggle', scheduleUpdate, true)
+      container.removeEventListener('load', scheduleUpdate, true)
+      observer?.disconnect()
+      if (animationFrame !== undefined) window.cancelAnimationFrame(animationFrame)
     }
   }, [])
 
@@ -343,7 +391,8 @@ function Portfolio() {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search)
-    const section = location.hash ? getAnchorId(location.hash) : params.get('section')
+    const requestedSection = location.hash ? getAnchorId(location.hash) : params.get('section')
+    const section = requestedSection === 'skills' ? 'project-library' : requestedSection
     if (!section) return undefined
     const container = containerRef.current
     if (!container) return undefined
@@ -1321,33 +1370,6 @@ function Portfolio() {
                     </ProjectLibrary>
                   </div>
                 </section>
-                <section className="section" id="skills">
-                  <div className="container">
-                    <div className="section-head" data-reveal>
-                      <p className="portfolio-kicker">CAPABILITIES</p>
-                      <h2>기술 역량</h2>
-                      <p>사용한 기술과 실제로 적용한 경험을 함께 정리했습니다.</p>
-                    </div>
-                    <div className="stack-grid">
-                      {SKILL_GROUPS.map((group) => (
-                        <article className="stack-card" key={group.title}>
-                          <div className="stack-overview">
-                            <h3>{group.title}</h3>
-                            <p className="stack-description">{group.description}</p>
-                          </div>
-                          <div className="stack-tools">
-                            <ul className="chip-list">
-                              {group.tags.map((tag) => <li key={tag}>{tag}</li>)}
-                            </ul>
-                            <a className="stack-evidence" href={group.href}>{group.evidence} <span aria-hidden="true">↗</span></a>
-                          </div>
-                        </article>
-                      ))}
-                    </div>
-                  </div>
-                </section>
-
-
                 <section className="section" id="contact">
                   <div className="container" data-reveal>
                     <div className="contact-card">
