@@ -84,15 +84,19 @@ GitHub Pages에는 SPA용 서버 리라이트가 없으므로, 클라이언트 �
 상세 내용은 네이티브 `<details>`·`<summary>`로 구현합니다.
 간단한 열기·닫기 상태를 별도 React 상태로 중복 관리하지 않고, 기관·역할 또는 프로젝트 제목을 먼저 읽은 뒤 필요한 내용만 펼칠 수 있도록 했습니다.
 
+연락처·문서·프로필 링크는 소개 영역의 카드에 한 번만 표시합니다.
+PC에서는 소개 오른쪽, 모바일에서는 소개 아래에 배치해 하단의 별도 연락 영역과 중복 버튼을 없앴습니다.
+
 구현: [포트폴리오 데이터](src/content/portfolio.js), [프로젝트 컴포넌트](src/pages/Portfolio.jsx).
 
 ### 4. URL과 연결된 탐색, 접근성, 오류 대응
 
 - 포트폴리오의 위치를 `#career`, `#proj-hangang` 같은 URL 해시에 반영합니다. 새로고침과 뒤로가기·앞으로가기에서도 해당 위치를 탐색합니다.
 - 숨겨진 상세 영역으로 직접 접근하면 먼저 펼치고, 고정 메뉴를 피한 위치로 스크롤합니다.
-- 상단 섹션 메뉴만 유지하고, 프로젝트는 제목을 눌러 상세를 펼치도록 구성합니다. 별도 사이드바나 내부 스크롤 영역은 없습니다.
+- 상단 섹션 메뉴는 소개·경력·프로젝트만 유지하고, 프로젝트는 제목을 눌러 상세를 펼치도록 구성합니다. 별도 사이드바나 내부 스크롤 영역은 없습니다.
 - 기존 `?section=...` 링크를 유지하며, ID는 CSS 선택자 문자열 대신 `getElementById`로 조회해 잘못된 해시가 선택자 예외로 이어지지 않도록 합니다.
 - 제거한 기술 역량 영역의 기존 `#skills`·`?section=skills` 링크는 프로젝트 목록으로 연결합니다.
+- 기존 `#contact`·`?section=contact` 링크는 소개 영역의 연락·자료 카드로 연결합니다.
 - 이미지 확대 화면은 키보드로 열 수 있고, Tab 포커스를 대화상자 안에 유지합니다. Escape로 닫으면 원래 이미지에 포커스를 돌려줍니다.
 - 토글의 `aria-expanded`, 현재 위치의 `aria-current`, 포커스 표시와 `prefers-reduced-motion` 대응을 적용합니다.
 - 라우트 영역에 오류 경계를 두어 페이지 렌더링 오류가 전체 탐색 메뉴·푸터까지 제거하지 않도록 합니다. 다른 경로로 이동하면 경계를 다시 마운트합니다.
@@ -153,7 +157,8 @@ GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 �
 | --- | --- |
 | 경력·활동·학력 | `src/content/portfolio.js` |
 | 프로젝트 제목·기간·역할 | `src/pages/Portfolio.jsx`의 `ProjectEntry`: `title`, `start`, `end`, `meta`. 기간은 `YYYY-MM` 형식 |
-| 프로젝트 상세·이미지·외부 링크 | 해당 `ProjectEntry`의 `detail-body`와 `contact` 영역 |
+| 프로젝트 상세·이미지·외부 링크 | 해당 `ProjectEntry`의 `detail-body` |
+| 연락처·문서·프로필 링크 | `src/pages/Portfolio.jsx`의 `hero-contact` 영역 (`#contact`) |
 | 블로그 글·이미지 | `src/content/blog/<slug>/index.md`와 같은 글 폴더. 메타데이터는 `title`, `date`, `category`, `tags`, `summary`, 선택적인 `slug` |
 | 새 페이지·메타데이터 | `src/App.jsx`의 라우트와 `src/lib/routeMeta.js`의 메타데이터를 함께 추가 |
 | 스타일 | `src/styles/`의 공통·페이지별 CSS |
