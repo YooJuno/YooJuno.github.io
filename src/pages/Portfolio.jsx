@@ -4,6 +4,79 @@ import useReveal from '../hooks/useReveal'
 import useDocumentTitle from '../hooks/useDocumentTitle'
 import '../styles/pages/portfolio.css'
 
+const SECTIONS = [
+  { id: 'career', label: '경력' },
+  { id: 'about', label: '소개' },
+  { id: 'project-library', label: '프로젝트' },
+  { id: 'skills', label: '기술 스택' },
+  { id: 'experience', label: '연구·교육' },
+  { id: 'activities', label: '활동' },
+  { id: 'contact', label: '연락' },
+]
+
+const CAREER = [
+  {
+    company: '위고로보틱스',
+    team: '자율주행 로봇 연구·개발',
+    start: '2026-03-18',
+    end: null,
+    summary: '다양한 로봇·센서의 SDK와 드라이버를 통합하고, 프로젝트에서 재사용할 수 있는 사내 패키지 체계를 구축했습니다.',
+    responsibilities: [
+      { title: '자율주행 연구·개발', description: '사족보행 로봇의 3D SLAM & Navigation 연구·개발 및 SI 프로젝트 자율주행 로봇 개발.' },
+      { title: '시스템 레이어 설계', description: '로봇·센서 SDK와 드라이버를 통합하는 시스템 레이어 설계.' },
+      { title: '재사용 가능한 패키지 체계', description: '로봇과 센서를 자사 패키지로 구성해 프로젝트 간 재사용 가능한 체계 마련.' },
+      { title: '배포·유지보수 자동화', description: '시스템 유지보수를 위한 배포 자동화 진행.' },
+    ],
+    hardware: ['Unitree B2', 'Unitree Go2', 'Unitree A2', 'UR3e', 'FR3C', 'AURORA-S', 'RealSense Depth Camera', 'XT32', 'VLP16'],
+  },
+  {
+    company: '하이비젼',
+    team: '선행기술본부 · SW팀',
+    start: '2025-12-01',
+    end: '2026-03-17',
+    responsibilities: [],
+    hardware: [],
+  },
+]
+
+const FEATURED_PROJECTS = [
+  {
+    id: 'proj-hangang',
+    title: '한강 자율주행 배달 로봇 LiNKY',
+    category: 'Robotics',
+    image: '/content/portfolio/linky/front.png',
+    alt: '야외에서 운행하는 LiNKY 배달 로봇',
+    role: '6인 팀 · 팀장 / PM / Robotics',
+    description: 'Visual SLAM 기반 야외 자율주행과 수령자 확인을 연결한 배달 로봇.',
+    highlight: 'GPS–SLAM 좌표 매핑과 경로 생성·추종',
+  },
+  {
+    id: 'proj-smart-factory',
+    title: '로봇팔 자동화 & 디지털 트윈',
+    category: 'Automation',
+    image: '/content/portfolio/smart_factory/workspace.png',
+    alt: '스마트 팩토리 프로젝트의 로봇팔 작업 환경',
+    role: '3인 팀 · 팀장 / PM',
+    description: 'ROS2 로봇팔 제어와 영상처리, 디지털 트윈을 연결한 자동화 공정.',
+    highlight: '실제 로봇과 RoboDK 시뮬레이션 연동',
+  },
+  {
+    id: 'proj-cctv-speed',
+    title: 'CCTV 영상 기반 차량 속도 추정',
+    category: 'Computer Vision',
+    image: '/content/portfolio/cctv-speed/result.jpg',
+    alt: 'CCTV 영상으로 차량의 속도를 추정한 결과',
+    role: '산학 과제 · 속도 추정 알고리즘 개발',
+    description: '원근 보정과 시점별 위치·시간 차를 이용해 차량의 주행 속도를 추정.',
+    highlight: '촬영 데이터셋 기준 평균 오차 0.5 km/h',
+  },
+]
+
+const scrollToTarget = (target) => {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  target.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'start' })
+}
+
 // id 문자열을 CSS 선택자로 조합하지 않고 조회한다.
 // querySelector(`#${id}`)는 CSS 식별자로 유효하지 않은 값(예: 숫자로 시작하는 "1")에서
 // DOMException을 던지고, 이 예외가 useEffect 안에서 발생하면 앱 전체가 언마운트된다.
@@ -20,6 +93,7 @@ function Portfolio() {
   const [lightbox, setLightbox] = useState(null)
   const [activeProjectId, setActiveProjectId] = useState('')
   const [activeSectionId, setActiveSectionId] = useState('')
+  const [isProjectIndexOpen, setIsProjectIndexOpen] = useState(false)
   useReveal()
   useDocumentTitle()
   const getIndexClass = (id) => (
@@ -29,6 +103,21 @@ function Portfolio() {
   const getSectionClass = (id) => (
     activeSectionId === id ? 'index-link is-active' : 'index-link'
   )
+
+  useEffect(() => {
+    const navigation = containerRef.current?.querySelector('.portfolio-section-nav .container')
+    const activeLink = navigation?.querySelector('[aria-current="location"]')
+    if (!navigation || !activeLink || navigation.scrollWidth <= navigation.clientWidth) return
+    const navigationBounds = navigation.getBoundingClientRect()
+    const linkBounds = activeLink.getBoundingClientRect()
+    let shift = 0
+    if (linkBounds.left < navigationBounds.left + 16) {
+      shift = linkBounds.left - navigationBounds.left - 16
+    } else if (linkBounds.right > navigationBounds.right - 16) {
+      shift = linkBounds.right - navigationBounds.right + 16
+    }
+    if (shift) navigation.scrollBy({ left: shift, behavior: 'instant' })
+  }, [activeSectionId])
 
   useEffect(() => {
     const container = containerRef.current
@@ -42,17 +131,24 @@ function Portfolio() {
       window.setTimeout(() => target.classList.remove('is-focus'), 1200)
     }
 
+    const openImage = (image) => {
+      const src = image.currentSrc || image.src
+      if (!src) return
+      image.focus({ preventScroll: true })
+      setLightbox({ src, alt: image.alt || '프로젝트 이미지', hasAlt: Boolean(image.alt) })
+    }
+
+    container.querySelectorAll('.media-tile img').forEach((image) => {
+      image.tabIndex = 0
+      image.setAttribute('role', 'button')
+      image.setAttribute('aria-label', `${image.alt || '프로젝트 이미지'} 확대 보기`)
+    })
+
     const handleClick = (event) => {
       const image = event.target.closest('.media-tile img')
       if (image) {
         event.preventDefault()
-        const src = image.currentSrc || image.src
-        if (!src) return
-        setLightbox({
-          src,
-          alt: image.alt || '프로젝트 이미지',
-          hasAlt: Boolean(image.alt),
-        })
+        openImage(image)
         return
       }
       const link = event.target.closest('a[href^="#"]')
@@ -63,46 +159,56 @@ function Portfolio() {
       if (!target) return
       event.preventDefault()
       focusDetail(target)
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      setIsProjectIndexOpen(false)
+      window.requestAnimationFrame(() => scrollToTarget(target))
+    }
+
+    const handleImageKey = (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return
+      if (!event.target.matches('.media-tile img')) return
+      event.preventDefault()
+      openImage(event.target)
     }
 
     container.addEventListener('click', handleClick)
+    container.addEventListener('keydown', handleImageKey)
     return () => {
       container.removeEventListener('click', handleClick)
+      container.removeEventListener('keydown', handleImageKey)
     }
   }, [])
 
   useEffect(() => {
     const container = containerRef.current
     if (!container) return undefined
-    const targets = Array.from(
-      container.querySelectorAll(
-        '#about, #project-library, #skills, #experience, #activities, #contact'
-      )
-    )
+    const targets = SECTIONS.map(({ id }) => findInContainer(container, id)).filter(Boolean)
     if (!targets.length) return undefined
 
-    if (typeof IntersectionObserver === 'undefined') {
-      setActiveSectionId(targets[0].id)
-      return undefined
+    let animationFrame
+    const updateActiveSection = () => {
+      const navigation = container.querySelector('.portfolio-section-nav')
+      const offset = (navigation?.getBoundingClientRect().bottom || 68) + 40
+      const passed = targets.filter((target) => target.getBoundingClientRect().top <= offset)
+      const isAtBottom = window.scrollY > 0
+        && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2
+      const active = isAtBottom ? targets[targets.length - 1] : passed[passed.length - 1] || targets[0]
+      setActiveSectionId(active.id)
+      animationFrame = undefined
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
-        if (visible.length) {
-          setActiveSectionId(visible[0].target.id)
-        }
-      },
-      { rootMargin: '-20% 0px -55% 0px', threshold: [0.1, 0.3, 0.6] }
-    )
+    const scheduleUpdate = () => {
+      if (animationFrame === undefined) {
+        animationFrame = window.requestAnimationFrame(updateActiveSection)
+      }
+    }
 
-    targets.forEach((target) => observer.observe(target))
-
+    updateActiveSection()
+    window.addEventListener('scroll', scheduleUpdate, { passive: true })
+    window.addEventListener('resize', scheduleUpdate)
     return () => {
-      observer.disconnect()
+      window.removeEventListener('scroll', scheduleUpdate)
+      window.removeEventListener('resize', scheduleUpdate)
+      if (animationFrame !== undefined) window.cancelAnimationFrame(animationFrame)
     }
   }, [])
 
@@ -178,60 +284,118 @@ function Portfolio() {
       target.setAttribute('open', '')
       setActiveProjectId(target.id)
     }
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    window.requestAnimationFrame(() => scrollToTarget(target))
   }, [location.search])
 
   return (
-    <div ref={containerRef}>
+    <div className="portfolio-page" ref={containerRef}>
       <header className="site-hero portfolio-hero" id="top">
-
-
                 <div className="container hero-grid">
                   <div className="hero-text" data-reveal>
-                    <p className="eyebrow">Portfolio</p>
-                    <h1>유준호</h1>
-                    <p className="lead">로보틱스 · 컴퓨터 비전 · 임베디드</p>
+                    <p className="eyebrow">Robotics & Autonomous Navigation</p>
+                    <h1>유준호 <span>자율주행 로봇 개발자</span></h1>
+                    <p className="lead">
+                      3D SLAM과 Navigation을 연구하고,<br />
+                      로봇의 자율주행을 현장에 연결합니다.
+                    </p>
                     <div className="hero-actions">
-                      <a className="btn primary" href="#project-library">프로젝트 보기</a>
-                      <a className="btn ghost" href="#contact">연락하기</a>
+                      <a className="btn primary" href="#career">경력 보기 <span aria-hidden="true">↓</span></a>
+                      <a className="btn ghost" href="#project-library">프로젝트 보기</a>
+                      <a className="portfolio-resume-link" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" target="_blank" rel="noreferrer" aria-label="이력서 PDF (새 창)">이력서 <span aria-hidden="true">↗</span></a>
                     </div>
                   </div>
 
-                  <div className="hero-panel" data-reveal>
-                    <div className="panel-card">
-                      <h2>주요 경험</h2>
-                      <ul>
-                        <li>ROS2 자율주행 로봇</li>
-                        <li>영상 기반 측정 알고리즘</li>
-                        <li>임베디드·웹 실시간 통신</li>
-                      </ul>
+                  <div className="portfolio-current-card" data-reveal>
+                    <div className="current-card-top">
+                      <span className="current-card-label">CURRENT ROLE</span>
+                      <span className="career-status is-current"><span aria-hidden="true" />재직 중</span>
+                    </div>
+                    <h2>위고로보틱스</h2>
+                    <p className="current-card-role">자율주행 로봇 연구·개발</p>
+                    <div className="current-card-focus">
+                      <p><span>01</span>사족보행 · 3D SLAM & Navigation</p>
+                      <p><span>02</span>SDK·드라이버 통합 · 사내 패키지화</p>
+                      <p><span>03</span>SI 프로젝트 · 배포 자동화</p>
+                    </div>
+                    <div className="current-card-footer">
+                      <p><time dateTime="2026-03-18">2026.03.18</time> — 현재</p>
+                      <a href="#career">경력 자세히 <span aria-hidden="true">↗</span></a>
                     </div>
                   </div>
                 </div>
               </header>
 
+              <nav className="portfolio-section-nav" aria-label="포트폴리오 목차">
+                <div className="container">
+                  {SECTIONS.map(({ id, label }) => (
+                    <a key={id} className={getSectionClass(id)} href={`#${id}`} aria-current={activeSectionId === id ? 'location' : undefined}>
+                      {label}
+                    </a>
+                  ))}
+                </div>
+              </nav>
+
               <main className="portfolio-main">
-                <aside className="portfolio-index" data-reveal>
-                  <h3>목차</h3>
-                  <nav className="index-group">
-                    <a className={getSectionClass("about")} href="#about">소개</a>
-                    <a className={getSectionClass("project-library")} href="#project-library">프로젝트</a>
-                    <a className={getSectionClass("skills")} href="#skills">기술 스택</a>
-                    <a className={getSectionClass("experience")} href="#experience">경험</a>
-                    <a className={getSectionClass("activities")} href="#activities">활동</a>
-                    <a className={getSectionClass("contact")} href="#contact">연락</a>
-                  </nav>
-                </aside>
+                <section className="section career-section" id="career" aria-labelledby="career-heading">
+                  <div className="container">
+                    <div className="section-head" data-reveal>
+                      <p className="portfolio-kicker">PROFESSIONAL EXPERIENCE</p>
+                      <h2 id="career-heading">경력</h2>
+                      <p>연구·개발부터 현장의 자율주행 로봇 구현까지.</p>
+                    </div>
+                    <ol className="career-timeline">
+                      {CAREER.map((job) => (
+                        <li className={`career-entry${job.end ? '' : ' is-current'}`} key={job.company}>
+                          <div className="career-period">
+                            <span className={`career-status${job.end ? '' : ' is-current'}`}>
+                              <span aria-hidden="true" />{job.end ? '이전 경력' : '재직 중'}
+                            </span>
+                            <p>
+                              <time dateTime={job.start}>{job.start.replaceAll('-', '.')}</time>
+                              <span aria-hidden="true"> — </span>
+                              {job.end ? <time dateTime={job.end}>{job.end.replaceAll('-', '.')}</time> : '현재'}
+                            </p>
+                          </div>
+                          <article className="career-card" data-reveal>
+                            <h3>{job.company}</h3>
+                            <p className="career-team">{job.team}</p>
+                            {job.summary && <p className="career-summary">{job.summary}</p>}
+                            {job.responsibilities.length > 0 && (
+                              <div className="career-responsibilities">
+                                {job.responsibilities.map((responsibility) => (
+                                  <div key={responsibility.title}>
+                                    <h4>{responsibility.title}</h4>
+                                    <p>{responsibility.description}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                            {job.hardware.length > 0 && (
+                              <div className="career-hardware">
+                                <h4>로봇·센서 통합 경험</h4>
+                                <ul>
+                                  {job.hardware.map((hardware) => <li key={hardware}>{hardware}</li>)}
+                                </ul>
+                              </div>
+                            )}
+                          </article>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                </section>
                 <section className="section" id="about">
                   <div className="container about-grid" data-reveal>
                     <div>
                       <div className="section-head">
                         <h2>소개</h2>
-                        <p>로보틱스와 컴퓨터 비전을 중심으로 개발합니다.</p>
+                        <p>위고로보틱스에서 자율주행 로봇을 연구·개발합니다.</p>
                       </div>
                       <p className="body">
-                        연구실, 인턴십, 팀 프로젝트에서 SLAM, 객체 인식, 경로 계획,
-                        센서·서버 통신을 구현했습니다.
+                        사족보행 로봇의 3D SLAM과 Navigation을 연구하고,
+                        SI 프로젝트의 자율주행 로봇을 개발합니다.
+                        로봇·센서의 SDK와 드라이버를 시스템 레이어로 연결하고,
+                        재사용 가능한 사내 패키지와 배포 자동화 체계를 만들어가고 있습니다.
                       </p>
                     </div>
                     <div className="about-card">
@@ -253,13 +417,40 @@ function Portfolio() {
                 <section className="section" id="project-library">
                   <div className="container">
                     <div className="section-head" data-reveal>
+                      <p className="portfolio-kicker">SELECTED WORK</p>
                       <h2>프로젝트</h2>
-                      <p>항목을 선택하면 상세 내용을 볼 수 있습니다.</p>
+                      <p>로보틱스, 자동화, 컴퓨터 비전 분야의 대표 작업입니다.</p>
                     </div>
-                    <div className="library-grid" data-reveal>
-                      <aside className="project-index">
-                        <h3>프로젝트</h3>
-                        <p>총 16개</p>
+                    <div className="featured-projects">
+                      {FEATURED_PROJECTS.map((project) => (
+                        <a className="featured-project-card" href={`#${project.id}`} key={project.id} aria-label={`${project.title} 상세 보기`}>
+                          <div className="featured-project-image">
+                            <img src={project.image} alt={project.alt} loading="lazy" decoding="async" />
+                            <span>{project.category}</span>
+                          </div>
+                          <div className="featured-project-body">
+                            <p className="featured-project-role">{project.role}</p>
+                            <h3>{project.title}</h3>
+                            <p className="featured-project-description">{project.description}</p>
+                            <p className="featured-project-highlight">{project.highlight}</p>
+                            <span className="featured-project-link">상세 보기 <span aria-hidden="true">↗</span></span>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                    <div className="project-library-heading">
+                      <h3>전체 프로젝트 <span>16</span></h3>
+                      <p>프로젝트를 펼쳐 구현 과정과 결과를 확인하세요.</p>
+                    </div>
+                    <div className="library-grid">
+                      <aside className={`project-index portfolio-project-index${isProjectIndexOpen ? ' is-open' : ''}`}>
+                        <div className="project-index-heading">
+                          <h3>프로젝트 탐색</h3>
+                          <button className="project-index-toggle" type="button" aria-expanded={isProjectIndexOpen} aria-controls="portfolio-project-index-content" onClick={() => setIsProjectIndexOpen((open) => !open)}>
+                            {isProjectIndexOpen ? '목차 접기' : '목차 펼치기'} <span aria-hidden="true">{isProjectIndexOpen ? '−' : '+'}</span>
+                          </button>
+                        </div>
+                        <div className="project-index-content" id="portfolio-project-index-content">
                         <div className="index-group">
                           <h4>로보틱스</h4>
                           <a className={getIndexClass("proj-hangang")} href="#proj-hangang">한강 자율주행 배달 로봇</a>
@@ -287,6 +478,7 @@ function Portfolio() {
                           <h4>기타</h4>
                           <a className={getIndexClass("proj-trader")} href="#proj-trader">가상화폐 자동 매매</a>
                           <a className={getIndexClass("proj-pacman")} href="#proj-pacman">Online Pacman</a>
+                        </div>
                         </div>
                       </aside>
 
@@ -1224,8 +1416,8 @@ function Portfolio() {
                 <section className="section" id="experience">
                   <div className="container" data-reveal>
                     <div className="section-head">
-                      <h2>경험</h2>
-                      <p>교육, 연구, 인턴십 이력입니다.</p>
+                      <h2>연구·교육</h2>
+                      <p>현재의 개발 역량을 쌓아온 교육, 연구, 인턴십 이력입니다.</p>
                     </div>
                     <div className="timeline">
                       <div className="timeline-item">

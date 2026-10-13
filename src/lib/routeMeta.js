@@ -21,7 +21,7 @@ export const ROUTE_META = {
   },
   '/portfolio': {
     title: '포트폴리오',
-    description: '로보틱스·컴퓨터비전·임베디드 프로젝트와 경험을 정리한 포트폴리오입니다.',
+    description: '위고로보틱스에서의 3D SLAM·Navigation 연구개발과 자율주행 로봇 개발 경력, 로보틱스·컴퓨터비전 프로젝트를 소개합니다.',
   },
   '/blog': {
     title: '블로그',
