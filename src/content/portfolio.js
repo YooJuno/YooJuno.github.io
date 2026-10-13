@@ -1,0 +1,151 @@
+export const EXPERIENCES = [
+  {
+    id: 'career-wego',
+    organization: '위고로보틱스',
+    role: '로봇 자율주행 SW팀',
+    type: '경력',
+    start: '2026-03-18',
+    end: null,
+    summary: '다양한 로봇·센서의 SDK와 드라이버를 통합하고, 프로젝트에서 재사용할 수 있는 사내 패키지 체계를 구축했습니다.',
+    responsibilities: [
+      { title: '자율주행 연구·개발', description: '사족보행 로봇의 3D SLAM & Navigation 연구·개발 및 SI 프로젝트 자율주행 로봇 개발.' },
+      { title: '시스템 레이어 설계', description: '로봇·센서 SDK와 드라이버를 통합하는 시스템 레이어 설계.' },
+      { title: '재사용 가능한 패키지 체계', description: '로봇과 센서를 자사 패키지로 구성해 프로젝트 간 재사용 가능한 체계 마련.' },
+      { title: '배포·유지보수 자동화', description: '시스템 유지보수를 위한 배포 자동화 진행.' },
+    ],
+    hardware: ['Unitree B2', 'Unitree Go2', 'Unitree A2', 'UR3e', 'FR3C', 'AURORA-S', 'RealSense Depth Camera', 'XT32', 'VLP16'],
+  },
+  {
+    id: 'career-hivision',
+    organization: '하이비젼시스템',
+    role: '선행기술본부 · SW팀',
+    type: '경력',
+    start: '2025-12-01',
+    end: '2026-03-17',
+    responsibilities: [],
+    hardware: [],
+  },
+  {
+    id: 'experience-ssafy',
+    organization: 'SSAFY',
+    role: '임베디드 로봇 트랙',
+    type: '교육',
+    start: '2025-01',
+    end: '2025-10',
+    summary: '웹·로봇 프로젝트 수행, 자동화 시스템 설계 및 로봇팔 제어 경험.',
+    responsibilities: [],
+    hardware: [],
+  },
+  {
+    id: 'experience-gmd-soft',
+    organization: 'GMD SOFT',
+    role: '영상 포렌식 검증·세미나',
+    type: '인턴',
+    start: '2024-07',
+    end: '2024-09',
+    summary: '경쟁사 조사, gRPC 기반 분산 처리 시스템 설계, Visual-SLAM 세미나 진행.',
+    responsibilities: [],
+    hardware: [],
+  },
+  {
+    id: 'experience-cgv-lab',
+    organization: '한동대학교 CGV LAB',
+    role: '자율주행·영상처리 연구 · 학부 연구생',
+    type: '연구',
+    start: '2022-06',
+    end: '2024-08',
+    summary: '컴퓨터 비전·로보틱스 연구 프로젝트 수행.',
+    responsibilities: [],
+    hardware: [],
+  },
+  {
+    id: 'experience-zaitron',
+    organization: '자이트론',
+    role: '자율주행 기술 교육·제품 개발',
+    type: '인턴',
+    start: '2023-09',
+    end: '2023-12',
+    summary: '자율주행 교육 강의 보조·진행, 경기장 관제 시스템 및 자율 주차 프로그램 개발.',
+    responsibilities: [],
+    hardware: [],
+  },
+]
+
+export const SUPPLEMENTARY_RECORDS = [
+  {
+    kind: '논문',
+    title: 'PilotNet 성능 향상을 위한 SLAM과 YOLO 활용',
+    meta: '대한전자공학회 · 2023.06',
+    links: [
+      { label: '논문 링크', href: 'https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374' },
+      { label: '논문 PDF', href: '/content/portfolio/pdfs/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf' },
+    ],
+  },
+  {
+    kind: '수상',
+    title: '캡스톤 디자인 페스티벌 우수상',
+    meta: '한동대학교 · 2023.05',
+    links: [
+      { label: '상장 PDF', href: '/content/portfolio/pdfs/캡스톤 경진대회.pdf' },
+    ],
+  },
+  {
+    kind: '교육',
+    title: '상상이상 사이언스 상상교사',
+    meta: '포스코 1% 나눔재단 · 2022.06–2023.07',
+    description: '중학교 대상 과학·IT 체험 교육 8개 학교 진행. AR/코딩 체험 수업 설계.',
+    links: [],
+  },
+  {
+    kind: '조교',
+    title: '컴퓨터비전 전공 조교',
+    description: '수업 자료 정리 및 학습 지원. 피처 매칭 알고리즘 이해 심화.',
+    links: [],
+  },
+]
+
+export const PROFILE_FACTS = [
+  { label: '학력', value: '한동대학교 AI 컴퓨터공학 심화 (2018.02–2024.08)' },
+  { label: '교육', value: 'SSAFY 임베디드 로봇 트랙 (2025.01–2025.10)' },
+  { label: '언어', value: 'OPIc IM1 (2025.03)' },
+  { label: '자격', value: '1종보통운전면허 (2020.10)' },
+  { label: '병역', value: '육군 병장 만기전역 (2019.01–2020.08)' },
+]
+
+export const SKILL_GROUPS = [
+  {
+    title: '자율주행·로보틱스',
+    description: '위치 추정부터 경로 생성·추종까지 자율주행 흐름을 연결합니다.',
+    tags: ['ROS2', 'Nav2', 'Isaac ROS VSLAM', 'ORB-SLAM3', 'RTAB-MAP', 'Pure-Pursuit', 'Path Planning', 'RoboDK', 'Dobot'],
+    href: '#proj-hangang',
+    evidence: 'LiNKY 개발 사례',
+  },
+  {
+    title: '컴퓨터 비전',
+    description: '영상의 기하 정보와 객체 인식을 활용해 위치·높이·속도를 추정합니다.',
+    tags: ['OpenCV', 'YOLOv5/9', 'COLMAP'],
+    href: '#proj-cctv-speed',
+    evidence: 'CCTV 속도 추정 사례',
+  },
+  {
+    title: '로봇·임베디드',
+    description: '로봇·센서와 보드를 연결하고 제어 시스템을 구성합니다.',
+    tags: ['Jetson Orin Nano', 'RealSense D435i', 'ESP32', 'STM32', 'Raspberry Pi', 'nRF52840'],
+    href: '#proj-stm32',
+    evidence: 'STM32 구현 사례',
+  },
+  {
+    title: '개발·운영',
+    description: '재사용 가능한 패키지와 배포·유지보수 환경을 구성합니다.',
+    tags: ['C++', 'Python', 'Docker', 'Linux', 'Git', 'Jira'],
+    href: '#career-wego',
+    evidence: '위고로보틱스 실무 경험',
+  },
+  {
+    title: '통신·웹 연동',
+    description: '로봇과 서비스 사이의 데이터·영상 전달 흐름을 연결합니다.',
+    tags: ['MQTT', 'gRPC', 'TCP/UDP', 'Vue.js', 'Node.js', 'Express', 'MySQL', 'Nginx'],
+    href: '#proj-cctv-halow',
+    evidence: '무선 CCTV 스트리밍 사례',
+  },
+]

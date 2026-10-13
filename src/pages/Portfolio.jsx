@@ -2,122 +2,17 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import useReveal from '../hooks/useReveal'
 import useDocumentTitle from '../hooks/useDocumentTitle'
+import { EXPERIENCES, PROFILE_FACTS, SKILL_GROUPS, SUPPLEMENTARY_RECORDS } from '../content/portfolio'
 import '../styles/pages/portfolio.css'
 
 const SECTIONS = [
   { id: 'about', label: '소개' },
   { id: 'career', label: '경력·경험' },
   { id: 'project-library', label: '프로젝트' },
-  { id: 'skills', label: '기술 스택' },
-  { id: 'activities', label: '활동' },
+  { id: 'skills', label: '기술 역량' },
   { id: 'contact', label: '연락' },
 ]
 
-const EXPERIENCES = [
-  {
-    id: 'career-wego',
-    organization: '위고로보틱스',
-    role: '로봇 자율주행 SW팀',
-    type: '경력',
-    start: '2026-03-18',
-    end: null,
-    summary: '다양한 로봇·센서의 SDK와 드라이버를 통합하고, 프로젝트에서 재사용할 수 있는 사내 패키지 체계를 구축했습니다.',
-    responsibilities: [
-      { title: '자율주행 연구·개발', description: '사족보행 로봇의 3D SLAM & Navigation 연구·개발 및 SI 프로젝트 자율주행 로봇 개발.' },
-      { title: '시스템 레이어 설계', description: '로봇·센서 SDK와 드라이버를 통합하는 시스템 레이어 설계.' },
-      { title: '재사용 가능한 패키지 체계', description: '로봇과 센서를 자사 패키지로 구성해 프로젝트 간 재사용 가능한 체계 마련.' },
-      { title: '배포·유지보수 자동화', description: '시스템 유지보수를 위한 배포 자동화 진행.' },
-    ],
-    hardware: ['Unitree B2', 'Unitree Go2', 'Unitree A2', 'UR3e', 'FR3C', 'AURORA-S', 'RealSense Depth Camera', 'XT32', 'VLP16'],
-  },
-  {
-    id: 'career-hivision',
-    organization: '하이비젼시스템',
-    role: '선행기술본부 · SW팀',
-    type: '경력',
-    start: '2025-12-01',
-    end: '2026-03-17',
-    responsibilities: [],
-    hardware: [],
-  },
-  {
-    id: 'experience-ssafy',
-    organization: 'SSAFY',
-    role: '임베디드 로봇 트랙',
-    type: '교육',
-    start: '2025-01',
-    end: '2025-10',
-    summary: '웹·로봇 프로젝트 수행, 자동화 시스템 설계 및 로봇팔 제어 경험.',
-    responsibilities: [],
-    hardware: [],
-  },
-  {
-    id: 'experience-gmd-soft',
-    organization: 'GMD SOFT',
-    role: '영상 포렌식 검증·세미나',
-    type: '인턴',
-    start: '2024-07',
-    end: '2024-09',
-    summary: '경쟁사 조사, gRPC 기반 분산 처리 시스템 설계, Visual-SLAM 세미나 진행.',
-    responsibilities: [],
-    hardware: [],
-  },
-  {
-    id: 'experience-cgv-lab',
-    organization: '한동대학교 CGV LAB',
-    role: '자율주행·영상처리 연구 · 학부 연구생',
-    type: '연구',
-    start: '2022-06',
-    end: '2024-08',
-    summary: '컴퓨터 비전·로보틱스 연구 프로젝트 수행.',
-    responsibilities: [],
-    hardware: [],
-  },
-  {
-    id: 'experience-zaitron',
-    organization: '자이트론',
-    role: '자율주행 기술 교육·제품 개발',
-    type: '인턴',
-    start: '2023-09',
-    end: '2023-12',
-    summary: '자율주행 교육 강의 보조·진행, 경기장 관제 시스템 및 자율 주차 프로그램 개발.',
-    responsibilities: [],
-    hardware: [],
-  },
-]
-
-const FEATURED_PROJECTS = [
-  {
-    id: 'proj-hangang',
-    title: '한강 자율주행 배달 로봇 LiNKY',
-    category: 'Robotics',
-    image: '/content/portfolio/linky/front.png',
-    alt: '야외에서 운행하는 LiNKY 배달 로봇',
-    role: '6인 팀 · 팀장 / PM / Robotics',
-    description: 'Visual SLAM 기반 야외 자율주행과 수령자 확인을 연결한 배달 로봇.',
-    highlight: 'GPS–SLAM 좌표 매핑과 경로 생성·추종',
-  },
-  {
-    id: 'proj-smart-factory',
-    title: '로봇팔 자동화 & 디지털 트윈',
-    category: 'Automation',
-    image: '/content/portfolio/smart_factory/workspace.png',
-    alt: '스마트 팩토리 프로젝트의 로봇팔 작업 환경',
-    role: '3인 팀 · 팀장 / PM',
-    description: 'ROS2 로봇팔 제어와 영상처리, 디지털 트윈을 연결한 자동화 공정.',
-    highlight: '실제 로봇과 RoboDK 시뮬레이션 연동',
-  },
-  {
-    id: 'proj-cctv-speed',
-    title: 'CCTV 영상 기반 차량 속도 추정',
-    category: 'Computer Vision',
-    image: '/content/portfolio/cctv-speed/result.jpg',
-    alt: 'CCTV 영상으로 차량의 속도를 추정한 결과',
-    role: '산학 과제 · 속도 추정 알고리즘 개발',
-    description: '원근 보정과 시점별 위치·시간 차를 이용해 차량의 주행 속도를 추정.',
-    highlight: '촬영 데이터셋 기준 평균 오차 0.5 km/h',
-  },
-]
 
 const scrollToTarget = (target) => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -312,7 +207,9 @@ function Portfolio() {
     let animationFrame
     const updateActiveSection = () => {
       const navigation = container.querySelector('.portfolio-section-nav')
-      const offset = (navigation?.getBoundingClientRect().bottom || 68) + 40
+      const siteNavigation = document.querySelector('.site-nav')
+      const offset = (siteNavigation?.getBoundingClientRect().bottom || 68)
+        + (navigation?.getBoundingClientRect().height || 58) + 40
       const passed = targets.filter((target) => target.getBoundingClientRect().top <= offset)
       const isAtBottom = window.scrollY > 0
         && window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2
@@ -405,6 +302,11 @@ function Portfolio() {
     if (!container) return undefined
     const target = findInContainer(container, section)
     if (!target) return undefined
+    let ancestor = target.parentElement?.closest('details')
+    while (ancestor) {
+      ancestor.setAttribute('open', '')
+      ancestor = ancestor.parentElement?.closest('details')
+    }
     const disclosure = target.tagName.toLowerCase() === 'details'
       ? target : target.querySelector(':scope > details.career-card')
     let focusTimeout
@@ -428,15 +330,15 @@ function Portfolio() {
   }, [location.pathname, location.search, location.hash, location.key])
 
   return (
-    <div className="portfolio-page" ref={containerRef}>
-      <header className="site-hero portfolio-hero" id="top">
+    <div className="portfolio-page" id="top" ref={containerRef}>
+      <header className="site-hero portfolio-hero" id="about">
                 <div className="container hero-grid">
                   <div className="hero-text" data-reveal>
                     <p className="eyebrow">Robotics & Autonomous Navigation</p>
                     <h1>유준호 <span>자율주행 로봇 개발자</span></h1>
                     <p className="lead">
-                      3D SLAM과 Navigation을 연구하고,<br />
-                      로봇의 자율주행을 현장에 연결합니다.
+                      3D SLAM과 Navigation부터 로봇·센서 통합, 배포까지.<br />
+                      현장에서 동작하는 자율주행 시스템을 개발합니다.
                     </p>
                   </div>
 
@@ -454,35 +356,6 @@ function Portfolio() {
               </nav>
 
               <main className="portfolio-main">
-                <section className="section" id="about">
-                  <div className="container about-grid" data-reveal>
-                    <div>
-                      <div className="section-head">
-                        <h2>소개</h2>
-                        <p>로보틱스와 컴퓨터 비전을 바탕으로 시스템을 개발합니다.</p>
-                      </div>
-                      <p className="body">
-                        알고리즘, 하드웨어, 운영 환경을 함께 고려합니다.
-                        실제 환경에서 안정적으로 동작하고,
-                        다음 프로젝트에도 이어 쓸 수 있는 구조를 지향합니다.
-                      </p>
-                    </div>
-                    <div className="about-card">
-                      <h3>기본 정보</h3>
-                      <ul className="info-list">
-                        <li><span>학력</span> 한동대학교 AI 컴퓨터공학 심화 (2018.02-2024.08)</li>
-                        <li><span>교육</span> SSAFY 임베디드 로봇 트랙 (2025.01-2025.10)</li>
-                        <li><span>언어</span> OPIc IM1 (2025.03)</li>
-                        <li><span>자격</span> 1종보통운전면허 (2020.10)</li>
-                        <li><span>병역</span> 육군 병장 만기전역 (2019.01-2020.08)</li>
-                      </ul>
-                      <div className="about-links">
-                        <a className="btn ghost" href="https://drive.google.com/file/d/1TZL7Uzh63LOdcYgKJznvCYh8l3yT4oa0/view?usp=drive_link" aria-label="포트폴리오 PDF (새 창)" target="_blank" rel="noreferrer">포트폴리오 PDF</a>
-                        <a className="btn ghost" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" aria-label="이력서 PDF (새 창)" target="_blank" rel="noreferrer">이력서 PDF</a>
-                      </div>
-                    </div>
-                  </div>
-                </section>
                 <section className="section career-section" id="career" aria-labelledby="career-heading">
                   <div className="container">
                     <div className="section-head" data-reveal>
@@ -493,53 +366,66 @@ function Portfolio() {
                     <ol className="career-timeline">
                       {EXPERIENCES.map((experience) => <ExperienceEntry experience={experience} key={experience.id} />)}
                     </ol>
-                    <section className="experience-publications" aria-labelledby="experience-publications-heading">
-                      <h3 id="experience-publications-heading">논문·수상</h3>
-                      <div className="split-cards">
-                        <div className="mini-card">
-                          <h4>논문 · 발표</h4>
-                          <p>PilotNet 성능 향상을 위한 SLAM과 YOLO 활용 (대한전자공학회, 2023.06)</p>
-                          <div className="detail-links">
-                            <a className="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" aria-label="논문 링크 (새 창)" target="_blank" rel="noreferrer">논문 링크</a>
-                            <a className="chip-link" href="/content/portfolio/pdfs/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf" aria-label="논문 PDF (새 창)" target="_blank" rel="noreferrer">논문 PDF</a>
+                    <div className="portfolio-supplements">
+                      <details className="portfolio-supplement" id="activities">
+                        <summary className="career-card-heading" data-reveal>
+                          <div>
+                            <h3 id="experience-publications-heading">논문·수상·활동</h3>
+                            <p>{SUPPLEMENTARY_RECORDS.length}개 기록 · 연구 성과와 교육·조교 경험</p>
                           </div>
+                          <span className="career-card-action">
+                            <span className="career-action-closed">보기</span>
+                            <span className="career-action-open">접기</span>
+                            <span className="career-chevron" aria-hidden="true" />
+                          </span>
+                        </summary>
+                        <ul className="supplement-list">
+                          {SUPPLEMENTARY_RECORDS.map((record) => (
+                            <li key={record.title}>
+                              <span className="supplement-kind">{record.kind}</span>
+                              <div>
+                                <h4>{record.title}</h4>
+                                {record.meta && <p className="supplement-meta">{record.meta}</p>}
+                                {record.description && <p>{record.description}</p>}
+                                {record.links.length > 0 && (
+                                  <div className="detail-links">
+                                    {record.links.map((link) => (
+                                      <a className="chip-link" href={link.href} key={link.href} aria-label={link.label + ' (새 창)'} target="_blank" rel="noreferrer">{link.label}</a>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
+                      <details className="portfolio-supplement" id="background">
+                        <summary className="career-card-heading" data-reveal>
+                          <div>
+                            <h3>학력·기본 정보</h3>
+                            <p>{PROFILE_FACTS.length}개 항목 · 학력, 언어, 자격 등</p>
+                          </div>
+                          <span className="career-card-action">
+                            <span className="career-action-closed">보기</span>
+                            <span className="career-action-open">접기</span>
+                            <span className="career-chevron" aria-hidden="true" />
+                          </span>
+                        </summary>
+                        <div className="supplement-profile">
+                          <ul className="info-list">
+                            {PROFILE_FACTS.map((fact) => <li key={fact.label}><span>{fact.label}</span> {fact.value}</li>)}
+                          </ul>
                         </div>
-                        <div className="mini-card">
-                          <h4>수상</h4>
-                          <p>캡스톤 디자인 페스티벌 우수상 (한동대학교, 2023.05)</p>
-                          <a className="chip-link" href="/content/portfolio/pdfs/캡스톤 경진대회.pdf" aria-label="상장 PDF (새 창)" target="_blank" rel="noreferrer">상장 PDF</a>
-                        </div>
-                      </div>
-                    </section>
+                      </details>
+                    </div>
                   </div>
                 </section>
                 <section className="section" id="project-library">
                   <div className="container">
                     <div className="section-head" data-reveal>
-                      <p className="portfolio-kicker">SELECTED WORK</p>
+                      <p className="portfolio-kicker">PROJECTS</p>
                       <h2>프로젝트</h2>
-                      <p>로보틱스, 자동화, 컴퓨터 비전 분야의 대표 작업입니다.</p>
-                    </div>
-                    <div className="featured-projects">
-                      {FEATURED_PROJECTS.map((project) => (
-                        <a className="featured-project-card" href={`#${project.id}`} key={project.id} aria-label={`${project.title} 상세 보기`}>
-                          <div className="featured-project-image">
-                            <img src={project.image} alt={project.alt} loading="lazy" decoding="async" />
-                            <span>{project.category}</span>
-                          </div>
-                          <div className="featured-project-body">
-                            <p className="featured-project-role">{project.role}</p>
-                            <h3>{project.title}</h3>
-                            <p className="featured-project-description">{project.description}</p>
-                            <p className="featured-project-highlight">{project.highlight}</p>
-                            <span className="featured-project-link">상세 보기 <span aria-hidden="true">↗</span></span>
-                          </div>
-                        </a>
-                      ))}
-                    </div>
-                    <div className="project-library-heading">
-                      <h3>전체 프로젝트 <span>16</span></h3>
-                      <p>프로젝트를 펼쳐 구현 과정과 결과를 확인하세요.</p>
+                      <p>로보틱스·컴퓨터 비전·시스템 개발 기록입니다. 제목을 눌러 구현 과정과 결과를 확인하세요.</p>
                     </div>
                     <div className="library-grid">
                       <aside className={`project-index portfolio-project-index${isProjectIndexOpen ? ' is-open' : ''}`}>
@@ -554,29 +440,29 @@ function Portfolio() {
                           <h4>로보틱스</h4>
                           <a className={getIndexClass("proj-hangang")} href="#proj-hangang">한강 자율주행 배달 로봇</a>
                           <a className={getIndexClass("proj-smart-factory")} href="#proj-smart-factory">스마트 팩토리 자동화</a>
-                          <a className={getIndexClass("proj-ssaweb")} href="#proj-ssaweb">로봇 센서·영상 분석 웹</a>
-                          <a className={getIndexClass("proj-zytron-control")} href="#proj-zytron-control">자율주행 경기장 관제</a>
                           <a className={getIndexClass("proj-autopark")} href="#proj-autopark">자율 주차 프로그램</a>
                           <a className={getIndexClass("proj-pilotnet")} href="#proj-pilotnet">PilotNet + SLAM + YOLO</a>
-                          <a className={getIndexClass("proj-drone")} href="#proj-drone">자율 주행 드론</a>
+                          <a className={getIndexClass("proj-zytron-control")} href="#proj-zytron-control">자율주행 경기장 관제</a>
                           <a className={getIndexClass("proj-modelcar")} href="#proj-modelcar">모형차 자율주행 대회</a>
+                          <a className={getIndexClass("proj-drone")} href="#proj-drone">자율 주행 드론</a>
                         </div>
                         <div className="index-group">
-                          <h4>컴퓨터비전</h4>
-                          <a className={getIndexClass("proj-cctv-height")} href="#proj-cctv-height">CCTV 객체 높이 추정</a>
+                          <h4>컴퓨터 비전</h4>
                           <a className={getIndexClass("proj-cctv-speed")} href="#proj-cctv-speed">CCTV 차량 속도 추정</a>
+                          <a className={getIndexClass("proj-cctv-height")} href="#proj-cctv-height">CCTV 객체 높이 추정</a>
                           <a className={getIndexClass("proj-blackbox-speed")} href="#proj-blackbox-speed">블랙박스 속도 추정</a>
                           <a className={getIndexClass("proj-rist")} href="#proj-rist">파노라마 작업자 위치 추정</a>
                         </div>
                         <div className="index-group">
-                          <h4>임베디드/시스템</h4>
+                          <h4>임베디드·시스템·웹</h4>
                           <a className={getIndexClass("proj-cctv-halow")} href="#proj-cctv-halow">무선 CCTV 웹 스트리밍</a>
                           <a className={getIndexClass("proj-stm32")} href="#proj-stm32">STM32 LED 피아노</a>
+                          <a className={getIndexClass("proj-ssaweb")} href="#proj-ssaweb">로봇 센서·영상 분석 웹</a>
                         </div>
                         <div className="index-group">
                           <h4>기타</h4>
-                          <a className={getIndexClass("proj-trader")} href="#proj-trader">가상화폐 자동 매매</a>
                           <a className={getIndexClass("proj-pacman")} href="#proj-pacman">Online Pacman</a>
+                          <a className={getIndexClass("proj-trader")} href="#proj-trader">가상화폐 자동 매매</a>
                         </div>
                         </div>
                       </aside>
@@ -726,380 +612,6 @@ function Portfolio() {
                           </div>
                         </details>
 
-                        <details className="project-detail" id="proj-ssaweb">
-                          <summary>
-                            <span className="title">로봇 센서·영상 실시간 분석 웹</span>
-                            <span className="meta">SSAFY · 2025.02-03 · 1인</span>
-                          </summary>
-                          <div className="detail-body">
-                            <p>
-                              서버 분산 처리 수요가 커지는 흐름에 맞춰, 로봇이 보낸 영상을 서버에서 처리하고
-                              그 결과를 웹으로 내보내는 시스템을 1인으로 만들었습니다. Full Stack 으로 웹
-                              인터페이스와 서버 통신 시스템, 영상처리를 모두 담당했습니다.
-                            </p>
-                            <ul>
-                              <li>로봇(Raspberry Pi)이 센서 값과 영상을 서버로 송신</li>
-                              <li>서버가 영상을 로컬의 YOLO 서버로 넘기고 결과를 받아 웹 서버로 전달</li>
-                              <li>모든 중계를 비동기로 처리해 통신 성능 확보</li>
-                              <li>프런트에서 센서 데이터를 실시간 차트로, 검출 결과와 영상을 함께 표시</li>
-                            </ul>
-
-                            <div className="detail-note">
-                              <h4>회고</h4>
-                              <ul>
-                                <li>실시간 스트리밍 속도 개선을 위해 RTP 도입이 필요합니다.</li>
-                                <li>서버에 로드 밸런싱을 적용하면 분산 처리 기능을 확장할 수 있을 것으로 보입니다.</li>
-                                <li>Log 저장 기능은 구현했지만 쓰임이 애매해 데모에서 활용하지 못했습니다. DB 를 활용하는 방향으로 보완이 필요합니다.</li>
-                                <li>라즈베리파이 카메라 고장으로 실시간 촬영 대신 별도 동영상으로 대체해 시연했습니다.</li>
-                              </ul>
-                            </div>
-
-                            <div className="tag-row">
-                              <span>Vue.js</span><span>Node.js</span><span>YOLOv9</span><span>MySQL</span><span>Nginx</span>
-                            </div>
-                            <div className="detail-links">
-                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Web" aria-label="로봇 센서·영상 실시간 분석 웹 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
-                            </div>
-                            <div className="media-grid">
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/web-pjt/ui.png" alt="웹 UI" loading="lazy" decoding="async" />
-                                <figcaption>웹 UI</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/web-pjt/system_architecture.png" alt="시스템 아키텍처" loading="lazy" decoding="async" />
-                                <figcaption>시스템 아키텍처</figcaption>
-                              </figure>
-                            </div>
-                          </div>
-                        </details>
-
-                        <details className="project-detail" id="proj-cctv-halow">
-                          <summary>
-                            <span className="title">무선 CCTV 웹 스트리밍 (Wi-Fi HaLow)</span>
-                            <span className="meta">2024.01-02 · 4인</span>
-                          </summary>
-                          <div className="detail-body">
-                            <p>
-                              유선 연결이 어려운 곳에도 CCTV 를 설치할 수 있도록, 여러 노드에서 촬영한 영상을
-                              실시간 웹 스트리밍하는 시스템을 4인 팀으로 구축했습니다. 임베디드 프로그래밍과
-                              영상처리, gRPC 통신 개발을 맡았습니다.
-                            </p>
-                            <ul>
-                              <li>CCTV 노드와 게이트웨이를 직접 설치하고 라즈베리파이에 Wi-Fi HaLow 모듈 연동</li>
-                              <li>gRPC 로 영상 송신 — protobuf 직렬화가 일반 TCP 보다 빨라 영상 전송에 유리</li>
-                              <li>Crontab 으로 CCTV 노드를 자동 실행하고 이상 발생 시 대처</li>
-                            </ul>
-
-                            <div className="detail-note">
-                              <h4>Wi-Fi HaLow 를 선택한 이유</h4>
-                              <p>
-                                900MHz 대역이라 통신 속도는 느리지만 도달 거리가 약 900m 에 이릅니다. 건물 외부의 CCTV 노드와 내부 게이트웨이를 잇는 원거리 무선 구간에 적합하다고 판단했습니다.
-                              </p>
-                            </div>
-
-                            <div className="tag-row">
-                              <span>gRPC</span><span>Wi-Fi HaLow</span><span>Raspberry Pi</span><span>Crontab</span>
-                            </div>
-                            <div className="detail-links">
-                              <a className="chip-link github icon-link" href="https://github.com/InternetOfTough/CCTV_HaLow" aria-label="무선 CCTV 웹 스트리밍 (Wi-Fi HaLow) GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
-                            </div>
-                            <div className="media-grid">
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/cctv-halow/system-architecture.png" alt="시스템 아키텍처" loading="lazy" decoding="async" />
-                                <figcaption>시스템 아키텍처</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/cctv-halow/cctv-module.jpeg" alt="CCTV 모듈" loading="lazy" decoding="async" />
-                                <figcaption>CCTV 모듈</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/cctv-halow/gateway.jpeg" alt="게이트웨이" loading="lazy" decoding="async" />
-                                <figcaption>게이트웨이</figcaption>
-                              </figure>
-                            </div>
-                          </div>
-                        </details>
-
-                        <details className="project-detail" id="proj-cctv-height">
-                          <summary>
-                            <span className="title">CCTV 영상 내 객체 높이 추정</span>
-                            <span className="meta">2024.01-04 · 산학 과제</span>
-                          </summary>
-                          <div className="detail-body">
-                            <p>
-                              범죄 현장에서 용의자의 인상착의를 특정하기 어렵다는 문제에서 출발해, CCTV 영상
-                              한 장으로 용의자의 키를 추정했습니다. GMD SOFT 산학 과제로 5인이 참여했고
-                              선행 연구 조사와 Single View Geometry 기반 높이 추정 알고리즘 개발을 맡았습니다.
-                            </p>
-                            <ul>
-                              <li>PyQT 로 X, Y, Z 방향별 평행선을 두 개씩 입력받아 방향별 Vanishing Point 생성</li>
-                              <li>X, Y 방향의 Vanishing Point 를 이어 수평선에 해당하는 Vanishing Line 생성</li>
-                              <li>실제 길이를 아는 Reference Line 과 Z Vanishing Point 로 비율을 계산해 대상 높이 산출</li>
-                            </ul>
-
-                            <div className="detail-note">
-                              <h4>실측 결과</h4>
-                              <p>
-                                높이를 아는 사물함을 Reference 로 삼아 표지판과 사람의 키를 측정했고, 오차는 각각 +1.7cm 와 +1cm 였습니다.
-                              </p>
-                            </div>
-
-                            <div className="detail-note">
-                              <h4>한계와 회고</h4>
-                              <ul>
-                                <li>현장에서 기준이 될 물체의 높이를 알 수 있다면 용의자의 키를 특정할 수 있습니다.</li>
-                                <li>반대로 X, Y, Z 방향의 평행선을 잡을 수 없는 환경이면 Vanishing Point 를 만들 수 없어 추정이 불가능합니다.</li>
-                                <li>사용자가 GUI 에서 마우스로 점을 찍을 때 생기는 오차를 줄이는 전처리가 필요합니다.</li>
-                              </ul>
-                            </div>
-
-                            <div className="detail-note">
-                              <h4>성과</h4>
-                              <ul>
-                                <li>산학 과제 계약 연장</li>
-                                <li>방학 기간 인턴십 기회 확보</li>
-                              </ul>
-                            </div>
-
-                            <div className="tag-row">
-                              <span>OpenCV</span><span>Single View Geometry</span><span>PyQT</span>
-                            </div>
-                            <div className="detail-links">
-                              <span className="chip-link muted">보안상 공개 불가</span>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-ZYTrtNs5Vk" aria-label="CCTV 영상 내 객체 높이 추정 Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
-                            </div>
-                            <div className="media-grid">
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/cctv-height/single-view.jpg" alt="Single View Metrology" loading="lazy" decoding="async" />
-                                <figcaption>Single View Metrology</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/cctv-height/sign.jpg" alt="표지판 높이 추정 (오차 +1.7cm)" loading="lazy" decoding="async" />
-                                <figcaption>표지판 높이 추정 (오차 +1.7cm)</figcaption>
-                              </figure>
-                            </div>
-                          </div>
-                        </details>
-
-                        <details className="project-detail" id="proj-cctv-speed">
-                          <summary>
-                            <span className="title">CCTV 영상 내 차량 속도 추정</span>
-                            <span className="meta">2024.04-06 · 산학 과제 · 5인</span>
-                          </summary>
-                          <div className="detail-body">
-                            <p>
-                              차량 사고 중 상당수가 과속을 입증하기 어렵다는 문제에서 출발해, CCTV 에 찍힌
-                              차량의 주행 속도를 추정했습니다. GMD SOFT 산학 과제로 5인이 참여했고 경쟁사
-                              제품 알고리즘 분석과 속도 추정 알고리즘 개발, 데모 데이터 수집을 맡았습니다.
-                            </p>
-                            <ul>
-                              <li>차량이 주행하는 지면의 직사각형 길이를 현장에서 직접 측정</li>
-                              <li>해당 구간을 직접 주행하며 속도별 데이터셋 촬영(청테이프로 구간 표시)</li>
-                              <li>Perspective Transformation 으로 원근이 제거된 직사각형 영역 추출</li>
-                              <li>차량이 영역에 들어오면 미리 그은 기준선을 클릭해 시점별 위치 저장</li>
-                              <li>이전 시점과의 위치·시간 차로 속도 추정</li>
-                            </ul>
-
-                            <div className="detail-note">
-                              <h4>문제 해결</h4>
-                              <p>
-                                <strong>문제</strong> 원근 제거를 위한 Affine &amp; Metric Rectification 은 연산량이 많고 결과가 직각으로 제대로 나오지 않았습니다.
-                              </p>
-                              <p>
-                                <strong>해결</strong> 정해진 기한을 지키기 위해 더 단순하고 직관적인 Perspective Transformation 으로 방법을 바꿨습니다. 특정 RoI 에 대해서만 수행하면 사각형 복원이 가능합니다.
-                              </p>
-                            </div>
-
-                            <div className="detail-note">
-                              <h4>결과</h4>
-                              <ul>
-                                <li>13 km/h 구간: 추정 12.4 km/h (오차 -0.6)</li>
-                                <li>16 km/h 구간: 추정 16.1 km/h (오차 +0.1)</li>
-                                <li>18 km/h 구간: 추정 17.9 km/h (오차 -0.1)</li>
-                                <li>주어진 데이터셋 기준 평균 오차 0.5 km/h</li>
-                              </ul>
-                            </div>
-
-                            <div className="detail-note">
-                              <h4>한계와 회고</h4>
-                              <ul>
-                                <li>촬영 여건상 고속 데이터셋을 찍지 못해 고속 주행에서의 성능은 보장할 수 없습니다.</li>
-                                <li>상용화하려면 RoI 밖 영역까지 원근을 제거해야 하므로 Affine &amp; Metric Rectification 이 필요합니다.</li>
-                                <li>다만 원근을 제거한 영상에서 속도 측정이 가능함을 입증한 데 의미가 있습니다.</li>
-                              </ul>
-                            </div>
-
-                            <div className="detail-note">
-                              <h4>성과</h4>
-                              <ul>
-                                <li>산학 과제 계약 연장</li>
-                                <li>방학 기간 인턴십 기회 확보</li>
-                              </ul>
-                            </div>
-
-                            <div className="tag-row">
-                              <span>OpenCV</span><span>Perspective Transform</span><span>Dataset</span>
-                            </div>
-                            <div className="detail-links">
-                              <span className="chip-link muted">보안상 공개 불가</span>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=v-8i_FkTkIU" aria-label="CCTV 영상 내 차량 속도 추정 Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
-                            </div>
-                            <div className="media-grid">
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/cctv-speed/perspective.jpg" alt="원근 제거 과정" loading="lazy" decoding="async" />
-                                <figcaption>원근 제거 과정</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/cctv-speed/result.jpg" alt="16km/h 구간 추정 결과" loading="lazy" decoding="async" />
-                                <figcaption>16km/h 구간 추정 결과</figcaption>
-                              </figure>
-                            </div>
-                          </div>
-                        </details>
-
-                        <details className="project-detail" id="proj-blackbox-speed">
-                          <summary>
-                            <span className="title">블랙박스 영상 속도 추정</span>
-                            <span className="meta">2024.07-08 · 인턴 · 1인</span>
-                          </summary>
-                          <div className="detail-body">
-                            <p>
-                              단속 카메라가 없는 사고 구간에서 과속 여부를 가리기 위해, 블랙박스
-                              영상만으로 차량 속도를 추정했습니다. GMD SOFT 인턴 기간에 1인으로
-                              진행했습니다.
-                            </p>
-                            <ul>
-                              <li>블랙박스 영상을 마스킹 전처리한 뒤 COLMAP 으로 3D 재구성</li>
-                              <li>현실 1m 가 재구성 공간에서 몇 픽셀인지(Real-to-Pixel) 계산</li>
-                              <li>프레임 간 이동 거리와 시간 차로 실제 속도 산출</li>
-                            </ul>
-
-                            <div className="detail-note">
-                              <h4>문제 해결</h4>
-                              <p>
-                                <strong>문제</strong> 3D 재구성이 불규칙하게 이루어져 Point Cloud
-                                품질이 나빴습니다.
-                              </p>
-                              <p>
-                                <strong>원인</strong> 영상 상단의 블랙박스 정보 표시와 하단의 차량
-                                보닛이 매 프레임 같은 자리에 찍혀 재구성에 노이즈로 작용했습니다.
-                              </p>
-                              <p>
-                                <strong>해결</strong> 해당 영역을 마스킹해 제거하자 훨씬 안정적인
-                                Point Cloud 를 얻었습니다.
-                              </p>
-                            </div>
-
-                            <div className="detail-note">
-                              <h4>스케일 산출 방법</h4>
-                              <ul>
-                                <li>구간 내 눈에 띄는 랜드마크(주로 가로등 간격)를 골라 지도로 실제 길이 측정</li>
-                                <li>재구성한 공간에서 같은 랜드마크의 픽셀 길이 측정</li>
-                                <li>두 값의 비율로 m 당 픽셀 수를 구해 프레임 간 속도 계산에 사용</li>
-                              </ul>
-                            </div>
-
-                            <div className="detail-note">
-                              <h4>결과와 한계</h4>
-                              <p>
-                                주행 영상 세 편 모두 일정 구간에서는 ±3 km/h 수준의 오차를 보였고, 그
-                                구간은 대부분 랜드마크를 측정한 지점 근처였습니다. 반면 랜드마크에서
-                                멀어질수록 오차가 커져 후방 카메라에서는 250 km/h 까지 벌어졌습니다.
-                              </p>
-                              <p>
-                                <strong>원인 분석</strong> COLMAP 은 사실적인 재구성에 강하지만, 직선
-                                주행 영상에서는 카메라가 이동하면서 재구성 공간의 스케일 자체가
-                                달라집니다. 이것이 Real-to-Pixel 변환에 그대로 오차로 반영됩니다.
-                              </p>
-                              <p>
-                                <strong>회고</strong> 3D 재구성을 어떻게 수행하느냐에 따라 결과가 크게
-                                바뀝니다. COLMAP 을 더 깊이 다루거나 다른 재구성 도구를 쓰면 정밀도를
-                                높일 여지가 있습니다.
-                              </p>
-                            </div>
-
-                            <div className="tag-row">
-                              <span>COLMAP</span><span>SfM</span><span>OpenCV</span>
-                            </div>
-                            <div className="detail-links">
-                              <span className="chip-link muted">보안상 공개 불가</span>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=_HwGZA1f8t0" aria-label="블랙박스 영상 속도 추정 후방 Demo 1 (새 창)" target="_blank" rel="noreferrer">후방 Demo 1</a>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=oEf1EfqPtWA" aria-label="블랙박스 영상 속도 추정 후방 Demo 2 (새 창)" target="_blank" rel="noreferrer">후방 Demo 2</a>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I" aria-label="블랙박스 영상 속도 추정 전방 Demo (새 창)" target="_blank" rel="noreferrer">전방 Demo</a>
-                            </div>
-                            <div className="media-grid">
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/gmdsoft/preprocessing.png" alt="RoI 마스크 설정" loading="lazy" decoding="async" />
-                                <figcaption>RoI 마스크 설정</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/gmdsoft/result.png" alt="GPS 속도 대비 추정 결과" loading="lazy" decoding="async" />
-                                <figcaption>GPS 속도 대비 추정 결과</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/gmdsoft/sfm_result.png" alt="COLMAP 3D 재구성" loading="lazy" decoding="async" />
-                                <figcaption>COLMAP 3D 재구성</figcaption>
-                              </figure>
-                            </div>
-                          </div>
-                        </details>
-
-                        <details className="project-detail" id="proj-zytron-control">
-                          <summary>
-                            <span className="title">자율주행 경기장 관제 시스템</span>
-                            <span className="meta">자이트론 · 2023.11-12 · 1인</span>
-                          </summary>
-                          <div className="detail-body">
-                            <p>
-                              자율주행 경기장 운용이 모두 수작업으로 이루어지던 것을 자동화했습니다. 자이트론
-                              인턴 기간에 1인 프로젝트로 ROS2 시스템 구축과 PyQT5 상황판, ESP32 펌웨어를
-                              모두 개발했습니다.
-                            </p>
-                            <ul>
-                              <li>라즈베리파이를 AP 모드로 띄워 ESP32 기기들이 접속하게 하고 Micro-ROS Agent 로 ROS 환경 구성</li>
-                              <li>경기 시작과 미션 점검, 시간 측정을 상황판 GUI 에서 주관</li>
-                              <li>초음파 노드: 센서 값을 토픽으로 발행하고 미션 성공 시 LED 점등과 함께 신호 송신(Service)</li>
-                              <li>신호등 노드: 출발 신호를 받아 릴레이 모듈로 점멸을 제어하고 결과 반환(Service)</li>
-                            </ul>
-
-                            <div className="detail-note">
-                              <h4>문제 해결</h4>
-                              <p>
-                                <strong>문제</strong> PyQT 와 ROS2 스레드 간 동기화 문제로 프로그램이 간헐적으로 종료됐습니다.
-                              </p>
-                              <p>
-                                <strong>해결</strong> PyQT 는 반드시 메인 스레드에서 동작해야 함을 확인하고, 메인 스레드에서 돌던 ROS2 를 멀티 스레드로 옮겼습니다. ROS2 의 spin() 은 보통 메인 스레드에서 동작하지만 GUI 나 API 서버와 함께 쓸 때는 분리해야 한다는 것을 알게 됐습니다.
-                              </p>
-                            </div>
-
-                            <div className="detail-note">
-                              <h4>회고</h4>
-                              <ul>
-                                <li>멀티 스레드를 다룰 때는 해당 라이브러리의 특성을 이해하는 것이 중요합니다.</li>
-                                <li>임베디드 보드의 ROS 운용은 확장 가능성이 크고 다양한 분야에 쓰일 수 있어 보입니다.</li>
-                                <li>ROS1 에는 없던 Interface(Service, Action)로 ROS2 에서 더 간편하고 안전한 통신이 가능합니다.</li>
-                              </ul>
-                            </div>
-
-                            <div className="tag-row">
-                              <span>ROS2</span><span>Micro-ROS</span><span>ESP32</span><span>PyQT</span>
-                            </div>
-                            <div className="detail-links">
-                              <span className="chip-link muted">보안상 공개 불가</span>
-                            </div>
-                            <div className="media-grid">
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/zytron/architecture.jpg" alt="시스템 구성" loading="lazy" decoding="async" />
-                                <figcaption>시스템 구성</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/zytron/gui.jpg" alt="상황판 GUI" loading="lazy" decoding="async" />
-                                <figcaption>상황판 GUI</figcaption>
-                              </figure>
-                            </div>
-                          </div>
-                        </details>
-
                         <details className="project-detail" id="proj-autopark">
                           <summary>
                             <span className="title">자율 주차 프로그램 개발</span>
@@ -1206,6 +718,348 @@ function Portfolio() {
                           </div>
                         </details>
 
+                        <details className="project-detail" id="proj-zytron-control">
+                          <summary>
+                            <span className="title">자율주행 경기장 관제 시스템</span>
+                            <span className="meta">자이트론 · 2023.11-12 · 1인</span>
+                          </summary>
+                          <div className="detail-body">
+                            <p>
+                              자율주행 경기장 운용이 모두 수작업으로 이루어지던 것을 자동화했습니다. 자이트론
+                              인턴 기간에 1인 프로젝트로 ROS2 시스템 구축과 PyQT5 상황판, ESP32 펌웨어를
+                              모두 개발했습니다.
+                            </p>
+                            <ul>
+                              <li>라즈베리파이를 AP 모드로 띄워 ESP32 기기들이 접속하게 하고 Micro-ROS Agent 로 ROS 환경 구성</li>
+                              <li>경기 시작과 미션 점검, 시간 측정을 상황판 GUI 에서 주관</li>
+                              <li>초음파 노드: 센서 값을 토픽으로 발행하고 미션 성공 시 LED 점등과 함께 신호 송신(Service)</li>
+                              <li>신호등 노드: 출발 신호를 받아 릴레이 모듈로 점멸을 제어하고 결과 반환(Service)</li>
+                            </ul>
+
+                            <div className="detail-note">
+                              <h4>문제 해결</h4>
+                              <p>
+                                <strong>문제</strong> PyQT 와 ROS2 스레드 간 동기화 문제로 프로그램이 간헐적으로 종료됐습니다.
+                              </p>
+                              <p>
+                                <strong>해결</strong> PyQT 는 반드시 메인 스레드에서 동작해야 함을 확인하고, 메인 스레드에서 돌던 ROS2 를 멀티 스레드로 옮겼습니다. ROS2 의 spin() 은 보통 메인 스레드에서 동작하지만 GUI 나 API 서버와 함께 쓸 때는 분리해야 한다는 것을 알게 됐습니다.
+                              </p>
+                            </div>
+
+                            <div className="detail-note">
+                              <h4>회고</h4>
+                              <ul>
+                                <li>멀티 스레드를 다룰 때는 해당 라이브러리의 특성을 이해하는 것이 중요합니다.</li>
+                                <li>임베디드 보드의 ROS 운용은 확장 가능성이 크고 다양한 분야에 쓰일 수 있어 보입니다.</li>
+                                <li>ROS1 에는 없던 Interface(Service, Action)로 ROS2 에서 더 간편하고 안전한 통신이 가능합니다.</li>
+                              </ul>
+                            </div>
+
+                            <div className="tag-row">
+                              <span>ROS2</span><span>Micro-ROS</span><span>ESP32</span><span>PyQT</span>
+                            </div>
+                            <div className="detail-links">
+                              <span className="chip-link muted">보안상 공개 불가</span>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/zytron/architecture.jpg" alt="시스템 구성" loading="lazy" decoding="async" />
+                                <figcaption>시스템 구성</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/zytron/gui.jpg" alt="상황판 GUI" loading="lazy" decoding="async" />
+                                <figcaption>상황판 GUI</figcaption>
+                              </figure>
+                            </div>
+                          </div>
+                        </details>
+
+                        <details className="project-detail" id="proj-modelcar">
+                          <summary>
+                            <span className="title">모형차 자율 주행 경진대회</span>
+                            <span className="meta">2021.07-08 · 3인</span>
+                          </summary>
+                          <div className="detail-body">
+                            <p>
+                              자이트론이 주관한 대회에서 카메라 영상만으로 트랙을 자율 주행했습니다. 3인 팀에서
+                              조향 알고리즘 최적화를 맡아 부드러운 조향으로 주어진 트랙을 성공적으로 완주했습니다.
+                            </p>
+                            <ul>
+                              <li>OpenCV 의 Hough 변환으로 차선 인식</li>
+                              <li>PID 로 직선과 코너 모두에서 차선 중앙 주행 유지</li>
+                              <li>YOLO 로 객체를 인식해 회피 주행</li>
+                            </ul>
+                            <div className="tag-row">
+                              <span>OpenCV</span><span>PID</span><span>YOLO</span>
+                            </div>
+                            <div className="detail-links">
+                              <span className="chip-link muted">보안상 공개 불가</span>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/modelcar/car.jpg" alt="모형차" loading="lazy" decoding="async" />
+                                <figcaption>모형차</figcaption>
+                              </figure>
+                            </div>
+                          </div>
+                        </details>
+
+                        <details className="project-detail" id="proj-drone">
+                          <summary>
+                            <span className="title">영상 처리 기반 자율 주행 드론</span>
+                            <span className="meta">2021.11-12 · 1인</span>
+                          </summary>
+                          <div className="detail-body">
+                            <p>
+                              객체를 인식해 그 앞까지 자율 주행하는 드론을 1인으로 만들었습니다. 객체 인식과
+                              제어 최적화를 맡아, 대상을 정확히 인식하고 그 앞까지 자연스럽게 주행하도록
+                              다듬었습니다.
+                            </p>
+                            <ul>
+                              <li>OpenCV 의 HSV 변환과 Edge 검출로 대상 인식</li>
+                              <li>YOLO 로 객체를 인식해 회피 주행</li>
+                              <li>PID 제어로 객체 앞까지의 접근을 부드럽게 조절</li>
+                              <li>Djitellopy 와 UDP 로 Tello 드론을 원격 조작</li>
+                            </ul>
+                            <div className="tag-row">
+                              <span>OpenCV</span><span>YOLO</span><span>PID</span><span>djitellopy</span>
+                            </div>
+                            <div className="detail-links">
+                              <span className="chip-link muted">보안상 공개 불가</span>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/drone/tello.jpg" alt="사용한 Tello 드론" loading="lazy" decoding="async" />
+                                <figcaption>사용한 Tello 드론</figcaption>
+                              </figure>
+                            </div>
+                          </div>
+                        </details>
+
+                        <details className="project-detail" id="proj-cctv-speed">
+                          <summary>
+                            <span className="title">CCTV 영상 내 차량 속도 추정</span>
+                            <span className="meta">2024.04-06 · 산학 과제 · 5인</span>
+                          </summary>
+                          <div className="detail-body">
+                            <p>
+                              차량 사고 중 상당수가 과속을 입증하기 어렵다는 문제에서 출발해, CCTV 에 찍힌
+                              차량의 주행 속도를 추정했습니다. GMD SOFT 산학 과제로 5인이 참여했고 경쟁사
+                              제품 알고리즘 분석과 속도 추정 알고리즘 개발, 데모 데이터 수집을 맡았습니다.
+                            </p>
+                            <ul>
+                              <li>차량이 주행하는 지면의 직사각형 길이를 현장에서 직접 측정</li>
+                              <li>해당 구간을 직접 주행하며 속도별 데이터셋 촬영(청테이프로 구간 표시)</li>
+                              <li>Perspective Transformation 으로 원근이 제거된 직사각형 영역 추출</li>
+                              <li>차량이 영역에 들어오면 미리 그은 기준선을 클릭해 시점별 위치 저장</li>
+                              <li>이전 시점과의 위치·시간 차로 속도 추정</li>
+                            </ul>
+
+                            <div className="detail-note">
+                              <h4>문제 해결</h4>
+                              <p>
+                                <strong>문제</strong> 원근 제거를 위한 Affine &amp; Metric Rectification 은 연산량이 많고 결과가 직각으로 제대로 나오지 않았습니다.
+                              </p>
+                              <p>
+                                <strong>해결</strong> 정해진 기한을 지키기 위해 더 단순하고 직관적인 Perspective Transformation 으로 방법을 바꿨습니다. 특정 RoI 에 대해서만 수행하면 사각형 복원이 가능합니다.
+                              </p>
+                            </div>
+
+                            <div className="detail-note">
+                              <h4>결과</h4>
+                              <ul>
+                                <li>13 km/h 구간: 추정 12.4 km/h (오차 -0.6)</li>
+                                <li>16 km/h 구간: 추정 16.1 km/h (오차 +0.1)</li>
+                                <li>18 km/h 구간: 추정 17.9 km/h (오차 -0.1)</li>
+                                <li>주어진 데이터셋 기준 평균 오차 0.5 km/h</li>
+                              </ul>
+                            </div>
+
+                            <div className="detail-note">
+                              <h4>한계와 회고</h4>
+                              <ul>
+                                <li>촬영 여건상 고속 데이터셋을 찍지 못해 고속 주행에서의 성능은 보장할 수 없습니다.</li>
+                                <li>상용화하려면 RoI 밖 영역까지 원근을 제거해야 하므로 Affine &amp; Metric Rectification 이 필요합니다.</li>
+                                <li>다만 원근을 제거한 영상에서 속도 측정이 가능함을 입증한 데 의미가 있습니다.</li>
+                              </ul>
+                            </div>
+
+                            <div className="detail-note">
+                              <h4>성과</h4>
+                              <ul>
+                                <li>산학 과제 계약 연장</li>
+                                <li>방학 기간 인턴십 기회 확보</li>
+                              </ul>
+                            </div>
+
+                            <div className="tag-row">
+                              <span>OpenCV</span><span>Perspective Transform</span><span>Dataset</span>
+                            </div>
+                            <div className="detail-links">
+                              <span className="chip-link muted">보안상 공개 불가</span>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=v-8i_FkTkIU" aria-label="CCTV 영상 내 차량 속도 추정 Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/cctv-speed/perspective.jpg" alt="원근 제거 과정" loading="lazy" decoding="async" />
+                                <figcaption>원근 제거 과정</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/cctv-speed/result.jpg" alt="16km/h 구간 추정 결과" loading="lazy" decoding="async" />
+                                <figcaption>16km/h 구간 추정 결과</figcaption>
+                              </figure>
+                            </div>
+                          </div>
+                        </details>
+
+                        <details className="project-detail" id="proj-cctv-height">
+                          <summary>
+                            <span className="title">CCTV 영상 내 객체 높이 추정</span>
+                            <span className="meta">2024.01-04 · 산학 과제</span>
+                          </summary>
+                          <div className="detail-body">
+                            <p>
+                              범죄 현장에서 용의자의 인상착의를 특정하기 어렵다는 문제에서 출발해, CCTV 영상
+                              한 장으로 용의자의 키를 추정했습니다. GMD SOFT 산학 과제로 5인이 참여했고
+                              선행 연구 조사와 Single View Geometry 기반 높이 추정 알고리즘 개발을 맡았습니다.
+                            </p>
+                            <ul>
+                              <li>PyQT 로 X, Y, Z 방향별 평행선을 두 개씩 입력받아 방향별 Vanishing Point 생성</li>
+                              <li>X, Y 방향의 Vanishing Point 를 이어 수평선에 해당하는 Vanishing Line 생성</li>
+                              <li>실제 길이를 아는 Reference Line 과 Z Vanishing Point 로 비율을 계산해 대상 높이 산출</li>
+                            </ul>
+
+                            <div className="detail-note">
+                              <h4>실측 결과</h4>
+                              <p>
+                                높이를 아는 사물함을 Reference 로 삼아 표지판과 사람의 키를 측정했고, 오차는 각각 +1.7cm 와 +1cm 였습니다.
+                              </p>
+                            </div>
+
+                            <div className="detail-note">
+                              <h4>한계와 회고</h4>
+                              <ul>
+                                <li>현장에서 기준이 될 물체의 높이를 알 수 있다면 용의자의 키를 특정할 수 있습니다.</li>
+                                <li>반대로 X, Y, Z 방향의 평행선을 잡을 수 없는 환경이면 Vanishing Point 를 만들 수 없어 추정이 불가능합니다.</li>
+                                <li>사용자가 GUI 에서 마우스로 점을 찍을 때 생기는 오차를 줄이는 전처리가 필요합니다.</li>
+                              </ul>
+                            </div>
+
+                            <div className="detail-note">
+                              <h4>성과</h4>
+                              <ul>
+                                <li>산학 과제 계약 연장</li>
+                                <li>방학 기간 인턴십 기회 확보</li>
+                              </ul>
+                            </div>
+
+                            <div className="tag-row">
+                              <span>OpenCV</span><span>Single View Geometry</span><span>PyQT</span>
+                            </div>
+                            <div className="detail-links">
+                              <span className="chip-link muted">보안상 공개 불가</span>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=-ZYTrtNs5Vk" aria-label="CCTV 영상 내 객체 높이 추정 Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/cctv-height/single-view.jpg" alt="Single View Metrology" loading="lazy" decoding="async" />
+                                <figcaption>Single View Metrology</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/cctv-height/sign.jpg" alt="표지판 높이 추정 (오차 +1.7cm)" loading="lazy" decoding="async" />
+                                <figcaption>표지판 높이 추정 (오차 +1.7cm)</figcaption>
+                              </figure>
+                            </div>
+                          </div>
+                        </details>
+
+                        <details className="project-detail" id="proj-blackbox-speed">
+                          <summary>
+                            <span className="title">블랙박스 영상 속도 추정</span>
+                            <span className="meta">2024.07-08 · 인턴 · 1인</span>
+                          </summary>
+                          <div className="detail-body">
+                            <p>
+                              단속 카메라가 없는 사고 구간에서 과속 여부를 가리기 위해, 블랙박스
+                              영상만으로 차량 속도를 추정했습니다. GMD SOFT 인턴 기간에 1인으로
+                              진행했습니다.
+                            </p>
+                            <ul>
+                              <li>블랙박스 영상을 마스킹 전처리한 뒤 COLMAP 으로 3D 재구성</li>
+                              <li>현실 1m 가 재구성 공간에서 몇 픽셀인지(Real-to-Pixel) 계산</li>
+                              <li>프레임 간 이동 거리와 시간 차로 실제 속도 산출</li>
+                            </ul>
+
+                            <div className="detail-note">
+                              <h4>문제 해결</h4>
+                              <p>
+                                <strong>문제</strong> 3D 재구성이 불규칙하게 이루어져 Point Cloud
+                                품질이 나빴습니다.
+                              </p>
+                              <p>
+                                <strong>원인</strong> 영상 상단의 블랙박스 정보 표시와 하단의 차량
+                                보닛이 매 프레임 같은 자리에 찍혀 재구성에 노이즈로 작용했습니다.
+                              </p>
+                              <p>
+                                <strong>해결</strong> 해당 영역을 마스킹해 제거하자 훨씬 안정적인
+                                Point Cloud 를 얻었습니다.
+                              </p>
+                            </div>
+
+                            <div className="detail-note">
+                              <h4>스케일 산출 방법</h4>
+                              <ul>
+                                <li>구간 내 눈에 띄는 랜드마크(주로 가로등 간격)를 골라 지도로 실제 길이 측정</li>
+                                <li>재구성한 공간에서 같은 랜드마크의 픽셀 길이 측정</li>
+                                <li>두 값의 비율로 m 당 픽셀 수를 구해 프레임 간 속도 계산에 사용</li>
+                              </ul>
+                            </div>
+
+                            <div className="detail-note">
+                              <h4>결과와 한계</h4>
+                              <p>
+                                주행 영상 세 편 모두 일정 구간에서는 ±3 km/h 수준의 오차를 보였고, 그
+                                구간은 대부분 랜드마크를 측정한 지점 근처였습니다. 반면 랜드마크에서
+                                멀어질수록 오차가 커져 후방 카메라에서는 250 km/h 까지 벌어졌습니다.
+                              </p>
+                              <p>
+                                <strong>원인 분석</strong> COLMAP 은 사실적인 재구성에 강하지만, 직선
+                                주행 영상에서는 카메라가 이동하면서 재구성 공간의 스케일 자체가
+                                달라집니다. 이것이 Real-to-Pixel 변환에 그대로 오차로 반영됩니다.
+                              </p>
+                              <p>
+                                <strong>회고</strong> 3D 재구성을 어떻게 수행하느냐에 따라 결과가 크게
+                                바뀝니다. COLMAP 을 더 깊이 다루거나 다른 재구성 도구를 쓰면 정밀도를
+                                높일 여지가 있습니다.
+                              </p>
+                            </div>
+
+                            <div className="tag-row">
+                              <span>COLMAP</span><span>SfM</span><span>OpenCV</span>
+                            </div>
+                            <div className="detail-links">
+                              <span className="chip-link muted">보안상 공개 불가</span>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=_HwGZA1f8t0" aria-label="블랙박스 영상 속도 추정 후방 Demo 1 (새 창)" target="_blank" rel="noreferrer">후방 Demo 1</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=oEf1EfqPtWA" aria-label="블랙박스 영상 속도 추정 후방 Demo 2 (새 창)" target="_blank" rel="noreferrer">후방 Demo 2</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=cIEgDyLUE0I" aria-label="블랙박스 영상 속도 추정 전방 Demo (새 창)" target="_blank" rel="noreferrer">전방 Demo</a>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/gmdsoft/preprocessing.png" alt="RoI 마스크 설정" loading="lazy" decoding="async" />
+                                <figcaption>RoI 마스크 설정</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/gmdsoft/result.png" alt="GPS 속도 대비 추정 결과" loading="lazy" decoding="async" />
+                                <figcaption>GPS 속도 대비 추정 결과</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/gmdsoft/sfm_result.png" alt="COLMAP 3D 재구성" loading="lazy" decoding="async" />
+                                <figcaption>COLMAP 3D 재구성</figcaption>
+                              </figure>
+                            </div>
+                          </div>
+                        </details>
+
                         <details className="project-detail" id="proj-rist">
                           <summary>
                             <span className="title">파노라마 카메라 작업자 위치 추정</span>
@@ -1255,6 +1109,192 @@ function Portfolio() {
                               <figure className="media-tile">
                                 <img src="/content/portfolio/rist/radius-matching.jpg" alt="Radius Matching" loading="lazy" decoding="async" />
                                 <figcaption>Radius Matching</figcaption>
+                              </figure>
+                            </div>
+                          </div>
+                        </details>
+
+                        <details className="project-detail" id="proj-cctv-halow">
+                          <summary>
+                            <span className="title">무선 CCTV 웹 스트리밍 (Wi-Fi HaLow)</span>
+                            <span className="meta">2024.01-02 · 4인</span>
+                          </summary>
+                          <div className="detail-body">
+                            <p>
+                              유선 연결이 어려운 곳에도 CCTV 를 설치할 수 있도록, 여러 노드에서 촬영한 영상을
+                              실시간 웹 스트리밍하는 시스템을 4인 팀으로 구축했습니다. 임베디드 프로그래밍과
+                              영상처리, gRPC 통신 개발을 맡았습니다.
+                            </p>
+                            <ul>
+                              <li>CCTV 노드와 게이트웨이를 직접 설치하고 라즈베리파이에 Wi-Fi HaLow 모듈 연동</li>
+                              <li>gRPC 로 영상 송신 — protobuf 직렬화가 일반 TCP 보다 빨라 영상 전송에 유리</li>
+                              <li>Crontab 으로 CCTV 노드를 자동 실행하고 이상 발생 시 대처</li>
+                            </ul>
+
+                            <div className="detail-note">
+                              <h4>Wi-Fi HaLow 를 선택한 이유</h4>
+                              <p>
+                                900MHz 대역이라 통신 속도는 느리지만 도달 거리가 약 900m 에 이릅니다. 건물 외부의 CCTV 노드와 내부 게이트웨이를 잇는 원거리 무선 구간에 적합하다고 판단했습니다.
+                              </p>
+                            </div>
+
+                            <div className="tag-row">
+                              <span>gRPC</span><span>Wi-Fi HaLow</span><span>Raspberry Pi</span><span>Crontab</span>
+                            </div>
+                            <div className="detail-links">
+                              <a className="chip-link github icon-link" href="https://github.com/InternetOfTough/CCTV_HaLow" aria-label="무선 CCTV 웹 스트리밍 (Wi-Fi HaLow) GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/cctv-halow/system-architecture.png" alt="시스템 아키텍처" loading="lazy" decoding="async" />
+                                <figcaption>시스템 아키텍처</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/cctv-halow/cctv-module.jpeg" alt="CCTV 모듈" loading="lazy" decoding="async" />
+                                <figcaption>CCTV 모듈</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/cctv-halow/gateway.jpeg" alt="게이트웨이" loading="lazy" decoding="async" />
+                                <figcaption>게이트웨이</figcaption>
+                              </figure>
+                            </div>
+                          </div>
+                        </details>
+
+                        <details className="project-detail" id="proj-stm32">
+                          <summary>
+                            <span className="title">STM32 기반 LED 피아노</span>
+                            <span className="meta">2023.04-06 · 4인</span>
+                          </summary>
+                          <div className="detail-body">
+                            <p>
+                              딜레이 없는 건반과 스피커, LED 를 갖춘 임베디드 피아노 모듈을 4인 팀으로
+                              만들었습니다. 피아노 회로 제작과 DMA+SPI 통신 개발을 맡아 LED 모듈 타이밍에
+                              맞는 DMA 제어와 Bit Map Setup 을 담당했습니다.
+                            </p>
+                            <ul>
+                              <li>mbed OS 로 STM32(NUCLEO-F411RE) 펌웨어 개발</li>
+                              <li>건반을 누르면 WS2812 LED 가 해당 색으로 점등되고 피에조 부저에서 음 출력</li>
+                              <li>PWM 으로 건반별 음을 생성</li>
+                            </ul>
+
+                            <div className="detail-note">
+                              <h4>DMA 를 쓴 이유</h4>
+                              <p>
+                                일반적인 SPI 통신은 CPU 버스를 거치기 때문에 딜레이가 큽니다. SPI 에 DMA 를 결합해 CPU 개입 없이 LED 모듈로 데이터를 보내면서 실시간에 가까운 응답을 얻었습니다.
+                              </p>
+                            </div>
+
+                            <div className="tag-row">
+                              <span>STM32</span><span>mbed OS</span><span>DMA</span><span>SPI</span>
+                            </div>
+                            <div className="detail-links">
+                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/STM32-MBED/tree/main/Final" aria-label="STM32 기반 LED 피아노 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=sW-dLjTRV7A" aria-label="STM32 기반 LED 피아노 Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/stm32/architecture.jpg" alt="시스템 구성" loading="lazy" decoding="async" />
+                                <figcaption>시스템 구성</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/stm32/board.jpg" alt="피아노 회로" loading="lazy" decoding="async" />
+                                <figcaption>피아노 회로</figcaption>
+                              </figure>
+                            </div>
+                          </div>
+                        </details>
+
+                        <details className="project-detail" id="proj-ssaweb">
+                          <summary>
+                            <span className="title">로봇 센서·영상 실시간 분석 웹</span>
+                            <span className="meta">SSAFY · 2025.02-03 · 1인</span>
+                          </summary>
+                          <div className="detail-body">
+                            <p>
+                              서버 분산 처리 수요가 커지는 흐름에 맞춰, 로봇이 보낸 영상을 서버에서 처리하고
+                              그 결과를 웹으로 내보내는 시스템을 1인으로 만들었습니다. Full Stack 으로 웹
+                              인터페이스와 서버 통신 시스템, 영상처리를 모두 담당했습니다.
+                            </p>
+                            <ul>
+                              <li>로봇(Raspberry Pi)이 센서 값과 영상을 서버로 송신</li>
+                              <li>서버가 영상을 로컬의 YOLO 서버로 넘기고 결과를 받아 웹 서버로 전달</li>
+                              <li>모든 중계를 비동기로 처리해 통신 성능 확보</li>
+                              <li>프런트에서 센서 데이터를 실시간 차트로, 검출 결과와 영상을 함께 표시</li>
+                            </ul>
+
+                            <div className="detail-note">
+                              <h4>회고</h4>
+                              <ul>
+                                <li>실시간 스트리밍 속도 개선을 위해 RTP 도입이 필요합니다.</li>
+                                <li>서버에 로드 밸런싱을 적용하면 분산 처리 기능을 확장할 수 있을 것으로 보입니다.</li>
+                                <li>Log 저장 기능은 구현했지만 쓰임이 애매해 데모에서 활용하지 못했습니다. DB 를 활용하는 방향으로 보완이 필요합니다.</li>
+                                <li>라즈베리파이 카메라 고장으로 실시간 촬영 대신 별도 동영상으로 대체해 시연했습니다.</li>
+                              </ul>
+                            </div>
+
+                            <div className="tag-row">
+                              <span>Vue.js</span><span>Node.js</span><span>YOLOv9</span><span>MySQL</span><span>Nginx</span>
+                            </div>
+                            <div className="detail-links">
+                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/SSAFY-Web" aria-label="로봇 센서·영상 실시간 분석 웹 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/web-pjt/ui.png" alt="웹 UI" loading="lazy" decoding="async" />
+                                <figcaption>웹 UI</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/web-pjt/system_architecture.png" alt="시스템 아키텍처" loading="lazy" decoding="async" />
+                                <figcaption>시스템 아키텍처</figcaption>
+                              </figure>
+                            </div>
+                          </div>
+                        </details>
+
+                        <details className="project-detail" id="proj-pacman">
+                          <summary>
+                            <span className="title">Online Pacman (Boost ASIO)</span>
+                            <span className="meta">2023.05-06 · 2인</span>
+                          </summary>
+                          <div className="detail-body">
+                            <p>
+                              서버 비동기 처리 방식의 수요가 늘어나는 흐름에서, 다중 사용자가 함께 플레이하는
+                              온라인 Pacman 을 2인으로 만들었습니다. 게임 인터페이스 제작과 클라이언트 비동기
+                              통신 설계를 맡았습니다.
+                            </p>
+                            <ul>
+                              <li>서버: io_context 기반 이벤트 루프, 클라이언트별 Session 클래스로 연결 유지</li>
+                              <li>비동기로 들어오는 키 입력을 처리하고 게임 상태를 브로드캐스트</li>
+                              <li>클라이언트: 방향키 입력을 서버로 보내고 응답에 따라 OpenCV 로 UI 갱신</li>
+                              <li>UI 와 네트워크 로직을 모듈로 분리해 유지보수성 확보</li>
+                            </ul>
+
+                            <div className="detail-note">
+                              <h4>한계</h4>
+                              <ul>
+                                <li>메시지 패킷의 직렬화·압축이 없어 클라이언트가 많아지면 지연이 생길 수 있습니다.</li>
+                                <li>단일 맵의 이동과 점수 처리만 구현했고 Ghost AI, 충돌, 레벨은 없습니다.</li>
+                                <li>strand 만으로 동기화해 IOCP 기반의 고성능 확장성은 고려하지 않았습니다.</li>
+                                <li>OpenCV UI 는 그래픽 성능과 애니메이션이 제한적이라 OpenGL 이나 SDL 로 확장할 여지가 있습니다.</li>
+                              </ul>
+                            </div>
+
+                            <div className="tag-row">
+                              <span>Boost ASIO</span><span>TCP</span><span>OpenCV</span>
+                            </div>
+                            <div className="detail-links">
+                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/PacmanGame-BoostASIO" aria-label="Online Pacman (Boost ASIO) GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
+                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=2uh6XcFZric" aria-label="Online Pacman (Boost ASIO) Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
+                            </div>
+                            <div className="media-grid">
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/pacman/game.jpg" alt="게임 화면" loading="lazy" decoding="async" />
+                                <figcaption>게임 화면</figcaption>
+                              </figure>
+                              <figure className="media-tile">
+                                <img src="/content/portfolio/pacman/multi.jpg" alt="다중 클라이언트 동시 접속" loading="lazy" decoding="async" />
+                                <figcaption>다중 클라이언트 동시 접속</figcaption>
                               </figure>
                             </div>
                           </div>
@@ -1313,242 +1353,57 @@ function Portfolio() {
                             </div>
                           </div>
                         </details>
-
-                        <details className="project-detail" id="proj-pacman">
-                          <summary>
-                            <span className="title">Online Pacman (Boost ASIO)</span>
-                            <span className="meta">2023.05-06 · 2인</span>
-                          </summary>
-                          <div className="detail-body">
-                            <p>
-                              서버 비동기 처리 방식의 수요가 늘어나는 흐름에서, 다중 사용자가 함께 플레이하는
-                              온라인 Pacman 을 2인으로 만들었습니다. 게임 인터페이스 제작과 클라이언트 비동기
-                              통신 설계를 맡았습니다.
-                            </p>
-                            <ul>
-                              <li>서버: io_context 기반 이벤트 루프, 클라이언트별 Session 클래스로 연결 유지</li>
-                              <li>비동기로 들어오는 키 입력을 처리하고 게임 상태를 브로드캐스트</li>
-                              <li>클라이언트: 방향키 입력을 서버로 보내고 응답에 따라 OpenCV 로 UI 갱신</li>
-                              <li>UI 와 네트워크 로직을 모듈로 분리해 유지보수성 확보</li>
-                            </ul>
-
-                            <div className="detail-note">
-                              <h4>한계</h4>
-                              <ul>
-                                <li>메시지 패킷의 직렬화·압축이 없어 클라이언트가 많아지면 지연이 생길 수 있습니다.</li>
-                                <li>단일 맵의 이동과 점수 처리만 구현했고 Ghost AI, 충돌, 레벨은 없습니다.</li>
-                                <li>strand 만으로 동기화해 IOCP 기반의 고성능 확장성은 고려하지 않았습니다.</li>
-                                <li>OpenCV UI 는 그래픽 성능과 애니메이션이 제한적이라 OpenGL 이나 SDL 로 확장할 여지가 있습니다.</li>
-                              </ul>
-                            </div>
-
-                            <div className="tag-row">
-                              <span>Boost ASIO</span><span>TCP</span><span>OpenCV</span>
-                            </div>
-                            <div className="detail-links">
-                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/PacmanGame-BoostASIO" aria-label="Online Pacman (Boost ASIO) GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=2uh6XcFZric" aria-label="Online Pacman (Boost ASIO) Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
-                            </div>
-                            <div className="media-grid">
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/pacman/game.jpg" alt="게임 화면" loading="lazy" decoding="async" />
-                                <figcaption>게임 화면</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/pacman/multi.jpg" alt="다중 클라이언트 동시 접속" loading="lazy" decoding="async" />
-                                <figcaption>다중 클라이언트 동시 접속</figcaption>
-                              </figure>
-                            </div>
-                          </div>
-                        </details>
-
-                        <details className="project-detail" id="proj-stm32">
-                          <summary>
-                            <span className="title">STM32 기반 LED 피아노</span>
-                            <span className="meta">2023.04-06 · 4인</span>
-                          </summary>
-                          <div className="detail-body">
-                            <p>
-                              딜레이 없는 건반과 스피커, LED 를 갖춘 임베디드 피아노 모듈을 4인 팀으로
-                              만들었습니다. 피아노 회로 제작과 DMA+SPI 통신 개발을 맡아 LED 모듈 타이밍에
-                              맞는 DMA 제어와 Bit Map Setup 을 담당했습니다.
-                            </p>
-                            <ul>
-                              <li>mbed OS 로 STM32(NUCLEO-F411RE) 펌웨어 개발</li>
-                              <li>건반을 누르면 WS2812 LED 가 해당 색으로 점등되고 피에조 부저에서 음 출력</li>
-                              <li>PWM 으로 건반별 음을 생성</li>
-                            </ul>
-
-                            <div className="detail-note">
-                              <h4>DMA 를 쓴 이유</h4>
-                              <p>
-                                일반적인 SPI 통신은 CPU 버스를 거치기 때문에 딜레이가 큽니다. SPI 에 DMA 를 결합해 CPU 개입 없이 LED 모듈로 데이터를 보내면서 실시간에 가까운 응답을 얻었습니다.
-                              </p>
-                            </div>
-
-                            <div className="tag-row">
-                              <span>STM32</span><span>mbed OS</span><span>DMA</span><span>SPI</span>
-                            </div>
-                            <div className="detail-links">
-                              <a className="chip-link github icon-link" href="https://github.com/YooJuno/STM32-MBED/tree/main/Final" aria-label="STM32 기반 LED 피아노 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
-                              <a className="chip-link youtube icon-link" href="https://www.youtube.com/watch?v=sW-dLjTRV7A" aria-label="STM32 기반 LED 피아노 Demo Video (새 창)" target="_blank" rel="noreferrer">Demo Video</a>
-                            </div>
-                            <div className="media-grid">
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/stm32/architecture.jpg" alt="시스템 구성" loading="lazy" decoding="async" />
-                                <figcaption>시스템 구성</figcaption>
-                              </figure>
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/stm32/board.jpg" alt="피아노 회로" loading="lazy" decoding="async" />
-                                <figcaption>피아노 회로</figcaption>
-                              </figure>
-                            </div>
-                          </div>
-                        </details>
-
-                        <details className="project-detail" id="proj-drone">
-                          <summary>
-                            <span className="title">영상 처리 기반 자율 주행 드론</span>
-                            <span className="meta">2021.11-12 · 1인</span>
-                          </summary>
-                          <div className="detail-body">
-                            <p>
-                              객체를 인식해 그 앞까지 자율 주행하는 드론을 1인으로 만들었습니다. 객체 인식과
-                              제어 최적화를 맡아, 대상을 정확히 인식하고 그 앞까지 자연스럽게 주행하도록
-                              다듬었습니다.
-                            </p>
-                            <ul>
-                              <li>OpenCV 의 HSV 변환과 Edge 검출로 대상 인식</li>
-                              <li>YOLO 로 객체를 인식해 회피 주행</li>
-                              <li>PID 제어로 객체 앞까지의 접근을 부드럽게 조절</li>
-                              <li>Djitellopy 와 UDP 로 Tello 드론을 원격 조작</li>
-                            </ul>
-                            <div className="tag-row">
-                              <span>OpenCV</span><span>YOLO</span><span>PID</span><span>djitellopy</span>
-                            </div>
-                            <div className="detail-links">
-                              <span className="chip-link muted">보안상 공개 불가</span>
-                            </div>
-                            <div className="media-grid">
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/drone/tello.jpg" alt="사용한 Tello 드론" loading="lazy" decoding="async" />
-                                <figcaption>사용한 Tello 드론</figcaption>
-                              </figure>
-                            </div>
-                          </div>
-                        </details>
-
-                        <details className="project-detail" id="proj-modelcar">
-                          <summary>
-                            <span className="title">모형차 자율 주행 경진대회</span>
-                            <span className="meta">2021.07-08 · 3인</span>
-                          </summary>
-                          <div className="detail-body">
-                            <p>
-                              자이트론이 주관한 대회에서 카메라 영상만으로 트랙을 자율 주행했습니다. 3인 팀에서
-                              조향 알고리즘 최적화를 맡아 부드러운 조향으로 주어진 트랙을 성공적으로 완주했습니다.
-                            </p>
-                            <ul>
-                              <li>OpenCV 의 Hough 변환으로 차선 인식</li>
-                              <li>PID 로 직선과 코너 모두에서 차선 중앙 주행 유지</li>
-                              <li>YOLO 로 객체를 인식해 회피 주행</li>
-                            </ul>
-                            <div className="tag-row">
-                              <span>OpenCV</span><span>PID</span><span>YOLO</span>
-                            </div>
-                            <div className="detail-links">
-                              <span className="chip-link muted">보안상 공개 불가</span>
-                            </div>
-                            <div className="media-grid">
-                              <figure className="media-tile">
-                                <img src="/content/portfolio/modelcar/car.jpg" alt="모형차" loading="lazy" decoding="async" />
-                                <figcaption>모형차</figcaption>
-                              </figure>
-                            </div>
-                          </div>
-                        </details>
                       </div>
                     </div>
                   </div>
                 </section>
                 <section className="section" id="skills">
-                  <div className="container" data-reveal>
-                    <div className="section-head">
-                      <h2>기술 스택</h2>
-                      <p>로보틱스 중심의 실전 경험을 기반으로 기술을 구성합니다.</p>
+                  <div className="container">
+                    <div className="section-head" data-reveal>
+                      <p className="portfolio-kicker">CAPABILITIES</p>
+                      <h2>기술 역량</h2>
+                      <p>사용한 기술과 실제로 적용한 경험을 함께 정리했습니다.</p>
                     </div>
                     <div className="stack-grid">
-                      <div className="stack-card">
-                        <h3>Robotics & Autonomy</h3>
-                        <div className="chip-list">
-                          <span>ROS2</span><span>Nav2</span><span>Pure-Pursuit</span><span>Path Planning</span><span>RoboDK</span><span>Dobot</span>
-                        </div>
-                      </div>
-                      <div className="stack-card">
-                        <h3>Computer Vision</h3>
-                        <div className="chip-list">
-                          <span>Isaac ROS VSLAM</span><span>ORB-SLAM3</span><span>RTAB-MAP</span><span>YOLOv5/9</span><span>COLMAP</span><span>OpenCV</span>
-                        </div>
-                      </div>
-                      <div className="stack-card">
-                        <h3>Embedded & Hardware</h3>
-                        <div className="chip-list">
-                          <span>Jetson Orin Nano</span><span>ESP32</span><span>STM32</span><span>Raspberry Pi</span><span>nRF52840</span><span>RealSense D435i</span>
-                        </div>
-                      </div>
-                      <div className="stack-card">
-                        <h3>Networking & Web</h3>
-                        <div className="chip-list">
-                          <span>MQTT</span><span>gRPC</span><span>TCP/UDP</span><span>Vue.js</span><span>Node.js</span><span>Express</span><span>MySQL</span><span>Nginx</span>
-                        </div>
-                      </div>
-                      <div className="stack-card">
-                        <h3>Languages & Tools</h3>
-                        <div className="chip-list">
-                          <span>C++</span><span>Python</span><span>Docker</span><span>Linux</span><span>Git</span><span>Jira</span>
-                        </div>
-                      </div>
+                      {SKILL_GROUPS.map((group) => (
+                        <article className="stack-card" key={group.title}>
+                          <h3>{group.title}</h3>
+                          <p className="stack-description">{group.description}</p>
+                          <div className="chip-list">
+                            {group.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                          </div>
+                          <a className="stack-evidence" href={group.href}>{group.evidence} <span aria-hidden="true">↗</span></a>
+                        </article>
+                      ))}
                     </div>
                   </div>
                 </section>
 
-                <section className="section" id="activities">
-                  <div className="container" data-reveal>
-                    <div className="section-head">
-                      <h2>활동</h2>
-                      <p>교육 및 조교 활동입니다.</p>
-                    </div>
-                    <div className="activity-grid">
-                      <article>
-                        <h3>상상이상 사이언스 상상교사</h3>
-                        <p>포스코 1% 나눔재단 (2022.06-2023.07)</p>
-                        <p>중학교 대상 과학·IT 체험 교육 8개 학교 진행. AR/코딩 체험 수업 설계.</p>
-                      </article>
-                      <article>
-                        <h3>컴퓨터비전 전공 조교</h3>
-                        <p>수업 자료 정리 및 학습 지원. 피처 매칭 알고리즘 이해 심화.</p>
-                      </article>
-                    </div>
-                  </div>
-                </section>
 
                 <section className="section" id="contact">
                   <div className="container" data-reveal>
                     <div className="contact-card">
                       <div>
-                        <h2>연락처</h2>
-                        <p>프로젝트 및 채용 문의</p>
+                        <p className="portfolio-kicker">CONTACT</p>
+                        <h2>연락·이력서</h2>
+                        <p>프로젝트·채용 문의와 관련 자료를 한곳에서 확인하세요.</p>
                         <div className="contact-info">
                           <span>Seoul, KR</span>
-                          <span>juno980220@naver.com</span>
-                          <span>010-3792-6395</span>
+                          <a href="mailto:juno980220@naver.com">juno980220@naver.com</a>
+                          <a href="tel:+821037926395">010-3792-6395</a>
                         </div>
                       </div>
-                      <div className="contact-actions">
-                        <a className="btn primary" href="mailto:juno980220@naver.com">메일 보내기</a>
-                        <a className="btn ghost github icon-link" href="https://github.com/YooJuno" aria-label="유준호 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
-                        <a className="btn ghost youtube icon-link" href="https://youtube.com/@yoojuno" aria-label="유준호 YouTube (새 창)" target="_blank" rel="noreferrer">YouTube</a>
-                        <a className="btn ghost" href="https://www.notion.so/1a9302636cd781059263e5b57e11fc70" aria-label="유준호 Notion 이력서 (새 창)" target="_blank" rel="noreferrer">Notion 이력서</a>
+                      <div className="contact-materials">
+                        <div className="contact-actions">
+                          <a className="btn primary" href="mailto:juno980220@naver.com">메일 보내기</a>
+                          <a className="btn ghost github icon-link" href="https://github.com/YooJuno" aria-label="유준호 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
+                          <a className="btn ghost" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" aria-label="이력서 PDF (새 창)" target="_blank" rel="noreferrer">이력서 PDF</a>
+                          <a className="btn ghost" href="https://drive.google.com/file/d/1TZL7Uzh63LOdcYgKJznvCYh8l3yT4oa0/view?usp=drive_link" aria-label="포트폴리오 PDF (새 창)" target="_blank" rel="noreferrer">포트폴리오 PDF</a>
+                        </div>
+                        <div className="contact-secondary-links">
+                          <a href="https://youtube.com/@yoojuno" aria-label="유준호 YouTube (새 창)" target="_blank" rel="noreferrer">YouTube</a>
+                          <a href="https://www.notion.so/1a9302636cd781059263e5b57e11fc70" aria-label="유준호 Notion 이력서 (새 창)" target="_blank" rel="noreferrer">Notion 이력서</a>
+                        </div>
                       </div>
                     </div>
                   </div>
