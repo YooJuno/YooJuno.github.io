@@ -562,6 +562,59 @@ summary.career-card-heading:hover {
   font-weight: 600;
 }
 
+.career-responsibilities > :not(.career-responsibility) {
+  grid-column: 1 / -1;
+}
+
+.career-card-body > .career-responsibilities:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.career-responsibilities ul,
+.career-responsibilities ol {
+  padding-left: 18px;
+  color: #576273;
+  font-size: 14px;
+}
+
+.career-responsibilities ul {
+  list-style: disc;
+}
+
+.career-responsibilities ol {
+  list-style: decimal;
+}
+
+.portfolio-markdown {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.portfolio-markdown > p + p {
+  margin-top: 12px;
+}
+
+.portfolio-markdown pre {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.portfolio-markdown table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+}
+
+.portfolio-markdown th,
+.portfolio-markdown td {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+
 .career-responsibilities p {
   color: #576273;
   font-size: 14px;
