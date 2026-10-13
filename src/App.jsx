@@ -23,16 +23,17 @@ const ScrollToTop = () => {
   const location = useLocation()
 
   useEffect(() => {
-    if (document.activeElement instanceof HTMLElement) {
+    if (!location.hash && document.activeElement instanceof HTMLElement) {
       document.activeElement.blur()
     }
     // 프리렌더 도입 후 /portfolio/ 처럼 끝 슬래시가 붙은 주소로도 들어온다.
-    const isPortfolioAnchor = normalizePathname(location.pathname) === '/portfolio'
-      && new URLSearchParams(location.search).has('section')
-    if (!isPortfolioAnchor) {
+    const isPageAnchor = Boolean(location.hash)
+      || (normalizePathname(location.pathname) === '/portfolio'
+        && new URLSearchParams(location.search).has('section'))
+    if (!isPageAnchor) {
       window.scrollTo(0, 0)
     }
-  }, [location.pathname, location.search])
+  }, [location.pathname, location.search, location.hash])
 
   return null
 }
@@ -45,10 +46,9 @@ const NAV_SECTIONS = [
     label: '포트폴리오',
     items: [
       { to: '/portfolio?section=about', label: '소개' },
-      { to: '/portfolio?section=career', label: '경력' },
+      { to: '/portfolio?section=career', label: '경력·경험' },
       { to: '/portfolio?section=project-library', label: '프로젝트' },
       { to: '/portfolio?section=skills', label: '기술 스택' },
-      { to: '/portfolio?section=experience', label: '연구·교육' },
       { to: '/portfolio?section=activities', label: '활동' },
       { to: '/portfolio?section=contact', label: '연락' },
     ],

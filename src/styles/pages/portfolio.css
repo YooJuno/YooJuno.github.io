@@ -34,30 +34,6 @@
   line-height: 1.85;
 }
 
-.portfolio-page .hero-actions {
-  align-items: center;
-  gap: 12px;
-}
-
-.portfolio-page .hero-actions .btn {
-  gap: 18px;
-}
-
-.portfolio-resume-link {
-  display: inline-flex;
-  min-height: 46px;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  color: #4d596a;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.portfolio-resume-link:hover {
-  color: var(--accent);
-}
-
 .portfolio-section-nav {
   position: sticky;
   top: 68px;
@@ -98,6 +74,51 @@
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.13em;
+}
+
+.portfolio-page .experience-group {
+  scroll-margin-top: 148px;
+}
+
+.experience-group + .experience-group {
+  margin-top: 52px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+
+.experience-group-heading {
+  margin-bottom: 24px;
+}
+
+.experience-group-heading h3 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.experience-group-heading p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.learning-experience .experience-group-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.learning-experience .learning-toggle {
+  display: none;
+  flex-shrink: 0;
+  min-height: 44px;
+}
+
+.experience-group .timeline-item h4,
+.experience-group .mini-card h4 {
+  margin-bottom: 6px;
+  font-size: 16px;
 }
 
 .career-timeline {
@@ -191,7 +212,7 @@
   box-shadow: 0 8px 24px rgba(49, 87, 213, 0.04);
 }
 
-.career-card h3 {
+.career-card h4 {
   font-size: 24px;
   letter-spacing: -0.035em;
 }
@@ -221,7 +242,7 @@
   border-top: 1px solid #e8ecf2;
 }
 
-.career-responsibilities h4 {
+.career-responsibilities h5 {
   margin-bottom: 6px;
   font-size: 14px;
   font-weight: 600;
@@ -239,7 +260,7 @@
   border-top: 1px solid #e8ecf2;
 }
 
-.career-hardware h4 {
+.career-hardware h5 {
   margin-bottom: 10px;
   color: #576273;
   font-size: 12px;
@@ -582,21 +603,6 @@
     font-size: 15px;
   }
 
-  .portfolio-page .hero-actions {
-    flex-direction: row;
-    gap: 10px;
-  }
-
-  .portfolio-page .hero-actions .btn {
-    width: auto;
-    padding: 10px 14px;
-  }
-
-  .portfolio-resume-link {
-    padding: 8px 4px;
-    font-size: 13px;
-  }
-
   .portfolio-section-nav {
     top: 64px;
   }
@@ -617,12 +623,25 @@
   }
 
   .portfolio-page .section,
+  .portfolio-page .experience-group,
   .portfolio-page .project-detail {
     scroll-margin-top: 136px;
   }
 
   .portfolio-page #about {
     scroll-margin-top: 117px;
+  }
+
+  .learning-experience .learning-toggle {
+    display: inline-flex;
+  }
+
+  .learning-experience:not(.is-expanded) .experience-group-heading {
+    margin-bottom: 0;
+  }
+
+  .learning-experience:not(.is-expanded) .learning-experience-content {
+    display: none;
   }
 
   .career-entry {
@@ -652,7 +671,7 @@
     padding: 22px;
   }
 
-  .career-card h3 {
+  .career-card h4 {
     font-size: 22px;
   }
 
