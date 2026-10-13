@@ -21,14 +21,9 @@
   gap: clamp(32px, 4vw, 48px);
 }
 
-.portfolio-page .hero-text .eyebrow {
-  font-size: 11px;
-  letter-spacing: 0.14em;
-}
-
 .portfolio-page .hero-text h1 {
   font-size: clamp(42px, 5vw, 56px);
-  margin: 16px 0 20px;
+  margin: 0 0 20px;
 }
 
 .portfolio-page .hero-text h1 span {
@@ -226,15 +221,6 @@
   border-bottom-color: var(--accent);
   color: var(--accent);
   background: transparent;
-}
-
-.portfolio-page .portfolio-kicker {
-  margin-bottom: 12px;
-  color: var(--accent);
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.13em;
 }
 
 .portfolio-page .career-entry,
@@ -703,11 +689,6 @@ summary.career-card-heading:hover {
 
   .portfolio-page .hero-text h1 span {
     font-size: 18px;
-  }
-
-  .portfolio-page .hero-text .eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.1em;
   }
 
   .portfolio-page .lead {
