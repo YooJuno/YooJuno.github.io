@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "논문",
+    "title": "PilotNet 성능 향상을 위한 SLAM과 YOLO 활용",
+    "meta": "대한전자공학회 · 2023.06",
+    "description": "nd-to-End 주행 모델(PilotNet)의 한계를 보완하기 위해 보행자 인식(YOLO)과 지도 기반 위치 인지(SLAM)를 결합한 안전 계층을 설계·구현했습니다. 보행자 접근 시와 주행 구간 이탈 상황에서 긴급 정지를 트리거하도록 모형 차량에 적용했고, 반복 실험을 통해 기능의 유효성을 확인하며 지도 정합·허용 오차·센서 튜닝 등 개선 포인트를 도출했습니다. ",
+    "links": [
+      {
+        "label": "논문 링크",
+        "href": "https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374"
+      },
+      {
+        "label": "논문 PDF",
+        "href": "/content/portfolio/pdfs/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf"
+      }
+    ]
+  },
+  {
+    "kind": "수상",
+    "title": "캡스톤 디자인 페스티벌 우수상",
+    "meta": "한동대학교 · 2023.05",
+    "links": [
+      {
+        "label": "상장 PDF",
+        "href": "/content/portfolio/pdfs/캡스톤 경진대회.pdf"
+      }
+    ]
+  },
+  {
+    "kind": "교육",
+    "title": "상상이상 사이언스 상상교사",
+    "meta": "포스코 1% 나눔재단 · 2022.06–2023.07",
+    "description": "중학교 대상 과학·IT 체험 교육 8개 학교 진행. AR/코딩 체험 수업 설계.",
+    "links": []
+  },
+  {
+    "kind": "조교",
+    "title": "컴퓨터비전 전공 조교",
+    "description": "수업 자료 정리 및 학습 지원. 피처 매칭 알고리즘 이해 심화.",
+    "links": []
+  }
+]

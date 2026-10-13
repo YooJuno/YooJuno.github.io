@@ -28,7 +28,7 @@
 
 ```text
 작성
-├─ portfolio.js + ProjectEntry → 포트폴리오 데이터와 상세 내용
+├─ portfolio/의 개별 파일      → 소개·경력·프로젝트와 사진
 └─ 글별 index.md + 이미지      → 블로그 콘텐츠
 
 빌드 (Vite)
@@ -73,10 +73,12 @@ GitHub Pages에는 SPA용 서버 리라이트가 없으므로, 클라이언트 �
 
 ### 3. 데이터 중복을 줄이는 포트폴리오 구성
 
-경력·활동·학력 정보는 `portfolio.js`에 모으고, 컴포넌트는 해당 데이터를 렌더링하도록 분리했습니다.
-프로젝트는 `ProjectEntry`에 제목·기간·기관·역할과 상세 내용을 함께 정의합니다.
+포트폴리오 내용은 `src/content/portfolio/`에서 관리하고, 컴포넌트는 화면과 탐색 동작만 담당합니다.
+프로젝트와 경력은 각각 항목별 폴더의 `index.md`에 정보와 본문을 작성하고, 사진도 같은 폴더의 `images/`에 둡니다.
+소개·연락처는 `profile.json`, 학력·기본 정보는 `background.json`, 논문·수상·활동은 `records.json`으로 분리합니다.
+Vite의 `import.meta.glob`이 새 항목과 자산을 자동으로 수집하므로 JSX에 등록 목록을 추가할 필요가 없습니다.
 
-`ProjectLibrary`는 프로젝트를 **전체 너비의 단일 목록**으로 표시하고, 시작 시점 내림차순으로 정렬합니다.
+프로젝트는 **전체 너비의 단일 목록**으로 표시하고, 시작 시점 내림차순으로 정렬합니다.
 시작 시점이 같으면 종료 시점이 최신인 항목을 먼저 표시합니다.
 별도의 프로젝트 목차나 대표 프로젝트 데이터를 다시 관리하지 않습니다.
 기술 이름을 나열하는 독립 섹션 대신, 경력의 수행 업무와 프로젝트 상세의 구현 방식·기술 태그로 실제 적용 경험을 보여줍니다.
@@ -90,7 +92,11 @@ PC에서는 소개 오른쪽, 모바일에서는 소개 아래에 배치해 하�
 연락 정보와 자료·프로필 링크를 두 묶음으로 나누고, 자료 링크와 소셜 아이콘은 같은 행에서 정렬합니다. 좁은 화면에서는 자동으로 줄바꿈합니다.
 GitHub·YouTube·Notion 링크는 SVG 아이콘으로 표시하고, 접근 가능한 이름과 마우스·키보드 포커스 시 이름 안내를 제공합니다.
 
-구현: [포트폴리오 데이터](src/content/portfolio.js), [프로젝트 컴포넌트](src/pages/Portfolio.jsx).
+Markdown의 업무 제목·기술 태그·자료 링크·사진은 기존 상세 박스와 갤러리 스타일로 렌더링합니다.
+경력은 진행 중인 항목을 먼저 표시하고 종료 시점의 최신순으로 정렬합니다. `draft: true`인 항목은 제외합니다.
+빌드 시작 시 필수 정보·날짜·중복 ID·상대 자산 경로를 검사해 잘못된 콘텐츠가 배포되는 것을 막습니다.
+
+구현: [수정 안내와 양식](src/content/portfolio/README.md), [콘텐츠 수집](src/lib/portfolio.js), [Markdown 처리](src/lib/portfolioMarkdown.js), [화면 컴포넌트](src/pages/Portfolio.jsx).
 
 ### 4. URL과 연결된 탐색, 접근성, 오류 대응
 
@@ -158,16 +164,18 @@ GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 �
 
 | 변경 대상 | 위치·규칙 |
 | --- | --- |
-| 경력·활동·학력 | `src/content/portfolio.js` |
-| 프로젝트 제목·기간·역할 | `src/pages/Portfolio.jsx`의 `ProjectEntry`: `title`, `start`, `end`, `meta`. 기간은 `YYYY-MM` 형식 |
-| 프로젝트 상세·이미지·외부 링크 | 해당 `ProjectEntry`의 `detail-body` |
-| 연락처·문서·프로필 링크 | `src/pages/Portfolio.jsx`의 `hero-contact` 영역 (`#contact`) |
+| 소개·연락처·문서·프로필 링크 | `src/content/portfolio/profile.json` |
+| 경력·인턴·교육·연구와 사진 | `src/content/portfolio/careers/<기관>/index.md`와 같은 폴더의 `images/` |
+| 논문·수상·활동 / 학력·기본 정보 | `src/content/portfolio/records.json` / `src/content/portfolio/background.json` |
+| 프로젝트 정보·상세·이미지·외부 링크 | `src/content/portfolio/projects/<프로젝트>/index.md`와 같은 폴더의 `images/` |
+| 새 프로젝트·경력 양식 | `src/content/portfolio/templates/` — 해당 양식을 새 항목 폴더의 `index.md`로 복사 |
 | 블로그 글·이미지 | `src/content/blog/<slug>/index.md`와 같은 글 폴더. 메타데이터는 `title`, `date`, `category`, `tags`, `summary`, 선택적인 `slug` |
 | 새 페이지·메타데이터 | `src/App.jsx`의 라우트와 `src/lib/routeMeta.js`의 메타데이터를 함께 추가 |
 | 스타일 | `src/styles/`의 공통·페이지별 CSS |
 | 고정 URL로 제공할 파일 | `public/`. 빌드 시 파일명·경로를 유지해 복사 |
 
-`src`의 글 이미지처럼 코드에서 참조하는 자산은 Vite가 처리하고, `public`의 프로젝트 이미지·PDF 등은 고정 URL로 제공합니다.
+자세한 작성법은 [포트폴리오 수정 안내](src/content/portfolio/README.md)를 참고하세요.
+`src`의 글·프로젝트·경력 이미지처럼 콘텐츠에서 참조하는 자산은 Vite가 처리합니다. 기존 이력서·논문 PDF 등 고정 URL을 유지할 파일은 `public`에서 제공합니다.
 따라서 모든 콘텐츠를 한쪽에 몰아넣기보다 **참조 방식과 배포 경로**를 기준으로 구분합니다.
 
 ## 현재 범위와 한계
