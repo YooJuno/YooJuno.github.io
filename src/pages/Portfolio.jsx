@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState } from 'react'
+﻿import { Children, useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import useReveal from '../hooks/useReveal'
 import useDocumentTitle from '../hooks/useDocumentTitle'
@@ -7,7 +7,7 @@ import '../styles/pages/portfolio.css'
 
 const SECTIONS = [
   { id: 'about', label: '소개' },
-  { id: 'career', label: '경력·경험' },
+  { id: 'career', label: '경력' },
   { id: 'project-library', label: '프로젝트' },
   { id: 'skills', label: '기술 역량' },
   { id: 'contact', label: '연락' },
@@ -97,6 +97,57 @@ function ExperienceEntry({ experience }) {
   )
 }
 
+function ProjectEntry({ id, title, start, end, meta, children }) {
+  const endLabel = start.slice(0, 4) === end.slice(0, 4) ? end.slice(5) : end.replace('-', '.')
+
+  return (
+    <details className="project-detail" id={id}>
+      <summary>
+        <span className="title">{title}</span>
+        <span className="meta">
+          <time dateTime={start}>{start.replace('-', '.')}</time>–<time dateTime={end}>{endLabel}</time> · {meta}
+        </span>
+      </summary>
+      {children}
+    </details>
+  )
+}
+
+function ProjectLibrary({ children, activeProjectId, isIndexOpen, onIndexToggle }) {
+  const projects = Children.toArray(children).sort((left, right) => (
+    right.props.start.localeCompare(left.props.start) || right.props.end.localeCompare(left.props.end)
+  ))
+
+  return (
+    <div className="library-grid">
+      <aside className={`project-index portfolio-project-index${isIndexOpen ? ' is-open' : ''}`}>
+        <div className="project-index-heading">
+          <div>
+            <h3>프로젝트 탐색</h3>
+            <p className="project-index-caption">시작 시점 기준 최신순</p>
+          </div>
+          <button className="project-index-toggle" type="button" aria-expanded={isIndexOpen} aria-controls="portfolio-project-index-content" onClick={onIndexToggle}>
+            {isIndexOpen ? '목차 접기' : '목차 펼치기'} <span aria-hidden="true">{isIndexOpen ? '−' : '+'}</span>
+          </button>
+        </div>
+        <nav className="project-index-content" id="portfolio-project-index-content" aria-label="프로젝트 목록">
+          <ol className="project-index-list">
+            {projects.map((project) => (
+              <li key={project.props.id}>
+                <a className={`index-link${activeProjectId === project.props.id ? ' is-active' : ''}`} href={`#${project.props.id}`} aria-current={activeProjectId === project.props.id ? 'location' : undefined}>
+                  <time dateTime={project.props.start}>{project.props.start.replace('-', '.')}</time>
+                  <span>{project.props.title}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
+      <div className="project-list">{projects}</div>
+    </div>
+  )
+}
+
 function Portfolio() {
   const containerRef = useRef(null)
   const lightboxCloseRef = useRef(null)
@@ -108,10 +159,6 @@ function Portfolio() {
   const [isProjectIndexOpen, setIsProjectIndexOpen] = useState(false)
   useReveal()
   useDocumentTitle()
-  const getIndexClass = (id) => (
-    activeProjectId === id ? 'index-link is-active' : 'index-link'
-  )
-
   const getSectionClass = (id) => (
     activeSectionId === id ? 'index-link is-active' : 'index-link'
   )
@@ -360,7 +407,7 @@ function Portfolio() {
                   <div className="container">
                     <div className="section-head" data-reveal>
                       <p className="portfolio-kicker">EXPERIENCES</p>
-                      <h2 id="career-heading">경력·경험</h2>
+                      <h2 id="career-heading">경력</h2>
                       <p>실무부터 인턴십, 연구·교육까지 이어온 경험입니다.</p>
                     </div>
                     <ol className="career-timeline">
@@ -371,7 +418,7 @@ function Portfolio() {
                         <summary className="career-card-heading" data-reveal>
                           <div>
                             <h3 id="experience-publications-heading">논문·수상·활동</h3>
-                            <p>{SUPPLEMENTARY_RECORDS.length}개 기록 · 연구 성과와 교육·조교 경험</p>
+                            <p>연구 성과와 교육·조교 활동</p>
                           </div>
                           <span className="career-card-action">
                             <span className="career-action-closed">보기</span>
@@ -403,7 +450,7 @@ function Portfolio() {
                         <summary className="career-card-heading" data-reveal>
                           <div>
                             <h3>학력·기본 정보</h3>
-                            <p>{PROFILE_FACTS.length}개 항목 · 학력, 언어, 자격 등</p>
+                            <p>학력·교육, 어학·자격 및 병역</p>
                           </div>
                           <span className="career-card-action">
                             <span className="career-action-closed">보기</span>
@@ -412,9 +459,14 @@ function Portfolio() {
                           </span>
                         </summary>
                         <div className="supplement-profile">
-                          <ul className="info-list">
-                            {PROFILE_FACTS.map((fact) => <li key={fact.label}><span>{fact.label}</span> {fact.value}</li>)}
-                          </ul>
+                          <dl className="profile-facts">
+                            {PROFILE_FACTS.map((fact) => (
+                              <div key={fact.label}>
+                                <dt>{fact.label}</dt>
+                                <dd><span>{fact.value}</span><span className="profile-period">{fact.period}</span></dd>
+                              </div>
+                            ))}
+                          </dl>
                         </div>
                       </details>
                     </div>
@@ -425,54 +477,12 @@ function Portfolio() {
                     <div className="section-head" data-reveal>
                       <p className="portfolio-kicker">PROJECTS</p>
                       <h2>프로젝트</h2>
-                      <p>로보틱스·컴퓨터 비전·시스템 개발 기록입니다. 제목을 눌러 구현 과정과 결과를 확인하세요.</p>
+                      <p>최신 프로젝트부터 시간순으로 정리했습니다. 제목을 눌러 구현 과정과 결과를 확인하세요.</p>
                     </div>
-                    <div className="library-grid">
-                      <aside className={`project-index portfolio-project-index${isProjectIndexOpen ? ' is-open' : ''}`}>
-                        <div className="project-index-heading">
-                          <h3>프로젝트 탐색</h3>
-                          <button className="project-index-toggle" type="button" aria-expanded={isProjectIndexOpen} aria-controls="portfolio-project-index-content" onClick={() => setIsProjectIndexOpen((open) => !open)}>
-                            {isProjectIndexOpen ? '목차 접기' : '목차 펼치기'} <span aria-hidden="true">{isProjectIndexOpen ? '−' : '+'}</span>
-                          </button>
-                        </div>
-                        <div className="project-index-content" id="portfolio-project-index-content">
-                        <div className="index-group">
-                          <h4>로보틱스</h4>
-                          <a className={getIndexClass("proj-hangang")} href="#proj-hangang">한강 자율주행 배달 로봇</a>
-                          <a className={getIndexClass("proj-smart-factory")} href="#proj-smart-factory">스마트 팩토리 자동화</a>
-                          <a className={getIndexClass("proj-autopark")} href="#proj-autopark">자율 주차 프로그램</a>
-                          <a className={getIndexClass("proj-pilotnet")} href="#proj-pilotnet">PilotNet + SLAM + YOLO</a>
-                          <a className={getIndexClass("proj-zytron-control")} href="#proj-zytron-control">자율주행 경기장 관제</a>
-                          <a className={getIndexClass("proj-modelcar")} href="#proj-modelcar">모형차 자율주행 대회</a>
-                          <a className={getIndexClass("proj-drone")} href="#proj-drone">자율 주행 드론</a>
-                        </div>
-                        <div className="index-group">
-                          <h4>컴퓨터 비전</h4>
-                          <a className={getIndexClass("proj-cctv-speed")} href="#proj-cctv-speed">CCTV 차량 속도 추정</a>
-                          <a className={getIndexClass("proj-cctv-height")} href="#proj-cctv-height">CCTV 객체 높이 추정</a>
-                          <a className={getIndexClass("proj-blackbox-speed")} href="#proj-blackbox-speed">블랙박스 속도 추정</a>
-                          <a className={getIndexClass("proj-rist")} href="#proj-rist">파노라마 작업자 위치 추정</a>
-                        </div>
-                        <div className="index-group">
-                          <h4>임베디드·시스템·웹</h4>
-                          <a className={getIndexClass("proj-cctv-halow")} href="#proj-cctv-halow">무선 CCTV 웹 스트리밍</a>
-                          <a className={getIndexClass("proj-stm32")} href="#proj-stm32">STM32 LED 피아노</a>
-                          <a className={getIndexClass("proj-ssaweb")} href="#proj-ssaweb">로봇 센서·영상 분석 웹</a>
-                        </div>
-                        <div className="index-group">
-                          <h4>기타</h4>
-                          <a className={getIndexClass("proj-pacman")} href="#proj-pacman">Online Pacman</a>
-                          <a className={getIndexClass("proj-trader")} href="#proj-trader">가상화폐 자동 매매</a>
-                        </div>
-                        </div>
-                      </aside>
-
-                      <div className="project-list">
-                        <details className="project-detail" id="proj-hangang">
-                          <summary>
-                            <span className="title">한강 자율주행 배달 로봇 LiNKY</span>
-                            <span className="meta">SSAFY · 2025.07-08 · 6인 · 팀장/PM/Robotics</span>
-                          </summary>
+                    <ProjectLibrary activeProjectId={activeProjectId} isIndexOpen={isProjectIndexOpen}
+                      onIndexToggle={() => setIsProjectIndexOpen((open) => !open)}>
+                        <ProjectEntry id="proj-hangang" title="한강 자율주행 배달 로봇 LiNKY"
+                          start="2025-07" end="2025-08" meta="SSAFY · 6인 · 팀장/PM/Robotics">
                           <div className="detail-body">
                             <p>
                               한강에서 배달 음식을 받으려면 먼 거리를 걸어가야 하는 불편을 해결하기 위해,
@@ -527,13 +537,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-smart-factory">
-                          <summary>
-                            <span className="title">스마트 팩토리 로봇팔 자동화 & 디지털 트윈</span>
-                            <span className="meta">SSAFY · 2025.04-05 · 3인 · 팀장/PM</span>
-                          </summary>
+                        <ProjectEntry id="proj-smart-factory" title="스마트 팩토리 로봇팔 자동화 & 디지털 트윈"
+                          start="2025-04" end="2025-05" meta="SSAFY · 3인 · 팀장/PM">
                           <div className="detail-body">
                             <p>
                               산업·협동 로봇 수요가 늘고 안전사고 예방이 중요해지는 흐름에 맞춰, 로봇팔의
@@ -610,13 +617,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-autopark">
-                          <summary>
-                            <span className="title">자율 주차 프로그램 개발</span>
-                            <span className="meta">자이트론 · 2023.09-10 · 1인</span>
-                          </summary>
+                        <ProjectEntry id="proj-autopark" title="자율 주차 프로그램 개발"
+                          start="2023-09" end="2023-10" meta="자이트론 · 1인">
                           <div className="detail-body">
                             <p>
                               자율주행 시장 확대에 맞춰 카메라만으로 차량을 자율 주차시키는 프로그램을
@@ -666,13 +670,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-pilotnet">
-                          <summary>
-                            <span className="title">PilotNet 성능 향상을 위한 SLAM + YOLO</span>
-                            <span className="meta">2022.07-2023.06 · 5인</span>
-                          </summary>
+                        <ProjectEntry id="proj-pilotnet" title="PilotNet 성능 향상을 위한 SLAM + YOLO"
+                          start="2022-07" end="2023-06" meta="5인">
                           <div className="detail-body">
                             <p>
                               End-to-End 자율주행 모델인 PilotNet 의 단점을 보완하고 성능을 높이는 연구입니다.
@@ -716,13 +717,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-zytron-control">
-                          <summary>
-                            <span className="title">자율주행 경기장 관제 시스템</span>
-                            <span className="meta">자이트론 · 2023.11-12 · 1인</span>
-                          </summary>
+                        <ProjectEntry id="proj-zytron-control" title="자율주행 경기장 관제 시스템"
+                          start="2023-11" end="2023-12" meta="자이트론 · 1인">
                           <div className="detail-body">
                             <p>
                               자율주행 경기장 운용이 모두 수작업으로 이루어지던 것을 자동화했습니다. 자이트론
@@ -772,13 +770,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-modelcar">
-                          <summary>
-                            <span className="title">모형차 자율 주행 경진대회</span>
-                            <span className="meta">2021.07-08 · 3인</span>
-                          </summary>
+                        <ProjectEntry id="proj-modelcar" title="모형차 자율 주행 경진대회"
+                          start="2021-07" end="2021-08" meta="3인">
                           <div className="detail-body">
                             <p>
                               자이트론이 주관한 대회에서 카메라 영상만으로 트랙을 자율 주행했습니다. 3인 팀에서
@@ -802,13 +797,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-drone">
-                          <summary>
-                            <span className="title">영상 처리 기반 자율 주행 드론</span>
-                            <span className="meta">2021.11-12 · 1인</span>
-                          </summary>
+                        <ProjectEntry id="proj-drone" title="영상 처리 기반 자율 주행 드론"
+                          start="2021-11" end="2021-12" meta="1인">
                           <div className="detail-body">
                             <p>
                               객체를 인식해 그 앞까지 자율 주행하는 드론을 1인으로 만들었습니다. 객체 인식과
@@ -834,13 +826,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-cctv-speed">
-                          <summary>
-                            <span className="title">CCTV 영상 내 차량 속도 추정</span>
-                            <span className="meta">2024.04-06 · 산학 과제 · 5인</span>
-                          </summary>
+                        <ProjectEntry id="proj-cctv-speed" title="CCTV 영상 내 차량 속도 추정"
+                          start="2024-04" end="2024-06" meta="산학 과제 · 5인">
                           <div className="detail-body">
                             <p>
                               차량 사고 중 상당수가 과속을 입증하기 어렵다는 문제에서 출발해, CCTV 에 찍힌
@@ -910,13 +899,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-cctv-height">
-                          <summary>
-                            <span className="title">CCTV 영상 내 객체 높이 추정</span>
-                            <span className="meta">2024.01-04 · 산학 과제</span>
-                          </summary>
+                        <ProjectEntry id="proj-cctv-height" title="CCTV 영상 내 객체 높이 추정"
+                          start="2024-01" end="2024-04" meta="산학 과제">
                           <div className="detail-body">
                             <p>
                               범죄 현장에서 용의자의 인상착의를 특정하기 어렵다는 문제에서 출발해, CCTV 영상
@@ -971,13 +957,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-blackbox-speed">
-                          <summary>
-                            <span className="title">블랙박스 영상 속도 추정</span>
-                            <span className="meta">2024.07-08 · 인턴 · 1인</span>
-                          </summary>
+                        <ProjectEntry id="proj-blackbox-speed" title="블랙박스 영상 속도 추정"
+                          start="2024-07" end="2024-08" meta="인턴 · 1인">
                           <div className="detail-body">
                             <p>
                               단속 카메라가 없는 사고 구간에서 과속 여부를 가리기 위해, 블랙박스
@@ -1058,13 +1041,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-rist">
-                          <summary>
-                            <span className="title">파노라마 카메라 작업자 위치 추정</span>
-                            <span className="meta">RIST 산학 · 2022.09-2023.02 · 4인</span>
-                          </summary>
+                        <ProjectEntry id="proj-rist" title="파노라마 카메라 작업자 위치 추정"
+                          start="2022-09" end="2023-02" meta="RIST 산학 · 4인">
                           <div className="detail-body">
                             <p>
                               공장 규모가 커지면서 작업자 관리 필요성이 높아진 배경에서, 영상만으로 작업자의
@@ -1112,13 +1092,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-cctv-halow">
-                          <summary>
-                            <span className="title">무선 CCTV 웹 스트리밍 (Wi-Fi HaLow)</span>
-                            <span className="meta">2024.01-02 · 4인</span>
-                          </summary>
+                        <ProjectEntry id="proj-cctv-halow" title="무선 CCTV 웹 스트리밍 (Wi-Fi HaLow)"
+                          start="2024-01" end="2024-02" meta="4인">
                           <div className="detail-body">
                             <p>
                               유선 연결이 어려운 곳에도 CCTV 를 설치할 수 있도록, 여러 노드에서 촬영한 영상을
@@ -1159,13 +1136,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-stm32">
-                          <summary>
-                            <span className="title">STM32 기반 LED 피아노</span>
-                            <span className="meta">2023.04-06 · 4인</span>
-                          </summary>
+                        <ProjectEntry id="proj-stm32" title="STM32 기반 LED 피아노"
+                          start="2023-04" end="2023-06" meta="4인">
                           <div className="detail-body">
                             <p>
                               딜레이 없는 건반과 스피커, LED 를 갖춘 임베디드 피아노 모듈을 4인 팀으로
@@ -1203,13 +1177,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-ssaweb">
-                          <summary>
-                            <span className="title">로봇 센서·영상 실시간 분석 웹</span>
-                            <span className="meta">SSAFY · 2025.02-03 · 1인</span>
-                          </summary>
+                        <ProjectEntry id="proj-ssaweb" title="로봇 센서·영상 실시간 분석 웹"
+                          start="2025-02" end="2025-03" meta="SSAFY · 1인">
                           <div className="detail-body">
                             <p>
                               서버 분산 처리 수요가 커지는 흐름에 맞춰, 로봇이 보낸 영상을 서버에서 처리하고
@@ -1250,13 +1221,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-pacman">
-                          <summary>
-                            <span className="title">Online Pacman (Boost ASIO)</span>
-                            <span className="meta">2023.05-06 · 2인</span>
-                          </summary>
+                        <ProjectEntry id="proj-pacman" title="Online Pacman (Boost ASIO)"
+                          start="2023-05" end="2023-06" meta="2인">
                           <div className="detail-body">
                             <p>
                               서버 비동기 처리 방식의 수요가 늘어나는 흐름에서, 다중 사용자가 함께 플레이하는
@@ -1298,13 +1266,10 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
+                        </ProjectEntry>
 
-                        <details className="project-detail" id="proj-trader">
-                          <summary>
-                            <span className="title">딥러닝 가상화폐 자동 매매</span>
-                            <span className="meta">2023.05-06 · 4인 · 팀장</span>
-                          </summary>
+                        <ProjectEntry id="proj-trader" title="딥러닝 가상화폐 자동 매매"
+                          start="2023-05" end="2023-06" meta="4인 · 팀장">
                           <div className="detail-body">
                             <p>
                               가상화폐 거래 시장이 커지는 흐름에 맞춰, 사람의 개입 없이 수익을 내는 자동
@@ -1352,9 +1317,8 @@ function Portfolio() {
                               </figure>
                             </div>
                           </div>
-                        </details>
-                      </div>
-                    </div>
+                        </ProjectEntry>
+                    </ProjectLibrary>
                   </div>
                 </section>
                 <section className="section" id="skills">
@@ -1367,12 +1331,16 @@ function Portfolio() {
                     <div className="stack-grid">
                       {SKILL_GROUPS.map((group) => (
                         <article className="stack-card" key={group.title}>
-                          <h3>{group.title}</h3>
-                          <p className="stack-description">{group.description}</p>
-                          <div className="chip-list">
-                            {group.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                          <div className="stack-overview">
+                            <h3>{group.title}</h3>
+                            <p className="stack-description">{group.description}</p>
                           </div>
-                          <a className="stack-evidence" href={group.href}>{group.evidence} <span aria-hidden="true">↗</span></a>
+                          <div className="stack-tools">
+                            <ul className="chip-list">
+                              {group.tags.map((tag) => <li key={tag}>{tag}</li>)}
+                            </ul>
+                            <a className="stack-evidence" href={group.href}>{group.evidence} <span aria-hidden="true">↗</span></a>
+                          </div>
                         </article>
                       ))}
                     </div>

@@ -46,7 +46,7 @@ const NAV_SECTIONS = [
     label: '포트폴리오',
     items: [
       { to: '/portfolio?section=about', label: '소개' },
-      { to: '/portfolio?section=career', label: '경력·경험' },
+      { to: '/portfolio?section=career', label: '경력' },
       { to: '/portfolio?section=project-library', label: '프로젝트' },
       { to: '/portfolio?section=skills', label: '기술 역량' },
       { to: '/portfolio?section=contact', label: '연락' },
