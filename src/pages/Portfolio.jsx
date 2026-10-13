@@ -5,8 +5,8 @@ import useDocumentTitle from '../hooks/useDocumentTitle'
 import '../styles/pages/portfolio.css'
 
 const SECTIONS = [
-  { id: 'career', label: '경력' },
   { id: 'about', label: '소개' },
+  { id: 'career', label: '경력' },
   { id: 'project-library', label: '프로젝트' },
   { id: 'skills', label: '기술 스택' },
   { id: 'experience', label: '연구·교육' },
@@ -305,23 +305,6 @@ function Portfolio() {
                     </div>
                   </div>
 
-                  <div className="portfolio-current-card" data-reveal>
-                    <div className="current-card-top">
-                      <span className="current-card-label">CURRENT ROLE</span>
-                      <span className="career-status is-current"><span aria-hidden="true" />재직 중</span>
-                    </div>
-                    <h2>위고로보틱스</h2>
-                    <p className="current-card-role">자율주행 로봇 연구·개발</p>
-                    <div className="current-card-focus">
-                      <p><span>01</span>사족보행 · 3D SLAM & Navigation</p>
-                      <p><span>02</span>SDK·드라이버 통합 · 사내 패키지화</p>
-                      <p><span>03</span>SI 프로젝트 · 배포 자동화</p>
-                    </div>
-                    <div className="current-card-footer">
-                      <p><time dateTime="2026-03-18">2026.03.18</time> — 현재</p>
-                      <a href="#career">경력 자세히 <span aria-hidden="true">↗</span></a>
-                    </div>
-                  </div>
                 </div>
               </header>
 
@@ -336,6 +319,36 @@ function Portfolio() {
               </nav>
 
               <main className="portfolio-main">
+                <section className="section" id="about">
+                  <div className="container about-grid" data-reveal>
+                    <div>
+                      <div className="section-head">
+                        <h2>소개</h2>
+                        <p>위고로보틱스에서 자율주행 로봇을 연구·개발합니다.</p>
+                      </div>
+                      <p className="body">
+                        사족보행 로봇의 3D SLAM과 Navigation을 연구하고,
+                        SI 프로젝트의 자율주행 로봇을 개발합니다.
+                        로봇·센서의 SDK와 드라이버를 시스템 레이어로 연결하고,
+                        재사용 가능한 사내 패키지와 배포 자동화 체계를 만들어가고 있습니다.
+                      </p>
+                    </div>
+                    <div className="about-card">
+                      <h3>기본 정보</h3>
+                      <ul className="info-list">
+                        <li><span>학력</span> 한동대학교 AI 컴퓨터공학 심화 (2018.02-2024.08)</li>
+                        <li><span>교육</span> SSAFY 임베디드 로봇 트랙 (2025.01-2025.10)</li>
+                        <li><span>언어</span> OPIc IM1 (2025.03)</li>
+                        <li><span>자격</span> 1종보통운전면허 (2020.10)</li>
+                        <li><span>병역</span> 육군 병장 만기전역 (2019.01-2020.08)</li>
+                      </ul>
+                      <div className="about-links">
+                        <a className="btn ghost" href="https://drive.google.com/file/d/1TZL7Uzh63LOdcYgKJznvCYh8l3yT4oa0/view?usp=drive_link" aria-label="포트폴리오 PDF (새 창)" target="_blank" rel="noreferrer">포트폴리오 PDF</a>
+                        <a className="btn ghost" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" aria-label="이력서 PDF (새 창)" target="_blank" rel="noreferrer">이력서 PDF</a>
+                      </div>
+                    </div>
+                  </div>
+                </section>
                 <section className="section career-section" id="career" aria-labelledby="career-heading">
                   <div className="container">
                     <div className="section-head" data-reveal>
@@ -382,36 +395,6 @@ function Portfolio() {
                         </li>
                       ))}
                     </ol>
-                  </div>
-                </section>
-                <section className="section" id="about">
-                  <div className="container about-grid" data-reveal>
-                    <div>
-                      <div className="section-head">
-                        <h2>소개</h2>
-                        <p>위고로보틱스에서 자율주행 로봇을 연구·개발합니다.</p>
-                      </div>
-                      <p className="body">
-                        사족보행 로봇의 3D SLAM과 Navigation을 연구하고,
-                        SI 프로젝트의 자율주행 로봇을 개발합니다.
-                        로봇·센서의 SDK와 드라이버를 시스템 레이어로 연결하고,
-                        재사용 가능한 사내 패키지와 배포 자동화 체계를 만들어가고 있습니다.
-                      </p>
-                    </div>
-                    <div className="about-card">
-                      <h3>기본 정보</h3>
-                      <ul className="info-list">
-                        <li><span>학력</span> 한동대학교 AI 컴퓨터공학 심화 (2018.02-2024.08)</li>
-                        <li><span>교육</span> SSAFY 임베디드 로봇 트랙 (2025.01-2025.10)</li>
-                        <li><span>언어</span> OPIc IM1 (2025.03)</li>
-                        <li><span>자격</span> 1종보통운전면허 (2020.10)</li>
-                        <li><span>병역</span> 육군 병장 만기전역 (2019.01-2020.08)</li>
-                      </ul>
-                      <div className="about-links">
-                        <a className="btn ghost" href="https://drive.google.com/file/d/1TZL7Uzh63LOdcYgKJznvCYh8l3yT4oa0/view?usp=drive_link" aria-label="포트폴리오 PDF (새 창)" target="_blank" rel="noreferrer">포트폴리오 PDF</a>
-                        <a className="btn ghost" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" aria-label="이력서 PDF (새 창)" target="_blank" rel="noreferrer">이력서 PDF</a>
-                      </div>
-                    </div>
                   </div>
                 </section>
                 <section className="section" id="project-library">

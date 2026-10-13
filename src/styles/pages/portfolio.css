@@ -3,7 +3,7 @@
   scroll-margin-top: 148px;
 }
 
-.portfolio-page #career {
+.portfolio-page #about {
   scroll-margin-top: 126px;
 }
 
@@ -12,8 +12,7 @@
 }
 
 .portfolio-page .hero-grid {
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-  gap: 64px;
+  grid-template-columns: minmax(0, 720px);
 }
 
 .portfolio-page .hero-text h1 {
@@ -57,76 +56,6 @@
 
 .portfolio-resume-link:hover {
   color: var(--accent);
-}
-
-.portfolio-current-card {
-  padding: 28px;
-  border: 1px solid #26364d;
-  border-radius: 18px;
-  background: #192436;
-  color: #fff;
-}
-
-.current-card-top,
-.current-card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.current-card-label {
-  color: #abb9cf;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.13em;
-}
-
-.portfolio-current-card h2 {
-  margin: 24px 0 6px;
-  font-size: 27px;
-  letter-spacing: -0.04em;
-}
-
-.current-card-role {
-  color: #bdc9dc;
-  font-size: 14px;
-}
-
-.current-card-focus {
-  display: grid;
-  gap: 13px;
-  margin: 24px 0;
-  font-size: 13px;
-  color: #e2e8f1;
-}
-
-.current-card-focus p {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-}
-
-.current-card-focus span {
-  color: #91acf4;
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 11px;
-}
-
-.current-card-footer {
-  border-top: 1px solid #334158;
-  padding-top: 18px;
-  color: #bdc9dc;
-  font-size: 12px;
-}
-
-.current-card-footer a {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 32px;
-  color: #e2e8f1;
 }
 
 .portfolio-section-nav {
@@ -240,12 +169,6 @@
   color: #17623e;
   border-color: #cfe6d8;
   background: #eaf5ef;
-}
-
-.portfolio-current-card .career-status.is-current {
-  color: #b9edce;
-  border-color: #355649;
-  background: #243d34;
 }
 
 .career-period p {
@@ -567,14 +490,6 @@
 }
 
 @media (max-width: 1000px) {
-  .portfolio-page .hero-grid {
-    gap: 32px;
-  }
-
-  .portfolio-current-card {
-    padding: 24px;
-  }
-
   .career-entry {
     grid-template-columns: 190px minmax(0, 1fr);
     gap: 32px;
@@ -590,18 +505,9 @@
 }
 
 @media (max-width: 900px) {
-  .portfolio-page .hero-grid,
   .portfolio-page .about-grid,
   .portfolio-page .library-grid {
     grid-template-columns: 1fr;
-  }
-
-  .portfolio-page .hero-grid {
-    align-items: start;
-  }
-
-  .portfolio-current-card {
-    max-width: 560px;
   }
 
   .portfolio-page .portfolio-project-index {
@@ -715,7 +621,7 @@
     scroll-margin-top: 136px;
   }
 
-  .portfolio-page #career {
+  .portfolio-page #about {
     scroll-margin-top: 117px;
   }
 
@@ -796,7 +702,6 @@
 }
 
 @media (max-width: 360px) {
-  .portfolio-current-card,
   .career-card {
     padding: 20px;
   }
@@ -805,15 +710,6 @@
     flex-wrap: wrap;
   }
 
-  .current-card-focus {
-    font-size: 12px;
-  }
-
-  .current-card-footer {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 4px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
