@@ -42,39 +42,16 @@
 
 .hero-contact {
   min-width: 0;
-  padding: 24px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: #f8fafc;
+  padding: 4px 0 4px 32px;
+  border-left: 1px solid var(--border);
   scroll-margin-top: 100px;
-}
-
-.hero-contact-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.hero-contact-heading h2 {
-  color: var(--accent);
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.6;
-  letter-spacing: 0.1em;
-}
-
-.hero-contact-heading > span {
-  color: #667185;
-  font-size: 12px;
 }
 
 .hero-contact-info {
   display: grid;
   gap: 6px;
   font-size: 13px;
+  color: #576273;
 }
 
 .hero-contact-info a {
@@ -87,47 +64,115 @@
 
 .hero-contact-info .hero-contact-email {
   color: var(--ink);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   overflow-wrap: anywhere;
 }
 
-.hero-contact-documents {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 20px;
+.hero-contact-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
 }
 
-.hero-contact-documents .btn {
-  justify-content: space-between;
-  gap: 8px;
-  padding: 10px 12px;
+.hero-contact-meta > a {
+  gap: 16px;
+}
+
+.hero-contact-meta > a::before {
+  content: "";
+  width: 1px;
+  height: 12px;
+  background: var(--border);
+}
+
+.hero-contact-documents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-top: 22px;
+}
+
+.hero-contact-documents a {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 40px;
+  border-bottom: 1px solid var(--border);
+  color: #4d596a;
   font-size: 13px;
+  font-weight: 500;
+}
+
+.hero-contact-documents a:hover {
+  border-bottom-color: var(--accent);
+  color: var(--accent);
+}
+
+.hero-contact-documents span {
+  font-size: 14px;
 }
 
 .hero-contact-profiles {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px 18px;
-  margin-top: 20px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
+  gap: 8px;
+  margin: 18px 0 0 -10px;
+  padding: 0;
   list-style: none;
-  font-size: 12px;
 }
 
 .hero-contact-profiles a {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 32px;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
   color: #576273;
 }
 
-.hero-contact-info a:hover,
-.hero-contact-profiles a:hover {
+.hero-contact-profiles svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.hero-contact-profiles a:hover,
+.hero-contact-profiles a:focus-visible {
+  color: var(--ink);
+  background: #f3f5f8;
+}
+
+.hero-contact a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.hero-contact-info a:hover {
   color: var(--accent);
+}
+
+.hero-contact-profiles .profile-tooltip {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  padding: 5px 9px;
+  border-radius: 5px;
+  color: #fff;
+  background: var(--ink);
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  visibility: hidden;
+}
+
+.hero-contact-profiles a:hover .profile-tooltip,
+.hero-contact-profiles a:focus-visible .profile-tooltip {
+  visibility: visible;
 }
 
 .portfolio-section-nav {
@@ -621,7 +666,9 @@ summary.career-card-heading:hover {
   }
 
   .hero-contact {
-    max-width: 520px;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--border);
+    border-left: 0;
   }
 }
 
@@ -680,8 +727,6 @@ summary.career-card-heading:hover {
   }
 
   .hero-contact {
-    max-width: none;
-    padding: 20px;
     scroll-margin-top: 88px;
   }
 
@@ -774,10 +819,6 @@ summary.career-card-heading:hover {
 }
 
 @media (max-width: 360px) {
-  .hero-contact-documents {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .career-period {
     flex-wrap: wrap;
   }
