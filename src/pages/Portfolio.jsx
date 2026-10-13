@@ -326,11 +326,6 @@ function Portfolio() {
                       3D SLAM과 Navigation을 연구하고,<br />
                       로봇의 자율주행을 현장에 연결합니다.
                     </p>
-                    <div className="hero-actions">
-                      <a className="btn primary" href="#career">경력·경험 <span aria-hidden="true">↓</span></a>
-                      <a className="btn ghost" href="#project-library">프로젝트 보기</a>
-                      <a className="portfolio-resume-link" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" target="_blank" rel="noreferrer" aria-label="이력서 PDF (새 창)">이력서 <span aria-hidden="true">↗</span></a>
-                    </div>
                   </div>
 
                 </div>
