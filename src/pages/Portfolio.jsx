@@ -314,7 +314,6 @@ function Portfolio() {
       <header className="site-hero portfolio-hero" id="about">
                 <div className="container hero-grid">
                   <div className="hero-text" data-reveal>
-                    <p className="eyebrow">Robotics & Autonomous Navigation</p>
                     <h1>유준호 <span>자율주행 로봇 개발자</span></h1>
                     <p className="lead">
                       3D SLAM과 Navigation부터 로봇·센서 통합, 배포까지.<br />
@@ -373,7 +372,6 @@ function Portfolio() {
                 <section className="section career-section" id="career" aria-labelledby="career-heading">
                   <div className="container">
                     <div className="section-head" data-reveal>
-                      <p className="portfolio-kicker">EXPERIENCES</p>
                       <h2 id="career-heading">경력</h2>
                       <p>실무부터 인턴십, 연구·교육까지 이어온 경험입니다.</p>
                     </div>
@@ -442,7 +440,6 @@ function Portfolio() {
                 <section className="section" id="project-library">
                   <div className="container">
                     <div className="section-head" data-reveal>
-                      <p className="portfolio-kicker">PROJECTS</p>
                       <h2>프로젝트</h2>
                       <p>최신 프로젝트부터 시간순으로 정리했습니다. 제목을 눌러 구현 과정과 결과를 확인하세요.</p>
                     </div>
