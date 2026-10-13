@@ -9,7 +9,6 @@ const SECTIONS = [
   { id: 'about', label: '소개' },
   { id: 'career', label: '경력' },
   { id: 'project-library', label: '프로젝트' },
-  { id: 'contact', label: '연락' },
 ]
 
 
@@ -322,7 +321,25 @@ function Portfolio() {
                       현장에서 동작하는 자율주행 시스템을 개발합니다.
                     </p>
                   </div>
-
+                  <aside className="hero-contact" id="contact" aria-labelledby="contact-heading">
+                    <div className="hero-contact-heading">
+                      <h2 id="contact-heading">CONTACT & LINKS</h2>
+                      <span>Seoul, KR</span>
+                    </div>
+                    <div className="hero-contact-info">
+                      <a className="hero-contact-email" href="mailto:juno980220@naver.com">juno980220@naver.com</a>
+                      <a href="tel:+821037926395">010-3792-6395</a>
+                    </div>
+                    <div className="hero-contact-documents">
+                      <a className="btn primary" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" aria-label="이력서 PDF (새 창)" target="_blank" rel="noreferrer">이력서 PDF <span aria-hidden="true">↗</span></a>
+                      <a className="btn ghost" href="https://drive.google.com/file/d/1TZL7Uzh63LOdcYgKJznvCYh8l3yT4oa0/view?usp=drive_link" aria-label="포트폴리오 PDF (새 창)" target="_blank" rel="noreferrer">포트폴리오 PDF <span aria-hidden="true">↗</span></a>
+                    </div>
+                    <ul className="hero-contact-profiles">
+                      <li><a href="https://github.com/YooJuno" aria-label="유준호 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a></li>
+                      <li><a href="https://youtube.com/@yoojuno" aria-label="유준호 YouTube (새 창)" target="_blank" rel="noreferrer">YouTube <span aria-hidden="true">↗</span></a></li>
+                      <li><a href="https://www.notion.so/1a9302636cd781059263e5b57e11fc70" aria-label="유준호 Notion 이력서 (새 창)" target="_blank" rel="noreferrer">Notion 이력서 <span aria-hidden="true">↗</span></a></li>
+                    </ul>
+                  </aside>
                 </div>
               </header>
 
@@ -1252,34 +1269,6 @@ function Portfolio() {
                           </div>
                         </ProjectEntry>
                     </ProjectLibrary>
-                  </div>
-                </section>
-                <section className="section" id="contact">
-                  <div className="container" data-reveal>
-                    <div className="contact-card">
-                      <div>
-                        <p className="portfolio-kicker">CONTACT</p>
-                        <h2>연락·이력서</h2>
-                        <p>프로젝트·채용 문의와 관련 자료를 한곳에서 확인하세요.</p>
-                        <div className="contact-info">
-                          <span>Seoul, KR</span>
-                          <a href="mailto:juno980220@naver.com">juno980220@naver.com</a>
-                          <a href="tel:+821037926395">010-3792-6395</a>
-                        </div>
-                      </div>
-                      <div className="contact-materials">
-                        <div className="contact-actions">
-                          <a className="btn primary" href="mailto:juno980220@naver.com">메일 보내기</a>
-                          <a className="btn ghost github icon-link" href="https://github.com/YooJuno" aria-label="유준호 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
-                          <a className="btn ghost" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" aria-label="이력서 PDF (새 창)" target="_blank" rel="noreferrer">이력서 PDF</a>
-                          <a className="btn ghost" href="https://drive.google.com/file/d/1TZL7Uzh63LOdcYgKJznvCYh8l3yT4oa0/view?usp=drive_link" aria-label="포트폴리오 PDF (새 창)" target="_blank" rel="noreferrer">포트폴리오 PDF</a>
-                        </div>
-                        <div className="contact-secondary-links">
-                          <a href="https://youtube.com/@yoojuno" aria-label="유준호 YouTube (새 창)" target="_blank" rel="noreferrer">YouTube</a>
-                          <a href="https://www.notion.so/1a9302636cd781059263e5b57e11fc70" aria-label="유준호 Notion 이력서 (새 창)" target="_blank" rel="noreferrer">Notion 이력서</a>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </section>
               </main>
