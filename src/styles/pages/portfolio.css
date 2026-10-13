@@ -34,30 +34,6 @@
   line-height: 1.85;
 }
 
-.portfolio-page .hero-actions {
-  align-items: center;
-  gap: 12px;
-}
-
-.portfolio-page .hero-actions .btn {
-  gap: 18px;
-}
-
-.portfolio-resume-link {
-  display: inline-flex;
-  min-height: 46px;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  color: #4d596a;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.portfolio-resume-link:hover {
-  color: var(--accent);
-}
-
 .portfolio-section-nav {
   position: sticky;
   top: 68px;
@@ -625,21 +601,6 @@
 
   .portfolio-page .lead {
     font-size: 15px;
-  }
-
-  .portfolio-page .hero-actions {
-    flex-direction: row;
-    gap: 10px;
-  }
-
-  .portfolio-page .hero-actions .btn {
-    width: auto;
-    padding: 10px 14px;
-  }
-
-  .portfolio-resume-link {
-    padding: 8px 4px;
-    font-size: 13px;
   }
 
   .portfolio-section-nav {
