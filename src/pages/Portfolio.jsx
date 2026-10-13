@@ -13,10 +13,12 @@ const SECTIONS = [
   { id: 'contact', label: '연락' },
 ]
 
-const CAREER = [
+const EXPERIENCES = [
   {
-    company: '위고로보틱스',
-    team: '자율주행 로봇 연구·개발',
+    id: 'career-wego',
+    organization: '위고로보틱스',
+    role: '로봇 자율주행 SW팀',
+    type: '경력',
     start: '2026-03-18',
     end: null,
     summary: '다양한 로봇·센서의 SDK와 드라이버를 통합하고, 프로젝트에서 재사용할 수 있는 사내 패키지 체계를 구축했습니다.',
@@ -29,10 +31,56 @@ const CAREER = [
     hardware: ['Unitree B2', 'Unitree Go2', 'Unitree A2', 'UR3e', 'FR3C', 'AURORA-S', 'RealSense Depth Camera', 'XT32', 'VLP16'],
   },
   {
-    company: '하이비젼',
-    team: '선행기술본부 · SW팀',
+    id: 'career-hivision',
+    organization: '하이비젼시스템',
+    role: '선행기술본부 · SW팀',
+    type: '경력',
     start: '2025-12-01',
     end: '2026-03-17',
+    responsibilities: [],
+    hardware: [],
+  },
+  {
+    id: 'experience-ssafy',
+    organization: 'SSAFY',
+    role: '임베디드 로봇 트랙',
+    type: '교육',
+    start: '2025-01',
+    end: '2025-10',
+    summary: '웹·로봇 프로젝트 수행, 자동화 시스템 설계 및 로봇팔 제어 경험.',
+    responsibilities: [],
+    hardware: [],
+  },
+  {
+    id: 'experience-gmd-soft',
+    organization: 'GMD SOFT',
+    role: '영상 포렌식 검증·세미나',
+    type: '인턴',
+    start: '2024-07',
+    end: '2024-09',
+    summary: '경쟁사 조사, gRPC 기반 분산 처리 시스템 설계, Visual-SLAM 세미나 진행.',
+    responsibilities: [],
+    hardware: [],
+  },
+  {
+    id: 'experience-cgv-lab',
+    organization: '한동대학교 CGV LAB',
+    role: '자율주행·영상처리 연구 · 학부 연구생',
+    type: '연구',
+    start: '2022-06',
+    end: '2024-08',
+    summary: '컴퓨터 비전·로보틱스 연구 프로젝트 수행.',
+    responsibilities: [],
+    hardware: [],
+  },
+  {
+    id: 'experience-zaitron',
+    organization: '자이트론',
+    role: '자율주행 기술 교육·제품 개발',
+    type: '인턴',
+    start: '2023-09',
+    end: '2023-12',
+    summary: '자율주행 교육 강의 보조·진행, 경기장 관제 시스템 및 자율 주차 프로그램 개발.',
     responsibilities: [],
     hardware: [],
   },
@@ -94,6 +142,66 @@ const findInContainer = (container, id) => {
   return target && container.contains(target) ? target : null
 }
 
+function ExperienceEntry({ experience }) {
+  const isCurrent = !experience.end
+  const hasDetails = Boolean(experience.summary || experience.responsibilities.length || experience.hardware.length)
+  const Card = hasDetails ? 'details' : 'article'
+  const Heading = hasDetails ? 'summary' : 'div'
+
+  return (
+    <li className={`career-entry${isCurrent ? ' is-current' : ''}`} id={experience.id === 'experience-ssafy' ? 'experience' : undefined}>
+      <div className="career-period">
+        <span className={`career-status${isCurrent ? ' is-current' : ''}`}>
+          <span aria-hidden="true" />{isCurrent ? '재직 중' : experience.type}
+        </span>
+        <p>
+          <time dateTime={experience.start} title={experience.start.replaceAll('-', '.')}>{experience.start.slice(0, 7).replace('-', '.')}</time>
+          <span aria-hidden="true"> — </span>
+          {experience.end ? <time dateTime={experience.end} title={experience.end.replaceAll('-', '.')}>{experience.end.slice(0, 7).replace('-', '.')}</time> : '현재'}
+        </p>
+      </div>
+      <Card className="career-card" id={experience.id}>
+        <Heading className="career-card-heading" data-reveal>
+          <div>
+            <h3>{experience.organization}</h3>
+            <p className="career-team">{experience.role}</p>
+          </div>
+          {hasDetails && (
+            <span className="career-card-action">
+              <span className="career-action-closed">상세</span>
+              <span className="career-action-open">접기</span>
+              <span className="career-chevron" aria-hidden="true" />
+            </span>
+          )}
+        </Heading>
+        {hasDetails && (
+          <div className="career-card-body">
+            {experience.summary && <p className="career-summary">{experience.summary}</p>}
+            {experience.responsibilities.length > 0 && (
+              <div className="career-responsibilities">
+                {experience.responsibilities.map((responsibility) => (
+                  <div key={responsibility.title}>
+                    <h4>{responsibility.title}</h4>
+                    <p>{responsibility.description}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+            {experience.hardware.length > 0 && (
+              <div className="career-hardware">
+                <h4>로봇·센서 통합 경험</h4>
+                <ul>
+                  {experience.hardware.map((hardware) => <li key={hardware}>{hardware}</li>)}
+                </ul>
+              </div>
+            )}
+          </div>
+        )}
+      </Card>
+    </li>
+  )
+}
+
 function Portfolio() {
   const containerRef = useRef(null)
   const lightboxCloseRef = useRef(null)
@@ -103,7 +211,6 @@ function Portfolio() {
   const [activeProjectId, setActiveProjectId] = useState('')
   const [activeSectionId, setActiveSectionId] = useState('')
   const [isProjectIndexOpen, setIsProjectIndexOpen] = useState(false)
-  const [isLearningExpanded, setIsLearningExpanded] = useState(false)
   useReveal()
   useDocumentTitle()
   const getIndexClass = (id) => (
@@ -298,20 +405,25 @@ function Portfolio() {
     if (!container) return undefined
     const target = findInContainer(container, section)
     if (!target) return undefined
+    const disclosure = target.tagName.toLowerCase() === 'details'
+      ? target : target.querySelector(':scope > details.career-card')
     let focusTimeout
-    if (target.tagName.toLowerCase() === 'details') {
-      target.setAttribute('open', '')
-      target.classList.add('is-focus')
-      setActiveProjectId(target.id)
-      focusTimeout = window.setTimeout(() => target.classList.remove('is-focus'), 1200)
+    if (disclosure) {
+      disclosure.setAttribute('open', '')
+      disclosure.classList.add('is-focus')
+      focusTimeout = window.setTimeout(() => disclosure.classList.remove('is-focus'), 1200)
     }
-    if (target.closest('#experience')) setIsLearningExpanded(true)
-    setIsProjectIndexOpen(false)
-    const animationFrame = window.requestAnimationFrame(() => scrollToTarget(target))
+    let scrollFrame
+    const animationFrame = window.requestAnimationFrame(() => {
+      if (disclosure?.classList.contains('project-detail')) setActiveProjectId(disclosure.id)
+      setIsProjectIndexOpen(false)
+      scrollFrame = window.requestAnimationFrame(() => scrollToTarget(target))
+    })
     return () => {
       window.cancelAnimationFrame(animationFrame)
+      window.cancelAnimationFrame(scrollFrame)
       window.clearTimeout(focusTimeout)
-      target.classList.remove('is-focus')
+      disclosure?.classList.remove('is-focus')
     }
   }, [location.pathname, location.search, location.hash, location.key])
 
@@ -374,109 +486,28 @@ function Portfolio() {
                 <section className="section career-section" id="career" aria-labelledby="career-heading">
                   <div className="container">
                     <div className="section-head" data-reveal>
-                      <p className="portfolio-kicker">CAREER & EXPERIENCE</p>
+                      <p className="portfolio-kicker">EXPERIENCES</p>
                       <h2 id="career-heading">경력·경험</h2>
-                      <p>실무 경력과 연구·교육에서 쌓아온 개발 경험입니다.</p>
+                      <p>실무부터 인턴십, 연구·교육까지 이어온 경험입니다.</p>
                     </div>
-                    <section className="experience-group" aria-labelledby="professional-experience-heading">
-                      <div className="experience-group-heading">
-                        <h3 id="professional-experience-heading">실무 경력</h3>
-                      </div>
                     <ol className="career-timeline">
-                      {CAREER.map((job) => (
-                        <li className={`career-entry${job.end ? '' : ' is-current'}`} key={job.company}>
-                          <div className="career-period">
-                            <span className={`career-status${job.end ? '' : ' is-current'}`}>
-                              <span aria-hidden="true" />{job.end ? '이전 경력' : '재직 중'}
-                            </span>
-                            <p>
-                              <time dateTime={job.start}>{job.start.replaceAll('-', '.')}</time>
-                              <span aria-hidden="true"> — </span>
-                              {job.end ? <time dateTime={job.end}>{job.end.replaceAll('-', '.')}</time> : '현재'}
-                            </p>
-                          </div>
-                          <article className="career-card" data-reveal>
-                            <h4>{job.company}</h4>
-                            <p className="career-team">{job.team}</p>
-                            {job.summary && <p className="career-summary">{job.summary}</p>}
-                            {job.responsibilities.length > 0 && (
-                              <div className="career-responsibilities">
-                                {job.responsibilities.map((responsibility) => (
-                                  <div key={responsibility.title}>
-                                    <h5>{responsibility.title}</h5>
-                                    <p>{responsibility.description}</p>
-                                  </div>
-                                ))}
-                              </div>
-                            )}
-                            {job.hardware.length > 0 && (
-                              <div className="career-hardware">
-                                <h5>로봇·센서 통합 경험</h5>
-                                <ul>
-                                  {job.hardware.map((hardware) => <li key={hardware}>{hardware}</li>)}
-                                </ul>
-                              </div>
-                            )}
-                          </article>
-                        </li>
-                      ))}
+                      {EXPERIENCES.map((experience) => <ExperienceEntry experience={experience} key={experience.id} />)}
                     </ol>
-                    </section>
-                    <section className={`experience-group learning-experience${isLearningExpanded ? ' is-expanded' : ''}`} id="experience" aria-labelledby="learning-experience-heading">
-                      <div className="experience-group-heading" data-reveal>
-                        <div>
-                          <h3 id="learning-experience-heading">연구·교육·인턴십</h3>
-                          <p>이력 4건 · 논문 · 수상</p>
-                        </div>
-                        <button className="project-index-toggle learning-toggle" type="button" aria-expanded={isLearningExpanded} aria-controls="learning-experience-content" onClick={() => setIsLearningExpanded((expanded) => !expanded)}>
-                          {isLearningExpanded ? '상세 접기' : '상세 보기'} <span aria-hidden="true">{isLearningExpanded ? '−' : '+'}</span>
-                        </button>
-                      </div>
-                      <div id="learning-experience-content" className="learning-experience-content">
-                        <div className="timeline">
-                          <div className="timeline-item">
-                            <span className="time">2025.01-10</span>
-                            <div>
-                              <h4>SSAFY 임베디드 로봇 트랙</h4>
-                              <p>웹·로봇 프로젝트 수행, 자동화 시스템 설계 및 로봇팔 제어 경험.</p>
-                            </div>
-                          </div>
-                          <div className="timeline-item">
-                            <span className="time">2024.07-09</span>
-                            <div>
-                              <h4>GMD SOFT 인턴 · 영상 포렌식</h4>
-                              <p>경쟁사 조사, gRPC 기반 분산 처리 시스템 설계, Visual-SLAM 세미나 진행.</p>
-                            </div>
-                          </div>
-                          <div className="timeline-item">
-                            <span className="time">2022.07-2024.06</span>
-                            <div>
-                              <h4>한동대학교 CGV LAB 학부 연구생</h4>
-                              <p>컴퓨터비전/로보틱스 연구 프로젝트 수행.</p>
-                            </div>
-                          </div>
-                          <div className="timeline-item">
-                            <span className="time">2023.09-12</span>
-                            <div>
-                              <h4>자이트론 인턴 · 자율주행 교육/제품 개발</h4>
-                              <p>자율주행 교육 강의 보조·진행, 경기장 관제 시스템 및 자율 주차 프로그램 개발.</p>
-                            </div>
+                    <section className="experience-publications" aria-labelledby="experience-publications-heading">
+                      <h3 id="experience-publications-heading">논문·수상</h3>
+                      <div className="split-cards">
+                        <div className="mini-card">
+                          <h4>논문 · 발표</h4>
+                          <p>PilotNet 성능 향상을 위한 SLAM과 YOLO 활용 (대한전자공학회, 2023.06)</p>
+                          <div className="detail-links">
+                            <a className="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" aria-label="논문 링크 (새 창)" target="_blank" rel="noreferrer">논문 링크</a>
+                            <a className="chip-link" href="/content/portfolio/pdfs/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf" aria-label="논문 PDF (새 창)" target="_blank" rel="noreferrer">논문 PDF</a>
                           </div>
                         </div>
-                        <div className="split-cards">
-                          <div className="mini-card">
-                            <h4>논문 · 발표</h4>
-                            <p>PilotNet 성능 향상을 위한 SLAM과 YOLO 활용 (대한전자공학회, 2023.06)</p>
-                            <div className="detail-links">
-                              <a className="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" aria-label="논문 링크 (새 창)" target="_blank" rel="noreferrer">논문 링크</a>
-                              <a className="chip-link" href="/content/portfolio/pdfs/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf" aria-label="논문 PDF (새 창)" target="_blank" rel="noreferrer">논문 PDF</a>
-                            </div>
-                          </div>
-                          <div className="mini-card">
-                            <h4>수상</h4>
-                            <p>캡스톤 디자인 페스티벌 우수상 (한동대학교, 2023.05)</p>
-                            <a className="chip-link" href="/content/portfolio/pdfs/캡스톤 경진대회.pdf" aria-label="상장 PDF (새 창)" target="_blank" rel="noreferrer">상장 PDF</a>
-                          </div>
+                        <div className="mini-card">
+                          <h4>수상</h4>
+                          <p>캡스톤 디자인 페스티벌 우수상 (한동대학교, 2023.05)</p>
+                          <a className="chip-link" href="/content/portfolio/pdfs/캡스톤 경진대회.pdf" aria-label="상장 PDF (새 창)" target="_blank" rel="noreferrer">상장 PDF</a>
                         </div>
                       </div>
                     </section>
