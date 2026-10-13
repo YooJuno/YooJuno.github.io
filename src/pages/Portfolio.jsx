@@ -6,10 +6,9 @@ import '../styles/pages/portfolio.css'
 
 const SECTIONS = [
   { id: 'about', label: '소개' },
-  { id: 'career', label: '경력' },
+  { id: 'career', label: '경력·경험' },
   { id: 'project-library', label: '프로젝트' },
   { id: 'skills', label: '기술 스택' },
-  { id: 'experience', label: '연구·교육' },
   { id: 'activities', label: '활동' },
   { id: 'contact', label: '연락' },
 ]
@@ -299,7 +298,7 @@ function Portfolio() {
                       로봇의 자율주행을 현장에 연결합니다.
                     </p>
                     <div className="hero-actions">
-                      <a className="btn primary" href="#career">경력 보기 <span aria-hidden="true">↓</span></a>
+                      <a className="btn primary" href="#career">경력·경험 <span aria-hidden="true">↓</span></a>
                       <a className="btn ghost" href="#project-library">프로젝트 보기</a>
                       <a className="portfolio-resume-link" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" target="_blank" rel="noreferrer" aria-label="이력서 PDF (새 창)">이력서 <span aria-hidden="true">↗</span></a>
                     </div>
@@ -352,10 +351,14 @@ function Portfolio() {
                 <section className="section career-section" id="career" aria-labelledby="career-heading">
                   <div className="container">
                     <div className="section-head" data-reveal>
-                      <p className="portfolio-kicker">PROFESSIONAL EXPERIENCE</p>
-                      <h2 id="career-heading">경력</h2>
-                      <p>연구·개발부터 현장의 자율주행 로봇 구현까지.</p>
+                      <p className="portfolio-kicker">CAREER & EXPERIENCE</p>
+                      <h2 id="career-heading">경력·경험</h2>
+                      <p>실무 경력과 연구·교육에서 쌓아온 개발 경험입니다.</p>
                     </div>
+                    <section className="experience-group" aria-labelledby="professional-experience-heading">
+                      <div className="experience-group-heading">
+                        <h3 id="professional-experience-heading">실무 경력</h3>
+                      </div>
                     <ol className="career-timeline">
                       {CAREER.map((job) => (
                         <li className={`career-entry${job.end ? '' : ' is-current'}`} key={job.company}>
@@ -370,14 +373,14 @@ function Portfolio() {
                             </p>
                           </div>
                           <article className="career-card" data-reveal>
-                            <h3>{job.company}</h3>
+                            <h4>{job.company}</h4>
                             <p className="career-team">{job.team}</p>
                             {job.summary && <p className="career-summary">{job.summary}</p>}
                             {job.responsibilities.length > 0 && (
                               <div className="career-responsibilities">
                                 {job.responsibilities.map((responsibility) => (
                                   <div key={responsibility.title}>
-                                    <h4>{responsibility.title}</h4>
+                                    <h5>{responsibility.title}</h5>
                                     <p>{responsibility.description}</p>
                                   </div>
                                 ))}
@@ -385,7 +388,7 @@ function Portfolio() {
                             )}
                             {job.hardware.length > 0 && (
                               <div className="career-hardware">
-                                <h4>로봇·센서 통합 경험</h4>
+                                <h5>로봇·센서 통합 경험</h5>
                                 <ul>
                                   {job.hardware.map((hardware) => <li key={hardware}>{hardware}</li>)}
                                 </ul>
@@ -395,6 +398,58 @@ function Portfolio() {
                         </li>
                       ))}
                     </ol>
+                    </section>
+                    <section className="experience-group" id="experience" aria-labelledby="learning-experience-heading">
+                      <div className="experience-group-heading" data-reveal>
+                        <h3 id="learning-experience-heading">연구·교육·인턴십</h3>
+                        <p>현재의 개발 역량을 쌓아온 경험입니다.</p>
+                      </div>
+                      <div className="timeline">
+                        <div className="timeline-item">
+                          <span className="time">2025.01-10</span>
+                          <div>
+                            <h4>SSAFY 임베디드 로봇 트랙</h4>
+                            <p>웹·로봇 프로젝트 수행, 자동화 시스템 설계 및 로봇팔 제어 경험.</p>
+                          </div>
+                        </div>
+                        <div className="timeline-item">
+                          <span className="time">2024.07-09</span>
+                          <div>
+                            <h4>GMD SOFT 인턴 · 영상 포렌식</h4>
+                            <p>경쟁사 조사, gRPC 기반 분산 처리 시스템 설계, Visual-SLAM 세미나 진행.</p>
+                          </div>
+                        </div>
+                        <div className="timeline-item">
+                          <span className="time">2022.07-2024.06</span>
+                          <div>
+                            <h4>한동대학교 CGV LAB 학부 연구생</h4>
+                            <p>컴퓨터비전/로보틱스 연구 프로젝트 수행.</p>
+                          </div>
+                        </div>
+                        <div className="timeline-item">
+                          <span className="time">2023.09-12</span>
+                          <div>
+                            <h4>자이트론 인턴 · 자율주행 교육/제품 개발</h4>
+                            <p>자율주행 교육 강의 보조·진행, 경기장 관제 시스템 및 자율 주차 프로그램 개발.</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="split-cards">
+                        <div className="mini-card">
+                          <h4>논문 · 발표</h4>
+                          <p>PilotNet 성능 향상을 위한 SLAM과 YOLO 활용 (대한전자공학회, 2023.06)</p>
+                          <div className="detail-links">
+                            <a className="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" aria-label="논문 링크 (새 창)" target="_blank" rel="noreferrer">논문 링크</a>
+                            <a className="chip-link" href="/content/portfolio/pdfs/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf" aria-label="논문 PDF (새 창)" target="_blank" rel="noreferrer">논문 PDF</a>
+                          </div>
+                        </div>
+                        <div className="mini-card">
+                          <h4>수상</h4>
+                          <p>캡스톤 디자인 페스티벌 우수상 (한동대학교, 2023.05)</p>
+                          <a className="chip-link" href="/content/portfolio/pdfs/캡스톤 경진대회.pdf" aria-label="상장 PDF (새 창)" target="_blank" rel="noreferrer">상장 PDF</a>
+                        </div>
+                      </div>
+                    </section>
                   </div>
                 </section>
                 <section className="section" id="project-library">
@@ -1391,61 +1446,6 @@ function Portfolio() {
                         <div className="chip-list">
                           <span>C++</span><span>Python</span><span>Docker</span><span>Linux</span><span>Git</span><span>Jira</span>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-
-                <section className="section" id="experience">
-                  <div className="container" data-reveal>
-                    <div className="section-head">
-                      <h2>연구·교육</h2>
-                      <p>현재의 개발 역량을 쌓아온 교육, 연구, 인턴십 이력입니다.</p>
-                    </div>
-                    <div className="timeline">
-                      <div className="timeline-item">
-                        <span className="time">2025.01-10</span>
-                        <div>
-                          <h3>SSAFY 임베디드 로봇 트랙</h3>
-                          <p>웹·로봇 프로젝트 수행, 자동화 시스템 설계 및 로봇팔 제어 경험.</p>
-                        </div>
-                      </div>
-                      <div className="timeline-item">
-                        <span className="time">2024.07-09</span>
-                        <div>
-                          <h3>GMD SOFT 인턴 · 영상 포렌식</h3>
-                          <p>경쟁사 조사, gRPC 기반 분산 처리 시스템 설계, Visual-SLAM 세미나 진행.</p>
-                        </div>
-                      </div>
-                      <div className="timeline-item">
-                        <span className="time">2022.07-2024.06</span>
-                        <div>
-                          <h3>한동대학교 CGV LAB 학부 연구생</h3>
-                          <p>컴퓨터비전/로보틱스 연구 프로젝트 수행.</p>
-                        </div>
-                      </div>
-                      <div className="timeline-item">
-                        <span className="time">2023.09-12</span>
-                        <div>
-                          <h3>자이트론 인턴 · 자율주행 교육/제품 개발</h3>
-                          <p>자율주행 교육 강의 보조·진행, 경기장 관제 시스템 및 자율 주차 프로그램 개발.</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="split-cards">
-                      <div className="mini-card">
-                        <h3>논문 · 발표</h3>
-                        <p>PilotNet 성능 향상을 위한 SLAM과 YOLO 활용 (대한전자공학회, 2023.06)</p>
-                        <div className="detail-links">
-                          <a className="chip-link" href="https://www.dbpia.co.kr/journal/articleDetail?nodeId=NODE11522374" aria-label="논문 링크 (새 창)" target="_blank" rel="noreferrer">논문 링크</a>
-                          <a className="chip-link" href="/content/portfolio/pdfs/PilotNet 성능향상을 위한 SLAM과 YOLO 활용.pdf" aria-label="논문 PDF (새 창)" target="_blank" rel="noreferrer">논문 PDF</a>
-                        </div>
-                      </div>
-                      <div className="mini-card">
-                        <h3>수상</h3>
-                        <p>캡스톤 디자인 페스티벌 우수상 (한동대학교, 2023.05)</p>
-                        <a className="chip-link" href="/content/portfolio/pdfs/캡스톤 경진대회.pdf" aria-label="상장 PDF (새 창)" target="_blank" rel="noreferrer">상장 PDF</a>
                       </div>
                     </div>
                   </div>
