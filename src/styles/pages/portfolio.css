@@ -100,6 +100,38 @@
   letter-spacing: 0.13em;
 }
 
+.portfolio-page .experience-group {
+  scroll-margin-top: 148px;
+}
+
+.experience-group + .experience-group {
+  margin-top: 52px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+
+.experience-group-heading {
+  margin-bottom: 24px;
+}
+
+.experience-group-heading h3 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+.experience-group-heading p {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.experience-group .timeline-item h4,
+.experience-group .mini-card h4 {
+  margin-bottom: 6px;
+  font-size: 16px;
+}
+
 .career-timeline {
   display: grid;
   gap: 22px;
@@ -191,7 +223,7 @@
   box-shadow: 0 8px 24px rgba(49, 87, 213, 0.04);
 }
 
-.career-card h3 {
+.career-card h4 {
   font-size: 24px;
   letter-spacing: -0.035em;
 }
@@ -221,7 +253,7 @@
   border-top: 1px solid #e8ecf2;
 }
 
-.career-responsibilities h4 {
+.career-responsibilities h5 {
   margin-bottom: 6px;
   font-size: 14px;
   font-weight: 600;
@@ -239,7 +271,7 @@
   border-top: 1px solid #e8ecf2;
 }
 
-.career-hardware h4 {
+.career-hardware h5 {
   margin-bottom: 10px;
   color: #576273;
   font-size: 12px;
@@ -617,6 +649,7 @@
   }
 
   .portfolio-page .section,
+  .portfolio-page .experience-group,
   .portfolio-page .project-detail {
     scroll-margin-top: 136px;
   }
@@ -652,7 +685,7 @@
     padding: 22px;
   }
 
-  .career-card h3 {
+  .career-card h4 {
     font-size: 22px;
   }
 
