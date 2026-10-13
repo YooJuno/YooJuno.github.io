@@ -21,6 +21,15 @@ https://yoojuno.github.io/
 - `/web-service` : 웹서비스 목록
 - `/web-service/:name` : 웹서비스 상세 (blog / cctv-streaming / video-chatting / bitcoin-auto-trader)
 
+### 포트폴리오 탐색
+
+- 섹션·프로젝트를 선택하면 `/portfolio/#career`, `/portfolio/#proj-hangang`처럼 주소에 반영됩니다.
+- 해당 주소를 공유하거나 새로고침해도 선택한 위치로 이동하며, 프로젝트 상세가 자동으로 펼쳐집니다.
+- 브라우저 뒤로가기·앞으로가기로 이전에 선택한 위치를 다시 탐색할 수 있습니다.
+- 기존 `/portfolio?section=career` 형태의 링크도 지원합니다.
+- 모바일(700px 이하)에서는 연구·교육·인턴십 상세를 접어 실무 경력과 프로젝트를 먼저 보여줍니다.
+  `#experience`로 직접 이동하면 자동으로 펼쳐지며, 데스크톱에서는 항상 표시됩니다.
+
 ## 폴더 구조
 
 - `src/App.jsx`: 라우팅/레이아웃
@@ -64,7 +73,7 @@ npm run build
 설정 경로:
 - GitHub 저장소 → **Settings → Pages → Source: GitHub Actions**
 
-## 해시(#) 제거 적용 방식
+## 해시 라우팅 제거 적용 방식
 
 GitHub Pages는 서버 리라이트가 없어 `/portfolio` 같은 경로로 직접 접근 시 404가 발생합니다.
 이를 해결하기 위해 **BrowserRouter + 404 리다이렉트** 패턴을 적용했습니다.
