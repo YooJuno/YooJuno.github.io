@@ -76,24 +76,27 @@ GitHub Pages에는 SPA용 서버 리라이트가 없으므로, 클라이언트 �
 경력·활동·학력 정보는 `portfolio.js`에 모으고, 컴포넌트는 해당 데이터를 렌더링하도록 분리했습니다.
 프로젝트는 `ProjectEntry`에 제목·기간·기관·역할과 상세 내용을 함께 정의합니다.
 
-`ProjectLibrary`는 같은 항목에서 **목차와 본문 목록을 함께 생성**하고, 시작 시점 내림차순으로 정렬합니다.
+`ProjectLibrary`는 프로젝트를 **전체 너비의 단일 목록**으로 표시하고, 시작 시점 내림차순으로 정렬합니다.
 시작 시점이 같으면 종료 시점이 최신인 항목을 먼저 표시합니다.
-목차용 제목이나 별도의 대표 프로젝트 데이터를 다시 관리하지 않습니다.
+별도의 프로젝트 목차나 대표 프로젝트 데이터를 다시 관리하지 않습니다.
 기술 이름을 나열하는 독립 섹션 대신, 경력의 수행 업무와 프로젝트 상세의 구현 방식·기술 태그로 실제 적용 경험을 보여줍니다.
 
 상세 내용은 네이티브 `<details>`·`<summary>`로 구현합니다.
 간단한 열기·닫기 상태를 별도 React 상태로 중복 관리하지 않고, 기관·역할 또는 프로젝트 제목을 먼저 읽은 뒤 필요한 내용만 펼칠 수 있도록 했습니다.
 
-구현: [포트폴리오 데이터](src/content/portfolio.js), [항목·목차 컴포넌트](src/pages/Portfolio.jsx).
+연락처·문서·프로필 링크는 소개 영역의 카드에 한 번만 표시합니다.
+PC에서는 소개 오른쪽, 모바일에서는 소개 아래에 배치해 하단의 별도 연락 영역과 중복 버튼을 없앴습니다.
+
+구현: [포트폴리오 데이터](src/content/portfolio.js), [프로젝트 컴포넌트](src/pages/Portfolio.jsx).
 
 ### 4. URL과 연결된 탐색, 접근성, 오류 대응
 
 - 포트폴리오의 위치를 `#career`, `#proj-hangang` 같은 URL 해시에 반영합니다. 새로고침과 뒤로가기·앞으로가기에서도 해당 위치를 탐색합니다.
-- 숨겨진 상세 영역으로 직접 접근하면 먼저 펼치고, 모바일 목차가 닫힌 뒤의 레이아웃을 기준으로 스크롤합니다.
-- 현재 프로젝트는 화면에 보이는 비율이 아니라 고정 메뉴 아래의 읽기 위치를 기준으로 판단합니다. 긴 상세를 읽을 때도 다음 프로젝트 제목을 지나기 전까지 현재 항목을 유지합니다.
-- 데스크톱 목차는 활성 항목이 보이도록 자동 이동하며, 목차 위에서 휠을 사용해도 전체 페이지가 스크롤됩니다. 모바일의 펼친 목차는 별도 내부 스크롤 없이 페이지 안에 이어집니다.
+- 숨겨진 상세 영역으로 직접 접근하면 먼저 펼치고, 고정 메뉴를 피한 위치로 스크롤합니다.
+- 상단 섹션 메뉴는 소개·경력·프로젝트만 유지하고, 프로젝트는 제목을 눌러 상세를 펼치도록 구성합니다. 별도 사이드바나 내부 스크롤 영역은 없습니다.
 - 기존 `?section=...` 링크를 유지하며, ID는 CSS 선택자 문자열 대신 `getElementById`로 조회해 잘못된 해시가 선택자 예외로 이어지지 않도록 합니다.
 - 제거한 기술 역량 영역의 기존 `#skills`·`?section=skills` 링크는 프로젝트 목록으로 연결합니다.
+- 기존 `#contact`·`?section=contact` 링크는 소개 영역의 연락·자료 카드로 연결합니다.
 - 이미지 확대 화면은 키보드로 열 수 있고, Tab 포커스를 대화상자 안에 유지합니다. Escape로 닫으면 원래 이미지에 포커스를 돌려줍니다.
 - 토글의 `aria-expanded`, 현재 위치의 `aria-current`, 포커스 표시와 `prefers-reduced-motion` 대응을 적용합니다.
 - 라우트 영역에 오류 경계를 두어 페이지 렌더링 오류가 전체 탐색 메뉴·푸터까지 제거하지 않도록 합니다. 다른 경로로 이동하면 경계를 다시 마운트합니다.
@@ -123,6 +126,9 @@ Node 20 → npm ci → ESLint → Vite build → dist 아티팩트 업로드 →
 - Pages 배포는 GitHub Actions 워크플로로 관리하며, 같은 배포 그룹의 중복 실행은 취소합니다.
 - 개발은 `dev`에서 작업 브랜치를 만들어 진행하고, 검증 후 `dev`에 병합합니다. `main` 반영이 공개 사이트 배포로 이어집니다.
 
+도구가 자동으로 추가하는 커밋·PR 귀속 문구는 [저장소 설정](.claude/settings.json)에서 비활성화합니다.
+기존 커밋 이력이나 실제 작성자 정보는 변경하지 않습니다. [설정 기준](https://code.claude.com/docs/en/settings-reference#attribution).
+
 구현: [ESLint 설정](eslint.config.js), [배포 워크플로](.github/workflows/deploy.yml).
 
 ## 로컬 개발
@@ -151,7 +157,8 @@ GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 �
 | --- | --- |
 | 경력·활동·학력 | `src/content/portfolio.js` |
 | 프로젝트 제목·기간·역할 | `src/pages/Portfolio.jsx`의 `ProjectEntry`: `title`, `start`, `end`, `meta`. 기간은 `YYYY-MM` 형식 |
-| 프로젝트 상세·이미지·외부 링크 | 해당 `ProjectEntry`의 `detail-body`와 `contact` 영역 |
+| 프로젝트 상세·이미지·외부 링크 | 해당 `ProjectEntry`의 `detail-body` |
+| 연락처·문서·프로필 링크 | `src/pages/Portfolio.jsx`의 `hero-contact` 영역 (`#contact`) |
 | 블로그 글·이미지 | `src/content/blog/<slug>/index.md`와 같은 글 폴더. 메타데이터는 `title`, `date`, `category`, `tags`, `summary`, 선택적인 `slug` |
 | 새 페이지·메타데이터 | `src/App.jsx`의 라우트와 `src/lib/routeMeta.js`의 메타데이터를 함께 추가 |
 | 스타일 | `src/styles/`의 공통·페이지별 CSS |

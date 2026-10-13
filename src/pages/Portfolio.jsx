@@ -9,7 +9,6 @@ const SECTIONS = [
   { id: 'about', label: '소개' },
   { id: 'career', label: '경력' },
   { id: 'project-library', label: '프로젝트' },
-  { id: 'contact', label: '연락' },
 ]
 
 
@@ -112,75 +111,12 @@ function ProjectEntry({ id, title, start, end, meta, children }) {
   )
 }
 
-function ProjectLibrary({ children, activeProjectId, isIndexOpen, onIndexToggle }) {
-  const indexContentRef = useRef(null)
+function ProjectLibrary({ children }) {
   const projects = Children.toArray(children).sort((left, right) => (
     right.props.start.localeCompare(left.props.start) || right.props.end.localeCompare(left.props.end)
   ))
 
-  useEffect(() => {
-    const content = indexContentRef.current
-    if (!content) return undefined
-    let animationFrame
-
-    const revealActiveProject = () => {
-      animationFrame = undefined
-      const activeLink = content.querySelector('[aria-current="location"]')
-      if (!activeLink || !content.clientHeight || content.scrollHeight <= content.clientHeight) return
-      const contentBounds = content.getBoundingClientRect()
-      const linkBounds = activeLink.getBoundingClientRect()
-      let shift = 0
-      if (linkBounds.top < contentBounds.top + 8) {
-        shift = linkBounds.top - contentBounds.top - 8
-      } else if (linkBounds.bottom > contentBounds.bottom - 8) {
-        shift = linkBounds.bottom - contentBounds.bottom + 8
-      }
-      if (shift) content.scrollBy({ top: shift, behavior: 'instant' })
-    }
-
-    const scheduleReveal = () => {
-      if (animationFrame === undefined) animationFrame = window.requestAnimationFrame(revealActiveProject)
-    }
-
-    scheduleReveal()
-    window.addEventListener('resize', scheduleReveal)
-    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(scheduleReveal)
-    observer?.observe(content)
-    return () => {
-      window.removeEventListener('resize', scheduleReveal)
-      observer?.disconnect()
-      if (animationFrame !== undefined) window.cancelAnimationFrame(animationFrame)
-    }
-  }, [activeProjectId, isIndexOpen])
-
-  return (
-    <div className="library-grid">
-      <aside className={`project-index portfolio-project-index${isIndexOpen ? ' is-open' : ''}`}>
-        <div className="project-index-heading">
-          <div>
-            <h3>프로젝트 탐색</h3>
-            <p className="project-index-caption">시작 시점 기준 최신순</p>
-          </div>
-          <button className="project-index-toggle" type="button" aria-expanded={isIndexOpen} aria-controls="portfolio-project-index-content" onClick={onIndexToggle}>
-            {isIndexOpen ? '목차 접기' : '목차 펼치기'} <span aria-hidden="true">{isIndexOpen ? '−' : '+'}</span>
-          </button>
-        </div>
-        <nav className="project-index-content" id="portfolio-project-index-content" aria-label="프로젝트 목록" ref={indexContentRef}>
-          <ol className="project-index-list">
-            {projects.map((project) => (
-              <li key={project.props.id}>
-                <a className={`index-link${activeProjectId === project.props.id ? ' is-active' : ''}`} href={`#${project.props.id}`} aria-current={activeProjectId === project.props.id ? 'location' : undefined}>
-                  <time dateTime={project.props.start}>{project.props.start.replace('-', '.')}</time>
-                  <span>{project.props.title}</span>
-                </a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-      </aside>
-      <div className="project-list">{projects}</div>
-    </div>
-  )
+  return <div className="project-list">{projects}</div>
 }
 
 function Portfolio() {
@@ -189,9 +125,7 @@ function Portfolio() {
   const location = useLocation()
   const navigate = useNavigate()
   const [lightbox, setLightbox] = useState(null)
-  const [activeProjectId, setActiveProjectId] = useState('')
   const [activeSectionId, setActiveSectionId] = useState('')
-  const [isProjectIndexOpen, setIsProjectIndexOpen] = useState(false)
   useReveal()
   useDocumentTitle()
   const getSectionClass = (id) => (
@@ -317,50 +251,6 @@ function Portfolio() {
   }, [])
 
   useEffect(() => {
-    const container = containerRef.current
-    if (!container) return undefined
-    const items = Array.from(
-      container.querySelectorAll('#project-library .project-detail')
-    )
-    if (!items.length) return undefined
-    let animationFrame
-
-    const updateActiveProject = () => {
-      animationFrame = undefined
-      const navigation = container.querySelector('.portfolio-section-nav')
-      const siteNavigation = document.querySelector('.site-nav')
-      const readingTop = (siteNavigation?.getBoundingClientRect().bottom || 68)
-        + (navigation?.getBoundingClientRect().height || 58) + 24
-      let active = items[0]
-      for (const item of items) {
-        if (item.getBoundingClientRect().top > readingTop + 1) break
-        active = item
-      }
-      setActiveProjectId(active.id)
-    }
-
-    const scheduleUpdate = () => {
-      if (animationFrame === undefined) animationFrame = window.requestAnimationFrame(updateActiveProject)
-    }
-
-    updateActiveProject()
-    window.addEventListener('scroll', scheduleUpdate, { passive: true })
-    window.addEventListener('resize', scheduleUpdate)
-    container.addEventListener('toggle', scheduleUpdate, true)
-    container.addEventListener('load', scheduleUpdate, true)
-    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(scheduleUpdate)
-    observer?.observe(container)
-    return () => {
-      window.removeEventListener('scroll', scheduleUpdate)
-      window.removeEventListener('resize', scheduleUpdate)
-      container.removeEventListener('toggle', scheduleUpdate, true)
-      container.removeEventListener('load', scheduleUpdate, true)
-      observer?.disconnect()
-      if (animationFrame !== undefined) window.cancelAnimationFrame(animationFrame)
-    }
-  }, [])
-
-  useEffect(() => {
     if (!lightbox) return undefined
 
     // 열기 전 포커스를 기억했다가 닫을 때 되돌린다.
@@ -411,15 +301,9 @@ function Portfolio() {
       disclosure.classList.add('is-focus')
       focusTimeout = window.setTimeout(() => disclosure.classList.remove('is-focus'), 1200)
     }
-    let scrollFrame
-    const animationFrame = window.requestAnimationFrame(() => {
-      if (disclosure?.classList.contains('project-detail')) setActiveProjectId(disclosure.id)
-      setIsProjectIndexOpen(false)
-      scrollFrame = window.requestAnimationFrame(() => scrollToTarget(target))
-    })
+    const animationFrame = window.requestAnimationFrame(() => scrollToTarget(target))
     return () => {
       window.cancelAnimationFrame(animationFrame)
-      window.cancelAnimationFrame(scrollFrame)
       window.clearTimeout(focusTimeout)
       disclosure?.classList.remove('is-focus')
     }
@@ -437,7 +321,25 @@ function Portfolio() {
                       현장에서 동작하는 자율주행 시스템을 개발합니다.
                     </p>
                   </div>
-
+                  <aside className="hero-contact" id="contact" aria-labelledby="contact-heading">
+                    <div className="hero-contact-heading">
+                      <h2 id="contact-heading">CONTACT & LINKS</h2>
+                      <span>Seoul, KR</span>
+                    </div>
+                    <div className="hero-contact-info">
+                      <a className="hero-contact-email" href="mailto:juno980220@naver.com">juno980220@naver.com</a>
+                      <a href="tel:+821037926395">010-3792-6395</a>
+                    </div>
+                    <div className="hero-contact-documents">
+                      <a className="btn primary" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" aria-label="이력서 PDF (새 창)" target="_blank" rel="noreferrer">이력서 PDF <span aria-hidden="true">↗</span></a>
+                      <a className="btn ghost" href="https://drive.google.com/file/d/1TZL7Uzh63LOdcYgKJznvCYh8l3yT4oa0/view?usp=drive_link" aria-label="포트폴리오 PDF (새 창)" target="_blank" rel="noreferrer">포트폴리오 PDF <span aria-hidden="true">↗</span></a>
+                    </div>
+                    <ul className="hero-contact-profiles">
+                      <li><a href="https://github.com/YooJuno" aria-label="유준호 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a></li>
+                      <li><a href="https://youtube.com/@yoojuno" aria-label="유준호 YouTube (새 창)" target="_blank" rel="noreferrer">YouTube <span aria-hidden="true">↗</span></a></li>
+                      <li><a href="https://www.notion.so/1a9302636cd781059263e5b57e11fc70" aria-label="유준호 Notion 이력서 (새 창)" target="_blank" rel="noreferrer">Notion 이력서 <span aria-hidden="true">↗</span></a></li>
+                    </ul>
+                  </aside>
                 </div>
               </header>
 
@@ -528,8 +430,7 @@ function Portfolio() {
                       <h2>프로젝트</h2>
                       <p>최신 프로젝트부터 시간순으로 정리했습니다. 제목을 눌러 구현 과정과 결과를 확인하세요.</p>
                     </div>
-                    <ProjectLibrary activeProjectId={activeProjectId} isIndexOpen={isProjectIndexOpen}
-                      onIndexToggle={() => setIsProjectIndexOpen((open) => !open)}>
+                    <ProjectLibrary>
                         <ProjectEntry id="proj-hangang" title="한강 자율주행 배달 로봇 LiNKY"
                           start="2025-07" end="2025-08" meta="SSAFY · 6인 · 팀장/PM/Robotics">
                           <div className="detail-body">
@@ -1368,34 +1269,6 @@ function Portfolio() {
                           </div>
                         </ProjectEntry>
                     </ProjectLibrary>
-                  </div>
-                </section>
-                <section className="section" id="contact">
-                  <div className="container" data-reveal>
-                    <div className="contact-card">
-                      <div>
-                        <p className="portfolio-kicker">CONTACT</p>
-                        <h2>연락·이력서</h2>
-                        <p>프로젝트·채용 문의와 관련 자료를 한곳에서 확인하세요.</p>
-                        <div className="contact-info">
-                          <span>Seoul, KR</span>
-                          <a href="mailto:juno980220@naver.com">juno980220@naver.com</a>
-                          <a href="tel:+821037926395">010-3792-6395</a>
-                        </div>
-                      </div>
-                      <div className="contact-materials">
-                        <div className="contact-actions">
-                          <a className="btn primary" href="mailto:juno980220@naver.com">메일 보내기</a>
-                          <a className="btn ghost github icon-link" href="https://github.com/YooJuno" aria-label="유준호 GitHub (새 창)" target="_blank" rel="noreferrer">GitHub</a>
-                          <a className="btn ghost" href="https://drive.google.com/file/d/1y7LPIIS0l29_i8YyJnJLn30aqanMp_hG/view?usp=drive_link" aria-label="이력서 PDF (새 창)" target="_blank" rel="noreferrer">이력서 PDF</a>
-                          <a className="btn ghost" href="https://drive.google.com/file/d/1TZL7Uzh63LOdcYgKJznvCYh8l3yT4oa0/view?usp=drive_link" aria-label="포트폴리오 PDF (새 창)" target="_blank" rel="noreferrer">포트폴리오 PDF</a>
-                        </div>
-                        <div className="contact-secondary-links">
-                          <a href="https://youtube.com/@yoojuno" aria-label="유준호 YouTube (새 창)" target="_blank" rel="noreferrer">YouTube</a>
-                          <a href="https://www.notion.so/1a9302636cd781059263e5b57e11fc70" aria-label="유준호 Notion 이력서 (새 창)" target="_blank" rel="noreferrer">Notion 이력서</a>
-                        </div>
-                      </div>
-                    </div>
                   </div>
                 </section>
               </main>
