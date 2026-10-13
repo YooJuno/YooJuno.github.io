@@ -23,16 +23,17 @@ const ScrollToTop = () => {
   const location = useLocation()
 
   useEffect(() => {
-    if (document.activeElement instanceof HTMLElement) {
+    if (!location.hash && document.activeElement instanceof HTMLElement) {
       document.activeElement.blur()
     }
     // 프리렌더 도입 후 /portfolio/ 처럼 끝 슬래시가 붙은 주소로도 들어온다.
-    const isPortfolioAnchor = normalizePathname(location.pathname) === '/portfolio'
-      && new URLSearchParams(location.search).has('section')
-    if (!isPortfolioAnchor) {
+    const isPageAnchor = Boolean(location.hash)
+      || (normalizePathname(location.pathname) === '/portfolio'
+        && new URLSearchParams(location.search).has('section'))
+    if (!isPageAnchor) {
       window.scrollTo(0, 0)
     }
-  }, [location.pathname, location.search])
+  }, [location.pathname, location.search, location.hash])
 
   return null
 }

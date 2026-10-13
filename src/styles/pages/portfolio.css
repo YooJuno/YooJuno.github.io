@@ -126,6 +126,19 @@
   font-size: 14px;
 }
 
+.learning-experience .experience-group-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.learning-experience .learning-toggle {
+  display: none;
+  flex-shrink: 0;
+  min-height: 44px;
+}
+
 .experience-group .timeline-item h4,
 .experience-group .mini-card h4 {
   margin-bottom: 6px;
@@ -656,6 +669,18 @@
 
   .portfolio-page #about {
     scroll-margin-top: 117px;
+  }
+
+  .learning-experience .learning-toggle {
+    display: inline-flex;
+  }
+
+  .learning-experience:not(.is-expanded) .experience-group-heading {
+    margin-bottom: 0;
+  }
+
+  .learning-experience:not(.is-expanded) .learning-experience-content {
+    display: none;
   }
 
   .career-entry {
