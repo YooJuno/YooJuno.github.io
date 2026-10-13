@@ -1,0 +1,39 @@
+{
+  "name": "유준호",
+  "role": "자율주행 로봇 개발자",
+  "intro": [
+    "3D SLAM · Navigation · 로봇 · 센서 통합 · 배포",
+    "자율 주행 및 시스템 개발에 능한 유준호 입니다."
+  ],
+  "email": "juno980220@naver.com",
+  "phone": "010-3792-6395",
+  "phoneHref": "tel:+821037926395",
+  "location": "Seoul, KR",
+  "documents": [
+    {
+      "label": "이력서",
+      "href": "https://drive.google.com/drive/folders/1ezRFAmV8YxUUNQgLNvgglecZFb5h9C38"
+    },
+    {
+      "label": "포트폴리오",
+      "href": "https://drive.google.com/drive/folders/1-4k4SOQr3ArZ_KMS4rC7DgE-e8EIAL7A"
+    }
+  ],
+  "profiles": [
+    {
+      "icon": "github",
+      "label": "GitHub",
+      "href": "https://github.com/YooJuno"
+    },
+    {
+      "icon": "youtube",
+      "label": "YouTube",
+      "href": "https://youtube.com/@yoojuno"
+    },
+    {
+      "icon": "notion",
+      "label": "Notion 이력서",
+      "href": "https://www.notion.so/1a9302636cd781059263e5b57e11fc70"
+    }
+  ]
+}

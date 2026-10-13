@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { createPortfolioEntries } from './src/lib/portfolioMarkdown.js'
 import {
   DEFAULT_DESCRIPTION,
   ROUTE_META,
@@ -11,6 +12,41 @@ import {
 } from './src/lib/routeMeta.js'
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
+
+const portfolioContentPlugin = () => ({
+  name: 'portfolio-content-validation',
+  buildStart() {
+    const directory = path.join(rootDir, 'src/content/portfolio')
+    const projects = {}
+    const careers = {}
+    const assets = {}
+    const walk = (folder) => {
+      for (const entry of fs.readdirSync(folder, { withFileTypes: true })) {
+        const file = path.join(folder, entry.name)
+        if (entry.isDirectory()) {
+          walk(file)
+          continue
+        }
+        const key = `../${path.relative(path.join(rootDir, 'src'), file).split(path.sep).join('/')}`
+        if (/\.(png|jpe?g|webp|svg|gif|avif|pdf|mp4|webm)$/i.test(entry.name)) assets[key] = key
+        if (entry.name !== 'index.md') continue
+        if (key.startsWith('../content/portfolio/projects/')) projects[key] = fs.readFileSync(file, 'utf8')
+        if (key.startsWith('../content/portfolio/careers/')) careers[key] = fs.readFileSync(file, 'utf8')
+      }
+    }
+    walk(directory)
+    createPortfolioEntries(projects, assets, 'project')
+    createPortfolioEntries(careers, assets, 'career')
+    const profile = JSON.parse(fs.readFileSync(path.join(directory, 'profile.json'), 'utf8'))
+    for (const field of ['name', 'role', 'email', 'phone', 'phoneHref', 'location']) {
+      if (typeof profile[field] !== 'string') throw new Error(`profile.json: ${field}은 문자열이어야 합니다.`)
+    }
+    if (!Array.isArray(profile.intro) || !profile.intro.every(line => typeof line === 'string')) throw new Error('profile.json: intro는 문자열 목록이어야 합니다.')
+    for (const field of ['documents', 'profiles']) {
+      if (!Array.isArray(profile[field]) || !profile[field].every(link => typeof link.label === 'string' && typeof link.href === 'string')) throw new Error(`profile.json: ${field}의 label과 href를 확인하세요.`)
+    }
+  },
+})
 
 // 블로그 글 목록을 파일시스템에서 직접 읽는다.
 // src/lib/posts.js 는 Vite 전용 import.meta.glob 에 의존해 설정 파일에서
@@ -221,5 +257,5 @@ const prerenderPlugin = () => ({
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
-  plugins: [react(), imageSizesPlugin(), prerenderPlugin()],
+  plugins: [react(), portfolioContentPlugin(), imageSizesPlugin(), prerenderPlugin()],
 })
