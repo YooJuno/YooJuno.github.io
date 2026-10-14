@@ -6,96 +6,131 @@ tags:
   - Web
   - 보안
   - HTTP
-summary: "웹 브라우저가 보안상 다른 도메인(출처)의 자원 접근을 제한하는 정책(SOP)을 예외적으로 허용해주는 HTTP 기반 메커니즘"
+summary: "Origin과 SOP, preflight, 쿠키 인증의 관계를 구분하고 요청·응답 예시로 CORS 오류를 진단합니다."
 ---
 
-# CORS(Cross-Origin Resource Sharing)
+CORS는 서버의 HTTP 응답 헤더를 보고 **브라우저가 다른 출처의 응답을 JavaScript에 공개할지 판단하는 규칙**이다. 서버의 인증·인가나 방화벽을 대신하지 않는다.
 
-CORS는 브라우저가 다른 출처(Origin)의 리소스에 접근할 때 적용하는 보안 규칙입니다.  
-핵심은 CORS가 "보안을 푸는 기능"이 아니라, **안전하게 예외를 허용하는 메커니즘**이라는 점입니다.
+특히 **응답을 읽지 못하는 것과 요청이 서버에 도착하지 않는 것은 다르다.** 이 차이를 먼저 이해해야 CORS 오류와 CSRF를 혼동하지 않는다. [Fetch 표준](https://fetch.spec.whatwg.org/#http-cors-protocol).
 
-## 먼저: Origin이란?
+## 1. Origin: 도메인만 비교하지 않는다
 
-Origin은 아래 3가지 조합으로 결정됩니다.
+일반적인 HTTP(S) URL의 Origin은 `scheme + host + port`로 결정된다. 경로는 포함하지 않으며 기본 포트는 정규화된다.
 
-- Protocol (http / https)
-- Host (domain)
-- Port (3000, 443 등)
+| 두 주소 | 관계 |
+| --- | --- |
+| `https://example.com/a` / `https://example.com/b` | 같은 출처 |
+| `https://example.com` / `https://example.com:443` | 같은 출처 |
+| `https://app.example.com` / `https://api.example.com` | host가 달라 교차 출처 |
+| `http://localhost:5173` / `http://localhost:8080` | port가 달라 교차 출처 |
 
-셋 중 하나라도 다르면 다른 Origin입니다.
+`localhost`와 `127.0.0.1`도 서로 다른 host다. 또한 쿠키의 **same-site와 CORS의 same-origin은 같은 판정이 아니다.** 서브도메인끼리 same-site일 수 있어도 CORS 관점에서는 교차 출처다. [MDN CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS), [쿠키의 SameSite](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie).
 
-예시:
+## 2. SOP와 CORS가 제한하는 것
 
-- `https://app.example.com` -> `https://api.example.com` : Host가 달라서 교차 출처
-- `http://example.com` -> `https://example.com` : Protocol이 달라서 교차 출처
-- `https://example.com:3000` -> `https://example.com:443` : Port가 달라서 교차 출처
+SOP는 다른 출처의 데이터를 스크립트가 자유롭게 읽지 못하도록 제한한다. CORS는 서버가 허용한 출처에 그 응답을 공개하는 방법이다.
 
-## 왜 CORS가 필요한가?
+HTML 폼과 같은 방식으로 보낼 수 있는 요청은 CORS 허용 없이도 서버에 도착할 수 있다. 서버가 상태를 바꾼 뒤 브라우저가 응답 읽기만 차단할 수도 있으므로, **CORS 설정만으로 CSRF를 막았다고 판단하면 안 된다.** 인증·권한 확인과 CSRF 방어는 별도로 필요하다. [OWASP CSRF 방어](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html).
 
-브라우저는 기본적으로 SOP(Same-Origin Policy)로 스크립트의 교차 출처 요청을 제한합니다.  
-이 제한이 없으면 악성 사이트가 사용자의 인증정보를 악용해 타 사이트 API를 호출할 위험이 커집니다.
+## 3. Preflight가 있는 요청과 없는 요청
 
-CORS는 서버가 명시적으로 "이 출처는 허용"이라고 응답할 때만 브라우저가 결과를 열어줍니다.
+![브라우저가 본요청을 바로 보내는 경우와 OPTIONS로 사전 확인하는 경우의 차이](./cors-flow.svg)
 
-## CORS 동작 방식
+일부 요청은 본요청을 먼저 보내고, 받은 응답의 CORS 헤더로 공개 여부를 검사한다. 흔히 simple request라고 부르지만, 단순히 “GET이면 해당한다”는 뜻은 아니다.
 
-요청은 크게 2가지로 나뉩니다.
+- 메서드는 `GET`·`HEAD`·`POST` 중 하나여야 한다.
+- 직접 설정한 헤더와 값도 CORS safelist 조건을 만족해야 한다.
+- `Content-Type`은 대표적으로 `text/plain`·`multipart/form-data`·`application/x-www-form-urlencoded`가 해당한다.
 
-1. Simple Request
-2. Preflight Request
+반면 `application/json`, `Authorization` 같은 헤더나 `PUT`·`DELETE` 등을 쓰면 보통 먼저 `OPTIONS` preflight가 발생한다. 이는 **그 출처에서 해당 메서드·헤더의 요청을 보낼 수 있는지** 확인하는 단계이지, 로그인이나 비즈니스 권한 검사 자체가 아니다. 세부 조건은 [MDN의 simple request 설명](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS#simple_requests)을 따른다.
 
-### 1) Simple Request
+Preflight 결과가 캐시되어 있으면 매번 `OPTIONS`가 보이지 않을 수 있다. 따라서 Network 탭에서 본요청만 보인다는 이유로 preflight 대상이 아니라고 단정하지 않는다.
 
-조건이 단순한 요청(`GET`, 일부 `POST`, 제한된 헤더)은 브라우저가 바로 본요청을 보냅니다.  
-그 후 응답 헤더의 `Access-Control-Allow-Origin`을 확인해 자바스크립트 접근을 허용/차단합니다.
+## 4. 쿠키를 사용하는 JSON 요청 예시
 
-### 2) Preflight Request (OPTIONS)
+프런트 출처가 `https://app.example.com`, API가 `https://api.example.com`인 예시다.
 
-`PUT`, `DELETE`, 커스텀 헤더, JSON 본문 등 조건이 복잡하면 브라우저가 먼저 `OPTIONS` 요청을 보냅니다.  
-서버가 허용 정책을 응답하면 그때 본요청을 전송합니다.
+```javascript
+const response = await fetch('https://api.example.com/api/preferences', {
+  method: 'POST',
+  credentials: 'include',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ theme: 'dark' }),
+})
 
-즉, 프리플라이트는 "본요청 전에 권한을 확인하는 사전 협상"입니다.
+if (!response.ok) {
+  throw new Error('HTTP status: ' + response.status)
+}
 
-## 꼭 알아야 할 CORS 헤더
+const preferences = await response.json()
+```
 
-- `Access-Control-Allow-Origin`: 허용할 출처 (`*` 또는 특정 Origin)
-- `Access-Control-Allow-Methods`: 허용할 메서드 (`GET`, `POST`, `PUT` 등)
-- `Access-Control-Allow-Headers`: 허용할 요청 헤더 (`Authorization`, `Content-Type` 등)
-- `Access-Control-Allow-Credentials`: 쿠키/인증정보 포함 요청 허용 여부
-- `Access-Control-Max-Age`: 프리플라이트 결과 캐시 시간
+브라우저가 보내는 사전 요청의 핵심 헤더는 다음과 같다. `Origin`과 `Access-Control-Request-*`는 브라우저가 작성한다.
 
-자주 놓치는 규칙:
+```http
+OPTIONS /api/preferences HTTP/1.1
+Host: api.example.com
+Origin: https://app.example.com
+Access-Control-Request-Method: POST
+Access-Control-Request-Headers: content-type
+```
 
-- `Allow-Credentials: true`일 때 `Allow-Origin: *`는 사용할 수 없습니다.
-- 쿠키 인증을 쓴다면 프론트의 `credentials: 'include'`와 서버 헤더 설정이 함께 맞아야 합니다.
+서버가 해당 출처를 허용 목록과 대조해 승인했다면, preflight 응답은 다음처럼 구성할 수 있다.
 
-## 실무에서 많이 발생하는 문제
+```http
+HTTP/1.1 204 No Content
+Access-Control-Allow-Origin: https://app.example.com
+Access-Control-Allow-Methods: POST
+Access-Control-Allow-Headers: Content-Type
+Access-Control-Allow-Credentials: true
+Access-Control-Max-Age: 600
+Vary: Origin
+```
 
-- 서버는 200인데 브라우저 콘솔에서는 CORS 에러가 발생함
-- 개발 환경(`localhost`)은 되는데 운영 도메인에서 막힘
-- 프록시/CDN/로드밸런서를 거치며 CORS 헤더가 유실됨
-- OPTIONS 요청을 라우팅/보안필터에서 차단함
+**본요청의 응답에도** 필요한 CORS 헤더가 있어야 한다. 사전 요청만 성공시키고 실제 응답에서 빠뜨리면 JavaScript가 결과를 읽지 못한다.
 
-중요한 포인트는 **CORS는 브라우저 보안 정책**이라는 점입니다.  
-같은 요청이라도 Postman/서버 간 통신에서는 성공하고 브라우저에서만 실패할 수 있습니다.
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+Access-Control-Allow-Origin: https://app.example.com
+Access-Control-Allow-Credentials: true
+Vary: Origin
 
-## 안전한 운영 가이드
+{"theme":"dark"}
+```
 
-- 운영에서는 허용 Origin을 화이트리스트로 명시 (`*` 남용 금지)
-- 필요한 메서드/헤더만 최소 허용
-- 인증이 필요한 API는 Credentials 정책을 명확히 분리
-- 프리플라이트 응답(OPTIONS)을 API 게이트웨이/보안 레이어까지 포함해 점검
-- 환경별(로컬/스테이징/운영) Origin 설정을 분리 관리
+이는 헤더 교환 예시이며, 실제 서버의 인증·인가·CSRF 검사는 생략했다. Preflight 자체에는 일반적으로 쿠키를 보내지 않으므로 `OPTIONS`에 로그인 쿠키를 강제하는 필터 구성도 점검한다. [Fetch CORS 프로토콜](https://fetch.spec.whatwg.org/#http-cors-protocol).
 
-## 디버깅 체크리스트
+## 5. 헤더와 쿠키에서 놓치기 쉬운 조건
 
-1. 브라우저 Network 탭에서 `OPTIONS` 요청 존재 여부 확인
-2. 응답 헤더에 `Access-Control-Allow-*` 값이 정확한지 확인
-3. `Origin` 요청 헤더와 서버 허용 목록이 정확히 일치하는지 확인
-4. Credentials 사용 시 `Allow-Origin`이 와일드카드인지 확인
-5. 프록시/CDN에서 헤더가 제거되지 않는지 확인
+- **Origin은 하나만:** `Access-Control-Allow-Origin`에 여러 출처를 쉼표로 나열하지 않는다. 요청 출처를 허용 목록과 대조하고 승인한 하나만 반환한다.
+- **Credentials와 wildcard:** credentials mode가 `include`인 요청에는 `Access-Control-Allow-Origin: *`를 사용할 수 없다. 실제로 쿠키가 있었는지만으로 판단하지 않는다.
+- **캐시 분리:** Origin에 따라 응답 헤더가 달라지면 `Vary: Origin`을 사용한다. 기존 `Vary` 항목도 유지한다.
+- **임의 반사 금지:** 요청의 `Origin`을 검증 없이 그대로 응답하지 않는다. 인증 없는 공개 데이터에는 `*`가 적절할 수 있지만 민감 API와는 정책을 분리한다.
 
-## 마무리
+위 조건은 [Access-Control-Allow-Origin 문서](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Access-Control-Allow-Origin)와 [Fetch 표준](https://fetch.spec.whatwg.org/#http-cors-protocol)에 근거한다.
 
-CORS는 프론트 문제처럼 보이지만 실제로는 **브라우저 + 서버 정책 설계 문제**입니다.  
-동작 원리를 이해하면 에러 메시지에 끌려다니지 않고, 빠르게 원인을 좁혀 해결할 수 있습니다.
+쿠키에는 별도의 전송 조건도 있다. `credentials: 'include'`만으로 `SameSite`, `Secure`, 도메인·경로, 브라우저의 서드파티 쿠키 제한을 무시할 수는 없다. 교차 사이트 전송에 `SameSite=None`이 필요하다면 `Secure`도 함께 요구되지만, 이것이 모든 브라우저에서의 전송을 보장하지는 않는다. [Set-Cookie 문서](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Set-Cookie).
+
+응답의 사용자 정의 헤더를 JavaScript에서 읽으려면 `Access-Control-Expose-Headers`가 필요할 수 있다. 다만 `Set-Cookie`는 스크립트에 공개되지 않는 헤더이므로 여기에 추가해서 읽는 방식은 사용할 수 없다.
+
+## 6. 오류를 좁히는 순서
+
+| 관측한 현상 | 먼저 확인할 곳 |
+| --- | --- |
+| `OPTIONS`가 401·403·404 | 인증 필터, 게이트웨이 라우팅, 메서드 허용 정책 |
+| `OPTIONS` 성공 후 본요청 차단 | 실제 응답의 Origin·Credentials 헤더와 요청 헤더 허용 |
+| API는 200인데 `fetch` 실패 | 응답 공개 조건. 서버에서 작업이 이미 수행됐을 가능성도 확인 |
+| 에러 응답에서만 CORS 오류 | 401·403·500을 만드는 프록시·예외 처리 경로의 헤더 |
+| 로컬에서만 성공 | 개발 프록시 사용 여부와 운영 Origin 차이 |
+| 쿠키가 요청에 없음 | 쿠키 범위·SameSite·Secure·credentials·브라우저 정책 |
+
+Postman·`curl`·서버 간 통신은 브라우저의 CORS 응답 공개 검사를 대신하지 않는다. 이 도구로 API 자체를 확인한 뒤 실제 브라우저의 Network·Console을 함께 본다.
+
+`mode: 'no-cors'`는 API 응답을 읽기 위한 해결책이 아니다. 응답이 opaque가 되어 일반적인 JSON 조회에 사용할 수 없고, 서버 설정을 고치지도 않는다. 개발 프록시로 요청을 같은 출처로 만드는 경우에도 운영 환경의 라우팅·보안 정책은 따로 설계해야 한다.
+
+## 참고 자료
+
+- [WHATWG Fetch — CORS protocol](https://fetch.spec.whatwg.org/#http-cors-protocol)
+- [MDN — CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)
+- [OWASP — CSRF Prevention](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)

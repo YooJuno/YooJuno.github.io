@@ -1,28 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="260" viewBox="0 0 900 260">
-  <rect width="900" height="260" fill="#f7f7f2"/>
-  <text x="30" y="30" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#222">Simple Auto-Trading Flow</text>
-
-  <rect x="50" y="80" width="140" height="60" rx="10" fill="#e2f0fd" stroke="#338" stroke-width="1.5"/>
-  <text x="70" y="115" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Market Data</text>
-
-  <rect x="230" y="80" width="140" height="60" rx="10" fill="#e8f7e4" stroke="#2a7" stroke-width="1.5"/>
-  <text x="255" y="115" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Strategy</text>
-
-  <rect x="410" y="80" width="160" height="60" rx="10" fill="#fff3cd" stroke="#b58900" stroke-width="1.5"/>
-  <text x="430" y="115" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Risk Control</text>
-
-  <rect x="610" y="80" width="140" height="60" rx="10" fill="#fde2e2" stroke="#d33" stroke-width="1.5"/>
-  <text x="650" y="115" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Order</text>
-
-  <rect x="770" y="80" width="120" height="60" rx="10" fill="#f1e7ff" stroke="#73a" stroke-width="1.5"/>
-  <text x="790" y="115" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Monitor</text>
-
-  <line x1="190" y1="110" x2="230" y2="110" stroke="#333" stroke-width="2"/>
-  <line x1="370" y1="110" x2="410" y2="110" stroke="#333" stroke-width="2"/>
-  <line x1="570" y1="110" x2="610" y2="110" stroke="#333" stroke-width="2"/>
-  <line x1="750" y1="110" x2="770" y2="110" stroke="#333" stroke-width="2"/>
-
-  <text x="50" y="190" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#444">
-    Data → Signal → Risk Gate → Execution → Tracking/Logs
-  </text>
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="1060" viewBox="0 0 680 1060" role="img" aria-labelledby="title description">
+<title id="title">자동매매는 주문 이후까지 관리하기</title>
+<desc id="description">시점이 맞는 데이터로 신호를 계산하고 주문 전 위험 한도를 검사한다. 주문 제출과 체결을 구분해 상태를 추적하며 잔고와 포지션을 다시 대조한다. 오류나 위험 한도 초과 시 중지하고 상태를 확인한다.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#6c7e9c"/></marker></defs>
+<rect width="680" height="1060" rx="18" fill="#f5f7fc"/>
+<g font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+<text x="40" y="51" font-size="28" fill="#172339" font-weight="700">자동매매는 주문 이후까지 관리하기</text>
+<text x="40" y="85" font-size="21" fill="#52617a" font-weight="400">자동화는 실행 절차를 일관되게 만들 뿐, 수익을 보장하지 않음</text>
+<rect x="40" y="123" width="600" height="130" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="159" font-size="24" fill="#172339" font-weight="700">01  데이터 수집·검증</text><text x="64" y="193" font-size="22" fill="#52617a" font-weight="400">당시 알 수 있었던 데이터만 사용</text><text x="64" y="223" font-size="22" fill="#52617a" font-weight="400">누락·지연·시간대·가격 조정 방식 확인</text>
+<path d="M 340 253 V 281" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="283" width="600" height="100" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="319" font-size="24" fill="#172339" font-weight="700">02  신호 계산</text><text x="64" y="353" font-size="22" fill="#52617a" font-weight="400">진입·청산 조건을 코드로 명확하게 정의</text>
+<path d="M 340 383 V 411" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="413" width="600" height="130" rx="14" fill="#edf1ff" stroke="#c4cff5" stroke-width="1.5"/><text x="64" y="449" font-size="24" fill="#172339" font-weight="700">03  주문 전 위험 검사</text><text x="64" y="483" font-size="22" fill="#52617a" font-weight="400">가용 자금·주문 수량·포지션·위험 한도 확인</text><text x="64" y="513" font-size="22" fill="#52617a" font-weight="400">조건을 만족하지 못하면 주문하지 않음</text>
+<path d="M 340 543 V 571" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="573" width="600" height="130" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="609" font-size="24" fill="#172339" font-weight="700">04  주문 제출 · 상태 추적</text><text x="64" y="643" font-size="22" fill="#52617a" font-weight="400">접수·부분 체결·완전 체결·거절·취소를 구분</text><text x="64" y="673" font-size="22" fill="#52617a" font-weight="400">응답이 없다고 무조건 재주문하지 않기</text>
+<path d="M 340 703 V 731" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="733" width="600" height="130" rx="14" fill="#eaf4f1" stroke="#c4ded6" stroke-width="1.5"/><text x="64" y="769" font-size="24" fill="#172339" font-weight="700">05  실제 잔고·포지션 대조</text><text x="64" y="803" font-size="22" fill="#52617a" font-weight="400">체결 결과·비용·오류 기록</text><text x="64" y="833" font-size="22" fill="#52617a" font-weight="400">관측한 상태를 다음 의사결정에 반영</text>
+<path d="M 40 798 H 19 V 334 H 38" fill="none" stroke="#6c7e9c" stroke-width="2.5" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
+<text x="40" y="918" font-size="23" fill="#172339" font-weight="700">이상 상태 → 신규 주문 중지 → 주문·잔고 대조</text>
+<text x="40" y="958" font-size="22" fill="#52617a" font-weight="400">통신 오류·중복 주문·거래 중단을 별도 처리</text>
+<text x="40" y="1005" font-size="21" fill="#52617a" font-weight="400">실거래 전: 시간 순서 검증 → 모의 실행 → 위험 한도 점검</text>
+</g>
 </svg>
