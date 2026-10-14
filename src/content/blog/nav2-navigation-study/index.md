@@ -11,7 +11,7 @@ tags:
   - MPPI
   - RPP
   - Behavior Tree
-summary: "TF·AMCL·Costmap, 글로벌 플래너, RPP·DWB·MPPI, Behavior Tree를 하나의 주행 흐름으로 연결합니다. 구동 방식별 모델 선택부터 재계획·복구 XML, 설정과 튜닝·진단까지 정리합니다."
+summary: "TF·AMCL·Costmap부터 플래너·컨트롤러 비교, RPP·DWB·MPPI의 원리와 튜닝, 구동 모델과 Behavior Tree의 실행·복구 흐름까지 정리합니다."
 ---
 
 Nav2는 **위치 추정 → 환경 표현 → 경로 계획 → 경로 추종**을 연결하는 ROS 2 내비게이션 프레임워크다. Planner와 Controller는 플러그인으로 선택하고, Behavior Tree로 실행·재계획·복구 흐름을 구성한다.
@@ -161,6 +161,16 @@ Voxel Layer도 내부 3D 관측을 최종 2D 계획 공간으로 투영하는 �
 
 ## 4. 글로벌 플래너
 
+| 플래너 | 핵심 방식 | 선택 기준 |
+| --- | --- | --- |
+| NavFn | Dijkstra 또는 A* 확장과 potential 기반 경로 생성 | 단순한 2D 글로벌 계획의 기준선 |
+| SmacPlanner2D | 비용을 고려하는 2D A* | 장애물 주변 비용을 반영하는 격자 계획 |
+| Theta* | line-of-sight 연결을 활용하는 any-angle 검색 | 격자 방향에 덜 묶인 선분 경로 |
+| Smac Hybrid-A* | 방향·운동 모델을 포함한 상태 탐색 | 차량형의 최소 회전 반경과 전후진 제약 반영 |
+| Smac State Lattice | 미리 정의한 motion primitive 연결 | 차동·전방향·차량형에 맞는 동작 집합 구성 |
+
+위치만 탐색하는 2D 플래너와 방향·운동 제약까지 다루는 플래너를 먼저 구분한다. 아래에서 탐색 원리와 대표 설정을 설명한다. [Nav2 플래너 선택 가이드](https://docs.nav2.org/jazzy/configuration_and_development/tuning_guide/#planner-plugin-selection).
+
 ### 4.1 Dijkstra·A*
 
 검색에서 `g(n)`은 현재까지의 비용, `h(n)`은 목표까지 남은 비용의 추정이다. Dijkstra는 누적 비용을 중심으로 확장하고, A*는 보통 `f(n) = g(n) + h(n)`을 사용한다. 실제 결과는 검색 이름뿐 아니라 이웃 연결, 비용 정의, 휴리스틱과 종료 조건에 달려 있다.
@@ -170,12 +180,6 @@ Voxel Layer도 내부 3D 관측을 최종 2D 계획 공간으로 투영하는 �
 ![2D 위치 탐색, 방향과 회전 반경을 고려한 탐색, State Lattice 제어집합 비교](./planner-space.svg)
 
 ### 4.2 NavFn·Smac 2D·Theta*
-
-| 플래너 | 핵심 방식 | 선택 기준 |
-| --- | --- | --- |
-| NavFn | Dijkstra 또는 A* 확장과 potential 기반 경로 생성 | 단순한 2D 글로벌 계획의 기준선 |
-| SmacPlanner2D | 비용을 고려하는 2D A* | 장애물 주변 비용을 반영하는 격자 계획 |
-| Theta* | line-of-sight 연결을 활용하는 any-angle 검색 | 격자 방향에 덜 묶인 선분 경로 |
 
 NavFn은 `use_astar`로 검색 방식을 선택한다. Smac 2D도 단순 최단 거리만 보는 검색과 달리 costmap의 통과 비용을 고려한다. Theta*는 시야가 확보된 노드를 직접 연결해 경로의 방향 선택을 넓힌다. **Any-angle은 최소 회전 반경을 만족한다는 뜻이 아니다.** [NavFn](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/configuring_navfn/), [Smac 2D](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/smac/smac_2d/configuring_smac_2d/), [Theta*](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/planners_plugins/thetastar/configuring_thetastar/).
 
@@ -206,11 +210,19 @@ Nav2에서는 lattice 생성 당시의 해상도와 동작 집합이 연결된�
 
 Nav2의 Controller는 문헌에서 local planner 또는 local trajectory planner라고 부르는 역할까지 포함할 수 있다. 모터 전류·관절 토크를 직접 제어하는 하위 제어기와 구분해야 한다.
 
-| 제어기 | 주기별 작업 | 장애물 대응 |
-| --- | --- | --- |
-| RPP · Regulated Pure Pursuit | 경로 위의 목표점에서 곡률을 계산하고 속도를 조절 | 기본 방식은 감속·정지 중심, 우회 경로는 재계획에 의존 |
-| DWB · DWA 계열의 플러그인 기반 확장 | 여러 속도 명령의 예측 궤적을 평가 | 샘플링과 critic이 허용하는 범위에서 이탈 |
-| MPPI · Model Predictive Path Integral | 입력 시퀀스를 샘플링·평가하고 반복 갱신 | 예측 구간의 비용과 제약 안에서 우회 동작 탐색 |
+| 제어기 | 구분 | 핵심 방식 | 선택 기준·주의점 |
+| --- | --- | --- | --- |
+| [RPP](#6-pure-pursuit와-rpp) | Nav2 포함 | 경로의 목표점에서 곡률 계산·속도 조절 | 경로 추종 중심. 장애물 우회는 재계획과 조합 |
+| [DWB](#7-dwb) | Nav2 포함 | 속도 후보의 예측 궤적을 critic으로 평가 | 후보 범위 안에서 회피 탐색. 샘플링·가중치 튜닝 필요 |
+| [MPPI](#8-mppi) | Nav2 포함 | 입력 시퀀스를 샘플링하는 예측 최적화 | 예측 구간 안에서 회피 탐색. 모델·제약·계산량 관리 |
+| [Graceful](https://github.com/ros-navigation/navigation2/blob/jazzy/nav2_graceful_controller/README.md) | Nav2 포함 | 목표 자세로 부드럽게 수렴하는 기하학적 제어 | motion target과 자세 오차에 따른 접근 동작 조절 |
+| [Vector Pursuit](https://github.com/blackcoffeerobotics/vector_pursuit_controller) | 외부 | 목표점의 위치·방향을 screw theory로 결합 | 경로 자세를 활용하는 추종. Jazzy 호환성 별도 확인 |
+| [TEB](https://github.com/rst-tu-dortmund/teb_local_planner) | 외부·포트 확인 | pose·시간 간격을 포함한 궤적 최적화 | 시간·장애물·운동 제약을 평가. 원 프로젝트는 ROS 1 |
+| [Rotation Shim](https://github.com/ros-navigation/navigation2/blob/jazzy/nav2_rotation_shim_controller/README.md) | Nav2 포함·보조 | 새 경로 방향으로 회전한 뒤 주 제어기에 전달 | 단독 추종기가 아닌 래퍼. 제자리 회전 가능한 기체에 적용 |
+
+**Nav2 포함**은 Jazzy 소스 트리에 포함된 구현을 뜻한다. 공식 플러그인 목록에는 외부 프로젝트도 있으므로, 목록 등재와 해당 배포판의 설치·지원 상태를 구분한다. 외부 플러그인은 제공 브랜치·Nav2 API 호환성·유지보수 상태를 확인한다. [Nav2 플러그인 목록](https://docs.nav2.org/jazzy/configuration_and_development/navigation_plugins/#controllers).
+
+Pure Pursuit·DWA·MPC는 알고리즘 계열 이름이다. 여기서는 이를 구현·확장한 RPP·DWB·MPPI와 구분한다. 상세 해설은 **기하학적 추종 → 후보 궤적 평가 → 입력 시퀀스 최적화** 순서로 6~8절에 정리한다.
 
 ![RPP의 기하학적 추종, DWB의 후보 궤적 선택, MPPI의 입력 시퀀스 갱신 비교](./controller-comparison.svg)
 
@@ -300,7 +312,7 @@ yaw_rate = velocity × curvature
 
 ### 6.2 RPP 속도 조절·충돌 예측
 
-RPP는 속도에 따른 lookahead 조정, 큰 곡률에서의 감속, 장애물 가까이에서의 감속, 목표 접근 감속과 전방 충돌 검사를 결합한다. 고정 속도로 기하학적 경로만 추종하는 Pure Pursuit보다 실제 운용을 위한 제약 처리가 보강된 형태다. [Jazzy RPP 구현 설명](https://github.com/ros-navigation/navigation2/blob/jazzy/nav2_regulated_pure_pursuit_controller/README.md).
+RPP(Regulated Pure Pursuit)는 속도에 따른 lookahead 조정, 큰 곡률에서의 감속, 장애물 가까이에서의 감속, 목표 접근 감속과 전방 충돌 검사를 결합한다. 고정 속도로 기하학적 경로만 추종하는 Pure Pursuit보다 실제 운용을 위한 제약 처리가 보강된 형태다. [Jazzy RPP 구현 설명](https://github.com/ros-navigation/navigation2/blob/jazzy/nav2_regulated_pure_pursuit_controller/README.md).
 
 | 설정 | 해석 |
 | --- | --- |
@@ -359,7 +371,7 @@ DWA는 현재 속도와 가속도 한계에서 단시간에 도달 가능한 속
 
 ### 8.1 입력 시퀀스 최적화
 
-MPPI는 sampling-based MPC 계열이다. Nav2에서는 이전 해를 초기값으로 활용하고, 입력 시퀀스에 잡음을 더해 여러 후보를 전방 시뮬레이션한다. 비용을 평가한 뒤 낮은 비용의 후보가 더 크게 기여하도록 제어 시퀀스를 갱신한다. [MPPI 구현 설명](https://github.com/ros-navigation/navigation2/blob/jazzy/nav2_mppi_controller/README.md).
+MPPI(Model Predictive Path Integral)는 sampling-based MPC 계열이다. Nav2에서는 이전 해를 초기값으로 활용하고, 입력 시퀀스에 잡음을 더해 여러 후보를 전방 시뮬레이션한다. 비용을 평가한 뒤 낮은 비용의 후보가 더 크게 기여하도록 제어 시퀀스를 갱신한다. [MPPI 구현 설명](https://github.com/ros-navigation/navigation2/blob/jazzy/nav2_mppi_controller/README.md).
 
 1. 현재 상태와 이전 제어 시퀀스 `U`를 준비한다.
 2. `K`개의 잡음 시퀀스 `ε_k`를 샘플링한다.
@@ -653,12 +665,6 @@ FollowPath:
 ```
 
 이 조각에는 DWB의 전체 속도·가감속·critic scale 설정이 빠져 있다. MPPI에서 쓰던 파라미터를 이름만 바꿔 대응시키기보다, DWB의 후보 생성과 점수 체계로 다시 해석한다. [DWB 구성 예시](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/controller_plugins/dwb_controller/).
-
-### 10.4 기타 제어기
-
-- **Rotation Shim:** 새 경로의 대략적인 방향에 먼저 맞추도록 다른 제어기를 감싼다. DWB 등의 시작 동작을 분리해서 튜닝할 때 검토한다. 제자리 회전이 불가능한 차량에 같은 방식으로 적용하지 않는다. [Rotation Shim](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/controller_plugins/configuring_rotation_shim_controller/).
-- **Graceful Controller:** 부드러운 접근 동작을 만드는 별도의 기하학적 제어 계열이다. RPP·DWB·MPPI와 목적·가정을 비교해서 선택한다. [Graceful Controller](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/controller_plugins/configuring_graceful_motion_controller/).
-- **TEB:** pose와 시간 간격을 포함한 Timed Elastic Band를 최적화하는 별도 계열이다. ROS 1 자료에서 자주 보이지만, 해당 패키지를 Nav2 Jazzy의 기본 controller와 같은 설치·지원 상태로 가정하지 않는다. ROS 2 포트를 사용할 경우 배포판, 저장소와 유지보수 상태를 따로 확인한다. [TEB 원 프로젝트](https://github.com/rst-tu-dortmund/teb_local_planner).
 
 ## 11. 튜닝 순서와 관측 방법
 
