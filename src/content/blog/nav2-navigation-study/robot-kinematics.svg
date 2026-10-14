@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="1390" viewBox="0 0 680 1390" role="img" aria-labelledby="title desc">
+  <title id="title">로봇 구동 방식과 Nav2 운동 모델</title>
+  <desc id="desc">2륜 차동, 4륜 스키드, 메카넘, Ackermann, 독립 조향, 사족보행을 위에서 본 개념도로 비교한다. 바퀴 개수가 아니라 실행 가능한 몸체 속도와 조향 제약을 기준으로 Nav2 모델을 선택한다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse"><path d="M0 0 7 4 0 8" fill="none" stroke="#345dde" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#172339}
+      .title{font-size:30px;font-weight:750}.label{font-size:25px;font-weight:700}.note{font-size:21px;fill:#526178}.model{font-size:22px;fill:#345dde;font-weight:650}
+      .panel{fill:#fff;stroke:#d8e0ed;stroke-width:1.5}.body{fill:#e9eeff;stroke:#a8b8df;stroke-width:2}.wheel{fill:#45566e}
+      .motion{fill:none;stroke:#345dde;stroke-width:2.5;marker-end:url(#arrow)}
+    </style>
+    <g id="four-wheels">
+      <rect x="47" y="36" width="66" height="94" rx="12" class="body"/>
+      <rect x="30" y="40" width="17" height="33" rx="5" class="wheel"/><rect x="113" y="40" width="17" height="33" rx="5" class="wheel"/>
+      <rect x="30" y="95" width="17" height="33" rx="5" class="wheel"/><rect x="113" y="95" width="17" height="33" rx="5" class="wheel"/>
+    </g>
+  </defs>
+  <rect width="680" height="1390" rx="20" fill="#f5f7fc"/>
+  <text x="34" y="53" class="title">바퀴 수가 아니라 움직임을 본다</text>
+  <text x="34" y="85" class="note">위에서 본 개념도 · 각 로봇의 앞쪽은 그림 위</text>
+  <rect x="34" y="116" width="612" height="182" rx="14" class="panel"/>
+  <g transform="translate(52 135)">
+    <rect x="47" y="42" width="66" height="88" rx="12" class="body"/>
+    <rect x="30" y="77" width="17" height="39" rx="5" class="wheel"/><rect x="113" y="77" width="17" height="39" rx="5" class="wheel"/>
+    <circle cx="80" cy="56" r="7" fill="#aab5c7"/>
+    <path d="M80 38 V5" class="motion"/>
+    <path d="M139 124 C164 101 162 67 140 50" class="motion"/>
+  </g>
+  <text x="252" y="153" class="label">2륜 차동 + 캐스터</text>
+  <text x="252" y="190" class="model">DiffDrive: vx, wz</text>
+  <text x="252" y="228" class="note">제자리 회전 가능 · 횡이동 불가</text>
+  <text x="252" y="261" class="note">캐스터도 footprint에 반영</text>
+  <rect x="34" y="314" width="612" height="182" rx="14" class="panel"/>
+  <g transform="translate(52 334)">
+    <use href="#four-wheels"/>
+    <path d="M80 33 V3" class="motion"/>
+    <path d="M139 126 C162 104 160 68 140 52" class="motion"/>
+    <path d="M17 70 24 64 M17 84 24 78 M140 101 147 95 M140 115 147 109" stroke="#bd7656" stroke-width="2.5"/>
+  </g>
+  <text x="252" y="351" class="label">4륜 스키드 / 궤도형</text>
+  <text x="252" y="388" class="model">DiffDrive 근사: vx, wz</text>
+  <text x="252" y="426" class="note">선회할 때 미끄러짐 개입</text>
+  <text x="252" y="459" class="note">회전 응답과 odom 오차 실측</text>
+  <rect x="34" y="512" width="612" height="182" rx="14" class="panel"/>
+  <g transform="translate(52 532)">
+    <use href="#four-wheels"/>
+    <path d="M32 50 44 63 M32 61 41 71 M116 51 127 42 M116 63 127 53 M32 107 44 97 M32 120 44 110 M116 99 127 112 M116 111 127 124" stroke="#fff" stroke-width="2"/>
+    <path d="M80 33 V3" class="motion"/>
+    <path d="M140 85 H173" class="motion"/>
+    <path d="M20 85 H0" class="motion"/>
+  </g>
+  <text x="252" y="549" class="label">메카넘 / 옴니휠</text>
+  <text x="252" y="586" class="model">Omni: vx, vy, wz</text>
+  <text x="252" y="624" class="note">방향을 유지하며 측방 이동</text>
+  <text x="252" y="657" class="note">횡가속도·마찰·사각지대 확인</text>
+  <rect x="34" y="710" width="612" height="182" rx="14" class="panel"/>
+  <g transform="translate(52 730)">
+    <rect x="47" y="36" width="66" height="94" rx="12" class="body"/>
+    <rect x="30" y="40" width="17" height="33" rx="5" class="wheel" transform="rotate(-28 38 56)"/><rect x="113" y="40" width="17" height="33" rx="5" class="wheel" transform="rotate(-21 121 56)"/>
+    <rect x="30" y="95" width="17" height="33" rx="5" class="wheel"/><rect x="113" y="95" width="17" height="33" rx="5" class="wheel"/>
+    <path d="M80 32 C77 8 60 -4 40 -4" class="motion"/>
+  </g>
+  <text x="252" y="747" class="label">차량형 Ackermann</text>
+  <text x="252" y="784" class="model">Ackermann: v, 조향 제약</text>
+  <text x="252" y="822" class="note">최소 회전 반경 · 제자리 회전 불가</text>
+  <text x="252" y="855" class="note">플래너와 controller 제약 일치</text>
+  <rect x="34" y="908" width="612" height="182" rx="14" class="panel"/>
+  <g transform="translate(52 928)">
+    <rect x="47" y="36" width="66" height="94" rx="12" class="body"/>
+    <g fill="#45566e">
+      <rect x="30" y="40" width="17" height="33" rx="5" transform="rotate(35 38 56)"/><rect x="113" y="40" width="17" height="33" rx="5" transform="rotate(35 121 56)"/>
+      <rect x="30" y="95" width="17" height="33" rx="5" transform="rotate(35 38 111)"/><rect x="113" y="95" width="17" height="33" rx="5" transform="rotate(35 121 111)"/>
+    </g>
+    <path d="M100 27 119 1" class="motion"/>
+  </g>
+  <text x="252" y="945" class="label">4륜 독립 조향 / 스워브</text>
+  <text x="252" y="982" class="model">실행 모드와 하위 IK에 의존</text>
+  <text x="252" y="1020" class="note">조향 전환에 걸리는 시간 고려</text>
+  <text x="252" y="1053" class="note">항상 이상적 Omni인 것은 아님</text>
+  <rect x="34" y="1106" width="612" height="182" rx="14" class="panel"/>
+  <g transform="translate(52 1126)">
+    <rect x="52" y="36" width="56" height="95" rx="15" class="body"/>
+    <path d="M52 51 31 42 21 58 M108 51 129 42 139 58 M52 111 30 125 21 113 M108 111 130 125 139 113" fill="none" stroke="#45566e" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M80 32 V3" class="motion"/>
+    <path d="M147 83 H173" class="motion"/>
+  </g>
+  <text x="252" y="1143" class="label">사족보행</text>
+  <text x="252" y="1180" class="model">SDK 응답에 맞춘 평면 근사</text>
+  <text x="252" y="1218" class="note">속도 명령 아래에 보행 제어 필요</text>
+  <text x="252" y="1251" class="note">발 디딤·계단·균형 제어는 별도</text>
+  <text x="340" y="1330" text-anchor="middle" class="note">vx: 전진 속도 · vy: 측방 속도 · wz: yaw 각속도</text>
+  <text x="340" y="1364" text-anchor="middle" class="note">제품별 지원 모드·제한과 실제 움직임을 먼저 검증</text>
+</svg>

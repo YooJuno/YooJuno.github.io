@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="970" viewBox="0 0 680 970" role="img" aria-labelledby="title desc">
+  <title id="title">글로벌 플래너의 탐색 공간 비교</title>
+  <desc id="desc">위치 격자의 경로, 방향을 포함한 곡선 경로, 미리 정의한 motion primitive의 연결을 비교한다. 모양은 설명을 위한 예시이며 실제 알고리즘 출력이 아니다.</desc>
+  <defs>
+    <pattern id="grid" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M26 0 H0 V26" fill="none" stroke="#e1e7f0"/></pattern>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#345dde" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#172339}
+      .title{font-size:30px;font-weight:750}.label{font-size:25px;font-weight:700}.note{font-size:21px;fill:#526178}
+      .panel{fill:#fff;stroke:#d8e0ed;stroke-width:1.5}.route{fill:none;stroke:#345dde;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect width="680" height="970" rx="20" fill="#f5f7fc"/>
+  <text x="34" y="53" class="title">어떤 상태를 탐색하는가?</text>
+  <text x="34" y="85" class="note">경로가 이어지는 것과 주행 가능한 것은 다르다</text>
+  <rect x="34" y="113" width="612" height="247" rx="14" class="panel"/>
+  <text x="55" y="150" class="label">01  2D 위치 탐색</text>
+  <rect x="55" y="174" width="272" height="155" fill="url(#grid)"/>
+  <rect x="165" y="215" width="57" height="111" rx="3" fill="#a8b5ca"/>
+  <path d="M74 307 H100 V281 H126 V255 H152 V203 H256 V229 H282 V255 H308" class="route"/>
+  <path d="M74 307 151 194 248 194 308 255" fill="none" stroke="#15887e" stroke-width="3" stroke-dasharray="6 5"/>
+  <circle cx="74" cy="307" r="6" fill="#345dde"/><circle cx="308" cy="255" r="6" fill="#15887e"/>
+  <text x="351" y="197" class="note">NavFn / Smac 2D</text>
+  <text x="351" y="230" class="note">위치: (x, y)</text>
+  <text x="351" y="271" class="note">Theta*: any-angle</text>
+  <text x="351" y="303" class="note">회전 반경 보장은 별개</text>
+  <rect x="34" y="381" width="612" height="247" rx="14" class="panel"/>
+  <text x="55" y="419" class="label">02  방향을 포함한 탐색</text>
+  <rect x="55" y="443" width="272" height="155" fill="url(#grid)"/>
+  <rect x="168" y="485" width="53" height="110" rx="3" fill="#a8b5ca"/>
+  <path d="M75 576 C111 576 117 466 157 464 H224 C267 464 265 535 306 535" class="route"/>
+  <path d="M103 549 115 537 M148 465 164 464 M273 519 284 530" fill="none" stroke="#345dde" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <circle cx="75" cy="576" r="6" fill="#345dde"/><circle cx="306" cy="535" r="6" fill="#15887e"/>
+  <text x="351" y="466" class="note">Smac Hybrid-A*</text>
+  <text x="351" y="499" class="note">상태: (x, y, θ)</text>
+  <text x="351" y="540" class="note">곡률 · 전후진 제약</text>
+  <text x="351" y="572" class="note">차량형 경로에 적합</text>
+  <rect x="34" y="649" width="612" height="247" rx="14" class="panel"/>
+  <text x="55" y="687" class="label">03  미리 정의한 동작 집합</text>
+  <rect x="55" y="711" width="272" height="155" fill="url(#grid)"/>
+  <path d="M84 829 H164 M84 829 C124 829 132 784 164 779 M84 829 C124 829 132 858 164 858" fill="none" stroke="#9cadca" stroke-width="3"/>
+  <path d="M84 829 C124 829 132 784 164 779 S224 742 259 742 H310" class="route"/>
+  <g fill="#fff" stroke="#345dde" stroke-width="3"><circle cx="84" cy="829" r="6"/><circle cx="164" cy="779" r="6"/><circle cx="259" cy="742" r="6"/><circle cx="310" cy="742" r="6"/></g>
+  <text x="351" y="734" class="note">Smac State Lattice</text>
+  <text x="351" y="767" class="note">Motion primitives</text>
+  <text x="351" y="808" class="note">실행 가능한 연결 선택</text>
+  <text x="351" y="840" class="note">생성 해상도도 관리</text>
+  <text x="340" y="936" text-anchor="middle" class="note">개념도 · footprint와 비용 분포는 생략</text>
+</svg>
