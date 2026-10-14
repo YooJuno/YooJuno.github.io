@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="820" viewBox="0 0 680 820" role="img" aria-labelledby="title description">
+  <title id="title">GitHub Actions의 Pages 배포 흐름</title>
+  <desc id="description">main push 또는 수동 실행으로 Workflow가 시작된다. 빌드 Job이 소스와 Node 환경을 준비하고 설치, 검사, 빌드 후 dist를 Artifact로 업로드한다. 별도 Runner의 배포 Job은 needs로 build의 성공을 확인한 뒤 해당 결과물을 GitHub Pages에 배포한다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#6c7e9c"/>
+    </marker>
+  </defs>
+  <rect width="680" height="820" rx="18" fill="#f5f7fc"/>
+  <g font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    <text x="40" y="52" font-size="28" font-weight="700" fill="#172339">GitHub Actions의 Pages 배포</text>
+    <text x="40" y="87" font-size="21" fill="#52617a">이벤트 → 빌드 → 결과물 → 배포</text>
+    <rect x="40" y="119" width="600" height="92" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/>
+    <text x="64" y="155" font-size="24" font-weight="700" fill="#172339">main push / 수동 실행</text>
+    <text x="64" y="188" font-size="22" fill="#52617a">on 조건에 맞는 Workflow 시작</text>
+    <rect x="40" y="252" width="600" height="164" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/>
+    <text x="64" y="290" font-size="24" font-weight="700" fill="#172339">build Job · Runner A</text>
+    <text x="64" y="331" font-size="22" fill="#52617a">checkout → setup-node → npm ci</text>
+    <text x="64" y="370" font-size="22" fill="#52617a">lint → build → upload artifact</text>
+    <rect x="40" y="457" width="600" height="94" rx="14" fill="#edf1ff" stroke="#c4cff5" stroke-width="1.5"/>
+    <text x="64" y="494" font-size="24" font-weight="700" fill="#172339">Artifact · dist/</text>
+    <text x="64" y="528" font-size="22" fill="#52617a">빌드한 결과물을 저장·전달</text>
+    <rect x="40" y="592" width="600" height="105" rx="14" fill="#eaf4f1" stroke="#c4ded6" stroke-width="1.5"/>
+    <text x="64" y="631" font-size="24" font-weight="700" fill="#172339">deploy Job · Runner B</text>
+    <text x="64" y="667" font-size="22" fill="#52617a">needs: build 성공 후 Pages 배포</text>
+    <g fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)">
+      <path d="M 340 213 V 249"/>
+      <path d="M 340 418 V 454"/>
+      <path d="M 340 553 V 589"/>
+    </g>
+    <text x="40" y="754" font-size="23" font-weight="700" fill="#345dde">needs는 실행 순서, Artifact는 파일 전달</text>
+    <text x="40" y="791" font-size="21" fill="#52617a">검사 성공·배포 성공·서비스 정상 동작은 별도 확인</text>
+  </g>
+</svg>
