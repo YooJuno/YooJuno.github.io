@@ -1,0 +1,161 @@
+{
+  "id": "portfolio",
+  "route": "/web-service/blog",
+  "title": "Portfolio & Blog",
+  "status": "운영 중",
+  "inspectedAt": "2026-10-14",
+  "github": "https://github.com/YooJuno/YooJuno.github.io",
+  "site": "https://yoojuno.github.io/",
+  "summary": "경력·프로젝트·기술 글을 파일 기반 콘텐츠로 관리하는 개인 웹사이트입니다.",
+  "tech": [
+    "React",
+    "Vite",
+    "React Router",
+    "Markdown",
+    "GitHub Actions",
+    "GitHub Pages"
+  ],
+  "overview": [
+    "포트폴리오 데이터와 블로그 글을 컴포넌트에서 분리했습니다. 프로젝트·경력은 개별 콘텐츠 파일에서 수정하고, 글은 폴더별 Markdown과 이미지로 관리합니다.",
+    "경로별 제목·설명·canonical과 사이트맵을 빌드할 때 생성합니다. 화면 본문은 클라이언트에서 렌더링하므로, 현재의 HTML 생성은 본문 전체를 정적 렌더링하는 SSG와는 다릅니다."
+  ],
+  "screens": [
+    {
+      "id": "P01",
+      "title": "포트폴리오",
+      "image": "/content/images/webservices/portfolio/portfolio.png",
+      "width": 1440,
+      "height": 1000,
+      "alt": "유준호 포트폴리오의 소개와 경력 화면",
+      "caption": "현재 사이트를 로컬에서 실행한 화면입니다. 포트폴리오에 공개된 콘텐츠를 사용했습니다.",
+      "annotations": [
+        "소개·연락·이력서 링크를 상단에서 확인합니다.",
+        "경력은 타임라인으로, 상세 업무는 펼침 영역으로 분리합니다.",
+        "프로젝트는 시간순으로 탐색하며 개별 상세 내용을 펼칩니다."
+      ]
+    },
+    {
+      "id": "P02",
+      "title": "기술 블로그",
+      "image": "/content/images/webservices/portfolio/blog.png",
+      "width": 1440,
+      "height": 1000,
+      "alt": "카테고리와 검색을 제공하는 기술 블로그 목록",
+      "caption": "실제 Markdown 콘텐츠로 렌더링한 블로그 목록입니다.",
+      "annotations": [
+        "카테고리·태그·검색어로 글을 좁힙니다.",
+        "제목·요약·날짜를 목록에서 확인합니다.",
+        "글별 URL과 내부 제목 링크로 문서에 직접 접근합니다."
+      ]
+    }
+  ],
+  "features": [
+    {
+      "title": "파일 기반 콘텐츠",
+      "description": "블로그는 index.md와 같은 폴더의 이미지, 포트폴리오는 개별 JSON·Markdown으로 관리합니다."
+    },
+    {
+      "title": "콘텐츠 탐색",
+      "description": "블로그 검색·분류와 시간순 프로젝트 목록, 펼침형 경력·프로젝트 상세를 제공합니다."
+    },
+    {
+      "title": "경로별 메타데이터",
+      "description": "각 페이지와 글에 제목·설명·canonical을 생성하고 sitemap.xml에 공개 경로를 기록합니다."
+    },
+    {
+      "title": "빌드·배포와 오류 경계",
+      "description": "main 변경에서 린트·빌드 후 Pages에 배포하며, 경로별 오류 경계와 제한된 청크 로딩 복구를 둡니다."
+    }
+  ],
+  "architecture": [
+    {
+      "label": "콘텐츠 파일",
+      "detail": "Markdown·JSON·이미지"
+    },
+    {
+      "label": "Vite 빌드",
+      "detail": "콘텐츠 로더·메타데이터 생성"
+    },
+    {
+      "label": "React 화면",
+      "detail": "라우팅·검색·상세 펼침"
+    },
+    {
+      "label": "GitHub Pages",
+      "detail": "정적 파일 제공"
+    }
+  ],
+  "apiTitle": "정적 리소스·모듈 인터페이스",
+  "apiNote": "별도 REST 백엔드는 없습니다. 아래는 실제 사용하는 정적 리소스와 콘텐츠 모듈입니다.",
+  "api": [
+    {
+      "method": "MODULE",
+      "path": "parseFrontMatter(raw)",
+      "description": "문서 메타데이터 파싱",
+      "request": "Markdown 원문",
+      "response": "data · content",
+      "access": "빌드·클라이언트 콘텐츠 처리"
+    },
+    {
+      "method": "MODULE",
+      "path": "getPostBySlug(slug)",
+      "description": "블로그 글 조회",
+      "request": "글 slug",
+      "response": "제목·날짜·태그·렌더링된 본문",
+      "access": "공개 콘텐츠"
+    },
+    {
+      "method": "GET",
+      "path": "/sitemap.xml",
+      "description": "검색엔진용 경로 목록",
+      "request": "없음",
+      "response": "공개 URL과 글 날짜의 XML",
+      "access": "공개 정적 파일"
+    },
+    {
+      "method": "GET",
+      "path": "/robots.txt",
+      "description": "크롤러 수집 정책",
+      "request": "없음",
+      "response": "수집 허용과 사이트맵 주소",
+      "access": "공개 정적 파일"
+    }
+  ],
+  "decisions": [
+    {
+      "title": "내용과 표현 분리",
+      "description": "프로젝트·경력 데이터는 콘텐츠 파일에 두고, 페이지가 공통 표시 규칙을 담당합니다."
+    },
+    {
+      "title": "정적 호스팅에 맞춘 경로 처리",
+      "description": "페이지별 HTML 파일을 생성해 직접 접근 시 404를 줄이고 경로별 링크 미리보기를 제공합니다."
+    }
+  ],
+  "limitations": [
+    "검색 색인 여부는 Search Console 등 외부 도구로 별도 확인해야 합니다.",
+    "현재 HTML은 head만 경로별로 생성합니다. 본문 SSG·SSR은 추가 개선 대상입니다.",
+    "댓글·회원·글 작성 서버는 구현하지 않은 정적 콘텐츠 사이트입니다."
+  ],
+  "sources": [
+    {
+      "label": "페이지 라우팅",
+      "path": "src/App.jsx"
+    },
+    {
+      "label": "블로그 로더",
+      "path": "src/lib/posts.js"
+    },
+    {
+      "label": "콘텐츠 파서",
+      "path": "src/lib/frontMatter.js"
+    },
+    {
+      "label": "빌드 플러그인",
+      "path": "vite.config.js"
+    },
+    {
+      "label": "배포 Workflow",
+      "path": ".github/workflows/deploy.yml"
+    }
+  ]
+}

@@ -11,10 +11,10 @@
     </style>
   </defs>
   <rect width="680" height="1000" rx="20" fill="#f5f7fc"/>
-  <text x="34" y="53" class="title">경로를 명령으로 바꾸는 세 방식</text>
+  <text x="34" y="53" class="title">RPP · DWB · MPPI 제어 방식</text>
   <text x="34" y="85" class="note">점선: 주어진 Path  /  파란색: 추종·갱신 개념</text>
   <rect x="34" y="111" width="612" height="258" rx="14" class="panel"/>
-  <text x="55" y="149" class="label">RPP  ·  목표점의 기하 + 속도 조절</text>
+  <text x="55" y="149" class="label">RPP  ·  기하학적 경로 추종</text>
   <path d="M75 300 C170 300 178 208 300 208" class="path"/>
   <path d="M75 300 Q151 300 229 230" class="selected"/>
   <path d="M75 300 229 230" fill="none" stroke="#15a295" stroke-width="2" stroke-dasharray="5 4"/>
@@ -23,8 +23,8 @@
   <text x="122" y="245" class="note">lookahead</text>
   <text x="352" y="214" class="note">목표점 → 곡률</text>
   <text x="352" y="250" class="note">곡률·비용 → 감속</text>
-  <text x="352" y="286" class="note">충돌 예상 → 정지</text>
-  <text x="55" y="346" class="note">기본 RPP: 막힌 길의 우회는 재계획과 함께 처리</text>
+  <text x="352" y="286" class="note">충돌 예상 → 추종 중단</text>
+  <text x="55" y="346" class="note">우회 경로: 플래너 재계획 필요</text>
   <rect x="34" y="389" width="612" height="258" rx="14" class="panel"/>
   <text x="55" y="427" class="label">DWB  ·  후보 궤적의 점수 비교</text>
   <path d="M75 569 C177 569 207 485 307 485" class="path"/>
@@ -34,10 +34,10 @@
   <path d="M64 558 86 569 64 580 Z" fill="#345dde"/>
   <text x="352" y="492" class="note">속도 후보 → rollout</text>
   <text x="352" y="528" class="note">Critic으로 비용 평가</text>
-  <text x="352" y="564" class="note">좋은 후보 명령 선택</text>
+  <text x="352" y="564" class="note">최소 비용 후보 선택</text>
   <text x="55" y="624" class="note">후보 생성 범위와 가속도 처리는 generator에 의존</text>
   <rect x="34" y="667" width="612" height="258" rx="14" class="panel"/>
-  <text x="55" y="705" class="label">MPPI  ·  입력 시퀀스를 비용으로 갱신</text>
+  <text x="55" y="705" class="label">MPPI  ·  입력 시퀀스 최적화</text>
   <path d="M75 847 C162 847 193 762 308 762" class="path"/>
   <path d="M75 847 C150 871 213 837 304 808 M75 847 C131 824 213 807 303 784 M75 847 C136 834 179 743 296 742 M75 847 C160 830 224 850 306 836 M75 847 C176 866 214 788 307 773" class="sample"/>
   <path d="M75 847 C158 842 209 789 304 779" class="selected"/>
@@ -45,6 +45,6 @@
   <text x="352" y="770" class="note">잡음으로 후보 생성</text>
   <text x="352" y="806" class="note">비용 기반 가중 갱신</text>
   <text x="352" y="842" class="note">첫 입력 실행 후 반복</text>
-  <text x="55" y="902" class="note">갱신 후 제약·유효성 처리도 필요 · 전역 최적 보장 아님</text>
+  <text x="55" y="902" class="note">제약·유효성 검사 필요 · 전역 최적해 보장 없음</text>
   <text x="340" y="970" text-anchor="middle" class="note">개념도 · 실제 샘플 수·장애물 비용·성능 비교 아님</text>
 </svg>

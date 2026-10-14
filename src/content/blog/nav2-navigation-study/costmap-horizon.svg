@@ -10,10 +10,10 @@
     </style>
   </defs>
   <rect width="680" height="980" rx="20" fill="#f5f7fc"/>
-  <text x="34" y="53" class="title">지도 크기보다 중요한 관계</text>
-  <text x="34" y="85" class="note">공간 비용과 시간 예측을 구분해서 조정한다</text>
+  <text x="34" y="53" class="title">Inflation과 예측·정지 거리</text>
+  <text x="34" y="85" class="note">비용 분포 · 예측 거리 · 관측 범위 · 정지 거리</text>
   <rect x="34" y="114" width="612" height="407" rx="14" class="panel"/>
-  <text x="55" y="152" class="label">Inflation: 반경과 감쇠는 다르다</text>
+  <text x="55" y="152" class="label">Inflation 반경과 비용 감쇠</text>
   <rect x="90" y="192" width="70" height="193" fill="#f2f4f8"/>
   <path d="M90 185 V385 H605" fill="none" stroke="#8d9bb2" stroke-width="2"/>
   <path d="M160 192 V385 M540 192 V385" stroke="#bdc8da" stroke-dasharray="5 5" stroke-width="1.5"/>
@@ -28,7 +28,7 @@
   <path d="M369 484 H404" stroke="#15887e" stroke-width="4"/>
   <text x="416" y="491" class="note">k 큼: 빠른 감소</text>
   <rect x="34" y="545" width="612" height="338" rx="14" class="panel"/>
-  <text x="55" y="584" class="label">예측 가능 범위 ≠ 관측된 안전 공간</text>
+  <text x="55" y="584" class="label">예측 거리와 센서 관측 범위</text>
   <rect x="61" y="615" width="558" height="63" rx="8" fill="#eaf6f2" stroke="#b9dcd2"/>
   <path d="M450 615 H611 Q619 615 619 623 V670 Q619 678 611 678 H450 Z" fill="#e5e9f0"/>
   <path d="M450 608 V810" stroke="#8d9bb2" stroke-width="2" stroke-dasharray="5 5"/>

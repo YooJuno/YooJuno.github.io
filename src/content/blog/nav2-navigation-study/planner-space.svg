@@ -11,8 +11,8 @@
     </style>
   </defs>
   <rect width="680" height="970" rx="20" fill="#f5f7fc"/>
-  <text x="34" y="53" class="title">어떤 상태를 탐색하는가?</text>
-  <text x="34" y="85" class="note">경로가 이어지는 것과 주행 가능한 것은 다르다</text>
+  <text x="34" y="53" class="title">플래너별 탐색 공간</text>
+  <text x="34" y="85" class="note">2D 위치 · 방향 · 동작 프리미티브</text>
   <rect x="34" y="113" width="612" height="247" rx="14" class="panel"/>
   <text x="55" y="150" class="label">01  2D 위치 탐색</text>
   <rect x="55" y="174" width="272" height="155" fill="url(#grid)"/>
@@ -23,7 +23,7 @@
   <text x="351" y="197" class="note">NavFn / Smac 2D</text>
   <text x="351" y="230" class="note">위치: (x, y)</text>
   <text x="351" y="271" class="note">Theta*: any-angle</text>
-  <text x="351" y="303" class="note">회전 반경 보장은 별개</text>
+  <text x="351" y="303" class="note">최소 회전 반경 제약 미반영</text>
   <rect x="34" y="381" width="612" height="247" rx="14" class="panel"/>
   <text x="55" y="419" class="label">02  방향을 포함한 탐색</text>
   <rect x="55" y="443" width="272" height="155" fill="url(#grid)"/>
@@ -44,6 +44,6 @@
   <text x="351" y="734" class="note">Smac State Lattice</text>
   <text x="351" y="767" class="note">Motion primitives</text>
   <text x="351" y="808" class="note">실행 가능한 연결 선택</text>
-  <text x="351" y="840" class="note">생성 해상도도 관리</text>
+  <text x="351" y="840" class="note">프리미티브 생성 해상도 설정</text>
   <text x="340" y="936" text-anchor="middle" class="note">개념도 · footprint와 비용 분포는 생략</text>
 </svg>

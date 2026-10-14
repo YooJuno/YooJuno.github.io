@@ -171,11 +171,14 @@ GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 �
 | 프로젝트 정보·상세·이미지·외부 링크 | `src/content/portfolio/projects/<프로젝트>/index.md`와 같은 폴더의 `images/` |
 | 새 프로젝트·경력 양식 | `src/content/portfolio/templates/` — 해당 양식을 새 항목 폴더의 `index.md`로 복사 |
 | 블로그 글·이미지 | `src/content/blog/<slug>/index.md`와 같은 글 폴더. 메타데이터는 `title`, `date`, `category`, `tags`, `summary`, 선택적인 `slug` |
+| 웹서비스 소개·기능·API·GitHub 링크 | `src/content/webservices/<서비스>.json` |
+| 웹서비스 실행 화면 | `public/content/images/webservices/<서비스>/`. 캡처 환경과 예시 데이터 여부를 JSON의 `caption`에 기록 |
 | 새 페이지·메타데이터 | `src/App.jsx`의 라우트와 `src/lib/routeMeta.js`의 메타데이터를 함께 추가 |
 | 스타일 | `src/styles/`의 공통·페이지별 CSS |
 | 고정 URL로 제공할 파일 | `public/`. 빌드 시 파일명·경로를 유지해 복사 |
 
 자세한 작성법은 [포트폴리오 수정 안내](src/content/portfolio/README.md)를 참고하세요.
+웹서비스 상세 페이지는 공통 컴포넌트를 사용합니다. 내용·화면 추가는 [웹서비스 수정 안내](src/content/webservices/README.md)를 참고하세요.
 `src`의 글·프로젝트·경력 이미지처럼 콘텐츠에서 참조하는 자산은 Vite가 처리합니다. 기존 이력서·논문 PDF 등 고정 URL을 유지할 파일은 `public`에서 제공합니다.
 따라서 모든 콘텐츠를 한쪽에 몰아넣기보다 **참조 방식과 배포 경로**를 기준으로 구분합니다.
 
