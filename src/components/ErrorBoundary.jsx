@@ -27,8 +27,13 @@ class ErrorBoundary extends Component {
           <div className="container empty-page">
             <p className="eyebrow">오류</p>
             <h1>페이지를 표시할 수 없습니다.</h1>
-            <p>잠시 후 다시 시도하거나 다른 메뉴로 이동해주세요.</p>
-            <Link className="btn ghost" to="/">홈으로</Link>
+            <p>새로고침해 다시 시도하거나 다른 메뉴로 이동해주세요.</p>
+            <div className="hero-actions">
+              <button className="btn primary" type="button" onClick={() => window.location.reload()}>
+                새로고침
+              </button>
+              <Link className="btn ghost" to="/">홈으로</Link>
+            </div>
           </div>
         </main>
       )
