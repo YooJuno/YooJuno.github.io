@@ -17,9 +17,9 @@ meta: "SSAFY · 6인 · 팀장/PM/Robotics"
 
 #### 설계 변경
 
-**gRPC 에서 REST + SSE 로** protobuf 직렬화가 빨라 영상 전송에 유리하다고 보고 gRPC 로 설계했습니다. 서버와 로봇 사이는 잘 동작했지만, 브라우저에서 gRPC 를 쓰려면 별도 프로토콜과 envoy proxy 중계가 필요했고 Vue 의 Vite 와 호환되지 않아 전체를 REST 와 SSE 구조로 바꿨습니다.
+**gRPC → REST + SSE** 서버·로봇 간 gRPC 통신은 동작했지만 브라우저 연동에서 문제가 생겼습니다. gRPC-Web 클라이언트·중계 구성의 연동을 완료하지 못해, 일정 안에 구현할 수 있는 REST와 SSE로 전환했습니다.
 
-**WebRTC 에서 MQTT 로** 실시간 스트리밍을 위해 C++ ffmpeg 파이프라인을 설계했으나 백엔드의 OpenVIDU 와 호환되지 않았고 WebRTC Signaling 을 직접 구현할 시간이 부족했습니다. 이미지를 base64 로 변환해 MQTT 토픽으로 보내는 방식으로 기능을 완성했습니다.
+**WebRTC → MQTT 이미지 전송** C++ FFmpeg 파이프라인과 백엔드 OpenVIDU 연동을 완료하지 못했고, 별도 시그널링 구현 시간도 부족했습니다. 대안으로 이미지 프레임을 Base64로 변환해 MQTT 토픽으로 전달했습니다. WebRTC 스트리밍과 달리 프레임별 이미지 전송 방식이며, 인코딩 비용·전송량·수신 지연을 별도로 관리해야 합니다.
 
 `ROS2` `Isaac ROS VSLAM` `MQTT` `FaceNet` `Docker`
 
