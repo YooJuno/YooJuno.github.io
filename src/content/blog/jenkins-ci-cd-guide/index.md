@@ -1,5 +1,5 @@
 ---
-title: "Jenkins 개념부터 실무 적용까지 (CI/CD 입문 가이드)"
+title: "Jenkins"
 date: "2026-02-23"
 category: "개발"
 tags:
@@ -10,11 +10,11 @@ tags:
 summary: "Controller·Agent·Jenkinsfile의 역할을 구분하고, 이 사이트의 npm 스크립트에 맞춘 CI 예제로 빌드 재현성과 안전한 배포 흐름을 설명합니다."
 ---
 
-Jenkins는 빌드·검사·배포 같은 작업을 연결해 실행하고 결과를 기록하는 자동화 서버다. 중요한 것은 “자동 실행” 자체보다 **어떤 소스를 어떤 환경에서 검사했고, 어떤 결과물을 배포했는지 추적할 수 있는가**다.
+Jenkins는 빌드·검사·배포 작업을 연결하고 실행 결과를 기록하는 자동화 서버다.
 
-이 글은 Controller·Agent 구조와 Pipeline을 먼저 설명하고, React/Vite 사이트의 CI 예제에서 배포 설계로 확장한다. 예제는 학습용이며, 이 사이트에 Jenkins 운영 환경이 이미 구성돼 있다는 의미는 아니다.
+Controller·Agent 구조, Jenkinsfile, 배포·권한 관리를 정리한다. CI 예제는 이 React/Vite 저장소의 npm 스크립트를 사용한 학습용 구성이다.
 
-## 1. CI, Delivery, Deployment는 다르다
+## 1. CI·Delivery·Deployment
 
 - **Continuous Integration:** 변경을 자주 통합하고 자동 빌드·검사로 문제를 빠르게 발견한다.
 - **Continuous Delivery:** 검증된 변경을 배포 가능한 상태로 유지한다. 운영 배포에는 사람의 승인 등이 남을 수 있다.
@@ -22,7 +22,7 @@ Jenkins는 빌드·검사·배포 같은 작업을 연결해 실행하고 결과
 
 CI가 성공했다고 운영 배포가 끝난 것은 아니다. Jenkins도 애플리케이션을 대신 서비스하는 웹 서버가 아니라, 필요한 작업을 실행·조정하는 도구다. [Jenkins 용어집](https://www.jenkins.io/doc/book/glossary/), [Pipeline 개요](https://www.jenkins.io/doc/book/pipeline/).
 
-## 2. Controller와 Agent의 책임
+## 2. Controller·Agent
 
 ![저장소 변경을 받은 Jenkins Controller가 Agent에 작업을 맡기고 결과물과 실행 기록을 관리하는 구조](./jenkins-overview.svg)
 
@@ -38,9 +38,9 @@ CI가 성공했다고 운영 배포가 끝난 것은 아니다. Jenkins도 애�
 
 빌드를 Controller에서 직접 실행하면 저장소의 코드가 Jenkins의 관리 영역에 영향을 줄 수 있다. 일반적인 운영에서는 Controller의 built-in node executor를 0으로 두고 별도 Agent에서 실행하는 구성을 고려한다. 서로 신뢰 수준이 다른 빌드도 같은 실행 환경을 공유하지 않도록 설계한다. [Controller 격리](https://www.jenkins.io/doc/book/security/controller-isolation/).
 
-## 3. 재현 가능한 빌드는 환경도 고정해야 한다
+## 3. 빌드 환경·재현성
 
-Jenkinsfile에 명령을 적었다고 동일한 결과가 자동 보장되지는 않는다. 다음을 함께 관리한다.
+빌드 재현성을 위해 다음 입력을 관리한다.
 
 1. **소스:** 이번 실행의 commit과 실제 checkout한 revision을 기록한다.
 2. **도구:** Node·npm 등 실행 버전과 Agent 이미지·도구 설정을 관리한다.
@@ -52,7 +52,7 @@ Jenkinsfile에 명령을 적었다고 동일한 결과가 자동 보장되지는
 
 `npm ci`는 lockfile을 바탕으로 설치하며 `package.json`과 불일치하면 실패한다. 의존성 오류를 숨기려고 CI에서 lockfile을 다시 생성하기보다, 변경을 로컬에서 검토해 함께 커밋한다. [npm ci 공식 문서](https://docs.npmjs.com/cli/v11/commands/npm-ci/).
 
-## 4. Jenkins 작업을 연결하는 최소 구성
+## 4. 작업 연결 설정
 
 - **Agent:** 아래 예시의 `linux-node22`는 예시 label이다. 실제 등록된 Agent와 일치시킨다. 해당 Agent에는 Git과 이 저장소 요구 범위를 만족하는 Node·npm이 준비돼 있어야 한다.
 - **Pipeline 종류:** Multibranch Pipeline 또는 Pipeline from SCM으로 저장소와 `Jenkinsfile`을 연결한다.
@@ -61,11 +61,11 @@ Jenkinsfile에 명령을 적었다고 동일한 결과가 자동 보장되지는
 
 Multibranch Pipeline은 브랜치별 Pipeline을 관리하는 방식이지, 모든 브랜치에 운영 자격을 주는 설정이 아니다. [브랜치와 Pull Request](https://www.jenkins.io/doc/book/pipeline/multibranch/).
 
-## 5. 완전한 Declarative Pipeline 형태의 CI 예제
+## 5. Jenkinsfile 예제
 
 ![Checkout부터 의존성 설치, 정적 검사, 빌드와 결과물 보관으로 이어지는 CI 흐름](./jenkins-pipeline.svg)
 
-다음은 저장소 루트에서 실행하는 Jenkinsfile 예시다. `pipeline → stages → stage → steps` 구조를 포함한다. Linux Agent와 Pipeline·SCM 관련 플러그인이 준비돼 있다는 전제다.
+Linux Agent와 Pipeline·SCM 플러그인을 전제로 한 Declarative Jenkinsfile이다.
 
 ```groovy
 pipeline {
@@ -129,7 +129,7 @@ pipeline {
 
 단계의 `sh` 명령이 0이 아닌 종료 코드를 반환하면 기본적으로 이후 정상 단계를 진행하지 않는다. 테스트를 추가했다면 별도 Stage와 결과 수집을 함께 설계한다. 빌드 성공만으로 화면·기능·보안 검증이 모두 끝났다고 판단하지 않는다.
 
-## 6. CI 다음에 CD를 붙일 때
+## 6. 배포·롤백
 
 배포는 **검증했던 결과물을 그대로 승격하는 과정**으로 설계한다.
 
@@ -149,7 +149,7 @@ CI 성공 → 결과물 식별·보관 → 스테이징 검증
 
 또한 `disableConcurrentBuilds()`는 같은 Pipeline의 동시 실행을 막는다. 여러 Job이 같은 서버에 배포한다면 공유 자원 잠금이나 전용 배포 Job 등으로 **배포 대상 기준의 직렬화**를 추가해야 한다. [Pipeline 조건·동시 실행 설정](https://www.jenkins.io/doc/book/pipeline/syntax/).
 
-## 7. Credentials와 신뢰 경계
+## 7. Credentials·권한 관리
 
 - 비밀은 저장소나 Jenkinsfile에 직접 적지 않고 필요한 범위에만 바인딩한다.
 - 마스킹은 실수로 로그에 노출되는 것을 줄이는 기능이지, 악성 빌드 코드로부터 비밀을 격리하는 보안 경계가 아니다.
@@ -159,9 +159,9 @@ CI 성공 → 결과물 식별·보관 → 스테이징 검증
 
 Agent는 저장소의 빌드 스크립트와 의존성 설치 스크립트까지 실행할 수 있다. 코드 실행 권한과 비밀 접근 권한을 함께 설계해야 한다. [Credentials Binding](https://www.jenkins.io/doc/pipeline/steps/credentials-binding/), [빌드 격리와 PR 보안](https://www.jenkins.io/doc/book/security/securing-builds/).
 
-## 8. 실패 지점별 진단
+## 8. 오류 진단
 
-| 현상 | 확인할 것 |
+| 증상 | 점검 항목 |
 | --- | --- |
 | Agent 할당 대기 | label 일치, Agent 연결, executor·자원 상태 |
 | 로컬과 CI 결과가 다름 | commit·Node/npm 버전·lockfile·환경변수·작업 경로 |
@@ -170,5 +170,3 @@ Agent는 저장소의 빌드 스크립트와 의존성 설치 스크립트까지
 | Git 접근 실패 | SCM URL과 Credentials 종류·ID·권한 |
 | 배포 성공 로그 후 서비스 장애 | 실제 배포된 버전, 라우팅·환경 설정·health check |
 | 같은 대상의 배포가 겹침 | Job 간 잠금 범위와 배포 대상 직렬화 |
-
-Jenkins의 가치는 명령을 대신 입력해주는 데 그치지 않는다. **실행 환경·검증 결과·배포물을 연결해서 기록하고, 실패와 복구를 반복 가능한 절차로 만드는 것**이 핵심이다.
