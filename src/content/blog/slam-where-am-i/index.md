@@ -88,7 +88,7 @@ Monocular를 제외한 두 방식은 한 번의 입력으로 깊이 정보를 �
 
 ### [Image Projection]
 
-2D 세계인 이미지와 3D 세계인 실제 세계와의 관계를 설명한다. 즉 아래의 성분들을 안다면 2D ↔︎ 3D 변환이 가능하다.
+2D 세계인 이미지와 3D 세계인 실제 세계와의 관계를 설명한다. 아래의 내부·외부 파라미터를 알면 3D 점을 2D 이미지에 투영할 수 있다. 반대로 2D 픽셀에서 3D 점을 구하려면 깊이나 다른 시점의 관측 같은 추가 정보가 필요하다.
 
 ![](./image_7.png)
 
@@ -107,7 +107,7 @@ Monocular를 제외한 두 방식은 한 번의 입력으로 깊이 정보를 �
 - 카메라 렌즈 **내부 정보**를 의미함
 - 카메라 렌즈의 왜곡을 보정하는데에 사용됨
 1. **fx, fy : 초점거리(focal length)**
-    - 렌즈의 중심으로부터 이미지 센서까지의 거리
+    - 카메라의 초점거리를 이미지의 가로·세로 픽셀 단위로 표현한 값
     
     ![](./image_8.png)
     
@@ -262,9 +262,9 @@ Map에 대해 중복되는 Key frame과 Tracking 후의 point들을 최적화 �
     - 현재 입력 frame과 겹치는 부분이 있는 프레임들을 탐색
     - 두 frame에서 찾은 Map Point 쌍을 사용하여 Triangulation 진행
 4. **Local Bundle Adjustment (Local BA)**
-    - Triangulation 과정 후 생긴 Map Point 중 Mapping 과정에서 필요하지 않는 Point를 제거한다.
+    - 현재 Key frame과 주변 Key frame의 카메라 위치·자세, 이들이 관측한 3D Map Point를 함께 최적화하여 재투영 오차를 줄인다.
 5. **Key frame 선별**
-    - 기존의 Key frame들과 유사하지 않은 Key frame은 제거한다.
+    - 관측하는 Map Point의 대부분이 다른 Key frame들에서도 충분히 관측되는 중복 Key frame을 제거한다.
 
 **⇒ 이 과정을 통해 Map 생성에 유의미한 Key frame만을 선별하고 Map의 error를 줄여나갈 수 있다.**
 
