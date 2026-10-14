@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="1000" viewBox="0 0 680 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Nav2 주행 파이프라인</title>
+  <desc id="desc">센서와 위치 추정, 글로벌 및 로컬 costmap, planner와 controller, 명령 후처리와 하드웨어를 연결한다. BT는 작업을 조정하며, 오도메트리는 피드백으로 돌아온다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto-start-reverse"><path d="M0 0 8 4 0 8" fill="none" stroke="#345dde" stroke-width="1.5"/></marker>
+    <marker id="state" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#15786f" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#172339}
+      .title{font-size:30px;font-weight:750}.label{font-size:24px;font-weight:700}.note{font-size:21px;fill:#526178}
+      .card{fill:#fff;stroke:#d8e0ed;stroke-width:1.5}.flow{fill:none;stroke:#345dde;stroke-width:2.5;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="680" height="1000" rx="20" fill="#f5f7fc"/>
+  <text x="34" y="53" class="title">Nav2: 관측에서 주행 명령까지</text>
+  <text x="34" y="84" class="note">역할을 나누고, 계층 사이의 계약을 맞춘다</text>
+  <rect x="48" y="111" width="584" height="76" rx="14" fill="#e9eeff" stroke="#bdcaf6"/>
+  <text x="340" y="142" text-anchor="middle" class="label">BT Navigator</text>
+  <text x="340" y="171" text-anchor="middle" class="note">목표 요청 → 계획 · 추종 · 재계획 · 복구 조정</text>
+  <path d="M632 149 H655 V631 H630" fill="none" stroke="#98a7c5" stroke-width="2" stroke-dasharray="5 6"/>
+  <rect x="48" y="228" width="276" height="74" rx="12" class="card"/>
+  <rect x="356" y="228" width="276" height="74" rx="12" class="card"/>
+  <text x="186" y="259" text-anchor="middle" class="label">센서 / Odometry</text>
+  <text x="186" y="287" text-anchor="middle" class="note">LiDAR · IMU · VO 등</text>
+  <text x="494" y="259" text-anchor="middle" class="label">지도 / 정합 정보</text>
+  <text x="494" y="287" text-anchor="middle" class="note">AMCL · SLAM의 기준</text>
+  <path d="M186 302 V328" class="flow"/>
+  <path d="M494 302 V328" class="flow"/>
+  <rect x="48" y="331" width="584" height="81" rx="12" fill="#eaf6f2" stroke="#b9dcd2"/>
+  <text x="340" y="364" text-anchor="middle" class="label">State Estimation &amp; TF</text>
+  <text x="340" y="395" text-anchor="middle" class="note">연속적인 odom + 전역 map 보정</text>
+  <path d="M186 412 V450" class="flow"/>
+  <path d="M494 412 V450" class="flow"/>
+  <rect x="48" y="453" width="276" height="84" rx="12" class="card"/>
+  <rect x="356" y="453" width="276" height="84" rx="12" class="card"/>
+  <text x="186" y="487" text-anchor="middle" class="label">Global Costmap</text>
+  <text x="186" y="518" text-anchor="middle" class="note">지도 · 관측 · 비용</text>
+  <text x="494" y="487" text-anchor="middle" class="label">Local Costmap</text>
+  <text x="494" y="518" text-anchor="middle" class="note">주변 관측 · 충돌 비용</text>
+  <path d="M186 537 V590" class="flow"/>
+  <path d="M494 537 V590" class="flow"/>
+  <rect x="48" y="593" width="255" height="92" rx="12" class="card"/>
+  <rect x="377" y="593" width="255" height="92" rx="12" class="card"/>
+  <text x="175" y="628" text-anchor="middle" class="label">Planner Server</text>
+  <text x="175" y="661" text-anchor="middle" class="note">NavFn · Smac 등</text>
+  <text x="504" y="628" text-anchor="middle" class="label">Controller</text>
+  <text x="504" y="661" text-anchor="middle" class="note">RPP · DWB · MPPI</text>
+  <path d="M303 650 H373" class="flow"/>
+  <text x="340" y="613" text-anchor="middle" class="note">Path</text>
+  <path d="M504 685 V727" class="flow"/>
+  <rect x="48" y="730" width="584" height="84" rx="12" fill="#e9eeff" stroke="#bdcaf6"/>
+  <text x="340" y="764" text-anchor="middle" class="label">속도 명령 후처리</text>
+  <text x="340" y="795" text-anchor="middle" class="note">Velocity Smoother → Collision Monitor</text>
+  <path d="M340 814 V852" class="flow"/>
+  <rect x="48" y="855" width="584" height="82" rx="12" class="card"/>
+  <text x="340" y="888" text-anchor="middle" class="label">Driver / Locomotion Controller</text>
+  <text x="340" y="918" text-anchor="middle" class="note">모터 · 조향 · 보행 실행과 상태 피드백</text>
+  <path d="M48 897 H22 V266 H44" fill="none" stroke="#15786f" stroke-width="2.5" marker-end="url(#state)"/>
+  <text x="340" y="973" text-anchor="middle" class="note">개념도 · 선택적 서버와 세부 토픽은 생략</text>
+</svg>

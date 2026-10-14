@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="980" viewBox="0 0 680 980" role="img" aria-labelledby="title desc">
+  <title id="title">Inflation과 예측·정지 거리</title>
+  <desc id="desc">같은 inflation 반경에서 비용 감쇠 계수 k가 클수록 비용이 빠르게 떨어진다. 예측 거리와 정지 거리는 costmap 크기뿐 아니라 실제 관측 범위 및 지연과 함께 비교해야 한다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse"><path d="M0 0 7 4 0 8" fill="none" stroke="#345dde" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#172339}
+      .title{font-size:30px;font-weight:750}.label{font-size:25px;font-weight:700}.note{font-size:21px;fill:#526178}
+      .panel{fill:#fff;stroke:#d8e0ed;stroke-width:1.5}
+    </style>
+  </defs>
+  <rect width="680" height="980" rx="20" fill="#f5f7fc"/>
+  <text x="34" y="53" class="title">지도 크기보다 중요한 관계</text>
+  <text x="34" y="85" class="note">공간 비용과 시간 예측을 구분해서 조정한다</text>
+  <rect x="34" y="114" width="612" height="407" rx="14" class="panel"/>
+  <text x="55" y="152" class="label">Inflation: 반경과 감쇠는 다르다</text>
+  <rect x="90" y="192" width="70" height="193" fill="#f2f4f8"/>
+  <path d="M90 185 V385 H605" fill="none" stroke="#8d9bb2" stroke-width="2"/>
+  <path d="M160 192 V385 M540 192 V385" stroke="#bdc8da" stroke-dasharray="5 5" stroke-width="1.5"/>
+  <path d="M160 208 C223 251 353 348 530 378 L540 385 H602" fill="none" stroke="#345dde" stroke-width="4"/>
+  <path d="M160 208 C184 312 223 367 338 378 L530 382 540 385 H602" fill="none" stroke="#15887e" stroke-width="4"/>
+  <text x="101" y="180" class="note">비용</text>
+  <text x="109" y="415" class="note">r_inscribed</text>
+  <text x="477" y="415" class="note">r_inflation</text>
+  <text x="347" y="451" text-anchor="middle" class="note">장애물에서 멀어지는 거리 →</text>
+  <path d="M92 484 H127" stroke="#345dde" stroke-width="4"/>
+  <text x="139" y="491" class="note">k 작음: 완만한 감소</text>
+  <path d="M369 484 H404" stroke="#15887e" stroke-width="4"/>
+  <text x="416" y="491" class="note">k 큼: 빠른 감소</text>
+  <rect x="34" y="545" width="612" height="338" rx="14" class="panel"/>
+  <text x="55" y="584" class="label">예측 가능 범위 ≠ 관측된 안전 공간</text>
+  <rect x="61" y="615" width="558" height="63" rx="8" fill="#eaf6f2" stroke="#b9dcd2"/>
+  <path d="M450 615 H611 Q619 615 619 623 V670 Q619 678 611 678 H450 Z" fill="#e5e9f0"/>
+  <path d="M450 608 V810" stroke="#8d9bb2" stroke-width="2" stroke-dasharray="5 5"/>
+  <path d="M90 635 110 646 90 657 Z" fill="#345dde"/>
+  <text x="189" y="654" class="note">관측된 주변</text>
+  <text x="493" y="654" class="note">미관측</text>
+  <path d="M101 711 H393" fill="none" stroke="#345dde" stroke-width="2.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <text x="240" y="744" text-anchor="middle" class="note">예측 거리 ≈ v × T</text>
+  <path d="M101 781 H323" fill="none" stroke="#345dde" stroke-width="2.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <text x="238" y="817" text-anchor="middle" class="note">반응 지연 + 제동 거리</text>
+  <text x="340" y="861" text-anchor="middle" class="note">로컬 costmap 경계와 센서 유효 범위를 함께 확인</text>
+  <text x="340" y="923" text-anchor="middle" class="note">d_stop ≈ v × delay + v² / (2 × a_brake)</text>
+  <text x="340" y="957" text-anchor="middle" class="note">개념도 · 일정 감속 가정, 실제 제동 여유는 별도 검증</text>
+</svg>
