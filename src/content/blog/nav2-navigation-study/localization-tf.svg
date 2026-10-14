@@ -11,7 +11,7 @@
   </defs>
   <rect width="680" height="810" rx="20" fill="#f5f7fc"/>
   <text x="34" y="52" class="title">전역 정확도와 로컬 연속성</text>
-  <text x="34" y="84" class="note">각 TF 변환의 발행 책임을 하나로 정한다</text>
+  <text x="34" y="84" class="note">TF 변환별 단일 발행 주체</text>
   <rect x="34" y="126" width="150" height="79" rx="12" fill="#e9eeff" stroke="#bdcaf6"/>
   <rect x="265" y="126" width="150" height="79" rx="12" fill="#eaf6f2" stroke="#b9dcd2"/>
   <rect x="496" y="126" width="150" height="79" rx="12" fill="#fff" stroke="#d8e0ed"/>
@@ -47,6 +47,6 @@
   <text x="169" y="656" text-anchor="middle" class="note">넓은 위치 가설</text>
   <text x="511" y="656" text-anchor="middle" class="note">관측과 맞는 가설 집중</text>
   <text x="340" y="724" text-anchor="middle" class="label">예측 → 관측 가중 → 재표본화</text>
-  <text x="340" y="760" text-anchor="middle" class="note">지도·센서가 모호하면 가설도 모호할 수 있다</text>
+  <text x="340" y="760" text-anchor="middle" class="note">위치 식별 한계: 반복 구조 · 관측 정보 부족</text>
   <text x="340" y="790" text-anchor="middle" class="note">개념도 · 실제 입자 분포와 측정 결과가 아님</text>
 </svg>

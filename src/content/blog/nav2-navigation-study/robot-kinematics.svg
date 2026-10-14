@@ -16,8 +16,8 @@
     </g>
   </defs>
   <rect width="680" height="1390" rx="20" fill="#f5f7fc"/>
-  <text x="34" y="53" class="title">바퀴 수가 아니라 움직임을 본다</text>
-  <text x="34" y="85" class="note">위에서 본 개념도 · 각 로봇의 앞쪽은 그림 위</text>
+  <text x="34" y="53" class="title">구동 방식별 Nav2 운동 모델</text>
+  <text x="34" y="85" class="note">평면도 · 로봇 전방: 위쪽</text>
   <rect x="34" y="116" width="612" height="182" rx="14" class="panel"/>
   <g transform="translate(52 135)">
     <rect x="47" y="42" width="66" height="88" rx="12" class="body"/>
@@ -39,7 +39,7 @@
   </g>
   <text x="252" y="351" class="label">4륜 스키드 / 궤도형</text>
   <text x="252" y="388" class="model">DiffDrive 근사: vx, wz</text>
-  <text x="252" y="426" class="note">선회할 때 미끄러짐 개입</text>
+  <text x="252" y="426" class="note">선회 시 미끄러짐 발생</text>
   <text x="252" y="459" class="note">회전 응답과 odom 오차 실측</text>
   <rect x="34" y="512" width="612" height="182" rx="14" class="panel"/>
   <g transform="translate(52 532)">
@@ -51,7 +51,7 @@
   </g>
   <text x="252" y="549" class="label">메카넘 / 옴니휠</text>
   <text x="252" y="586" class="model">Omni: vx, vy, wz</text>
-  <text x="252" y="624" class="note">방향을 유지하며 측방 이동</text>
+  <text x="252" y="624" class="note">차체 방향 유지 · 측방 이동 가능</text>
   <text x="252" y="657" class="note">횡가속도·마찰·사각지대 확인</text>
   <rect x="34" y="710" width="612" height="182" rx="14" class="panel"/>
   <g transform="translate(52 730)">
@@ -75,8 +75,8 @@
   </g>
   <text x="252" y="945" class="label">4륜 독립 조향 / 스워브</text>
   <text x="252" y="982" class="model">실행 모드와 하위 IK에 의존</text>
-  <text x="252" y="1020" class="note">조향 전환에 걸리는 시간 고려</text>
-  <text x="252" y="1053" class="note">항상 이상적 Omni인 것은 아님</text>
+  <text x="252" y="1020" class="note">조향 전환 시간 고려</text>
+  <text x="252" y="1053" class="note">Omni 근사의 유효 범위 확인</text>
   <rect x="34" y="1106" width="612" height="182" rx="14" class="panel"/>
   <g transform="translate(52 1126)">
     <rect x="52" y="36" width="56" height="95" rx="15" class="body"/>
@@ -86,8 +86,8 @@
   </g>
   <text x="252" y="1143" class="label">사족보행</text>
   <text x="252" y="1180" class="model">SDK 응답에 맞춘 평면 근사</text>
-  <text x="252" y="1218" class="note">속도 명령 아래에 보행 제어 필요</text>
+  <text x="252" y="1218" class="note">하위 보행 제어기 연동</text>
   <text x="252" y="1251" class="note">발 디딤·계단·균형 제어는 별도</text>
   <text x="340" y="1330" text-anchor="middle" class="note">vx: 전진 속도 · vy: 측방 속도 · wz: yaw 각속도</text>
-  <text x="340" y="1364" text-anchor="middle" class="note">제품별 지원 모드·제한과 실제 움직임을 먼저 검증</text>
+  <text x="340" y="1364" text-anchor="middle" class="note">확인 항목: 지원 모드 · 속도 제한 · 실제 구동 응답</text>
 </svg>
