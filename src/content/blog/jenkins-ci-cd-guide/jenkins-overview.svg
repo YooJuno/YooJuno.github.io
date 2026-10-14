@@ -1,68 +1,21 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
-  <title id="title">Jenkins CI/CD Overview</title>
-  <desc id="desc">Developer pushes code to repository, Jenkins runs pipeline on agent and deploys to server.</desc>
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0f172a"/>
-      <stop offset="100%" stop-color="#1e293b"/>
-    </linearGradient>
-    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#1f2937"/>
-      <stop offset="100%" stop-color="#111827"/>
-    </linearGradient>
-    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#93c5fd"/>
-    </marker>
-    <style>
-      .title { font: 700 44px 'Segoe UI', Arial, sans-serif; fill: #f8fafc; }
-      .subtitle { font: 500 22px 'Segoe UI', Arial, sans-serif; fill: #cbd5e1; }
-      .card { fill: url(#card); stroke: #334155; stroke-width: 2; rx: 18; }
-      .card-title { font: 700 24px 'Segoe UI', Arial, sans-serif; fill: #e2e8f0; }
-      .card-text { font: 500 18px 'Segoe UI', Arial, sans-serif; fill: #94a3b8; }
-      .flow { stroke: #93c5fd; stroke-width: 4; fill: none; marker-end: url(#arrow); }
-      .note { font: 600 16px 'Segoe UI', Arial, sans-serif; fill: #7dd3fc; }
-    </style>
-  </defs>
-
-  <rect width="1280" height="720" fill="url(#bg)"/>
-  <text x="60" y="80" class="title">Jenkins CI/CD Architecture</text>
-  <text x="60" y="115" class="subtitle">From code push to automated build, test, and deploy</text>
-
-  <rect x="70" y="180" width="220" height="120" class="card"/>
-  <text x="180" y="230" text-anchor="middle" class="card-title">Developer</text>
-  <text x="180" y="260" text-anchor="middle" class="card-text">git push</text>
-
-  <rect x="360" y="180" width="260" height="120" class="card"/>
-  <text x="490" y="230" text-anchor="middle" class="card-title">Git Repository</text>
-  <text x="490" y="260" text-anchor="middle" class="card-text">GitHub / GitLab</text>
-
-  <rect x="710" y="150" width="280" height="150" class="card"/>
-  <text x="850" y="205" text-anchor="middle" class="card-title">Jenkins Controller</text>
-  <text x="850" y="235" text-anchor="middle" class="card-text">Webhook + Pipeline</text>
-  <text x="850" y="262" text-anchor="middle" class="card-text">Jenkinsfile</text>
-
-  <rect x="710" y="370" width="280" height="150" class="card"/>
-  <text x="850" y="425" text-anchor="middle" class="card-title">Jenkins Agent</text>
-  <text x="850" y="455" text-anchor="middle" class="card-text">Build / Test / Package</text>
-  <text x="850" y="482" text-anchor="middle" class="card-text">Node + JDK</text>
-
-  <rect x="1060" y="150" width="170" height="150" class="card"/>
-  <text x="1145" y="215" text-anchor="middle" class="card-title">Artifacts</text>
-  <text x="1145" y="245" text-anchor="middle" class="card-text">JAR</text>
-  <text x="1145" y="270" text-anchor="middle" class="card-text">dist/</text>
-
-  <rect x="1060" y="370" width="170" height="150" class="card"/>
-  <text x="1145" y="425" text-anchor="middle" class="card-title">Prod Server</text>
-  <text x="1145" y="455" text-anchor="middle" class="card-text">Caddy + Systemd</text>
-  <text x="1145" y="482" text-anchor="middle" class="card-text">scripts/build.sh</text>
-
-  <path d="M 290 240 L 360 240" class="flow"/>
-  <path d="M 620 240 L 710 225" class="flow"/>
-  <path d="M 850 300 L 850 370" class="flow"/>
-  <path d="M 990 225 L 1060 225" class="flow"/>
-  <path d="M 990 445 L 1060 445" class="flow"/>
-
-  <text x="630" y="210" class="note">Webhook trigger</text>
-  <text x="875" y="345" class="note">Execute stages</text>
-  <text x="1068" y="340" class="note">Optional deploy via SSH</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="908" viewBox="0 0 680 908" role="img" aria-labelledby="title description">
+<title id="title">Jenkins: 조율과 실행을 분리하기</title>
+<desc id="description">저장소의 변경 또는 명시적인 실행 요청으로 Jenkins 컨트롤러가 작업을 조율한다. 빌드 에이전트가 소스를 받아 명령을 실행하고 결과와 산출물을 기록한다. 운영 배포는 별도로 설계해야 한다.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#6c7e9c"/></marker></defs>
+<rect width="680" height="908" rx="18" fill="#f5f7fc"/>
+<g font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+<text x="40" y="51" font-size="28" fill="#172339" font-weight="700">Jenkins: 조율과 실행을 분리하기</text>
+<text x="40" y="85" font-size="21" fill="#52617a" font-weight="400">Controller는 작업을 조율하고 Agent는 빌드를 실행</text>
+<rect x="40" y="123" width="600" height="100" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="159" font-size="24" fill="#172339" font-weight="700">소스 저장소 · 실행 트리거</text><text x="64" y="193" font-size="22" fill="#52617a" font-weight="400">커밋 / Pull Request / 수동 실행 등</text>
+<path d="M 340 223 V 251" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="253" width="600" height="100" rx="14" fill="#edf1ff" stroke="#c4cff5" stroke-width="1.5"/><text x="64" y="289" font-size="24" fill="#172339" font-weight="700">Controller</text><text x="64" y="323" font-size="22" fill="#52617a" font-weight="400">작업 스케줄·권한·빌드 이력 관리</text>
+<path d="M 340 353 V 381" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="383" width="600" height="130" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="419" font-size="24" fill="#172339" font-weight="700">Agent + Workspace</text><text x="64" y="453" font-size="22" fill="#52617a" font-weight="400">체크아웃 → 의존성 설치 → 린트 → 빌드</text><text x="64" y="483" font-size="22" fill="#52617a" font-weight="400">실행 환경과 자격 증명은 작업 신뢰 수준별로 분리</text>
+<path d="M 340 513 V 541" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="543" width="600" height="100" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="579" font-size="24" fill="#172339" font-weight="700">실행 결과 · 산출물 기록</text><text x="64" y="613" font-size="22" fill="#52617a" font-weight="400">로그·상태·커밋 ID·빌드 산출물 보관</text>
+<path d="M 340 643 V 671" fill="none" stroke="#6c7e9c" stroke-width="2.5" stroke-dasharray="7 6" marker-end="url(#arrow)"/>
+<rect x="40" y="673" width="600" height="100" rx="14" fill="#eaf4f1" stroke="#c4ded6" stroke-width="1.5"/><text x="64" y="709" font-size="24" fill="#172339" font-weight="700">선택 단계  배포 파이프라인</text><text x="64" y="743" font-size="22" fill="#52617a" font-weight="400">배포 대상·승인·상태 확인·롤백 정책을 별도 설계</text>
+<text x="40" y="829" font-size="23" fill="#172339" font-weight="700">권장: Controller에서 직접 빌드하지 않기</text>
+<text x="40" y="866" font-size="22" fill="#52617a" font-weight="400">CI가 성공했다는 사실과 운영 배포 성공은 서로 다름</text>
+</g>
 </svg>

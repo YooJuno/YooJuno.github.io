@@ -1,27 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="220" viewBox="0 0 900 220">
-  <rect width="900" height="220" fill="#f7f7f2"/>
-  <text x="30" y="30" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#222">Trading Styles by Holding Time</text>
-
-  <line x1="50" y1="70" x2="850" y2="70" stroke="#333" stroke-width="2"/>
-  <circle cx="120" cy="70" r="6" fill="#333"/>
-  <circle cx="300" cy="70" r="6" fill="#333"/>
-  <circle cx="500" cy="70" r="6" fill="#333"/>
-  <circle cx="700" cy="70" r="6" fill="#333"/>
-
-  <text x="90" y="105" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Seconds</text>
-  <text x="260" y="105" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Hours</text>
-  <text x="470" y="105" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Days</text>
-  <text x="670" y="105" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Weeks+</text>
-
-  <rect x="80" y="130" width="120" height="50" rx="8" fill="#fde2e2" stroke="#d33" stroke-width="1.5"/>
-  <text x="95" y="160" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Scalping</text>
-
-  <rect x="230" y="130" width="150" height="50" rx="8" fill="#e2f0fd" stroke="#338" stroke-width="1.5"/>
-  <text x="255" y="160" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Day Trading</text>
-
-  <rect x="430" y="130" width="140" height="50" rx="8" fill="#e8f7e4" stroke="#2a7" stroke-width="1.5"/>
-  <text x="455" y="160" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Swing</text>
-
-  <rect x="620" y="130" width="170" height="50" rx="8" fill="#f1e7ff" stroke="#73a" stroke-width="1.5"/>
-  <text x="650" y="160" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#222">Position</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="882" viewBox="0 0 680 882" role="img" aria-labelledby="title description">
+<title id="title">보유 기간으로 나누는 거래 스타일</title>
+<desc id="description">스캘핑은 수초에서 수분, 데이 트레이딩은 당일, 스윙은 수일에서 수주, 포지션 트레이딩은 수주에서 수개월 이상 보유하는 분류다. 기간은 관행적 범위이며 수익성이나 우열을 뜻하지 않는다.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#6c7e9c"/></marker></defs>
+<rect width="680" height="882" rx="18" fill="#f5f7fc"/>
+<g font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+<text x="40" y="51" font-size="28" fill="#172339" font-weight="700">보유 기간으로 나누는 거래 스타일</text>
+<text x="40" y="85" font-size="21" fill="#52617a" font-weight="400">관행적인 구분이며 기간의 경계나 우열이 정해진 것은 아님</text>
+<rect x="40" y="123" width="600" height="130" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="159" font-size="24" fill="#172339" font-weight="700">스캘핑  수초~수분</text><text x="64" y="193" font-size="22" fill="#52617a" font-weight="400">작은 가격 변동을 반복해서 다루는 스타일</text><text x="64" y="223" font-size="22" fill="#52617a" font-weight="400">호가 차이·수수료·체결 지연의 영향이 큼</text>
+<rect x="40" y="274" width="600" height="130" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="310" font-size="24" fill="#172339" font-weight="700">데이 트레이딩  당일 진입·청산</text><text x="64" y="344" font-size="22" fill="#52617a" font-weight="400">통상 포지션을 다음 거래일로 넘기지 않음</text><text x="64" y="374" font-size="22" fill="#52617a" font-weight="400">장중 급변·반복 매매 비용에 주의</text>
+<rect x="40" y="425" width="600" height="130" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="461" font-size="24" fill="#172339" font-weight="700">스윙 트레이딩  수일~수주</text><text x="64" y="495" font-size="22" fill="#52617a" font-weight="400">며칠 이상 이어지는 가격 흐름을 관찰</text><text x="64" y="525" font-size="22" fill="#52617a" font-weight="400">밤사이 뉴스와 다음 개장 시 가격 차이에 노출</text>
+<rect x="40" y="576" width="600" height="130" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="612" font-size="24" fill="#172339" font-weight="700">포지션 트레이딩  수주~수개월 이상</text><text x="64" y="646" font-size="22" fill="#52617a" font-weight="400">더 긴 추세·시장 환경을 바탕으로 포지션 유지</text><text x="64" y="676" font-size="22" fill="#52617a" font-weight="400">보유 기간이 길어도 손실 위험은 사라지지 않음</text>
+<rect x="40" y="742" width="600" height="100" rx="14" fill="#eaf4f1" stroke="#c4ded6" stroke-width="1.5"/>
+<text x="64" y="780" font-size="23" fill="#15786f" font-weight="700">보유 기간 ≠ 매매 전략 ≠ 기대 수익</text>
+<text x="64" y="814" font-size="22" fill="#52617a" font-weight="400">추세 추종·평균 회귀 등은 별도의 전략 분류</text>
+</g>
 </svg>

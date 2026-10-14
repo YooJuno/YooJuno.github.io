@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="834" viewBox="0 0 680 834" role="img" aria-labelledby="title description">
+<title id="title">설치 매체와 설치 대상을 분리하기</title>
+<desc id="description">기존 EFI 시스템 파티션과 Windows 및 복구 영역은 보존한다. 임시 설치 파일 영역도 설치 중 보존하며, 사전에 확인한 Ubuntu 설치 대상만 변경한다. 실제 파티션 순서와 크기는 장치마다 다르다.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#6c7e9c"/></marker></defs>
+<rect width="680" height="834" rx="18" fill="#f5f7fc"/>
+<g font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+<text x="40" y="51" font-size="28" fill="#172339" font-weight="700">설치 매체와 설치 대상을 분리하기</text>
+<text x="40" y="85" font-size="21" fill="#52617a" font-weight="400">UEFI/GPT 개념도 · 실제 파티션 순서·크기는 기기마다 다름</text>
+<rect x="40" y="127" width="600" height="166" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="163" font-size="24" fill="#172339" font-weight="700">보존  기존 부팅·운영체제 영역</text><text x="64" y="197" font-size="22" fill="#52617a" font-weight="400">EFI 시스템 파티션(ESP) · Windows</text><text x="64" y="227" font-size="22" fill="#52617a" font-weight="400">MSR · 복구 파티션 등 기존 시스템 영역</text><text x="64" y="257" font-size="22" fill="#52617a" font-weight="400">FAT32라는 이유만으로 삭제·포맷하지 않기</text>
+<rect x="40" y="322" width="600" height="166" rx="14" fill="#edf1ff" stroke="#c4cff5" stroke-width="1.5"/><text x="64" y="358" font-size="24" fill="#172339" font-weight="700">설치 중 보존  임시 설치 파일 영역</text><text x="64" y="392" font-size="22" fill="#52617a" font-weight="400">ISO 파일 또는 추출한 설치 파일을 보관</text><text x="64" y="422" font-size="22" fill="#52617a" font-weight="400">라이브 환경이 읽는 중에는 지우지 않기</text><text x="64" y="452" font-size="22" fill="#52617a" font-weight="400">내장 디스크에서의 부팅 가능 여부는 별도 확인</text>
+<rect x="40" y="517" width="600" height="166" rx="14" fill="#eaf4f1" stroke="#c4ded6" stroke-width="1.5"/><text x="64" y="553" font-size="24" fill="#172339" font-weight="700">변경 대상  확인한 Ubuntu 설치 공간</text><text x="64" y="587" font-size="22" fill="#52617a" font-weight="400">디스크 모델·용량·파티션 역할을 대조</text><text x="64" y="617" font-size="22" fill="#52617a" font-weight="400">정확히 확인한 설치 대상에만 파일 시스템 생성</text><text x="64" y="647" font-size="22" fill="#52617a" font-weight="400">설치 파일 영역과 같은 대상으로 지정하지 않기</text>
+<text x="40" y="737" font-size="23" fill="#172339" font-weight="700">작업 전: 외부 백업 · BitLocker 복구 키 확보</text>
+<text x="40" y="775" font-size="22" fill="#52617a" font-weight="400">부팅 복구 수단이 없거나 영역이 불명확하면 작업 중단</text>
+</g>
+</svg>
