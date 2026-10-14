@@ -120,8 +120,6 @@ Monocular를 제외한 두 방식은 한 번의 입력으로 깊이 정보를 �
     
     ![](./image_9.png)
     
-    image.png
-    
 
 **Intrinsic Parameters 구하는 방법.**
 
@@ -345,15 +343,9 @@ Map에 대해 중복되는 Key frame과 Tracking 후의 point들을 최적화 �
 
 ![](./image_22.png)
 
-image.png
-
 ![](./image_23.png)
 
-image.png
-
 ![](./image_24.png)
-
-image.png
 
 - Visual SLAM보다 훨씬 적은 연산으로 구현이 가능하다.
 - 더욱 정확한 Pose Estimation이 가능하다.
