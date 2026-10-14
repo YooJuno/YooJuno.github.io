@@ -37,11 +37,11 @@ export const ROUTE_META = {
   },
   '/web-service/cctv-streaming': {
     title: 'CCTV Streaming',
-    description: 'ESP32-CAM의 MJPEG를 HLS로 변환하고 권한별 스트림·저장소 상태를 관리하는 웹 대시보드.',
+    description: 'ESP32-CAM USB 설치·JPEG push 송출, MJPEG·HLS 재생과 카메라별 송출 설정을 관리하는 웹 관제 앱.',
   },
   '/web-service/video-chatting': {
     title: 'Pair · Video Chatting',
-    description: 'WebRTC 학습용 랜덤 1:1 매칭·초대방 영상 통화와 RTCDataChannel 채팅의 구현·화면·API.',
+    description: 'WebRTC 학습용 1:1 랜덤 매칭·초대방 통화, 장치 권한 안내·채팅 읽기 위치·세션별 송신 처리의 구현과 API.',
   },
   '/web-service/bitcoin-auto-trader': {
     title: 'BTC Auto Trader',

@@ -11,8 +11,15 @@ export function GitHubMark() {
 function ServiceDetail({ serviceId }) {
   useDocumentTitle()
   const service = getWebService(serviceId)
+  const localSource = service.sourceState === 'local'
+  const reviewTime = service.reviewedAt
+    ? `${new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(service.reviewedAt))} KST`
+    : service.inspectedAt
   const dialog = useRef(null)
   const [selectedScreen, setSelectedScreen] = useState(null)
+  const screenImageUrl = screen => service.reviewedAt
+    ? `${screen.image}${screen.image.includes('?') ? '&' : '?'}v=${encodeURIComponent(service.reviewedAt)}`
+    : screen.image
 
   const openScreen = screen => {
     setSelectedScreen(screen)
@@ -48,7 +55,7 @@ function ServiceDetail({ serviceId }) {
               <figure className="service-screen" key={screen.id}>
                 <div className="service-screen-heading"><span>{screen.id}</span><h3>{screen.title}</h3></div>
                 <button className="service-screen-image" onClick={() => openScreen(screen)} aria-label={`${screen.title} 화면 확대`}>
-                  <img src={screen.image} width={screen.width} height={screen.height} alt={screen.alt} loading="lazy" decoding="async" />
+                  <img src={screenImageUrl(screen)} width={screen.width} height={screen.height} alt={screen.alt} loading="lazy" decoding="async" />
                   <span>확대 ↗</span>
                 </button>
                 <figcaption>{screen.caption}</figcaption>
@@ -81,12 +88,23 @@ function ServiceDetail({ serviceId }) {
           <section className="service-section" aria-labelledby="limits-heading"><div className="service-section-heading"><h2 id="limits-heading">검증 범위와 한계</h2></div><ul className="service-limit-list">{service.limitations.map(limitation => <li key={limitation}>{limitation}</li>)}</ul></section>
         </div>
 
-        <section className="service-section service-sources" aria-labelledby="source-heading"><div className="service-section-heading"><h2 id="source-heading">소스 코드</h2><p>확인일 {service.inspectedAt}{service.revision ? ` · 기준 커밋 ${service.revision}` : ''}</p></div><div className="service-source-links">{service.sources.map(source => <a key={source.path} href={`${service.github}/blob/${service.revision || 'main'}/${source.path}`} target="_blank" rel="noopener noreferrer" title={source.path}>{source.label} ↗</a>)}</div></section>
+        <section className="service-section service-sources" aria-labelledby="source-heading">
+          <div className="service-section-heading">
+            <h2 id="source-heading">소스 코드</h2>
+            <p>최종 검토 <time dateTime={service.reviewedAt || service.inspectedAt}>{reviewTime}</time>{localSource ? ' · 로컬 수정본' : ''}{service.revision ? ` · ${localSource ? '기준 HEAD' : '기준 커밋'} ${service.revision}` : ''}</p>
+          </div>
+          {service.sourceNote && <p className="service-architecture-note">{service.sourceNote}</p>}
+          <div className="service-source-links">
+            {service.sources.map(source => localSource
+              ? <span className="service-source-pending" key={source.path} title={source.path}>{source.label}<small>로컬</small></span>
+              : <a key={source.path} href={`${service.github}/blob/${service.revision || 'main'}/${source.path}`} target="_blank" rel="noopener noreferrer" title={source.path}>{source.label} ↗</a>)}
+          </div>
+        </section>
       </div>
 
       <dialog className="service-lightbox" ref={dialog} aria-labelledby="lightbox-heading" onClick={event => { if (event.target === dialog.current) dialog.current.close() }}>
         <div className="service-lightbox-toolbar"><h2 id="lightbox-heading">{selectedScreen?.title || '화면 확대'}</h2><button type="button" onClick={() => dialog.current.close()} aria-label="확대 화면 닫기">닫기 ×</button></div>
-        {selectedScreen && <><img src={selectedScreen.image} width={selectedScreen.width} height={selectedScreen.height} alt={selectedScreen.alt} /><p>{selectedScreen.caption}</p></>}
+        {selectedScreen && <><img src={screenImageUrl(selectedScreen)} width={selectedScreen.width} height={selectedScreen.height} alt={selectedScreen.alt} /><p>{selectedScreen.caption}</p></>}
       </dialog>
     </main>
   )
