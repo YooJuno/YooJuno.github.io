@@ -4,12 +4,14 @@
   "title": "CCTV Streaming",
   "status": "구현 · 배포 미정",
   "inspectedAt": "2026-10-14",
-  "revision": "039cc90",
+  "revision": "fef96b3",
   "github": "https://github.com/YooJuno/CCTV_Streaming",
   "site": "",
-  "summary": "ESP32-CAM의 MJPEG 영상을 HLS로 변환하고, 권한별 스트림과 재생 상태를 웹에서 관리합니다.",
+  "summary": "ESP32-CAM 설치·서버 송출부터 MJPEG·HLS 재생과 카메라 설정까지 관리하는 웹 관제 앱입니다.",
   "tech": [
     "ESP32-CAM",
+    "Web Serial",
+    "esptool-js",
     "FFmpeg",
     "Spring Boot",
     "React",
@@ -18,162 +20,282 @@
     "TanStack Query"
   ],
   "overview": [
-    "장치의 MJPEG 입력을 FFmpeg에서 HLS로 변환하고, Spring Boot가 매니페스트·세그먼트와 상태 API를 제공합니다. React 대시보드는 hls.js로 재생하며 스트림·저장소 상태를 조회합니다.",
-    "로그인 계정별 허용 스트림을 제한합니다. HaLow는 영상이 지나가는 네트워크 환경에 해당하며, 코드의 웹 재생 프로토콜 자체는 MJPEG 입력과 HLS 출력입니다."
+    "기본 수신 방식은 카메라가 서버로 JPEG 프레임을 보내는 HTTP(S) push입니다. 서버는 최신 프레임을 MJPEG로 제공하고, FFmpeg로 변환한 HLS도 함께 제공합니다. 서버가 카메라의 사설 IP에 직접 접속할 필요는 없습니다.",
+    "브라우저에서 USB 펌웨어 설치, Wi-Fi·서버 설정, 장치 연결 상태와 송출 설정을 관리합니다. 기존 LAN 환경의 MJPEG pull converter도 선택적으로 사용할 수 있습니다."
   ],
   "screens": [
     {
       "id": "C01",
-      "title": "스트림 대시보드",
+      "title": "카메라 관제·재생",
       "image": "/content/images/webservices/cctv/dashboard.png",
       "width": 1440,
       "height": 1000,
-      "alt": "스트림 수와 HLS 저장소 상태, 재생 카드가 있는 CCTV 대시보드",
-      "caption": "실제 프론트엔드에 예시 인증·상태 응답과 FFmpeg로 만든 HLS 테스트 패턴을 연결했습니다. 실장비 카메라에는 접근하지 않았습니다.",
+      "alt": "카메라 상태·검색과 실시간 및 호환 재생 선택을 제공하는 CCTV 관제 화면",
+      "caption": "검토한 프론트엔드에 예시 API 응답과 FFmpeg 테스트 이미지를 연결한 화면입니다. 실제 카메라 송출이나 지연 측정 결과는 아닙니다.",
       "annotations": [
-        "허용된 스트림 수·LIVE·OFFLINE·저장소 상태를 요약합니다.",
-        "각 스트림 카드에서 영상과 매니페스트 상태를 확인합니다.",
-        "폴링 주기와 갱신 상태를 표시하고 목록을 다시 조회합니다."
+        "검색·상태 필터와 그리드·집중 보기로 카메라를 탐색합니다.",
+        "실시간(MJPEG)과 호환 재생(HLS)을 선택하고 개별 카메라의 재생을 시작·중지합니다.",
+        "카메라 상태, 연결 상세와 재생 진단을 구분해 확인합니다."
       ]
     },
     {
       "id": "C02",
-      "title": "로그인과 접근 권한",
+      "title": "USB 장비 설치·연결",
+      "image": "/content/images/webservices/cctv/installer.png",
+      "width": 1440,
+      "height": 1310,
+      "alt": "USB 펌웨어 설치와 Wi-Fi·서버·카메라 ID 설정을 제공하는 장비 설치 화면",
+      "caption": "실제 설치 폼을 렌더링한 화면입니다. 서버 주소·카메라 목록은 예시 응답이며 USB 연결, 펌웨어 기록과 실제 Wi-Fi 설정 저장은 실행하지 않았습니다.",
+      "annotations": [
+        "USB 장치 선택 후 공통 펌웨어 설치·업데이트를 진행합니다.",
+        "Wi-Fi, 서버 주소·포트와 계정에 등록된 카메라 ID를 설정합니다.",
+        "장치의 Wi-Fi 연결과 서버 송출 상태를 별도로 확인합니다."
+      ]
+    },
+    {
+      "id": "C03",
+      "title": "카메라 송출 설정",
+      "image": "/content/images/webservices/cctv/settings.png",
+      "width": 1440,
+      "height": 1576,
+      "alt": "카메라의 송출 FPS·해상도·JPEG 화질·자동 조절 설정 화면",
+      "caption": "예시 설정 응답으로 폼을 확인했습니다. 설정 저장 API나 실장비의 적용 동작은 실행하지 않았습니다.",
+      "annotations": [
+        "목표 FPS, 해상도와 JPEG 화질을 카메라별로 관리합니다.",
+        "네트워크 자동 조절을 켜고 변경된 설정을 서버에 저장합니다.",
+        "서버 저장 성공과 장치 적용은 별도 단계이며, 장치가 설정 revision을 조회해 적용합니다."
+      ]
+    },
+    {
+      "id": "C04",
+      "title": "로그인·접근 권한",
       "image": "/content/images/webservices/cctv/login.png",
       "width": 1440,
       "height": 1000,
-      "alt": "CCTV 스트림 계정 로그인 화면",
-      "caption": "실제 로그인 UI입니다. 캡처에는 운영 계정이나 카메라 주소를 사용하지 않았습니다.",
+      "alt": "CCTV 관제 계정 로그인 화면",
+      "caption": "미인증 상태를 재현한 로그인 화면입니다. 운영 계정·비밀번호·장치 연결 키는 사용하지 않았습니다.",
       "annotations": [
-        "사용자 이름·비밀번호로 세션을 시작합니다.",
-        "인증된 계정의 허용 스트림만 목록에 표시합니다.",
-        "로그인 실패·시도 제한과 세션 만료를 화면에서 처리합니다."
+        "로그인 계정의 허용 카메라만 목록에 표시합니다.",
+        "API, MJPEG와 HLS 요청에 카메라 접근 권한을 확인합니다.",
+        "인증 실패·시도 제한과 세션 만료를 안내합니다."
       ]
     }
   ],
   "features": [
     {
-      "title": "MJPEG → HLS 변환",
-      "description": "ESP32-CAM 입력을 FFmpeg로 매니페스트·세그먼트로 변환해 웹 플레이어에 제공합니다."
+      "title": "USB 펌웨어 설치",
+      "description": "Web Serial과 esptool-js로 공통 ESP32-CAM 펌웨어를 설치하고 Wi-Fi·서버·장치 키를 USB로 전달합니다."
     },
     {
-      "title": "계정별 스트림 접근",
-      "description": "로그인·로그아웃·세션 복원과 스트림 권한 확인을 API와 HLS 파일 요청에 적용합니다."
+      "title": "카메라 → 서버 송출",
+      "description": "장치 ID별 키로 연속 JPEG 업로드를 인증합니다. 서버는 프레임을 검증하고 최신 프레임과 HLS 변환 경로에 전달합니다."
     },
     {
-      "title": "재생·복구 상태",
-      "description": "hls.js 재생 상태와 재시도 로직을 분리하고 오류·재연결 상태를 카드에 반영합니다."
+      "title": "MJPEG·HLS 재생",
+      "description": "최신 프레임 기반 MJPEG 재생과 hls.js 호환 재생을 선택합니다. 재연결·전체 화면·수신 FPS·버퍼 등의 진단을 제공합니다."
     },
     {
-      "title": "스트림·저장소 상태",
-      "description": "매니페스트 나이, 최신 세그먼트, LIVE·STALE·OFFLINE 등의 상태와 저장소 점검 결과를 조회합니다."
+      "title": "관제 화면 탐색",
+      "description": "검색·상태 필터, 그리드·집중 보기와 개별 재생으로 여러 카메라를 확인합니다. 장비 설치와 시스템 상태는 별도 화면으로 분리합니다."
+    },
+    {
+      "title": "송출 설정 관리",
+      "description": "목표 FPS 1~12, QVGA~SVGA 해상도, JPEG 화질 10~40과 자동 조절을 저장합니다. 장치는 변경된 revision을 조회해 적용합니다."
+    },
+    {
+      "title": "계정·스트림 상태",
+      "description": "계정별 카메라 권한, 로그인 시도 제한, 프레임 수신·HLS 파일·저장소 상태를 확인합니다. 장치 인증 키와 웹 로그인 자격을 분리합니다."
     }
   ],
   "architecture": [
     {
       "label": "ESP32-CAM",
-      "detail": "MJPEG 영상 입력"
-    },
-    {
-      "label": "FFmpeg",
-      "detail": "HLS 매니페스트·세그먼트"
+      "detail": "USB 설정·인증된 JPEG push"
     },
     {
       "label": "Spring Boot",
-      "detail": "인증·파일 제공·상태 조회"
+      "detail": "장치 인증·프레임 수신·MJPEG·상태 API"
     },
     {
-      "label": "React + hls.js",
-      "detail": "권한별 재생·상태 폴링"
+      "label": "FFmpeg",
+      "detail": "수신 JPEG → HLS 변환"
+    },
+    {
+      "label": "React",
+      "detail": "장비 설치·관제·MJPEG/hls.js 재생"
     }
   ],
-  "architectureNote": "브라우저의 재생·중지는 플레이어 동작입니다. 장치 전원이나 FFmpeg 변환 프로세스를 원격으로 시작·종료하는 API는 포함하지 않습니다.",
-  "apiNote": "API_CONTRACT.md와 Controller 기준입니다. /hls 파일 요청에도 스트림 접근 권한을 검사합니다.",
+  "architectureNote": "영상 시작·중지는 브라우저 플레이어를 제어합니다. 장치의 송출 설정 변경은 별도 API로 저장하며, 펌웨어가 주기적으로 조회해 적용합니다. 화면 재생 상태와 실제 장치 송출 상태는 구분합니다.",
+  "apiNote": "로컬 Controller와 API_CONTRACT.md를 대조했습니다. /api/devices 업로드·config는 장치 키, 관제·설정·MJPEG·HLS는 로그인 계정과 카메라 권한을 사용합니다.",
   "api": [
     {
       "method": "POST",
       "path": "/api/auth/login",
-      "description": "로그인",
+      "description": "관제 로그인",
       "request": "username · password",
-      "response": "expiresInSeconds · 사용자 정보 · streams",
-      "access": "실패 횟수 제한, 429와 Retry-After"
+      "response": "사용자 정보 · streams · expiresInSeconds",
+      "access": "사용자·접속 주소별 실패 제한, 429·Retry-After"
     },
     {
       "method": "GET",
       "path": "/api/auth/me",
-      "description": "현재 인증 상태 복원",
-      "request": "인증 쿠키",
-      "response": "사용자 정보 · 허용 streams",
-      "access": "미인증 시 401"
+      "description": "인증 상태 복원",
+      "request": "로그인 쿠키",
+      "response": "사용자 정보 · 허용 streams · 남은 유효기간",
+      "access": "미인증 401, 조회로 토큰 유효기간을 연장하지 않음"
+    },
+    {
+      "method": "GET",
+      "path": "/api/devices/server-info",
+      "description": "장치에 설정할 서버 주소 제안",
+      "request": "로그인 쿠키",
+      "response": "serverUrl · requiresConfiguration",
+      "access": "제안 주소의 실제 네트워크 도달성은 별도 확인"
+    },
+    {
+      "method": "POST",
+      "path": "/api/devices/provision",
+      "description": "장치 연결 키 발급·교체 준비",
+      "request": "streamId · 사용자 인증",
+      "response": "streamId · deviceToken · ingestUrl",
+      "access": "기존 허용 카메라만 가능, 새 키 첫 인증 전에는 기존 active 키 유지"
+    },
+    {
+      "method": "POST",
+      "path": "/api/devices/{streamId}/video",
+      "description": "연속 JPEG 수신·영상 송출",
+      "request": "X-Device-Token · application/octet-stream",
+      "response": "완료 시 status · frames, 수신 중 MJPEG/HLS 제공",
+      "access": "기본 스트림당 업로드 1개·전체 8개, 프레임 2MiB 제한, 400·401·409·429·503"
+    },
+    {
+      "method": "GET",
+      "path": "/api/devices/{streamId}/settings",
+      "description": "관제용 송출 설정 조회",
+      "request": "streamId · 사용자 인증",
+      "response": "fps · frameSize · jpegQuality · adaptive · revision",
+      "access": "카메라 권한 검사, 미설치 장치는 기본값 조회 가능"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/devices/{streamId}/settings",
+      "description": "송출 설정 저장",
+      "request": "fps · frameSize · jpegQuality · adaptive",
+      "response": "저장된 설정 · revision",
+      "access": "FPS 1~12·화질 10~40, 같은 설정 저장 시 revision 유지"
+    },
+    {
+      "method": "GET",
+      "path": "/api/devices/{streamId}/config",
+      "description": "펌웨어 설정 동기화",
+      "request": "X-Device-Token",
+      "response": "송출 설정 · revision",
+      "access": "해당 장치 키 인증, 변경 적용 시 업로드 재연결 가능"
+    },
+    {
+      "method": "GET",
+      "path": "/api/live/{streamId}/stream.mjpeg",
+      "description": "최신 JPEG 프레임 재생",
+      "request": "streamId · 사용자 인증",
+      "response": "multipart/x-mixed-replace JPEG 프레임",
+      "access": "카메라 권한 검사, 기본 동시 시청 24개, 프레임 수신 대기·만료 처리"
+    },
+    {
+      "method": "GET",
+      "path": "/api/live/{streamId}/status",
+      "description": "프레임 수신 상태",
+      "request": "streamId · 사용자 인증",
+      "response": "connected · frameAgeMs · receivedFps · bytesPerSecond · sequence",
+      "access": "수신 통계이며 촬영부터 화면까지의 전체 지연값은 아님"
     },
     {
       "method": "GET",
       "path": "/api/streams",
-      "description": "허용 스트림 목록",
-      "request": "인증 쿠키",
+      "description": "허용 카메라 목록",
+      "request": "로그인 쿠키",
       "response": "streams: [{id, name}]",
-      "access": "계정별 스트림 권한"
+      "access": "계정별 카메라 권한"
     },
     {
       "method": "GET",
       "path": "/api/system/health",
-      "description": "통합 상태 조회",
-      "request": "인증 쿠키",
+      "description": "HLS·저장소 통합 상태",
+      "request": "로그인 쿠키",
       "response": "hlsStorage · streams · streamDetails · recommendedPollMs",
-      "access": "인증된 사용자의 상태 범위"
+      "access": "폴링 힌트와 허용 카메라 상태 조회"
     },
     {
       "method": "GET",
       "path": "/api/streams/health",
-      "description": "스트림별 상태 조회",
-      "request": "인증 쿠키",
-      "response": "상태·매니페스트 나이·세그먼트 정보",
-      "access": "계정별 스트림 권한"
+      "description": "HLS 카메라별 상태",
+      "request": "로그인 쿠키",
+      "response": "상태 · 매니페스트·세그먼트 정보",
+      "access": "계정별 카메라 권한"
     },
     {
       "method": "GET",
       "path": "/hls/{streamId}.m3u8",
-      "description": "HLS 재생 진입점",
-      "request": "허용된 streamId · 인증 쿠키",
-      "response": "매니페스트와 후속 세그먼트 요청",
-      "access": "경로 형식 검사·스트림 권한 확인"
+      "description": "HLS 호환 재생",
+      "request": "streamId · 로그인 쿠키",
+      "response": "매니페스트 · 후속 세그먼트",
+      "access": "경로 형식과 카메라 권한 검사"
     }
   ],
   "decisions": [
     {
-      "title": "영상 변환·상태 API 분리",
-      "description": "FFmpeg는 영상 변환, Spring Boot는 인증·목록·상태 API, 브라우저는 HLS 재생을 담당합니다."
+      "title": "Push 기본·LAN pull 선택",
+      "description": "카메라가 서버로 나가는 연결을 사용해 사설 카메라 IP 접근 문제를 줄였습니다. 기존 LAN pull converter는 별도 실행 방식으로 남겼습니다."
     },
     {
-      "title": "상태 조회 통합",
-      "description": "system/health가 스트림 상세와 폴링 힌트를 함께 전달해 같은 HLS 디렉터리를 중복 스캔하는 요청을 줄입니다."
+      "title": "영상 출력 경로 분리",
+      "description": "MJPEG는 서버의 최신 프레임을 전달하고, HLS는 FFmpeg 변환·세그먼트·재생 버퍼를 사용합니다. 수신 상태와 HLS 파일 상태도 별도로 확인합니다."
+    },
+    {
+      "title": "설정·자격증명 분리",
+      "description": "Wi-Fi 설정은 USB로 장치 NVS에 저장하고 웹 서버·브라우저 저장소에 보관하지 않습니다. 서버에는 장치 키 digest와 송출 설정을 저장하며, 새 키는 첫 인증 시 교체됩니다."
     }
   ],
   "limitations": [
-    "캡처에는 예시 API 응답과 HLS 테스트 패턴을 사용했습니다. 실장비·장거리 무선 링크의 지연과 화질은 측정하지 않았습니다.",
-    "HLS 재생 지연은 세그먼트 길이·버퍼·네트워크에 좌우됩니다. 원격 조종용 지연 기준을 충족하는지는 별도 측정이 필요합니다.",
-    "멀티 노드 변환·저장소 확장과 운영 환경 인증서·접근 정책은 별도 배포 설계가 필요합니다."
+    "화면은 예시 API 응답·테스트 이미지로 확인했습니다. 실제 ESP32-CAM, USB 기록, Wi-Fi 연결, JPEG push 수신과 장거리 무선 품질은 이 검수에서 시험하지 않았습니다.",
+    "MJPEG 수신 통계와 HLS 플레이리스트 지연은 촬영부터 화면까지의 전체 지연을 뜻하지 않습니다. 목표 FPS와 지연은 실장비·네트워크에서 측정해야 합니다.",
+    "USB 설치는 지원 브라우저·보안 컨텍스트·USB-UART 연결 조건이 필요합니다. UI 캡처는 펌웨어 설치 성공의 증거가 아닙니다.",
+    "현재 RTSP, WebRTC와 시청자별 ABR 다중 화질 스트림은 포함하지 않습니다. 공개 운영의 HTTPS·장치 키·저장소·접근 정책은 별도 배포 설계가 필요합니다."
   ],
   "sources": [
     {
-      "label": "API 계약",
+      "label": "API 명세",
       "path": "docs/api/API_CONTRACT.md"
     },
     {
-      "label": "대시보드",
+      "label": "장치 수신·설정",
+      "path": "apps/backend/src/main/java/com/yoojuno/cctv/api/device/DeviceController.java"
+    },
+    {
+      "label": "MJPEG 재생 API",
+      "path": "apps/backend/src/main/java/com/yoojuno/cctv/api/device/LiveViewController.java"
+    },
+    {
+      "label": "JPEG 프레임 검증",
+      "path": "apps/backend/src/main/java/com/yoojuno/cctv/device/JpegStreamFramer.java"
+    },
+    {
+      "label": "장비 설치 화면",
+      "path": "apps/frontend/src/components/DeviceInstaller.tsx"
+    },
+    {
+      "label": "송출 설정 화면",
+      "path": "apps/frontend/src/components/StreamSettingsPanel.tsx"
+    },
+    {
+      "label": "카메라 관제",
       "path": "apps/frontend/src/App.tsx"
     },
     {
-      "label": "상태 폴링",
-      "path": "apps/frontend/src/features/health/useHealthPolling.ts"
-    },
-    {
-      "label": "브라우저 검증",
-      "path": "apps/frontend/e2e/dashboard.spec.ts"
-    },
-    {
-      "label": "실행 구성",
-      "path": "README.md"
+      "label": "ESP32-CAM 펌웨어",
+      "path": "apps/cctv/device/main.cpp"
     }
-  ]
+  ],
+  "reviewedAt": "2026-10-14T15:10:07+09:00",
+  "sourceState": "published",
+  "sourceNote": "dev에 반영된 개발 버전을 기준으로 정리했습니다. 소스 공개와 실제 서비스 배포는 별개입니다."
 }
