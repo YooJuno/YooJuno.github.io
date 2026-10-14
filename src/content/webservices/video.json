@@ -1,0 +1,192 @@
+{
+  "id": "video",
+  "route": "/web-service/video-chatting",
+  "title": "Pair · Video Chatting",
+  "status": "구현 · 배포 미정",
+  "inspectedAt": "2026-10-14",
+  "revision": "a3d67b6",
+  "github": "https://github.com/YooJuno/video-chatting",
+  "site": "",
+  "summary": "WebRTC 학습을 위한 1:1 랜덤 매칭·초대방 영상 통화와 데이터 채널 채팅입니다.",
+  "tech": [
+    "React",
+    "TypeScript",
+    "Vite",
+    "Spring Boot",
+    "WebSocket",
+    "WebRTC",
+    "STUN / TURN"
+  ],
+  "overview": [
+    "React·TypeScript 프론트엔드와 Spring Boot 백엔드로 구성한 영상 통화 앱입니다. 클라이언트는 미디어·WebRTC·시그널링·화면을 분리하고, 서버는 매칭·초대방·SDP·ICE 전달과 ICE 설정을 담당합니다.",
+    "랜덤 매칭과 12자리 코드 초대방을 제공하며 방 정원은 2명입니다. 채팅은 RTCDataChannel로 전달합니다. 공개 익명 서비스 운영에 필요한 신원 확인·상시 모더레이션을 갖춘 제품과는 구분한 학습용 구현입니다."
+  ],
+  "screens": [
+    {
+      "id": "V01",
+      "title": "입장·연결 준비",
+      "image": "/content/images/webservices/video/lobby.png",
+      "width": 1440,
+      "height": 1000,
+      "alt": "랜덤 연결과 초대방, 카메라 동의 설정이 있는 Pair 입장 화면",
+      "caption": "새 앱의 실제 로컬 실행 화면입니다. 시작 전에는 카메라·마이크를 요청하지 않습니다.",
+      "annotations": [
+        "랜덤 연결 또는 초대방을 선택합니다.",
+        "이용 안내 동의와 카메라·마이크 권한을 확인합니다.",
+        "연결 전·대기·오류 상태를 영상 영역과 안내문으로 표시합니다."
+      ]
+    },
+    {
+      "id": "V02",
+      "title": "1:1 통화·채팅",
+      "image": "/content/images/webservices/video/call.png",
+      "width": 1440,
+      "height": 1000,
+      "alt": "두 브라우저가 WebRTC로 연결된 Pair 통화와 텍스트 채팅 화면",
+      "caption": "로컬의 두 브라우저를 실제 WebRTC로 연결한 화면입니다. 실제 사람 대신 테스트용 가상 카메라·마이크를 사용했습니다.",
+      "annotations": [
+        "상대 영상과 내 미리보기를 함께 표시합니다.",
+        "마이크·카메라 토글, 다음 상대, 종료로 통화를 제어합니다.",
+        "데이터 채널 채팅과 세션 단위 신고·차단을 제공합니다."
+      ]
+    }
+  ],
+  "features": [
+    {
+      "title": "랜덤 1:1 매칭",
+      "description": "서버 대기열에서 상대를 연결하고, 다음 상대 요청 시 이전 연결을 정리합니다. 같은 세션의 직전·차단 상대 재매칭을 제한합니다."
+    },
+    {
+      "title": "초대방",
+      "description": "무작위 12자리 코드와 링크로 최대 2명이 연결됩니다. 대기 방은 만료되며 통화 종료 후 새 방을 만들 수 있습니다."
+    },
+    {
+      "title": "실제 미디어·채팅",
+      "description": "SDP·ICE 교환 후 브라우저 간 영상·음성과 RTCDataChannel 메시지를 전달합니다."
+    },
+    {
+      "title": "명시적 시작·종료",
+      "description": "시작 동의, 장치 권한, 미디어 토글, 상대 이탈·서버 단절·연결 실패 시 정리와 카메라 해제를 처리합니다."
+    }
+  ],
+  "architecture": [
+    {
+      "label": "React + TypeScript",
+      "detail": "입장·영상·채팅 UI와 상태 구독"
+    },
+    {
+      "label": "Spring Boot",
+      "detail": "REST 설정·WebSocket·매칭·방"
+    },
+    {
+      "label": "WebRTC",
+      "detail": "브라우저 간 영상·음성·채팅"
+    },
+    {
+      "label": "STUN / TURN",
+      "detail": "연결 후보 탐색·필요 시 릴레이"
+    }
+  ],
+  "apiNote": "HTTP는 상태·ICE 설정, WebSocket은 매칭·시그널링에 사용합니다. WS 메시지는 JSON의 type으로 구분하며 미디어 업로드 API는 없습니다.",
+  "api": [
+    {
+      "method": "GET",
+      "path": "/api/health",
+      "description": "서버 상태",
+      "request": "없음",
+      "response": "status · online · waiting · activeCalls",
+      "access": "집계 정보만 공개"
+    },
+    {
+      "method": "GET",
+      "path": "/api/config",
+      "description": "ICE 구성",
+      "request": "동일 출처 요청",
+      "response": "iceServers · iceTransportPolicy · relayOnly",
+      "access": "요청 빈도 제한. TURN 구성 시 만료 자격 발급"
+    },
+    {
+      "method": "WS",
+      "path": "queue:join",
+      "description": "랜덤 매칭 시작",
+      "request": "attemptId",
+      "response": "waiting 또는 paired(callId, offerer)",
+      "access": "이미 연결·대기 중인 세션의 중복 참여 제한"
+    },
+    {
+      "method": "WS",
+      "path": "room:create · room:join",
+      "description": "초대방 생성·입장",
+      "request": "attemptId · 입장 시 code",
+      "response": "room-created(code) 또는 paired",
+      "access": "2명 정원·코드 유효성·대기 만료"
+    },
+    {
+      "method": "WS",
+      "path": "signal",
+      "description": "SDP·ICE 전달",
+      "request": "callId · description 또는 candidate",
+      "response": "짝지어진 상대에게 signal",
+      "access": "현재 callId와 페어 검증·크기 제한"
+    },
+    {
+      "method": "WS",
+      "path": "call:leave · peer:report",
+      "description": "종료·세션 차단",
+      "request": "메시지 type",
+      "response": "peer-left 또는 reported",
+      "access": "신고는 메모리 임시 기록. 영구 차단·운영자 검토가 아님"
+    },
+    {
+      "method": "RTC",
+      "path": "chat",
+      "description": "상대와 텍스트 대화",
+      "request": "최대 2,000자 메시지",
+      "response": "상대 데이터 채널 수신",
+      "access": "연결 중에만 사용·React 텍스트로 출력"
+    }
+  ],
+  "decisions": [
+    {
+      "title": "시그널링과 미디어 분리",
+      "description": "서버는 연결 협상을 전달하고, 미디어·채팅은 WebRTC 경로를 사용합니다. TURN 사용 시 미디어는 릴레이를 거칩니다."
+    },
+    {
+      "title": "세션·시도 식별자",
+      "description": "매칭 시도와 callId를 구분해 이전 연결의 늦은 이벤트가 새 통화에 섞이지 않도록 처리합니다."
+    },
+    {
+      "title": "출처·자원 제한",
+      "description": "허용 Origin, WebSocket 크기·빈도, 접속 수, 대기 만료와 heartbeat로 기본 경계를 둡니다."
+    }
+  ],
+  "limitations": [
+    "인터넷·방화벽 환경의 연결 성공을 위해 TURN과 HTTPS/WSS 배포가 필요합니다. 로컬 검증이 모든 NAT 환경을 보장하지는 않습니다.",
+    "P2P 모드에서는 상대에게 네트워크 주소가 드러날 수 있습니다. 익명성이 필요하면 TURN과 RELAY_ONLY 설정을 함께 검토해야 합니다.",
+    "신고·차단은 현재 서버·연결 세션 범위이며 영구 제재·사람의 검토·강한 연령 확인이 아닙니다. 공개 익명 서비스로 바로 운영하지 않습니다.",
+    "매칭·방은 메모리 기반입니다. 다중 서버·재시작 복원·지속적 운영 감사·모더레이션은 추가 개발 대상입니다."
+  ],
+  "sources": [
+    {
+      "label": "실행·설정·보안 범위",
+      "path": "README.md"
+    },
+    {
+      "label": "매칭·초대방",
+      "path": "backend/src/main/java/io/github/yoojuno/pair/matchmaking/MatchmakingService.java"
+    },
+    {
+      "label": "Spring WebSocket",
+      "path": "backend/src/main/java/io/github/yoojuno/pair/signaling/SignalingHandler.java"
+    },
+    {
+      "label": "미디어·데이터 채널",
+      "path": "frontend/src/chat/PeerSession.ts"
+    },
+    {
+      "label": "React 화면",
+      "path": "frontend/src/App.tsx"
+    }
+  ],
+  "architectureNote": "시그널링: 브라우저 ↔ Spring WebSocket. 미디어·채팅: 브라우저 ↔ WebRTC ↔ 상대 브라우저. TURN을 사용하면 미디어 경로에 릴레이가 추가됩니다."
+}

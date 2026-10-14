@@ -14,6 +14,7 @@ const WebServiceBlog = lazy(() => import('./pages/webservice/WebServiceBlog.jsx'
 const WebServiceCctv = lazy(() => import('./pages/webservice/WebServiceCctv.jsx'))
 const WebServiceVideo = lazy(() => import('./pages/webservice/WebServiceVideo.jsx'))
 const WebServiceBtc = lazy(() => import('./pages/webservice/WebServiceBtc.jsx'))
+const WebServiceHellog = lazy(() => import('./pages/webservice/WebServiceHellog.jsx'))
 
 const NotFound = lazy(() => import('./pages/NotFound.jsx'))
 import ErrorBoundary from './components/ErrorBoundary.jsx'
@@ -71,6 +72,7 @@ const NAV_SECTIONS = [
       { to: '/web-service/cctv-streaming', label: 'CCTV Streaming' },
       { to: '/web-service/video-chatting', label: 'Video Chatting' },
       { to: '/web-service/bitcoin-auto-trader', label: 'Bitcoin Auto Trader' },
+      { to: '/web-service/hellog', label: 'HelloG' },
     ],
   },
 ]
@@ -172,6 +174,7 @@ const AppRoutes = () => {
           <Route path="/web-service/cctv-streaming" element={<WebServiceCctv />} />
           <Route path="/web-service/video-chatting" element={<WebServiceVideo />} />
           <Route path="/web-service/bitcoin-auto-trader" element={<WebServiceBtc />} />
+          <Route path="/web-service/hellog" element={<WebServiceHellog />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

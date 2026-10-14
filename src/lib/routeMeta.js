@@ -37,15 +37,19 @@ export const ROUTE_META = {
   },
   '/web-service/cctv-streaming': {
     title: 'CCTV Streaming',
-    description: '장거리 무선 환경을 위한 영상 모니터링 서비스.',
+    description: 'ESP32-CAM의 MJPEG를 HLS로 변환하고 권한별 스트림·저장소 상태를 관리하는 웹 대시보드.',
   },
   '/web-service/video-chatting': {
-    title: 'Video Chatting',
-    description: '브라우저 기반 실시간 영상 통화 서비스.',
+    title: 'Pair · Video Chatting',
+    description: 'WebRTC 학습용 랜덤 1:1 매칭·초대방 영상 통화와 RTCDataChannel 채팅의 구현·화면·API.',
   },
   '/web-service/bitcoin-auto-trader': {
-    title: 'Bitcoin Auto Trader',
-    description: '전략 설정과 자동매매 실행을 연결한 서비스.',
+    title: 'BTC Auto Trader',
+    description: 'Upbit 시세·포트폴리오·전략 설정·엔진 판단 로그를 연결하는 자동매매 콘솔의 구현과 API.',
+  },
+  '/web-service/hellog': {
+    title: 'HelloG',
+    description: 'Spring Boot·React·H2 기반 운동 기록 앱. 세트별 입력·기록 탐색·개인 기구 관리의 화면과 API.',
   },
 }
 
