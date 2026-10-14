@@ -11,8 +11,8 @@
     </style>
   </defs>
   <rect width="680" height="1000" rx="20" fill="#f5f7fc"/>
-  <text x="34" y="53" class="title">Nav2: 관측에서 주행 명령까지</text>
-  <text x="34" y="84" class="note">역할을 나누고, 계층 사이의 계약을 맞춘다</text>
+  <text x="34" y="53" class="title">Nav2 주행 구조</text>
+  <text x="34" y="84" class="note">위치 추정 · 경로 계획 · 경로 추종 · 구동 제어</text>
   <rect x="48" y="111" width="584" height="76" rx="14" fill="#e9eeff" stroke="#bdcaf6"/>
   <text x="340" y="142" text-anchor="middle" class="label">BT Navigator</text>
   <text x="340" y="171" text-anchor="middle" class="note">목표 요청 → 계획 · 추종 · 재계획 · 복구 조정</text>

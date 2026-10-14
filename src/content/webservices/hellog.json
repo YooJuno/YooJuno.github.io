@@ -1,0 +1,185 @@
+{
+  "id": "hellog",
+  "route": "/web-service/hellog",
+  "title": "HelloG",
+  "status": "구현 · 배포 미정",
+  "inspectedAt": "2026-10-14",
+  "revision": "20caa94",
+  "github": "https://github.com/YooJuno/hellog",
+  "site": "",
+  "summary": "부위·기구·세트별 운동 기록과 지난 기록, 나의 헬스장 기구를 관리하는 웹 앱입니다.",
+  "tech": [
+    "React",
+    "Spring Boot",
+    "Spring Data JPA",
+    "H2",
+    "Google OAuth2",
+    "Lucide"
+  ],
+  "overview": [
+    "부위를 고르고 기구·중량·횟수를 입력하는 기록 흐름, 이전 운동의 검색·기간 필터, 사용자 기구 목록을 한 앱으로 구성했습니다.",
+    "서버는 로그인한 사용자와 기록 소유자를 함께 조회해 데이터를 분리합니다. 프론트엔드는 작성 중인 폼을 사용자별 localStorage 초안으로 저장하며, 서버의 최종 운동 기록과는 구분합니다."
+  ],
+  "screens": [
+    {
+      "id": "H01",
+      "title": "운동 기록 입력",
+      "image": "/content/images/webservices/hellog/log.png",
+      "width": 1440,
+      "height": 1000,
+      "alt": "부위와 기구를 고르고 중량과 반복 횟수를 입력하는 HelloG 화면",
+      "caption": "실제 프론트엔드에 예시 사용자·기구·운동 기록을 연결했습니다. 실제 사용자 기록은 사용하지 않았습니다.",
+      "annotations": [
+        "부위·기구·장비 유형을 선택하고 종목을 구성합니다.",
+        "세트별 kg·횟수를 추가하고 운동 메모를 남깁니다.",
+        "작성 중 초안과 최종 저장 상태를 구분합니다."
+      ]
+    },
+    {
+      "id": "H02",
+      "title": "기록 검색·통계",
+      "image": "/content/images/webservices/hellog/history.png",
+      "width": 1440,
+      "height": 1000,
+      "alt": "이전 운동과 운동량을 검색·필터링하는 HelloG 기록보기 화면",
+      "caption": "예시 기록으로 실제 기록보기 UI를 렌더링했습니다. 통계는 예시 입력에 대한 화면 표시입니다.",
+      "annotations": [
+        "검색어·부위·날짜 범위로 운동을 좁힙니다.",
+        "기록의 세트·횟수·볼륨과 추이를 확인합니다.",
+        "기존 기록을 다시 불러와 수정·복사·삭제합니다."
+      ]
+    }
+  ],
+  "features": [
+    {
+      "title": "세트 단위 기록",
+      "description": "날짜·제목·종목·세트의 중량과 횟수를 묶어 저장하고 수정합니다."
+    },
+    {
+      "title": "기록 탐색·통계",
+      "description": "검색·부위·날짜 필터와 운동량 요약으로 이전 운동을 확인합니다."
+    },
+    {
+      "title": "나의 기구 목록",
+      "description": "기본 기구와 개인 기구를 구분하고 부위·장비·제조사 기준으로 관리합니다."
+    },
+    {
+      "title": "회원별 기록·초안",
+      "description": "OAuth2 사용자 소유권으로 서버 기록을 제한하고, 사용자별 브라우저 초안을 복원합니다."
+    }
+  ],
+  "architecture": [
+    {
+      "label": "React 폼",
+      "detail": "기록·필터·기구·초안"
+    },
+    {
+      "label": "Spring Security",
+      "detail": "OAuth2·현재 사용자"
+    },
+    {
+      "label": "Controller + JPA",
+      "detail": "소유권 조회·검증·트랜잭션"
+    },
+    {
+      "label": "H2 파일 DB",
+      "detail": "운동·종목·세트·기구"
+    }
+  ],
+  "apiNote": "Workout·GymMachine·Auth Controller와 DTO 기준입니다. 예시 필드이며 전체 스키마는 소스에서 확인할 수 있습니다.",
+  "api": [
+    {
+      "method": "GET",
+      "path": "/api/auth/me",
+      "description": "현재 로그인 상태",
+      "request": "세션",
+      "response": "authenticated · googleLoginEnabled · user",
+      "access": "로그인 여부에 따른 상태 응답"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workouts",
+      "description": "내 운동 목록",
+      "request": "로그인 세션",
+      "response": "날짜·종목·sets·totalVolume 등의 목록",
+      "access": "현재 사용자 소유 기록"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workouts",
+      "description": "운동 저장",
+      "request": "workoutDate · title · exercises[].sets[]",
+      "response": "201 · WorkoutResponse · Location",
+      "access": "회원·입력값 검증"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/workouts/{id}",
+      "description": "운동 수정",
+      "request": "수정할 WorkoutRequest",
+      "response": "WorkoutResponse",
+      "access": "id와 owner를 함께 조회"
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/workouts/{id}",
+      "description": "운동 삭제",
+      "request": "기록 id",
+      "response": "204 No Content",
+      "access": "현재 사용자 소유 기록"
+    },
+    {
+      "method": "GET",
+      "path": "/api/machines",
+      "description": "기구 목록",
+      "request": "로그인 세션",
+      "response": "기구·부위·장비·제조사 정보",
+      "access": "계정 기준 기구 조회"
+    },
+    {
+      "method": "POST",
+      "path": "/api/machines",
+      "description": "개인 기구 추가",
+      "request": "category · name · equipmentType · manufacturer",
+      "response": "MachineResponse",
+      "access": "필수 필드 검증·사용자 범위"
+    }
+  ],
+  "decisions": [
+    {
+      "title": "계층형 운동 데이터",
+      "description": "운동 세션 아래 종목과 세트를 분리해 중량·횟수·전체 볼륨을 관리합니다."
+    },
+    {
+      "title": "초안과 서버 기록 분리",
+      "description": "브라우저에 사용자별 초안을 보관해 입력 중 이탈을 줄이고, 최종 저장은 인증된 서버 요청으로 처리합니다."
+    }
+  ],
+  "limitations": [
+    "캡처는 예시 응답을 연결한 프론트엔드 확인입니다. OAuth 제공자·운영 DB까지 이번 작업에서 연결하지 않았습니다.",
+    "H2 파일 DB의 백업·동시 접근·운영 이관과 사용자 데이터 보존 정책은 별도 관리가 필요합니다.",
+    "localStorage 초안은 기기·브라우저 단위입니다. 서버 동기화나 다른 기기 간 초안 공유 기능은 아닙니다."
+  ],
+  "sources": [
+    {
+      "label": "화면·초안·검색",
+      "path": "frontend/src/App.jsx"
+    },
+    {
+      "label": "운동 API",
+      "path": "backend/src/main/java/com/healthlogger/backend/workout/WorkoutController.java"
+    },
+    {
+      "label": "운동 DTO",
+      "path": "backend/src/main/java/com/healthlogger/backend/workout/WorkoutDtos.java"
+    },
+    {
+      "label": "기구 API",
+      "path": "backend/src/main/java/com/healthlogger/backend/gym/GymMachineController.java"
+    },
+    {
+      "label": "인증 상태",
+      "path": "backend/src/main/java/com/healthlogger/backend/auth/AuthController.java"
+    }
+  ]
+}

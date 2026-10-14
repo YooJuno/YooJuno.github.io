@@ -13,7 +13,7 @@
     </style>
   </defs>
   <rect width="680" height="1100" rx="20" fill="#f5f7fc"/>
-  <text x="34" y="53" class="title">BT: 정상 주행과 두 단계 복구</text>
+  <text x="34" y="53" class="title">BT 주행·복구 흐름</text>
   <text x="34" y="85" class="note">실패 분류 → 복구 → 정상 작업 재시도</text>
   <rect x="60" y="120" width="560" height="80" rx="14" fill="#e9eeff" stroke="#bdcaf6"/>
   <text x="340" y="153" text-anchor="middle" class="label">RecoveryNode · NavigateRecovery</text>

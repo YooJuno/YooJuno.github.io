@@ -1,0 +1,178 @@
+{
+  "id": "cctv",
+  "route": "/web-service/cctv-streaming",
+  "title": "CCTV Streaming",
+  "status": "구현 · 배포 미정",
+  "inspectedAt": "2026-10-14",
+  "revision": "039cc90",
+  "github": "https://github.com/YooJuno/CCTV_Streaming",
+  "site": "",
+  "summary": "ESP32-CAM의 MJPEG 영상을 HLS로 변환하고, 권한별 스트림과 재생 상태를 웹에서 관리합니다.",
+  "tech": [
+    "ESP32-CAM",
+    "FFmpeg",
+    "Spring Boot",
+    "React",
+    "TypeScript",
+    "hls.js",
+    "TanStack Query"
+  ],
+  "overview": [
+    "장치의 MJPEG 입력을 FFmpeg에서 HLS로 변환하고, Spring Boot가 매니페스트·세그먼트와 상태 API를 제공합니다. React 대시보드는 hls.js로 재생하며 스트림·저장소 상태를 조회합니다.",
+    "로그인 계정별 허용 스트림을 제한합니다. HaLow는 영상이 지나가는 네트워크 환경에 해당하며, 코드의 웹 재생 프로토콜 자체는 MJPEG 입력과 HLS 출력입니다."
+  ],
+  "screens": [
+    {
+      "id": "C01",
+      "title": "스트림 대시보드",
+      "image": "/content/images/webservices/cctv/dashboard.png",
+      "width": 1440,
+      "height": 1000,
+      "alt": "스트림 수와 HLS 저장소 상태, 재생 카드가 있는 CCTV 대시보드",
+      "caption": "실제 프론트엔드에 예시 인증·상태 응답과 FFmpeg로 만든 HLS 테스트 패턴을 연결했습니다. 실장비 카메라에는 접근하지 않았습니다.",
+      "annotations": [
+        "허용된 스트림 수·LIVE·OFFLINE·저장소 상태를 요약합니다.",
+        "각 스트림 카드에서 영상과 매니페스트 상태를 확인합니다.",
+        "폴링 주기와 갱신 상태를 표시하고 목록을 다시 조회합니다."
+      ]
+    },
+    {
+      "id": "C02",
+      "title": "로그인과 접근 권한",
+      "image": "/content/images/webservices/cctv/login.png",
+      "width": 1440,
+      "height": 1000,
+      "alt": "CCTV 스트림 계정 로그인 화면",
+      "caption": "실제 로그인 UI입니다. 캡처에는 운영 계정이나 카메라 주소를 사용하지 않았습니다.",
+      "annotations": [
+        "사용자 이름·비밀번호로 세션을 시작합니다.",
+        "인증된 계정의 허용 스트림만 목록에 표시합니다.",
+        "로그인 실패·시도 제한과 세션 만료를 화면에서 처리합니다."
+      ]
+    }
+  ],
+  "features": [
+    {
+      "title": "MJPEG → HLS 변환",
+      "description": "ESP32-CAM 입력을 FFmpeg로 매니페스트·세그먼트로 변환해 웹 플레이어에 제공합니다."
+    },
+    {
+      "title": "계정별 스트림 접근",
+      "description": "로그인·로그아웃·세션 복원과 스트림 권한 확인을 API와 HLS 파일 요청에 적용합니다."
+    },
+    {
+      "title": "재생·복구 상태",
+      "description": "hls.js 재생 상태와 재시도 로직을 분리하고 오류·재연결 상태를 카드에 반영합니다."
+    },
+    {
+      "title": "상태·저장소 관측",
+      "description": "매니페스트 나이, 최신 세그먼트, LIVE·STALE·OFFLINE 등의 상태와 저장소 점검 결과를 조회합니다."
+    }
+  ],
+  "architecture": [
+    {
+      "label": "ESP32-CAM",
+      "detail": "MJPEG 영상 입력"
+    },
+    {
+      "label": "FFmpeg",
+      "detail": "HLS 매니페스트·세그먼트"
+    },
+    {
+      "label": "Spring Boot",
+      "detail": "인증·파일 제공·상태 조회"
+    },
+    {
+      "label": "React + hls.js",
+      "detail": "권한별 재생·상태 폴링"
+    }
+  ],
+  "apiNote": "저장소의 API_CONTRACT.md와 Controller 기준입니다. hls 경로도 스트림 접근 제어 대상입니다.",
+  "api": [
+    {
+      "method": "POST",
+      "path": "/api/auth/login",
+      "description": "로그인",
+      "request": "username · password",
+      "response": "expiresInSeconds · 사용자 정보 · streams",
+      "access": "실패 횟수 제한, 429와 Retry-After"
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/me",
+      "description": "현재 인증 상태 복원",
+      "request": "인증 쿠키",
+      "response": "사용자 정보 · 허용 streams",
+      "access": "미인증 시 401"
+    },
+    {
+      "method": "GET",
+      "path": "/api/streams",
+      "description": "허용 스트림 목록",
+      "request": "인증 쿠키",
+      "response": "streams: [{id, name}]",
+      "access": "계정별 스트림 권한"
+    },
+    {
+      "method": "GET",
+      "path": "/api/system/health",
+      "description": "통합 상태 조회",
+      "request": "인증 쿠키",
+      "response": "hlsStorage · streams · streamDetails · recommendedPollMs",
+      "access": "인증된 사용자의 상태 범위"
+    },
+    {
+      "method": "GET",
+      "path": "/api/streams/health",
+      "description": "스트림별 상태 조회",
+      "request": "인증 쿠키",
+      "response": "상태·매니페스트 나이·세그먼트 정보",
+      "access": "계정별 스트림 권한"
+    },
+    {
+      "method": "GET",
+      "path": "/hls/{streamId}.m3u8",
+      "description": "HLS 재생 진입점",
+      "request": "허용된 streamId · 인증 쿠키",
+      "response": "매니페스트와 후속 세그먼트 요청",
+      "access": "경로 형식 검사·스트림 권한 확인"
+    }
+  ],
+  "decisions": [
+    {
+      "title": "미디어·제어 경로 분리",
+      "description": "영상 변환은 FFmpeg, 권한·목록·관측은 Spring Boot, 재생은 브라우저가 담당합니다."
+    },
+    {
+      "title": "상태 조회 통합",
+      "description": "system/health가 스트림 상세와 폴링 힌트를 함께 전달해 같은 HLS 디렉터리를 중복 스캔하는 요청을 줄입니다."
+    }
+  ],
+  "limitations": [
+    "캡처는 UI·계약 확인용 예시 응답입니다. 실장비·장거리 무선 링크의 지연과 품질은 이번 작업에서 측정하지 않았습니다.",
+    "HLS 재생 지연은 세그먼트 길이·버퍼·네트워크에 좌우됩니다. WebRTC 초저지연 서비스로 표기하지 않습니다.",
+    "멀티 노드 변환·저장소 확장과 운영 환경 인증서·접근 정책은 별도 배포 설계가 필요합니다."
+  ],
+  "sources": [
+    {
+      "label": "API 계약",
+      "path": "docs/api/API_CONTRACT.md"
+    },
+    {
+      "label": "대시보드",
+      "path": "apps/frontend/src/App.tsx"
+    },
+    {
+      "label": "상태 폴링",
+      "path": "apps/frontend/src/features/health/useHealthPolling.ts"
+    },
+    {
+      "label": "브라우저 검증",
+      "path": "apps/frontend/e2e/dashboard.spec.ts"
+    },
+    {
+      "label": "실행 구성",
+      "path": "README.md"
+    }
+  ]
+}
