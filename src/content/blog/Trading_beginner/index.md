@@ -43,7 +43,7 @@ summary: "보유 기간·전략·지표를 구분하고, 주문 방식과 거래
 
 ## 3. 기술 지표
 
-| 지표 | 계산 대상 | 해석 주의사항 |
+| 지표 | 계산 대상 | 흔한 오해 |
 | --- | --- | --- |
 | MA·EMA | 일정 구간의 평균 가격, EMA는 최근 관측에 더 큰 가중 | 평균선 위라는 사실만으로 이후 상승을 보장 |
 | MACD | 이동평균 간 차이와 그 변화 | 교차만으로 추세 전환을 확정 |
@@ -51,7 +51,9 @@ summary: "보유 기간·전략·지표를 구분하고, 주문 방식과 거래
 | ATR | 가격 범위와 갭을 반영한 변동성 | 값이 크면 상승한다는 방향 지표로 사용 |
 | VWAP | 선택한 구간의 거래량가중평균 가격 | 기관의 실제 평균 매입단가나 지지선으로 단정 |
 
-대표적인 정의와 구현 인터페이스는 [TA-Lib 모멘텀 지표](https://ta-lib.github.io/ta-lib-python/func_groups/momentum_indicators.html), [변동성 지표](https://ta-lib.github.io/ta-lib-python/func_groups/volatility_indicators.html)를 참고할 수 있다. 같은 이름이라도 입력·기간·초기화 방식이 다르면 값이 달라질 수 있다.
+위 표의 마지막 열은 지표로 단정해서는 안 되는 해석이다. 특히 ATR은 변동성의 크기를 나타내며 상승·하락 방향을 나타내지 않는다. [Fidelity ATR 설명](https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/atr).
+
+정의와 구현 인터페이스는 [TA-Lib 모멘텀 지표](https://ta-lib.github.io/ta-lib-python/func_groups/momentum_indicators.html), [변동성 지표](https://ta-lib.github.io/ta-lib-python/func_groups/volatility_indicators.html)를 참고한다. 같은 이름이라도 입력·기간·초기화 방식이 다르면 값이 달라질 수 있다.
 
 VWAP의 기본 형태는 다음과 같다.
 

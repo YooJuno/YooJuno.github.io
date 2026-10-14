@@ -1,6 +1,7 @@
 ﻿import { Link } from 'react-router-dom'
 import useReveal from '../hooks/useReveal'
 import useDocumentTitle from '../hooks/useDocumentTitle'
+import profile from '../content/portfolio/profile.json'
 import '../styles/pages/home.css'
 
 function Home() {
@@ -11,10 +12,10 @@ function Home() {
       <section className="site-hero">
         <div className="container hero-grid">
           <div className="hero-text" data-reveal>
-            <p className="eyebrow">Robotics · Computer Vision · Embedded</p>
-            <h1>유준호</h1>
+            <p className="eyebrow">{profile.role}</p>
+            <h1>{profile.name}</h1>
             <p className="lead">
-              ROS2 자율주행, 컴퓨터 비전, 임베디드 시스템을 개발합니다.
+              {profile.intro.join(' ')}
             </p>
             <div className="hero-actions">
               <Link className="btn primary" to="/portfolio">포트폴리오</Link>
