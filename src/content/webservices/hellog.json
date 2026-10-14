@@ -2,7 +2,7 @@
   "id": "hellog",
   "route": "/web-service/hellog",
   "title": "HelloG",
-  "status": "구현 · 배포 미정",
+  "status": "구현 · 배포중",
   "inspectedAt": "2026-10-14",
   "revision": "20caa94",
   "github": "https://github.com/YooJuno/hellog",
