@@ -17,6 +17,7 @@
   <text x="340" y="142" text-anchor="middle" class="label">BT Navigator</text>
   <text x="340" y="171" text-anchor="middle" class="note">목표 요청 → 계획 · 추종 · 재계획 · 복구 조정</text>
   <path d="M632 149 H655 V631 H630" fill="none" stroke="#98a7c5" stroke-width="2" stroke-dasharray="5 6"/>
+  <path d="M655 567 H175 V590" fill="none" stroke="#98a7c5" stroke-width="2" stroke-dasharray="5 6"/>
   <rect x="48" y="228" width="276" height="74" rx="12" class="card"/>
   <rect x="356" y="228" width="276" height="74" rx="12" class="card"/>
   <text x="186" y="259" text-anchor="middle" class="label">센서 / Odometry</text>

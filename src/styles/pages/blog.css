@@ -126,6 +126,19 @@
   margin-top: 24px;
   margin-bottom: 10px;
   font-family: "Space Grotesk", sans-serif;
+  line-height: 1.45;
+  word-break: keep-all;
+}
+
+.post-content h2 {
+  margin-top: 48px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-content pre {
+  margin: 20px 0;
+  line-height: 1.65;
 }
 
 .post-content p + p {
