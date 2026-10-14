@@ -9,9 +9,9 @@
 
 export const SITE_URL = 'https://yoojuno.github.io'
 export const SITE_NAME = 'Yoo Juno'
-export const HOME_TITLE = 'Yoo Juno · 로보틱스·컴퓨터비전 개발자'
+export const HOME_TITLE = '유준호 · 자율주행 로봇 개발자'
 export const DEFAULT_DESCRIPTION =
-  '로보틱스·컴퓨터비전·임베디드 중심의 시스템 통합 개발자 유준호 포트폴리오'
+  '자율주행 로봇 개발자 유준호의 포트폴리오. 3D SLAM·Navigation 연구, 로봇·센서 통합과 배포 자동화 경험을 소개합니다.'
 
 // title 이 빈 문자열이면 HOME_TITLE 을 그대로 쓴다.
 export const ROUTE_META = {

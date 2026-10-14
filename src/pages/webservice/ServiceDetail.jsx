@@ -33,13 +33,12 @@ function ServiceDetail({ serviceId }) {
           <div className="service-actions">
             <a className="btn primary service-github" href={service.github} target="_blank" rel="noopener noreferrer"><GitHubMark /> GitHub 저장소 <span aria-hidden="true">↗</span></a>
             {service.site ? <a className="btn service-live" href={service.site} target="_blank" rel="noopener noreferrer">서비스 열기 ↗</a> : <p className="service-deployment-note">배포 주소는 확정 후 추가합니다.</p>}
-            <a className="service-text-link" href="#screens">실행 화면과 화면 정의 ↓</a>
+            <a className="service-text-link" href="#screens">화면 보기 ↓</a>
           </div>
         </header>
 
         <section className="service-section service-overview" aria-label="프로젝트 개요">
           {service.overview.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
-          <p className="service-evidence">기능·API는 소스 기준으로 정리했습니다. 캡처 환경과 예시 데이터 사용 여부는 각 화면에 표시합니다.</p>
         </section>
 
         <section className="service-section" id="screens" aria-labelledby="screens-heading">
@@ -60,7 +59,7 @@ function ServiceDetail({ serviceId }) {
         </section>
 
         <section className="service-section" aria-labelledby="features-heading">
-          <div className="service-section-heading"><h2 id="features-heading">주요 기능</h2><p>화면과 서버 구현을 연결한 기능 단위입니다.</p></div>
+          <div className="service-section-heading"><h2 id="features-heading">주요 기능</h2></div>
           <div className="service-feature-grid">{service.features.map(feature => <article key={feature.title}><h3>{feature.title}</h3><p>{feature.description}</p></article>)}</div>
         </section>
 
@@ -71,7 +70,7 @@ function ServiceDetail({ serviceId }) {
         </section>
 
         <section className="service-section" id="api" aria-labelledby="api-heading">
-          <div className="service-section-heading"><h2 id="api-heading">{service.apiTitle || 'API·데이터 계약'}</h2><p>{service.apiNote}</p></div>
+          <div className="service-section-heading"><h2 id="api-heading">{service.apiTitle || 'API 명세'}</h2><p>{service.apiNote}</p></div>
           <div className="service-api-scroll" role="region" aria-label="API 명세 표" tabIndex="0">
             <table className="service-api"><thead><tr><th scope="col">동작</th><th scope="col">인터페이스·역할</th><th scope="col">입력 → 출력</th><th scope="col">접근·주의사항</th></tr></thead><tbody>{service.api.map(endpoint => <tr key={`${endpoint.method}-${endpoint.path}`}><td><span className={`service-method method-${endpoint.method.toLowerCase()}`}>{endpoint.method}</span></td><td><code>{endpoint.path}</code><p>{endpoint.description}</p></td><td><span className="service-api-label">입력</span><p>{endpoint.request}</p><span className="service-api-label">출력</span><p>{endpoint.response}</p></td><td>{endpoint.access}</td></tr>)}</tbody></table>
           </div>
@@ -79,10 +78,10 @@ function ServiceDetail({ serviceId }) {
 
         <div className="service-notes-grid">
           <section className="service-section" aria-labelledby="design-heading"><div className="service-section-heading"><h2 id="design-heading">설계 포인트</h2></div>{service.decisions.map(decision => <article className="service-decision" key={decision.title}><h3>{decision.title}</h3><p>{decision.description}</p></article>)}</section>
-          <section className="service-section" aria-labelledby="limits-heading"><div className="service-section-heading"><h2 id="limits-heading">검증 범위·남은 과제</h2></div><ul className="service-limit-list">{service.limitations.map(limitation => <li key={limitation}>{limitation}</li>)}</ul></section>
+          <section className="service-section" aria-labelledby="limits-heading"><div className="service-section-heading"><h2 id="limits-heading">검증 범위와 한계</h2></div><ul className="service-limit-list">{service.limitations.map(limitation => <li key={limitation}>{limitation}</li>)}</ul></section>
         </div>
 
-        <section className="service-section service-sources" aria-labelledby="source-heading"><div className="service-section-heading"><h2 id="source-heading">구현 근거</h2><p>확인일 {service.inspectedAt}{service.revision ? ` · 소스 ${service.revision}` : ''}</p></div><div className="service-source-links">{service.sources.map(source => <a key={source.path} href={`${service.github}/blob/${service.revision || 'main'}/${source.path}`} target="_blank" rel="noopener noreferrer" title={source.path}>{source.label} ↗</a>)}</div></section>
+        <section className="service-section service-sources" aria-labelledby="source-heading"><div className="service-section-heading"><h2 id="source-heading">소스 코드</h2><p>확인일 {service.inspectedAt}{service.revision ? ` · 기준 커밋 ${service.revision}` : ''}</p></div><div className="service-source-links">{service.sources.map(source => <a key={source.path} href={`${service.github}/blob/${service.revision || 'main'}/${source.path}`} target="_blank" rel="noopener noreferrer" title={source.path}>{source.label} ↗</a>)}</div></section>
       </div>
 
       <dialog className="service-lightbox" ref={dialog} aria-labelledby="lightbox-heading" onClick={event => { if (event.target === dialog.current) dialog.current.close() }}>

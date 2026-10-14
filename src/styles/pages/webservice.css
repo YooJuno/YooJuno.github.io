@@ -37,7 +37,6 @@
 .service-section { padding: 38px 0; border-bottom: 1px solid var(--border); min-width: 0; }
 .service-overview { max-width: 900px; border: 0; padding-bottom: 0; }
 .service-overview p { line-height: 1.95; color: #48556b; font-size: 15px; }
-.service-evidence { font-size: 12px !important; color: var(--muted) !important; padding-left: 12px; border-left: 2px solid #d9e0ed; }
 .service-section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; margin-bottom: 23px; }
 .service-section-heading h2 { font-size: 23px; margin: 0; letter-spacing: -.7px; }
 .service-section-heading > p { font-size: 12px; color: var(--muted); line-height: 1.8; margin: 0; max-width: 650px; }
