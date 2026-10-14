@@ -109,8 +109,9 @@ Markdown의 업무 제목·기술 태그·자료 링크·사진은 기존 상세
 - 이미지 확대 화면은 키보드로 열 수 있고, Tab 포커스를 대화상자 안에 유지합니다. Escape로 닫으면 원래 이미지에 포커스를 돌려줍니다.
 - 토글의 `aria-expanded`, 현재 위치의 `aria-current`, 포커스 표시와 `prefers-reduced-motion` 대응을 적용합니다.
 - 라우트 영역에 오류 경계를 두어 페이지 렌더링 오류가 전체 탐색 메뉴·푸터까지 제거하지 않도록 합니다. 다른 경로로 이동하면 경계를 다시 마운트합니다.
+- 페이지 모듈 로딩 실패 시 탭에서 같은 배포 버전의 자동 새로고침을 한 번만 시도합니다. 반복 실패·오프라인·저장소 접근 제한 시에는 자동 재시도를 멈추며, 오류 화면의 새로고침 버튼으로 직접 재시도할 수 있습니다.
 
-구현: [탐색·이미지 확대](src/pages/Portfolio.jsx), [라우팅·메뉴](src/App.jsx), [오류 경계](src/components/ErrorBoundary.jsx), [모션 처리](src/hooks/useReveal.js).
+구현: [탐색·이미지 확대](src/pages/Portfolio.jsx), [라우팅·메뉴](src/App.jsx), [로딩 복구](src/lib/pageLoadRecovery.js), [오류 경계](src/components/ErrorBoundary.jsx), [모션 처리](src/hooks/useReveal.js).
 
 ### 5. 초기 로딩과 이미지 표시
 
@@ -133,7 +134,7 @@ Node 20 → npm ci → ESLint → Vite build → dist 아티팩트 업로드 →
 - 잠금 파일 기반으로 의존성을 설치하고, 린트·빌드 실패 시 배포 단계로 넘어가지 않습니다.
 - ESLint로 미정의 JSX 컴포넌트 참조와 React Hooks 규칙 등을 검사합니다.
 - Pages 배포는 GitHub Actions 워크플로로 관리하며, 같은 배포 그룹의 중복 실행은 취소합니다.
-- 개발은 `dev`에서 작업 브랜치를 만들어 진행하고, 검증 후 `dev`에 병합합니다. `main` 반영이 공개 사이트 배포로 이어집니다.
+- 개발은 `dev`에서 작업 브랜치를 만들어 진행합니다. `main` 병합 전에는 린트·빌드와 관련 화면의 직접 접근·메뉴 이동·오류 복구를 확인한 뒤 `dev`와 `main`에 순서대로 병합합니다. `main` 반영이 공개 사이트 배포로 이어집니다.
 
 도구가 자동으로 추가하는 커밋·PR 귀속 문구는 [저장소 설정](.claude/settings.json)에서 비활성화합니다.
 기존 커밋 이력이나 실제 작성자 정보는 변경하지 않습니다. [설정 기준](https://code.claude.com/docs/en/settings-reference#attribution).
