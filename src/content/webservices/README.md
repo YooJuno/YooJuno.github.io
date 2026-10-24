@@ -13,6 +13,7 @@
 
 ## 수정 파일
 
+- `moim.json`: 모임 운영 서비스
 - `portfolio.json`: 현재 사이트
 - `cctv.json`: CCTV Streaming
 - `video.json`: Pair 영상 통화
@@ -22,6 +23,7 @@
 `screens`의 이미지 경로는 `public/content/images/webservices/<서비스>/`를 사용합니다. `width`·`height`는 원본 이미지 크기입니다. 실제 프론트엔드에 예시 API 응답을 연결한 캡처는 `caption`에 그 사실을 표시합니다. 운영 계정·키·잔고·개인 기록을 캡처하지 않습니다.
 
 `api`는 확인한 실제 인터페이스만 기재합니다. 기획 단계 기능이나 아직 없는 경로를 구현된 API로 적지 않습니다. 소스 변경 후 `revision`·`inspectedAt`과 `sources`를 함께 갱신합니다.
+Firebase처럼 SDK로 직접 접근하는 서비스는 `apiTitle`에서 데이터 구조임을 명시하고, 가상의 REST 경로 대신 실제 문서 경로·권한을 정리합니다.
 
 ## 검토 시점·소스 상태
 

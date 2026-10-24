@@ -72,8 +72,8 @@
 .service-api code { font-size: 12px; color: #283d66; word-break: break-word; background: transparent; padding: 0; }
 .service-api p { font-size: 12px; color: #69758a; margin: 4px 0; line-height: 1.8; }
 .service-method { display: inline-block; font-size: 9px; font-weight: 700; color: #4269a1; background: #edf3fd; border-radius: 4px; padding: 2px 6px; }
-.method-post, .method-put, .method-delete { color: #986421; background: #fff4e3; }
-.method-ws, .method-rtc, .method-module { color: #6e5a9d; background: #f3eefc; }
+.method-post, .method-put, .method-patch, .method-delete { color: #986421; background: #fff4e3; }
+.method-ws, .method-rtc, .method-module, .method-sdk, .method-auth { color: #6e5a9d; background: #f3eefc; }
 .service-api-label { font-size: 9px; color: #96a0af; }
 .service-notes-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; }
 .service-decision + .service-decision { margin-top: 22px; }
