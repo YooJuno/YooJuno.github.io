@@ -20,7 +20,7 @@ function WebService() {
               <Link className="service-card-content" to={service.route}>
                 <h2>{service.title}</h2>
                 <p className="summary">{service.summary}</p>
-                <div className="meta-row"><span className={`badge ${service.id === 'portfolio' ? 'badge-running' : 'badge-dev'}`}>{service.status}</span><span>{service.tech.slice(0, 4).join(' · ')}</span></div>
+                <div className="meta-row"><span className={`badge ${service.site ? 'badge-running' : 'badge-dev'}`}>{service.status}</span><span>{service.tech.slice(0, 4).join(' · ')}</span></div>
               </Link>
               <div className="service-card-links">
                 <a href={service.github} target="_blank" rel="noopener noreferrer" aria-label={`${service.title} GitHub 저장소`}><GitHubMark /> GitHub ↗</a>
