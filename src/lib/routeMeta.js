@@ -35,6 +35,10 @@ export const ROUTE_META = {
     title: 'Portfolio & Blog',
     description: '포트폴리오와 기술 기록을 관리하는 사이트의 구조와 기능 정리.',
   },
+  '/web-service/moim': {
+    title: '모임 · moim',
+    description: 'React·TypeScript·Firebase 기반 모임 운영 서비스. 가입 승인, 일정·장소 투표, 캘린더·게시판·회계를 제공하며 Firebase Hosting에서 운영합니다.',
+  },
   '/web-service/cctv-streaming': {
     title: 'CCTV Streaming',
     description: 'ESP32-CAM USB 설치·JPEG push 송출, MJPEG·HLS 재생과 카메라별 송출 설정을 관리하는 웹 관제 앱.',
