@@ -1,0 +1,23 @@
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  color: #161b22;
+  background: #f6f7f9;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+[hidden] { display: none !important; }
+.admin-status { width: min(560px, calc(100% - 40px)); margin: 12vh auto; padding: 32px; background: #fff; border: 1px solid #e1e5ea; border-radius: 12px; }
+.admin-status h1 { margin: 32px 0 12px; font-size: 26px; letter-spacing: -0.04em; }
+.admin-status p { line-height: 1.8; color: #58657a; overflow-wrap: anywhere; }
+.admin-status a { color: #3157d5; text-decoration: none; }
+.admin-status a:hover { text-decoration: underline; }
+.admin-status pre { padding: 16px; overflow: auto; border-radius: 6px; background: #f3f5f9; }
+.admin-status button { margin-top: 16px; padding: 10px 16px; border: 1px solid #e1e5ea; border-radius: 6px; background: #fff; font: inherit; cursor: pointer; }
+.admin-status :focus-visible { outline: 2px solid #3157d5; outline-offset: 4px; }
+.back-link { font-size: 14px; }
+
+@media (max-width: 480px) {
+  .admin-status { margin-top: 40px; padding: 24px; }
+}

@@ -1,5 +1,6 @@
 ---
 title: "CORS"
+slug: "cors"
 date: "2026-02-20"
 category: "개발"
 tags:
