@@ -1,5 +1,6 @@
 ---
 title: "USB 없이 Ubuntu 설치: 내장 디스크 부팅"
+slug: "ubuntu-without-usb-disk"
 date: "2026-02-04"
 category: "개발"
 tags:

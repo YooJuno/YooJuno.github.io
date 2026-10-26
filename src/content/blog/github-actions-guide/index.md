@@ -1,5 +1,6 @@
 ---
 title: "GitHub Actions"
+slug: "github-actions-guide"
 date: "2026-10-14"
 category: "개발"
 tags:

@@ -4,6 +4,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createPortfolioEntries } from './src/lib/portfolioMarkdown.js'
+import { parseBlogPost } from './src/lib/blogContent.js'
 import {
   DEFAULT_DESCRIPTION,
   ROUTE_META,
@@ -12,6 +13,16 @@ import {
 } from './src/lib/routeMeta.js'
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url))
+
+const adminDirectoryPlugin = () => {
+  const configure = server => {
+    server.middlewares.use((request, response, next) => {
+      request.url = request.url.replace(/^\/admin\/?(?=\?|$)/, '/admin/index.html')
+      next()
+    })
+  }
+  return { name: 'admin-directory', configureServer: configure, configurePreviewServer: configure }
+}
 
 const portfolioContentPlugin = () => ({
   name: 'portfolio-content-validation',
@@ -62,18 +73,13 @@ const readBlogEntries = () => {
       const file = path.join(blogDir, entry.name, 'index.md')
       if (!fs.existsSync(file)) return null
 
-      const raw = fs.readFileSync(file, 'utf8').replace(/^\uFEFF/, '')
-      const front = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/)
-      const read = (key) => {
-        const hit = front?.[1].match(new RegExp(`^${key}:\\s*(.+)$`, 'm'))
-        return hit ? hit[1].trim().replace(/^["']|["']$/g, '') : ''
-      }
+      const post = parseBlogPost(fs.readFileSync(file, 'utf8'), entry.name)
 
       return {
-        slug: read('slug') || entry.name,
-        date: read('date'),
-        title: read('title') || entry.name,
-        description: read('summary') || DEFAULT_DESCRIPTION,
+        slug: post.slug,
+        date: post.date,
+        title: post.title,
+        description: post.summary,
       }
     })
     .filter(Boolean)
@@ -154,13 +160,14 @@ const collectPages = () => {
   // getPostBySlug 도 앞의 것만 돌려준다. 빌드에서 바로 잡는다.
   const seen = new Map()
   for (const post of entries) {
-    if (seen.has(post.slug)) {
+    const key = post.slug.toLowerCase()
+    if (seen.has(key)) {
       throw new Error(
         `블로그 slug 가 중복됩니다: "${post.slug}". ` +
           'Frontmatter 의 slug 를 바꾸거나 폴더 이름을 조정하세요.',
       )
     }
-    seen.set(post.slug, true)
+    seen.set(key, true)
   }
 
   return [
@@ -257,5 +264,5 @@ const prerenderPlugin = () => ({
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
-  plugins: [react(), portfolioContentPlugin(), imageSizesPlugin(), prerenderPlugin()],
+  plugins: [react(), adminDirectoryPlugin(), portfolioContentPlugin(), imageSizesPlugin(), prerenderPlugin()],
 })

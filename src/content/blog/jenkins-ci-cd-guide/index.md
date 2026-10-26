@@ -1,5 +1,6 @@
 ---
 title: "Jenkins"
+slug: "jenkins-ci-cd-guide"
 date: "2026-02-23"
 category: "개발"
 tags:

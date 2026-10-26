@@ -1,5 +1,6 @@
 ---
 title: "SLAM, Where Am I"
+slug: "slam-where-am-i"
 date: "2024-08-30"
 category: "개발"
 tags:

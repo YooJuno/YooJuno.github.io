@@ -1,0 +1,74 @@
+name: Publish blog content
+
+on:
+  push:
+    branches: [dev]
+    paths:
+      - 'src/content/blog/**'
+      - 'public/content/images/blog/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: cms-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout published code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Stage content-only merge
+        id: content
+        env:
+          SOURCE_REF: ${{ github.event_name == 'workflow_dispatch' && 'origin/dev' || github.sha }}
+        run: |
+          set -euo pipefail
+          git fetch origin dev main
+          changes="$(git diff --name-only HEAD..."$SOURCE_REF")"
+          if [ -z "$changes" ]; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo 'No unpublished content changes.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if printf '%s\n' "$changes" | grep -qEv '^(src/content/blog/|public/content/images/blog/)'; then
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            echo 'Code changes are pending on dev. Merge them manually before publishing content.' >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git merge --no-ff --no-commit "$SOURCE_REF"
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
+      - name: Setup Node
+        if: steps.content.outputs.ready == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        if: steps.content.outputs.ready == 'true'
+        run: npm ci
+
+      - name: Validate content and build
+        if: steps.content.outputs.ready == 'true'
+        run: npm run lint && npm run blog:check && npm run build
+
+      - name: Publish verified merge
+        if: steps.content.outputs.ready == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git commit -m 'publish: 검증한 블로그 콘텐츠를 main에 반영'
+          git push origin HEAD:main
+          gh workflow run deploy.yml --ref main

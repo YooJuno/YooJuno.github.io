@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>블로그 관리 · Yoo Juno</title>
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/admin/admin.css" />
+    <script src="/admin/admin.js" defer></script>
+  </head>
+  <body>
+    <section id="admin-status" class="admin-status" aria-live="polite">
+      <a class="back-link" href="/blog/">← 블로그로</a>
+      <h1>블로그 관리</h1>
+      <p id="status-message">관리자 설정을 확인하고 있습니다.</p>
+      <div id="setup-help" hidden>
+        <p>GitHub 로그인용 인증 서버를 먼저 연결해주세요. 방문자용 블로그는 정상적으로 이용할 수 있습니다.</p>
+        <a href="https://github.com/YooJuno/YooJuno.github.io/blob/main/docs/blog-cms.md">관리자 설정 안내 ↗</a>
+      </div>
+      <div id="local-help" hidden>
+        <p>프로젝트 폴더에서 아래 명령을 별도 터미널에 실행한 뒤 새로고침해주세요.</p>
+        <pre><code>npm run cms:proxy</code></pre>
+        <p>로컬 모드는 파일만 수정합니다. GitHub에 자동 커밋하거나 발행하지 않습니다.</p>
+      </div>
+      <button id="retry" type="button" hidden>다시 확인</button>
+      <noscript>관리자 화면을 이용하려면 JavaScript를 허용해주세요.</noscript>
+    </section>
+  </body>
+</html>

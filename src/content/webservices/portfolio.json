@@ -3,7 +3,7 @@
   "route": "/web-service/blog",
   "title": "Portfolio & Blog",
   "status": "운영 중",
-  "inspectedAt": "2026-10-14",
+  "inspectedAt": "2026-10-26",
   "github": "https://github.com/YooJuno/YooJuno.github.io",
   "site": "https://yoojuno.github.io/",
   "summary": "경력·프로젝트·기술 글을 파일 기반 콘텐츠로 관리하는 개인 웹사이트입니다.",
@@ -12,6 +12,7 @@
     "Vite",
     "React Router",
     "Markdown",
+    "Decap CMS",
     "GitHub Actions",
     "GitHub Pages"
   ],
@@ -52,7 +53,7 @@
   "features": [
     {
       "title": "파일 기반 콘텐츠",
-      "description": "블로그는 index.md와 같은 폴더의 이미지, 포트폴리오는 개별 JSON·Markdown으로 관리합니다."
+      "description": "블로그는 index.md와 같은 폴더의 이미지, 포트폴리오는 개별 JSON·Markdown으로 관리합니다. 별도 관리자에서 글을 편집해도 같은 파일 구조로 저장합니다."
     },
     {
       "title": "콘텐츠 탐색",
@@ -86,7 +87,7 @@
     }
   ],
   "apiTitle": "정적 리소스·모듈 인터페이스",
-  "apiNote": "별도 REST 백엔드는 없습니다. 아래는 실제 사용하는 정적 리소스와 콘텐츠 모듈입니다.",
+  "apiNote": "공개 콘텐츠를 조회하는 REST 백엔드는 없습니다. 아래는 정적 리소스와 콘텐츠 모듈입니다. 별도 관리자 로그인용 Cloudflare Worker는 GitHub OAuth 연결을 담당합니다.",
   "api": [
     {
       "method": "MODULE",
@@ -134,7 +135,8 @@
   "limitations": [
     "검색 색인 여부는 Search Console 등 외부 도구로 별도 확인해야 합니다.",
     "현재 HTML은 head만 경로별로 생성합니다. 본문 SSG·SSR은 추가 개선 대상입니다.",
-    "댓글·회원·글 작성 서버는 구현하지 않은 정적 콘텐츠 사이트입니다."
+    "관리자는 Decap CMS로 Git의 글 파일을 편집합니다. 원격 로그인에는 GitHub OAuth 앱과 Worker 시크릿 설정이 필요합니다.",
+    "댓글·방문자 회원 기능은 없으며 공개 저장소의 CMS 초안은 비공개가 아닙니다."
   ],
   "sources": [
     {
