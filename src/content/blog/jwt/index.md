@@ -1,5 +1,6 @@
 ---
 title: "JWT"
+slug: "jwt"
 date: "2026-02-21"
 category: "개발"
 tags:

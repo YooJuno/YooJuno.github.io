@@ -1,5 +1,6 @@
 ---
 title: "Nav2 주행 파이프라인"
+slug: "nav2-navigation-study"
 date: "2026-10-14"
 category: "개발"
 tags:

@@ -1,0 +1,17 @@
+:root { --ink: #161b22; --muted: #667085; --border: #e1e5ea; --accent: #3157d5; --radius: 12px; }
+* { box-sizing: border-box; }
+body { margin: 0; padding: 28px; font-family: -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; color: var(--ink); background: #fff; line-height: 1.8; }
+.post-header { margin-bottom: 24px; }
+.post-header h1 { margin: 12px 0; font-size: 30px; line-height: 1.4; letter-spacing: -0.04em; }
+.post-meta, .post-tags { display: flex; flex-wrap: wrap; gap: 12px; color: var(--muted); font-size: 13px; }
+.post-content { overflow-wrap: anywhere; }
+.post-content h2 { margin: 48px 0 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border); line-height: 1.45; }
+.post-content h3 { margin: 28px 0 10px; line-height: 1.45; }
+.post-content img { display: block; max-width: 100%; height: auto; margin: 20px 0; }
+.post-content a { color: var(--accent); }
+.post-content pre { overflow: auto; padding: 18px; border-radius: 8px; background: #f3f5f9; line-height: 1.65; }
+.post-content code { font-size: 0.9em; }
+.post-content table { display: block; overflow-x: auto; border-collapse: collapse; font-size: 0.92em; }
+.post-content th, .post-content td { min-width: 120px; padding: 12px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
+.post-content th { background: #f3f5f9; }
+.post-content blockquote { margin: 24px 0; padding: 12px 20px; border-left: 3px solid var(--accent); background: #f5f7fb; }

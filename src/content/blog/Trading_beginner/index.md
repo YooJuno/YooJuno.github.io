@@ -1,5 +1,6 @@
 ---
 title: "트레이딩 입문"
+slug: "Trading_beginner"
 date: "2026-02-05"
 category: "트레이딩"
 tags:

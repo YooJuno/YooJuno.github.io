@@ -1,5 +1,5 @@
 import { marked } from 'marked'
-import { parseFrontMatter } from './frontMatter.js'
+import { parseBlogPost } from './blogContent.js'
 import imageSizes from 'virtual:blog-image-sizes'
 
 const modules = import.meta.glob('../content/blog/**/index.md', {
@@ -13,15 +13,6 @@ const imageModules = import.meta.glob('../content/blog/**/*.{png,jpg,jpeg,webp,s
   query: '?url',
   import: 'default',
 })
-
-const normalizeTags = (tags) => {
-  if (!tags) return []
-  if (Array.isArray(tags)) return tags.map(String)
-  return String(tags)
-    .split(',')
-    .map((tag) => tag.trim())
-    .filter(Boolean)
-}
 
 const getExcerpt = (content, summary) => {
   if (summary) return summary
@@ -94,20 +85,18 @@ const createRenderer = (baseDir) => {
 
 export const posts = Object.entries(modules)
   .map(([path, raw]) => {
-    const { data, content } = parseFrontMatter(raw)
     const parts = path.split('/')
     const slugFromPath = parts[parts.length - 2]
-    const slug = data.slug ? String(data.slug) : slugFromPath
+    const { slug, title, date, category, tags, summary, content } = parseBlogPost(raw, slugFromPath)
     const baseDir = path.slice(0, path.lastIndexOf('/') + 1)
-    const tags = normalizeTags(data.tags)
 
     return {
       slug,
-      title: data.title || slug,
-      date: data.date || '',
-      category: data.category || '',
+      title,
+      date,
+      category,
       tags,
-      summary: getExcerpt(content, data.summary),
+      summary: getExcerpt(content, summary),
       html: marked.parse(content, { renderer: createRenderer(baseDir) }),
       raw: content,
     }

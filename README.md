@@ -21,13 +21,15 @@
 | 스타일 | CSS · 미디어 쿼리 | 공통 스타일과 반응형 레이아웃 |
 | 검증·배포 | ESLint · GitHub Actions · GitHub Pages | 코드 검사와 정적 사이트 배포 |
 
-백엔드·DB·CMS 없이 저장소의 콘텐츠를 빌드해 배포합니다.
+방문자 화면은 DB 조회 없이 저장소의 콘텐츠를 빌드해 배포합니다.
+블로그는 별도 `/admin/`의 Decap CMS에서도 편집할 수 있습니다. GitHub 로그인은 Cloudflare Worker로 연결하며, OAuth 설정 완료가 필요합니다. 글과 이미지는 계속 Git으로 관리합니다.
 `/web-service`의 페이지들은 프로젝트 소개이며, 여기서 각 서비스의 백엔드를 실행하는 것은 아닙니다.
 
 ## 구조와 처리 흐름
 
 ```text
 작성
+├─ /admin/의 Decap CMS        → GitHub 인증 → 초안·검토 → dev
 ├─ portfolio/의 개별 파일      → 소개·경력·프로젝트와 사진
 └─ 글별 index.md + 이미지      → 블로그 콘텐츠
 
@@ -63,7 +65,7 @@ GitHub Pages에는 SPA용 서버 리라이트가 없으므로, 클라이언트 �
 본문에서는 `./image.png` 같은 상대 경로를 사용합니다.
 
 - Vite의 `import.meta.glob`으로 Markdown 원문과 이미지 URL을 수집합니다.
-- 필요한 문자열·목록 메타데이터를 내장 Frontmatter 파서로 읽고, `marked`의 커스텀 렌더러로 본문을 변환합니다.
+- 메타데이터는 `yaml` 기반 Frontmatter 파서로 읽고, `marked`의 커스텀 렌더러로 본문을 변환합니다. CMS가 저장하는 여러 줄 요약·따옴표·목록도 같은 파서로 처리합니다.
 - 상대 이미지 경로를 번들된 URL로 변환하고 `loading="lazy"`, `decoding="async"`를 추가합니다.
 - 빌드에서 크기를 확인할 수 있는 PNG·JPEG·SVG 이미지에는 `width`·`height`도 넣어 로딩 중 레이아웃 이동을 줄입니다.
 - 본문 제목에는 중복을 구분하는 ID를 생성해 특정 절을 직접 링크할 수 있게 합니다.
@@ -128,13 +130,14 @@ Markdown의 업무 제목·기술 태그·자료 링크·사진은 기존 상세
 `main` 푸시 또는 수동 워크플로 실행 시 아래 순서로 배포합니다.
 
 ```text
-Node 20 → npm ci → ESLint → Vite build → dist 아티팩트 업로드 → Pages 배포
+Node 20 → npm ci → ESLint → 글·이미지 경로 검사 → Vite build → dist 아티팩트 업로드 → Pages 배포
 ```
 
 - 잠금 파일 기반으로 의존성을 설치하고, 린트·빌드 실패 시 배포 단계로 넘어가지 않습니다.
 - ESLint로 미정의 JSX 컴포넌트 참조와 React Hooks 규칙 등을 검사합니다.
 - Pages 배포는 GitHub Actions 워크플로로 관리하며, 같은 배포 그룹의 중복 실행은 취소합니다.
 - 개발은 `dev`에서 작업 브랜치를 만들어 진행합니다. `main` 병합 전에는 린트·빌드와 관련 화면의 직접 접근·메뉴 이동·오류 복구를 확인한 뒤 `dev`와 `main`에 순서대로 병합합니다. `main` 반영이 공개 사이트 배포로 이어집니다.
+- CMS 발행은 초안 브랜치에서 `dev`로 통합합니다. 블로그 콘텐츠만 변경되었을 때 추가 워크플로가 검사 후 `main`으로 통합하고 배포를 실행합니다. 다른 코드가 남아 있으면 자동 병합하지 않습니다.
 
 도구가 자동으로 추가하는 커밋·PR 귀속 문구는 [저장소 설정](.claude/settings.json)에서 비활성화합니다.
 기존 커밋 이력이나 실제 작성자 정보는 변경하지 않습니다. [설정 기준](https://code.claude.com/docs/en/settings-reference#attribution).
@@ -158,6 +161,9 @@ npm run dev
 | `npm run lint` | 코드 정적 검사 |
 | `npm run build` | 배포 파일을 `dist/`에 생성 |
 | `npm run preview` | 빌드 결과를 로컬에서 확인 |
+| `npm run cms:proxy` | 로컬 관리자용 파일 편집 서버 실행 |
+| `npm run blog:backup` | 글·이미지 압축 백업과 SHA-256 manifest 생성 |
+| `npm run blog:check` | 글 메타데이터·주소·이미지 경로 검사 |
 
 GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 설정합니다.
 
@@ -170,7 +176,8 @@ GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 �
 | 논문·수상·활동 / 학력·기본 정보 | `src/content/portfolio/records.json` / `src/content/portfolio/background.json` |
 | 프로젝트 정보·상세·이미지·외부 링크 | `src/content/portfolio/projects/<프로젝트>/index.md`와 같은 폴더의 `images/` |
 | 새 프로젝트·경력 양식 | `src/content/portfolio/templates/` — 해당 양식을 새 항목 폴더의 `index.md`로 복사 |
-| 블로그 글·이미지 | `src/content/blog/<slug>/index.md`와 같은 글 폴더. 메타데이터는 `title`, `date`, `category`, `tags`, `summary`, 선택적인 `slug` |
+| 블로그 글·이미지 | `/admin/` 또는 `src/content/blog/<slug>/index.md`와 같은 글 폴더. `slug`는 폴더 이름과 같게 유지 |
+| 관리자 컬렉션·로그인 연결 | `public/admin/config.yml`, `public/admin/settings.json`, `infrastructure/cms-auth/` |
 | 웹서비스 소개·기능·API·GitHub 링크 | `src/content/webservices/<서비스>.json` |
 | 웹서비스 실행 화면 | `public/content/images/webservices/<서비스>/`. 캡처 환경과 예시 데이터 여부를 JSON의 `caption`에 기록 |
 | 새 페이지·메타데이터 | `src/App.jsx`의 라우트와 `src/lib/routeMeta.js`의 메타데이터를 함께 추가 |
@@ -178,12 +185,13 @@ GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 �
 | 고정 URL로 제공할 파일 | `public/`. 빌드 시 파일명·경로를 유지해 복사 |
 
 자세한 작성법은 [포트폴리오 수정 안내](src/content/portfolio/README.md)를 참고하세요.
+블로그는 [글 작성 규칙](src/content/blog/README.md), 관리자 연결·발행·백업은 [CMS 안내](docs/blog-cms.md)를 참고하세요.
 웹서비스 상세 페이지는 공통 컴포넌트를 사용합니다. 내용·화면 추가는 [웹서비스 수정 안내](src/content/webservices/README.md)를 참고하세요.
 `src`의 글·프로젝트·경력 이미지처럼 콘텐츠에서 참조하는 자산은 Vite가 처리합니다. 기존 이력서·논문 PDF 등 고정 URL을 유지할 파일은 `public`에서 제공합니다.
 따라서 모든 콘텐츠를 한쪽에 몰아넣기보다 **참조 방식과 배포 경로**를 기준으로 구분합니다.
 
 ## 현재 범위와 한계
 
-- Frontmatter 파서는 이 저장소에서 사용하는 간단한 문자열·목록 형식을 위한 것으로, 완전한 YAML 파서는 아닙니다.
+- 관리자 GitHub 로그인은 OAuth 앱·Worker 시크릿 설정이 필요합니다. 공개 저장소의 초안 브랜치는 비공개 저장 공간이 아닙니다.
 - Markdown HTML은 저장소 작성자를 신뢰하는 전제입니다. 별도 HTML 정화(sanitization)는 없으므로 외부 사용자 입력을 그대로 렌더링하는 용도로 사용하지 않습니다.
-- CI 검증 범위는 린트와 빌드입니다. 저장소에 상시 실행되는 단위·E2E 테스트나 성능 점수 기준은 아직 구성하지 않았습니다.
+- CI 검증 범위는 린트·글과 이미지 경로 검사·빌드입니다. 저장소에 상시 실행되는 단위·E2E 테스트나 성능 점수 기준은 아직 구성하지 않았습니다.

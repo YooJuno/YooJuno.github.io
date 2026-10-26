@@ -1,0 +1,9 @@
+name = "yoojuno-blog-cms-auth"
+main = "worker.js"
+compatibility_date = "2026-10-26"
+workers_dev = true
+
+[vars]
+CMS_ORIGIN = "https://yoojuno.github.io"
+ALLOWED_LOGIN = "YooJuno"
+GITHUB_REPO = "YooJuno/YooJuno.github.io"

@@ -1,0 +1,82 @@
+backend:
+  name: github
+  repo: YooJuno/YooJuno.github.io
+  branch: dev
+  site_domain: yoojuno.github.io
+  auth_endpoint: auth
+  squash_merges: true
+  commit_messages:
+    create: 'cms: create {{slug}}'
+    update: 'cms: update {{slug}}'
+    delete: 'cms: delete {{slug}}'
+    uploadMedia: 'cms: upload {{path}}'
+    deleteMedia: 'cms: delete {{path}}'
+
+publish_mode: editorial_workflow
+local_backend: false
+site_url: https://yoojuno.github.io
+display_url: https://yoojuno.github.io/blog/
+logo_url: https://yoojuno.github.io/favicon.ico
+locale: ko
+media_folder: public/content/images/blog
+public_folder: /content/images/blog
+show_preview_links: true
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: '-'
+
+collections:
+  - name: posts
+    label: 블로그 글
+    label_singular: 글
+    folder: src/content/blog
+    create: true
+    delete: false
+    extension: md
+    format: yaml-frontmatter
+    slug: '{{fields.slug}}'
+    path: '{{slug}}/index'
+    media_folder: ''
+    public_folder: ''
+    summary: '{{date}} · {{title}}'
+    sortable_fields: [date, title]
+    preview_path: 'blog/{{fields.slug}}/'
+    fields:
+      - label: 제목
+        name: title
+        widget: string
+      - label: 글 주소
+        name: slug
+        widget: string
+        pattern: ['^[a-zA-Z0-9][a-zA-Z0-9_-]*$', '영문·숫자·하이픈·밑줄만 사용해주세요.']
+        hint: '새 글은 영문 소문자와 하이픈을 권장합니다. 기존 글의 주소는 변경하지 않습니다.'
+      - label: 발행일
+        name: date
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
+        hint: 기존 글은 최초 발행일을 유지해주세요.
+      - label: 카테고리
+        name: category
+        widget: select
+        options: [개발, 음악, 여행, 코딩테스트, 트레이딩]
+        default: 개발
+      - label: 태그
+        name: tags
+        widget: list
+        allow_add: true
+        required: false
+        default: []
+        hint: 태그를 입력하고 Enter로 추가해주세요.
+      - label: 요약
+        name: summary
+        widget: text
+        hint: 글 목록과 검색 결과에 표시할 설명입니다.
+      - label: 본문
+        name: body
+        widget: richtext
+        modes: [raw, rich_text]
+        sanitize_preview: true
+        hint: '표·코드·수식이 많은 글은 Markdown 모드에서 편집해주세요. 이미지 버튼으로 사진을 추가할 수 있습니다.'
