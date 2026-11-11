@@ -1,6 +1,6 @@
 ﻿import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { posts, getAllTags } from '../../lib/posts'
+import { posts } from '../../lib/posts'
 import useReveal from '../../hooks/useReveal'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import '../../styles/pages/blog.css'
@@ -9,9 +9,6 @@ function Blog() {
   useReveal()
   const [searchParams] = useSearchParams()
   const [query, setQuery] = useState('')
-  const [activeTag, setActiveTag] = useState('')
-
-  const tags = getAllTags()
   const activeCategory = searchParams.get('category') || ''
 
   useDocumentTitle(activeCategory ? `블로그 · ${activeCategory}` : undefined)
@@ -30,12 +27,11 @@ function Blog() {
         .toLowerCase()
 
       const matchesQuery = !q || haystack.includes(q)
-      const matchesTag = !activeTag || post.tags.includes(activeTag)
       const matchesCategory = !activeCategory || post.category === activeCategory
 
-      return matchesQuery && matchesTag && matchesCategory
+      return matchesQuery && matchesCategory
     })
-  }, [query, activeTag, activeCategory])
+  }, [query, activeCategory])
 
   return (
     <main className="section blog-main">
@@ -57,20 +53,6 @@ function Blog() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-        </div>
-
-        <div className="blog-tags">
-          {tags.map((tag) => (
-            <button
-              type="button"
-              key={tag}
-              className={`tag-chip${activeTag === tag ? ' is-active' : ''}`}
-              aria-pressed={activeTag === tag}
-              onClick={() => setActiveTag(activeTag === tag ? '' : tag)}
-            >
-              #{tag}
-            </button>
-          ))}
         </div>
 
         <div className="blog-grid blog-list single">

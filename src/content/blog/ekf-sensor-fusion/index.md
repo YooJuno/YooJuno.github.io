@@ -14,7 +14,7 @@ summary: "센서 퓨전 관점에서 분산·공분산, P·Q·R, 중복 정보�
 
 EKF(Extended Kalman Filter)는 **운동 모델로 예측한 상태를 센서 관측으로 보정하는 추정기**다. 위치 숫자만 평균 내는 대신, 상태 사이의 관계와 각 정보의 불확실성까지 함께 계산한다.
 
-목표는 휠·IMU·위치 센서를 연결할 때 **어떤 값을 융합하고, 오차를 어떻게 설정하며, 결과를 무엇으로 검증할지** 이해하는 것이다. 수식은 2D 로봇으로 유도하고, 실제 적용은 `robot_localization`의 ROS 2 Jazzy 구현을 기준으로 설명한다. 사족보행에 필요한 3D 추정은 별도로 구분한다.
+목표는 휠·IMU·위치 센서를 연결할 때 **어떤 값을 융합하고, 오차를 어떻게 설정하며, 결과를 무엇으로 검증할지** 이해하는 것이다. 수식은 2D 로봇으로 유도하고, 실제 적용은 `robot_localization`의 ROS 2 Jazzy 구현을 기준으로 설명한다.
 
 ### 목차
 
@@ -26,8 +26,7 @@ EKF(Extended Kalman Filter)는 **운동 모델로 예측한 상태를 센서 관
 6. [NumPy 실습](#6-numpy-실습)
 7. [ROS 2 적용](#7-ros-2-적용)
 8. [튜닝과 검증](#8-튜닝과-검증)
-9. [ESKF·InEKF와 사족보행](#9-eskfinekf와-사족보행)
-10. [참고 자료](#10-참고-자료)
+9. [참고 자료](#9-참고-자료)
 
 그림은 직접 작성한 개념도다. NumPy 결과는 합성 데이터 실험이며 실제 로봇의 성능 측정값이 아니다.
 
@@ -52,7 +51,7 @@ EKF(Extended Kalman Filter)는 **운동 모델로 예측한 상태를 센서 관
 
 또한 `robot_localization`에 임의의 센서 함수를 넣으면 관측 모델이 자동으로 생성되는 것은 아니다. 예를 들어 거리·방위각 센서는 그 관측 기하를 모델링하거나, 적절한 상태 관측과 공분산으로 변환하는 별도 처리가 필요하다.
 
-이 글의 3차원 상태 예제도 실제 패키지와 다른 **학습용 모델**이다. 아래 수식을 패키지 내부 모델의 축약 코드로 해석하지 않는다.
+이 글의 예제는 위치 x·y와 yaw로 구성한 **학습용 모델**로, 실제 패키지의 상태 구성과 다르다. 아래 수식을 패키지 내부 모델의 축약 코드로 해석하지 않는다.
 
 ## 2. 센서 퓨전의 기본 개념
 
@@ -445,7 +444,7 @@ a_x, a_y, a_z
 - 엔코더를 적분한 pose와 같은 엔코더의 twist를 중복 사용하지 않는다.
 - IMU의 yaw 자세와 각속도를 구분하고, 이 예제에서는 각속도만 사용한다.
 - 지도·GNSS 등의 절대 정보가 없으므로 전역 위치·yaw 드리프트는 남는다.
-- `v_y=0`은 이동 제약을 관측으로 주는 설정이다. 횡이동하는 로봇·오므니 로봇·사족보행에는 그대로 적용할 수 없다.
+- `v_y=0`은 횡미끄럼이 작다는 가정에 따른 이동 제약이다. 실제로 횡방향 속도가 생기는 조건에서는 이 가정을 다시 검토해야 한다.
 
 [센서별 선택 가이드](https://github.com/cra-ros-pkg/robot_localization/blob/fea7fc3dcad81c533121e4aa2fb1087a0565d8cc/doc/configuring_robot_localization.rst)에서 입력 좌표계와 선택 벡터의 관계도 확인한다.
 
@@ -491,34 +490,9 @@ IMU의 중력 제거는 장착 자세·orientation 유효성·드라이버 출�
 
 평가는 같은 rosbag·같은 초기화로 비교한다. 독립적인 기준 궤적이 있으면 위치·방향 오차와 실패율을 함께 보고, 없으면 재현성·잔차·프레임 정합을 우선 점검한다. RViz에서 부드럽게 보이는 것만으로 정확도를 판단하지 않는다.
 
-## 9. ESKF·InEKF와 사족보행
-
-### 9.1 ESKF
-
-IMU 중심의 3D 추정에서는 위치·속도·회전·자이로 bias·가속도 bias를 함께 다루는 구성이 자주 사용된다. 회전은 3개의 독립적인 실수처럼 덧셈만으로 갱신하기 어려우므로, 기준 추정값인 nominal quaternion과 작은 회전 오차를 분리하는 **ESKF(Error-State Kalman Filter)**가 유용하다.
-
-**Quaternion의 성분 4개와 작은 회전 오차의 차원 3개를 구분**해야 한다. 오차 보정 후 nominal 상태로 주입하고 오차 상태·공분산을 재설정하는 과정도 필요하다. 이는 2D yaw를 wrap하는 작업보다 넓은 문제다. [Solà, Quaternion kinematics for the error-state Kalman filter](https://arxiv.org/abs/1711.02508)
-
-### 9.2 Contact-aided InEKF
-
-Hartley 등의 RSS 2018 논문은 IMU와 발 접촉·기구학 정보를 사용하는 **InEKF(Invariant Extended Kalman Filter)**를 다룬다. 접촉 중인 발이 지면에 고정돼 있다는 모델이 몸체 운동을 제한하는 관측을 제공한다. [논문](https://arxiv.org/abs/1805.10410)
-
-실제 사족보행에서는 접촉 전환·미끄럼·관절 오차에 따라 이 관측의 신뢰도가 달라진다. 접촉을 잘못 판정한 발을 강한 제약으로 사용하면 추정이 틀어질 수 있다. 이 구성에서도 IMU와 접촉 정보만으로 **절대 위치와 중력축 방향의 절대 yaw**가 모두 관측되지는 않는다.
-
-| 상황 | 검토할 구성 |
-| --- | --- |
-| 평면 휠 로봇의 로컬 odometry | `robot_localization` EKF와 검증한 이동 제약 |
-| 3D IMU·카메라·LiDAR 융합 | 해당 센서 모델과 회전 오차를 갖춘 추정기 |
-| 발 접촉·관절 기구학 활용 | contact-aided EKF·InEKF 등 |
-| 지도 기준 장기 드리프트 보정 | 지도 정합·GNSS 등 독립적인 전역 정보 |
-
-알고리즘 이름보다 **상태·관측·가정의 일치**가 먼저다. 특히 `robot_localization`의 15차원 상태에는 IMU bias 상태가 따로 없으므로, 전용 관성 항법 ESKF나 접촉 추정기를 그대로 대체한다고 가정하지 않는다.
-
-## 10. 참고 자료
+## 9. 참고 자료
 
 - [Moore·Stouch, IAS-13, 2014 — robot_localization 원논문](https://github.com/cra-ros-pkg/robot_localization/blob/fea7fc3dcad81c533121e4aa2fb1087a0565d8cc/doc/robot_localization_ias13_revised.pdf): 센서 선택·공통 상태 표현·Joseph form.
 - [robot_localization, Jazzy 소스 기준점](https://github.com/cra-ros-pkg/robot_localization/tree/fea7fc3dcad81c533121e4aa2fb1087a0565d8cc): `filter_common.hpp`, `ekf.cpp`, `filter_base.cpp`, 센서 구성 문서.
-- [Solà, 2017 — Quaternion kinematics for the error-state Kalman filter](https://arxiv.org/abs/1711.02508): quaternion·회전 오차·오차 상태 주입.
-- [Hartley 외, RSS 2018 — Contact-Aided Invariant Extended Kalman Filtering](https://arxiv.org/abs/1805.10410): 접촉 기반 추정과 관측 가능성.
 - [REP-105](https://github.com/ros-infrastructure/rep/blob/master/rep-0105.rst), [REP-145](https://github.com/ros-infrastructure/rep/blob/master/rep-0145.rst): 좌표계와 IMU 인터페이스.
 - [지면 분리: GSeg3D와 FugSeg](/blog/lidar-ground-segmentation/): 추정 자세·센서 좌표계가 지면 분리에 미치는 영향.
