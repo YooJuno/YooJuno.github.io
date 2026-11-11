@@ -123,9 +123,3 @@ export const getPostBySlug = (slug) => {
   const target = normalizeSlugValue(slug)
   return posts.find((post) => normalizeSlugValue(post.slug) === target)
 }
-
-export const getAllTags = () => {
-  const set = new Set()
-  posts.forEach((post) => post.tags.forEach((tag) => set.add(tag)))
-  return Array.from(set)
-}
