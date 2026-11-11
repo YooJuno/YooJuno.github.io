@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="920" viewBox="0 0 680 920" role="img" aria-labelledby="title desc">
+  <title id="title">IMU와 관절 접촉 관측의 융합 흐름</title>
+  <desc id="desc">IMU로 회전과 속도 및 위치를 예측하고 관절각과 접촉 정보로 발 상대 위치 관측을 구성한다. 접촉 기반 추정기에서 상태와 공분산 및 접촉점을 관리한 뒤 odom 기준 pose와 몸체 기준 twist를 출력한다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#3157d5" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#172339}.title{font-size:29px;font-weight:750}.label{font-size:24px;font-weight:700}.note{font-size:21px;fill:#526178}.panel{fill:#fff;stroke:#d8e0ed;stroke-width:1.5}.arrow{fill:none;stroke:#3157d5;stroke-width:2.5;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="680" height="920" rx="20" fill="#f5f7fc"/>
+  <text x="34" y="53" class="title">관절 · IMU 오도메트리</text>
+  <text x="34" y="87" class="note">접촉 위치 관측을 사용하는 융합 구성</text>
+  <rect x="34" y="118" width="292" height="106" rx="12" class="panel"/>
+  <text x="58" y="157" class="label">IMU</text>
+  <text x="58" y="195" class="note">ω_m · f_m · 측정 시각</text>
+  <rect x="354" y="118" width="292" height="106" rx="12" class="panel"/>
+  <text x="378" y="157" class="label">관절 · 접촉</text>
+  <text x="378" y="195" class="note">q · 발 ID · 접촉 여부</text>
+  <path d="M180 224V244" class="arrow"/>
+  <path d="M500 224V244" class="arrow"/>
+  <rect x="34" y="254" width="292" height="132" rx="12" class="panel"/>
+  <text x="58" y="292" class="label">IMU 예측</text>
+  <text x="58" y="330" class="note">회전 · 속도 · 위치</text>
+  <text x="58" y="366" class="note">중력 · bias · 공분산</text>
+  <rect x="354" y="254" width="292" height="132" rx="12" class="panel"/>
+  <text x="378" y="292" class="label">정기구학</text>
+  <text x="378" y="330" class="note">발 상대 위치 FK(q)</text>
+  <text x="378" y="366" class="note">접촉 발 관측 구성</text>
+  <path d="M180 386V426H500V386" fill="none" stroke="#3157d5" stroke-width="2.5"/>
+  <path d="M340 426V454" class="arrow"/>
+  <rect x="34" y="464" width="612" height="150" rx="12" fill="#edf6f2" stroke="#bddbd0" stroke-width="1.5"/>
+  <text x="58" y="506" class="label">접촉 기반 상태 추정</text>
+  <text x="58" y="548" class="note">예측 · 관측 잔차로 상태와 공분산 보정</text>
+  <text x="58" y="586" class="note">접촉점 상태 · 접촉 전환 관리</text>
+  <path d="M340 614V654" class="arrow"/>
+  <rect x="34" y="664" width="612" height="120" rx="12" class="panel"/>
+  <text x="58" y="703" class="label">로컬 odometry</text>
+  <text x="58" y="739" class="note">pose: odom 기준 · twist: 몸체 기준</text>
+  <text x="58" y="771" class="note">접촉 전환의 pose 점프 · 출력 지연 점검</text>
+  <text x="340" y="847" text-anchor="middle" class="note">odom → base_link · TF 발행 주체 1개</text>
+  <text x="340" y="884" text-anchor="middle" class="note">IMU · FK · 접촉의 측정 시각과 좌표계 일치</text>
+</svg>
