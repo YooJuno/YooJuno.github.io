@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="850" viewBox="0 0 680 850" role="img" aria-labelledby="title desc">
+  <title id="title">EKF 예측과 관측 보정</title>
+  <desc id="desc">이전 상태와 공분산에 운동 모델과 과정 잡음을 적용한다. 관측이 도착하면 innovation, 관측 공분산, Kalman gain을 계산해 상태와 공분산을 보정한다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#3157d5" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#172339}.title{font-size:29px;font-weight:750}.label{font-size:24px;font-weight:700}.note{font-size:21px;fill:#526178}.formula{font-family:ui-monospace,monospace;font-size:23px}.panel{fill:#fff;stroke:#d8e0ed;stroke-width:1.5}.arrow{fill:none;stroke:#3157d5;stroke-width:2.5;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="680" height="850" rx="20" fill="#f5f7fc"/>
+  <text x="34" y="53" class="title">EKF · 예측과 관측 보정</text>
+  <text x="34" y="87" class="note">평균 상태와 오차 공분산을 함께 유지</text>
+  <rect x="64" y="116" width="552" height="77" rx="12" class="panel"/>
+  <text x="340" y="162" text-anchor="middle" class="label">이전 상태 x⁺ · 공분산 P⁺</text>
+  <path d="M340 193V229" class="arrow"/>
+  <rect x="64" y="239" width="552" height="164" rx="12" class="panel"/>
+  <text x="88" y="279" class="label">1  예측</text>
+  <text x="88" y="319" class="formula">x⁻ = f(x⁺, u, Δt)</text>
+  <text x="88" y="356" class="formula">P⁻ = F P⁺ Fᵀ + Q_d</text>
+  <text x="88" y="385" class="note">입력 · 운동 모델 · 모델 오차 반영</text>
+  <path d="M340 403V439" class="arrow"/>
+  <rect x="64" y="449" width="552" height="205" rx="12" class="panel"/>
+  <text x="88" y="489" class="label">2  관측 z 도착 후 보정</text>
+  <text x="88" y="529" class="formula">ν = z − h(x⁻)</text>
+  <text x="88" y="566" class="formula">S = H P⁻ Hᵀ + R</text>
+  <text x="88" y="603" class="formula">K = P⁻ Hᵀ S⁻¹</text>
+  <text x="88" y="633" class="note">관측 잔차 · 게이팅 · 보정량 계산</text>
+  <path d="M340 654V690" class="arrow"/>
+  <rect x="64" y="700" width="552" height="91" rx="12" fill="#edf6f2" stroke="#bddbd0" stroke-width="1.5"/>
+  <text x="88" y="738" class="formula">x⁺ = x⁻ + Kν</text>
+  <text x="88" y="770" class="note">P⁺는 Joseph form으로 보정 → 다음 예측</text>
+  <text x="340" y="826" text-anchor="middle" class="note">개념도 · 과대 확신과 관측 이상치는 별도 점검</text>
+</svg>
