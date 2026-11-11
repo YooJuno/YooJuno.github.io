@@ -1082,23 +1082,11 @@ a.chip-link:hover {
   box-shadow: 0 0 0 3px rgba(49, 87, 213, 0.1);
 }
 
-.blog-tags {
-  gap: 7px;
-  margin-bottom: 28px;
-}
-
-.tag-chip,
 .post-category {
   border: 1px solid var(--border);
   border-radius: 6px;
 }
 
-.tag-chip:hover {
-  color: var(--ink);
-  border-color: #b8c0cc;
-}
-
-.tag-chip.is-active,
 .post-category {
   color: var(--accent);
   border-color: #d6def8;
