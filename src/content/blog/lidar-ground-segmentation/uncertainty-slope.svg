@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="680" viewBox="0 0 680 680" role="img" aria-labelledby="title desc">
+  <title id="title">측정 불확실성을 반영한 기울기 계산 예시</title>
+  <desc id="desc">높이 차이 3cm와 수평 거리 5cm의 관측에서, 높이 불확실성 2cm와 거리 불확실성 1cm를 고려하면 계산에 사용하는 높이 차이는 1cm, 수평 거리는 6cm가 된다. 각도는 약 31도에서 9.5도로 변한다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#657389" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#172339}.title{font-size:28px;font-weight:750}.label{font-size:23px;font-weight:700}.note{font-size:21px;fill:#526178}.small{font-size:19px;fill:#526178}.axis{fill:none;stroke:#657389;stroke-width:2;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="680" height="680" rx="20" fill="#f5f7fc"/>
+  <text x="34" y="53" class="title">FugSeg · 기울기 계산 예시</text>
+  <text x="34" y="87" class="note">기하학적 보정량 설명 · 실제 점 이동 아님</text>
+  <rect x="34" y="112" width="612" height="401" rx="14" fill="#fff" stroke="#d8e0ed"/>
+  <path d="M100 430H604" class="axis"/>
+  <path d="M160 480V160" class="axis"/>
+  <text x="554" y="465" class="note">수평 거리</text>
+  <text x="77" y="154" class="note">높이 차이</text>
+  <path d="M160 430L460 250" fill="none" stroke="#3157d5" stroke-width="4"/>
+  <path d="M160 430L520 370" fill="none" stroke="#15887e" stroke-width="4"/>
+  <path d="M460 250V430 M520 370V430" fill="none" stroke="#aeb8c8" stroke-width="2" stroke-dasharray="6 5"/>
+  <circle cx="160" cy="430" r="7" fill="#526178"/>
+  <circle cx="460" cy="250" r="8" fill="#3157d5"/>
+  <circle cx="520" cy="370" r="8" fill="#15887e"/>
+  <text x="167" y="462" class="label">기준점</text>
+  <text x="357" y="212" class="label">원래 관측</text>
+  <text x="357" y="240" class="note">Δr 5cm · Δz 3cm</text>
+  <text x="371" y="323" class="label">계산용 보정</text>
+  <text x="371" y="351" class="note">거리 6cm · 높이 1cm</text>
+  <rect x="34" y="535" width="612" height="112" rx="12" fill="#fff" stroke="#d8e0ed"/>
+  <text x="58" y="574" class="label">atan2(3, 5) ≈ 31.0°</text>
+  <text x="58" y="613" class="label">atan2(3 − 2, 5 + 1) ≈ 9.5°</text>
+</svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="800" viewBox="0 0 680 800" role="img" aria-labelledby="title desc">
+  <title id="title">로컬 EKF와 전역 위치 추정의 역할</title>
+  <desc id="desc">휠 속도와 IMU 각속도를 사용하는 로컬 EKF는 odom에서 base_link로의 연속적인 변환을 제공한다. 지도 정합이나 GNSS를 사용하는 전역 추정기는 map에서 odom으로의 보정을 담당한다. 구성 예시이며 변환별 발행 주체는 하나로 정한다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#3157d5" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#172339}.title{font-size:29px;font-weight:750}.label{font-size:24px;font-weight:700}.note{font-size:21px;fill:#526178}.panel{fill:#fff;stroke:#d8e0ed;stroke-width:1.5}.arrow{fill:none;stroke:#3157d5;stroke-width:2.5;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="680" height="800" rx="20" fill="#f5f7fc"/>
+  <text x="34" y="53" class="title">로컬 추정 · 전역 보정</text>
+  <text x="34" y="87" class="note">평면 휠 로봇의 구성 예시</text>
+  <rect x="34" y="118" width="292" height="104" rx="12" class="panel"/>
+  <rect x="354" y="118" width="292" height="104" rx="12" class="panel"/>
+  <text x="180" y="158" text-anchor="middle" class="label">휠 odometry</text>
+  <text x="180" y="194" text-anchor="middle" class="note">전진 속도 · 이동 제약</text>
+  <text x="500" y="158" text-anchor="middle" class="label">IMU</text>
+  <text x="500" y="194" text-anchor="middle" class="note">yaw 각속도</text>
+  <path d="M180 222V252H500V222" fill="none" stroke="#3157d5" stroke-width="2.5"/>
+  <path d="M340 252V276" class="arrow"/>
+  <rect x="104" y="286" width="472" height="119" rx="12" class="panel"/>
+  <text x="340" y="328" text-anchor="middle" class="label">로컬 EKF</text>
+  <text x="340" y="365" text-anchor="middle" class="label">odom → base_link</text>
+  <text x="340" y="393" text-anchor="middle" class="note">연속적인 단기 이동 기준</text>
+  <rect x="34" y="441" width="612" height="146" rx="12" fill="#edf6f2" stroke="#bddbd0" stroke-width="1.5"/>
+  <text x="58" y="479" class="label">지도 정합 · GNSS 등 전역 정보</text>
+  <text x="58" y="519" class="label">전역 위치 추정 → map → odom</text>
+  <text x="58" y="558" class="note">전역 보정과 로컬 odometry의 관계 계산</text>
+  <text x="34" y="635" class="label">최종 TF 체인</text>
+  <rect x="34" y="656" width="160" height="64" rx="10" class="panel"/>
+  <rect x="260" y="656" width="160" height="64" rx="10" class="panel"/>
+  <rect x="486" y="656" width="160" height="64" rx="10" class="panel"/>
+  <text x="114" y="696" text-anchor="middle" class="label">map</text>
+  <text x="340" y="696" text-anchor="middle" class="label">odom</text>
+  <text x="566" y="696" text-anchor="middle" class="label">base_link</text>
+  <path d="M194 688H248" class="arrow"/>
+  <path d="M420 688H474" class="arrow"/>
+  <text x="340" y="765" text-anchor="middle" class="note">TF 변환별 발행 주체 1개 · 중복 융합 점검</text>
+</svg>
