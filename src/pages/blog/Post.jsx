@@ -38,7 +38,7 @@ function Post() {
 
   if (!metadata) {
     return (
-      <main className="section post-main" id="main-content">
+      <main className="section post-main" id="main-content" tabIndex={-1}>
         <div className="container empty-page">
           <h1>글을 찾을 수 없습니다.</h1>
           <Link className="btn ghost" to="/blog">블로그로 돌아가기</Link>
@@ -48,7 +48,7 @@ function Post() {
   }
 
   return (
-    <main className="section post-main" id="main-content">
+    <main className="section post-main" id="main-content" tabIndex={-1}>
       <div className="container">
         <Link className="post-back" to={backTo}>← 블로그</Link>
         <header className="post-header">

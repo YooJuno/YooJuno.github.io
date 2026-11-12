@@ -301,7 +301,8 @@ function Portfolio() {
   }, [location.pathname, location.search, location.hash, location.key])
 
   return (
-    <div className="portfolio-page" id="top" ref={containerRef}>
+    <main className="portfolio-page" id="main-content" tabIndex={-1} ref={containerRef}>
+      <div id="top" aria-hidden="true" />
       <header className="site-hero portfolio-hero" id="about">
                 <div className="container hero-grid">
                   <div className="hero-text" data-reveal>
@@ -353,7 +354,7 @@ function Portfolio() {
                 </div>
               </nav>
 
-              <main className="portfolio-main">
+              <div className="portfolio-main">
                 <section className="section career-section" id="career" aria-labelledby="career-heading">
                   <div className="container">
                     <div className="section-head" data-reveal>
@@ -433,7 +434,7 @@ function Portfolio() {
                     </div>
                   </div>
                 </section>
-              </main>
+              </div>
               {lightbox && (
                 <div
                   className="lightbox"
@@ -461,7 +462,7 @@ function Portfolio() {
                   </figure>
                 </div>
               )}
-    </div>
+    </main>
   )
 }
 
