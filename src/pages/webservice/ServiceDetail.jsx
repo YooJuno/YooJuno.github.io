@@ -32,14 +32,14 @@ function ServiceDetail({ serviceId }) {
         <Link to="/web-service" className="service-back">← 웹서비스 목록</Link>
         <header className="service-detail-header">
           <div>
-            <span className="service-status">{service.status}</span>
+            <span className="service-availability">{service.availability}</span>
             <h1>{service.title}</h1>
             <p>{service.summary}</p>
             <div className="tag-row">{service.tech.map(technology => <span key={technology}>{technology}</span>)}</div>
           </div>
           <div className="service-actions">
             <a className="btn primary service-github" href={service.github} target="_blank" rel="noopener noreferrer"><GitHubMark /> GitHub 저장소 <span aria-hidden="true">↗</span></a>
-            {service.site ? <a className="btn service-live" href={service.site} target="_blank" rel="noopener noreferrer">서비스 열기 ↗</a> : <p className="service-deployment-note">배포 주소는 확정 후 추가합니다.</p>}
+            {service.site && <a className="btn service-live" href={service.site} target="_blank" rel="noopener noreferrer">서비스 열기 ↗</a>}
             <a className="service-text-link" href="#screens">화면 보기 ↓</a>
           </div>
         </header>

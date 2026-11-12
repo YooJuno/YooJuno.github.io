@@ -954,14 +954,6 @@ main.section,
   color: var(--muted);
 }
 
-.badge-running,
-.badge-dev,
-.badge-prototype {
-  color: var(--accent);
-  border-color: #d8e0fb;
-  background: #f1f4ff;
-}
-
 .mini-card {
   padding: 20px;
   border: 1px solid var(--border);

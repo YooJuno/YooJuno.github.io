@@ -29,7 +29,7 @@ export const ROUTE_META = {
   },
   '/web-service': {
     title: '웹서비스',
-    description: '개발하거나 운영 중인 웹서비스 모음입니다.',
+    description: '웹서비스의 화면·기능·API와 소스 코드를 정리했습니다.',
   },
   '/web-service/blog': {
     title: 'Portfolio & Blog',
