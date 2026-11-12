@@ -39,6 +39,10 @@ export const ROUTE_META = {
     title: '모임 · moim',
     description: 'React·TypeScript·Firebase 기반 모임 운영 서비스. 가입 승인, 일정·장소 투표, 캘린더·게시판·회계를 제공하며 Firebase Hosting에서 운영합니다.',
   },
+  '/web-service/map-editor': {
+    title: 'Map Editor',
+    description: 'PGM/YAML 지도와 Nav2 금지·속도 마스크를 편집하는 웹·데스크톱 도구. 지도 좌표 처리, Firebase 공유 워크스페이스와 화면·파일 인터페이스를 정리했습니다.',
+  },
   '/web-service/cctv-streaming': {
     title: 'CCTV Streaming',
     description: 'ESP32-CAM USB 설치·JPEG push 송출, MJPEG·HLS 재생과 카메라별 송출 설정을 관리하는 웹 관제 앱.',
