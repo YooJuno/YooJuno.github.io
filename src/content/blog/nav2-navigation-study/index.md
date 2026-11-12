@@ -12,14 +12,15 @@ tags:
   - MPPI
   - RPP
   - Behavior Tree
-summary: "TF·AMCL·Costmap부터 플래너·컨트롤러 비교, RPP·DWB·MPPI의 원리와 튜닝, 구동 모델과 Behavior Tree의 실행·복구 흐름까지 정리합니다."
+summary: "위치 추정부터 경로 계획·제어·Behavior Tree까지."
 ---
 
 Nav2는 **위치 추정 → 환경 표현 → 경로 계획 → 경로 추종**을 연결하는 ROS 2 내비게이션 프레임워크다. Planner와 Controller는 플러그인으로 선택하고, Behavior Tree로 실행·재계획·복구 흐름을 구성한다.
 
-> **기준: ROS 2 Jazzy · 확인일 2026-10-14.** 설치 절차는 제외한다. 설정은 학습용 부분 예시이며 로봇별 검증이 필요하다. 예시의 소스 기준점은 10절에 명시했다.
+> **기준: ROS 2 Jazzy · 확인일 2026-10-14.** 설정은 학습용 부분 예시다. 기준 소스는 10절에 명시했으며, 실기체 적용 전 검증이 필요하다.
 
-### 목차
+<details class="post-toc" id="목차">
+<summary>목차</summary>
 
 1. [전체 구조](#1-전체-구조)
 2. [TF와 위치 추정](#2-tf와-위치-추정)
@@ -35,7 +36,9 @@ Nav2는 **위치 추정 → 환경 표현 → 경로 계획 → 경로 추종**�
 12. [증상별 진단과 사족보행 로봇 적용](#12-증상별-진단과-사족보행-로봇-적용)
 13. [학습 실험과 참고 자료](#13-학습-실험과-참고-자료)
 
-그림은 직접 작성한 개념도이며 성능 비교나 실험 결과가 아니다. 공식 주행 데모는 별도로 출처를 표시했다.
+</details>
+
+도식은 직접 작성했고, 공식 주행 데모는 출처를 표시했다.
 
 ## 1. 전체 구조
 
@@ -58,9 +61,9 @@ Nav2의 대표적인 흐름은 `NavigateToPose → 경로 계산 → FollowPath 
 | `ComputePathToPose` 액션 | Planner Server | 예: `planner_id="GridBased"` → Smac 2D |
 | `FollowPath` 액션 | Controller Server | 예: `controller_id="FollowPath"` → MPPI |
 
-`FollowPath`는 액션 타입 이름이면서 예시에서 관례적으로 쓰는 제어기 ID이기도 하다. ID는 임의로 정할 수 있고, 실제 알고리즘은 그 ID 아래의 `plugin`이 결정한다. planner만 바꿔도 controller가 함께 바뀌는 것은 아니다. XML과 YAML을 연결하는 예시는 9·10절에서 다룬다.
+`FollowPath`는 액션 타입 이름이자 예시의 제어기 ID다. ID는 임의로 정할 수 있고, 알고리즘은 해당 ID 아래의 `plugin`으로 지정한다. Planner와 Controller 플러그인은 각각 설정한다. XML·YAML 연결은 9·10절에서 다룬다.
 
-위치 추정도 Nav2가 반드시 직접 수행해야 하는 작업은 아니다. AMCL이나 SLAM 시스템이 필요한 위치와 TF를 제공하면 Nav2는 이를 소비한다. 따라서 외부 3D SLAM을 붙일 때도 먼저 데이터와 좌표계의 계약을 맞춰야 한다. [Nav2 State Estimation](https://docs.nav2.org/jazzy/getting_started/navigation_concepts/state_estimation/).
+위치 추정은 AMCL·SLAM 등 외부 시스템이 제공할 수 있다. Nav2에 연결할 때는 위치·TF의 좌표계와 시각을 맞춘다. [Nav2 State Estimation](https://docs.nav2.org/jazzy/getting_started/navigation_concepts/state_estimation/).
 
 ## 2. TF와 위치 추정
 
@@ -118,7 +121,7 @@ AMCL은 알려진 지도와 레이저 관측을 이용하는 입자 필터 기�
 - **SLAM Toolbox localization mode:** 저장한 pose graph를 이용하는 별도의 localization 운용 방식이다. 단순 지도 이미지와 직렬화된 pose graph를 혼동하지 않는다. [SLAM Toolbox](https://github.com/SteveMacenski/slam_toolbox).
 - **3D LiDAR·Visual localization:** ICP·NDT·특징 정합 등의 외부 시스템을 연결할 수 있다. 지도 형식, 초기 위치, 정합 실패 검출, TF 발행 책임을 별도로 설계해야 한다.
 
-3D point cloud 지도가 있다고 Nav2의 2D costmap이 자동으로 만들어지는 것은 아니다. localization용 지도, 주행 가능 영역, 장애물 투영 결과를 같은 데이터라고 가정하지 않는 것이 핵심이다.
+3D 점군을 사용할 때는 위치 추정용 지도, 주행 가능 영역, 2D costmap용 장애물 투영을 각각 구성한다.
 
 ## 3. Costmap과 충돌 검사
 
@@ -250,7 +253,7 @@ Pure Pursuit·DWA·MPC는 알고리즘 계열 이름이다. 여기서는 이를 
 | 4륜 독립 조향·스워브 | 모듈 구성과 모드에 따라 crab·제자리 회전·차량형 동작 | 모드별 실행 가능한 twist를 정의하고 하위 역기구학·조향 전환을 연결. 항상 이상적인 Omni라고 가정하지 않음 |
 | 사족보행 | 보행 모드가 허용하는 `vx`, `vy`, `wz` | SDK·locomotion의 응답에 맞춰 DiffDrive 또는 Omni 근사 검토. 발 디딤·균형·지형 주행은 별도 계층 |
 
-이 표는 특정 제품의 보증된 기능표가 아니라 인터페이스를 분류하는 기준이다. 차동구동 하위 제어기는 몸체 twist를 바퀴 명령으로, 메카넘 제어기는 횡이동을 포함한 twist를 각 바퀴 속도로 변환한다. **Nav2 Controller와 `ros2_control`의 구동 controller는 다른 계층이다.** [차동구동 controller](https://control.ros.org/jazzy/doc/ros2_controllers/diff_drive_controller/doc/userdoc.html), [메카넘 controller](https://control.ros.org/jazzy/doc/ros2_controllers/mecanum_drive_controller/doc/userdoc.html).
+하위 구동 제어기는 몸체 twist를 각 바퀴 명령으로 변환한다. 메카넘은 여기에 횡이동을 포함한다. **Nav2 Controller는 경로 추종, `ros2_control`의 구동 controller는 하드웨어 명령 변환**을 담당한다. [차동구동 controller](https://control.ros.org/jazzy/doc/ros2_controllers/diff_drive_controller/doc/userdoc.html), [메카넘 controller](https://control.ros.org/jazzy/doc/ros2_controllers/mecanum_drive_controller/doc/userdoc.html).
 
 ### 5.3 차동·스키드 조향 오차
 
@@ -396,7 +399,7 @@ MPPI는 정보이론적 제어와 importance sampling에 기반한 가중 갱신
 
 ![Nav2 MPPI 공식 데모의 RViz 화면. 장애물 주변 비용지도와 이동 로봇을 보여준다.](https://raw.githubusercontent.com/ros-navigation/navigation2/645abd95f2be02a13ca539b29c2ddc065db34f89/nav2_mppi_controller/media/demo.gif)
 
-출처: [Nav2 Jazzy MPPI README와 원본 미디어](https://github.com/ros-navigation/navigation2/blob/645abd95f2be02a13ca539b29c2ddc065db34f89/nav2_mppi_controller/README.md). 공식 프로젝트의 데모이며, 이 글 작성자의 실험 결과가 아니다. GIF는 원본 저장소에서 직접 불러온다.
+출처: [Nav2 Jazzy MPPI 공식 데모](https://github.com/ros-navigation/navigation2/blob/645abd95f2be02a13ca539b29c2ddc065db34f89/nav2_mppi_controller/README.md). GIF는 원본 저장소에서 불러온다.
 
 </details>
 
@@ -450,7 +453,7 @@ D_stop ≈ v × latency + v² / (2 × deceleration) + margin
 
 **모델·제한 → 경로·관측 범위 → 잡음 분산 → critic 균형** 순서로 조절하고, 계산 시간과 주행 결과로 검증한다. [MPPI 설정 해설](https://github.com/ros-navigation/navigation2/blob/645abd95f2be02a13ca539b29c2ddc065db34f89/nav2_mppi_controller/README.md), [입력 비용과 갱신 구현](https://github.com/ros-navigation/navigation2/blob/645abd95f2be02a13ca539b29c2ddc065db34f89/nav2_mppi_controller/src/optimizer.cpp).
 
-MPPI가 예측하는 것은 설정한 모델에 따른 로봇의 움직임이다. 기본 costmap의 현재 장애물 관측만으로 보행자의 미래 궤적이나 이동 의도를 알게 되는 것은 아니다. 동적 장애물 예측이 필요한 시스템은 별도의 인지·예측과 비용 표현을 설계해야 한다.
+MPPI는 설정한 모델로 **로봇의 움직임**을 예측한다. 보행자 등 동적 장애물의 미래 궤적은 별도의 인지·예측과 비용 표현이 필요하다.
 
 ## 9. Behavior Tree — 실행·재계획·복구
 

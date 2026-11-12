@@ -8,12 +8,12 @@ tags:
   - CI/CD
   - DevOps
   - GitHub Pages
-summary: "Workflow·Job·Runner 구조와 이벤트, Matrix, 캐시·Artifact, 권한 관리를 정리하고 React/Vite CI와 이 사이트의 GitHub Pages 배포 흐름을 설명합니다."
+summary: "워크플로 구조·권한 관리와 GitHub Pages 배포."
 ---
 
-GitHub Actions는 저장소의 이벤트를 받아 빌드·검사·배포 등을 실행하는 자동화 플랫폼이다. Git은 변경 이력을 관리하고, GitHub Actions는 그 변경에 연결된 작업을 실행한다.
+GitHub Actions는 저장소 이벤트에 따라 빌드·검사·배포를 실행하는 자동화 플랫폼이다.
 
-자동화 절차는 `.github/workflows/`의 YAML 파일로 관리한다. 검사와 배포의 실행 조건·권한을 나누고, 검증한 결과물을 배포 단계로 전달하는 구조가 기본이다. [GitHub Workflow 개요](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows).
+절차는 `.github/workflows/`의 YAML로 관리한다. 검사·배포의 실행 조건과 권한을 분리하고, 검증한 결과물을 배포에 사용한다. [Workflow 개요](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflows).
 
 ## 1. 실행 구조
 
@@ -46,7 +46,7 @@ GitHub-hosted Runner는 실행 환경을 GitHub가 제공한다. Self-hosted Run
 
 ## 3. React/Vite CI 예제
 
-다음은 이 저장소의 npm 스크립트에 맞춘 **별도 `ci.yml` 구성 예제**다. 현재 사이트에 등록된 `deploy.yml`과는 구분한다. 이 프로젝트에는 `lint`·`build`가 있고 별도의 `test` 스크립트는 없어, 예제에도 테스트 명령을 넣지 않았다.
+다음은 이 저장소의 `lint`·`build`를 사용하는 **`ci.yml` 예제**다. 실제 배포 Workflow인 `deploy.yml`은 6절에서 다룬다.
 
 ```yaml
 name: CI
@@ -112,15 +112,15 @@ jobs:
 
 ### 환경 조합
 
-`matrix.node: [22, 24]`는 Node 22·24 환경의 Job 두 개를 만든다. 프로젝트의 `engines`는 Node 22.12 이상을 허용하며, 예제의 `22`·`24`는 각 메이저 계열에서 버전을 선택하는 설정이다. 정확한 패치 버전이나 Runner 이미지까지 고정한 구성은 아니다.
+`matrix.node: [22, 24]`는 Node 22·24 환경의 Job 두 개를 만든다. 둘 다 프로젝트의 Node 요구 범위를 만족한다. 재현성을 더 높이려면 패치 버전과 Runner 이미지도 고정한다.
 
-`fail-fast: false`는 한 조합이 실패해도 나머지 Matrix Job을 취소하지 않는 설정이다. 실패를 성공으로 처리하지는 않는다. OS·아키텍처까지 조합하면 Job 수가 곱으로 늘어나므로, 지원 환경을 기준으로 검사 범위를 정한다. [Matrix와 fail-fast](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/run-job-variations).
+`fail-fast: false`는 한 조합의 실패 후에도 나머지 Job을 계속 실행한다. 실패 상태는 그대로 남는다. OS·아키텍처를 추가하면 Job 수가 곱으로 늘어나므로 지원 범위에 맞춰 구성한다. [Matrix와 fail-fast](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/run-job-variations).
 
 ### 실패와 데이터 전달
 
 기본 성공 조건에서는 앞선 Step이 실패하면 뒤의 정상 Step을 건너뛴다. `needs: build`도 기본적으로 build Job의 성공을 요구한다. 실패 로그 수집에는 별도 조건을 두되, 배포를 위해 실패를 숨기는 `continue-on-error` 사용은 피한다.
 
-같은 Job의 Step은 workspace를 공유하지만 각 `run`은 별도 셸 프로세스다. 한 Step의 `cd`·`export`가 다음 Step에도 유지된다고 가정하면 안 된다. 작업 경로는 `working-directory`, 후속 Step에 전달할 환경변수는 `$GITHUB_ENV` 등 용도에 맞는 기능을 사용한다. [Step 실행과 조건](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idstepsrun).
+같은 Job의 Step은 workspace를 공유하지만 각 `run`은 별도 셸이다. 작업 경로는 `working-directory`, 후속 Step의 환경변수는 `$GITHUB_ENV`로 전달한다. 셸 내부의 `cd`·`export`는 다음 Step에 유지되지 않는다. [Step 실행과 조건](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idstepsrun).
 
 Job 사이에는 파일이 자동 공유되지 않는다. 작은 값은 Step 출력에서 Job 출력으로 노출한 뒤 `needs.<job>.outputs.<name>`으로 전달하고, 파일은 Artifact 등 별도 수단을 사용한다. `needs`는 실행 순서와 의존성을 연결하는 설정이다. [Job 출력 전달](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/pass-job-outputs).
 
@@ -128,7 +128,7 @@ Job 사이에는 파일이 자동 공유되지 않는다. 작은 값은 Step 출
 
 예제의 concurrency 그룹은 같은 Workflow·PR 또는 ref를 묶는다. `cancel-in-progress: true`는 같은 그룹의 이전 실행을 취소해 오래된 변경의 CI가 계속 실행되는 것을 줄인다.
 
-배포는 대상 환경 기준으로 그룹을 정해야 여러 Workflow의 동시 접근을 제어할 수 있다. 실행 취소는 이미 발생한 외부 변경을 되돌리는 롤백이 아니다. 특히 DB 변경·장비 업데이트처럼 중간 취소가 위험한 작업은 중단·복구 정책을 따로 둔다. [Concurrency 설정](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency).
+배포는 대상 환경 기준으로 그룹을 정해 동시 접근을 제어한다. 실행 취소와 외부 변경의 롤백은 별개다. DB 변경·장비 업데이트에는 중단·복구 정책을 따로 둔다. [Concurrency 설정](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency).
 
 ## 5. 캐시와 Artifact
 
@@ -137,7 +137,7 @@ Job 사이에는 파일이 자동 공유되지 않는다. 작은 값은 Step 출
 | Cache | 다시 만들 수 있는 파일을 재사용해 실행 시간 단축 | npm 다운로드 캐시 |
 | Artifact | 특정 실행의 결과물 보관·전달 | 빌드된 `dist/`, 검사 보고서 |
 
-`setup-node`의 `cache: npm`은 **npm 패키지 캐시를 재사용**한다. `node_modules` 복원은 포함하지 않으며, lockfile의 해시가 캐시 키 구성에 사용된다. 캐시가 있어도 `npm ci`는 실행하고, 캐시가 사라져도 설치·빌드가 가능해야 한다. [setup-node 캐시 동작](https://github.com/actions/setup-node/tree/v7#caching-global-packages-data), [의존성 캐시](https://docs.github.com/en/actions/concepts/workflows-and-actions/dependency-caching).
+`cache: npm`은 **npm 다운로드 캐시**를 재사용하며 `node_modules`는 복원하지 않는다. 캐시 키에는 lockfile 해시가 사용된다. 설치는 항상 `npm ci`로 수행하고, 캐시가 없어도 빌드가 가능해야 한다. [setup-node 캐시 동작](https://github.com/actions/setup-node/tree/v7#caching-global-packages-data), [의존성 캐시](https://docs.github.com/en/actions/concepts/workflows-and-actions/dependency-caching).
 
 Artifact는 빌드 Job에서 만든 파일을 배포 Job에 전달하거나 실행 후 내려받을 때 사용한다. 보관 기간·용량·접근 권한을 정하고 commit·실행 ID와 연결한다. 검증 후 다시 빌드한 파일은 입력·환경에 따라 달라질 수 있으므로, 배포 단계에는 검증한 결과물을 전달한다. [Workflow Artifact](https://docs.github.com/en/actions/concepts/workflows-and-actions/workflow-artifacts).
 

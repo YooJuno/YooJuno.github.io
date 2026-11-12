@@ -2,29 +2,29 @@
   <title id="title">Nav2 BT의 정상 주행과 두 단계 복구</title>
   <desc id="desc">바깥 RecoveryNode 안에서 PipelineSequence가 계획과 추종을 조정한다. 각 작업 실패 시 오류를 검사하고 해당 costmap을 정리해 재시도한다. 해결되지 않으면 전체 복구를 실행한다. 복구 성공 후 정상 주행을 재시도하고 횟수를 소진하면 실패한다.</desc>
   <defs>
-    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#345dde" stroke-width="1.5"/></marker>
-    <marker id="failure" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#b56146" stroke-width="1.5"/></marker>
-    <marker id="retry" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#15786f" stroke-width="1.5"/></marker>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#303030" stroke-width="1.5"/></marker>
+    <marker id="failure" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#717171" stroke-width="1.5"/></marker>
+    <marker id="retry" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#666666" stroke-width="1.5"/></marker>
     <style>
-      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#172339}
-      .title{font-size:30px;font-weight:750}.label{font-size:25px;font-weight:700}.small{font-size:22px;font-weight:700}.note{font-size:21px;fill:#526178}
-      .card{fill:#fff;stroke:#d8e0ed;stroke-width:1.5}.flow{fill:none;stroke:#345dde;stroke-width:2.5;marker-end:url(#arrow)}
-      .fail{fill:none;stroke:#b56146;stroke-width:2.5;marker-end:url(#failure)}.retry{fill:none;stroke:#15786f;stroke-width:2.5;marker-end:url(#retry)}
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#202124}
+      .title{font-size:30px;font-weight:750}.label{font-size:25px;font-weight:700}.small{font-size:22px;font-weight:700}.note{font-size:21px;fill:#555555}
+      .card{fill:#fff;stroke:#dfdfdf;stroke-width:1.5}.flow{fill:none;stroke:#303030;stroke-width:2.5;marker-end:url(#arrow)}
+      .fail{fill:none;stroke:#717171;stroke-width:2.5;marker-end:url(#failure)}.retry{fill:none;stroke:#666666;stroke-width:2.5;marker-end:url(#retry)}
     </style>
   </defs>
-  <rect width="680" height="1100" rx="20" fill="#f5f7fc"/>
+  <rect width="680" height="1100" rx="4" fill="#ffffff"/>
   <text x="34" y="53" class="title">BT 주행·복구 흐름</text>
   <text x="34" y="85" class="note">실패 분류 → 복구 → 정상 작업 재시도</text>
-  <rect x="60" y="120" width="560" height="80" rx="14" fill="#e9eeff" stroke="#bdcaf6"/>
+  <rect x="60" y="120" width="560" height="80" rx="4" fill="#eeeeee" stroke="#cacaca"/>
   <text x="340" y="153" text-anchor="middle" class="label">RecoveryNode · NavigateRecovery</text>
   <text x="340" y="183" text-anchor="middle" class="note">바깥 재시도 설정: number_of_retries = 6</text>
   <path d="M340 200 V230" class="flow"/>
-  <rect x="34" y="234" width="612" height="456" rx="14" fill="#fff" stroke="#d8e0ed"/>
+  <rect x="34" y="234" width="612" height="456" rx="4" fill="#fff" stroke="#dfdfdf"/>
   <text x="340" y="275" text-anchor="middle" class="label">01  정상 분기 · PipelineSequence</text>
   <path d="M182 290 V322" class="flow"/>
   <path d="M498 290 V322" class="flow"/>
-  <rect x="54" y="327" width="256" height="112" rx="12" fill="#e9eeff" stroke="#bdcaf6"/>
-  <rect x="370" y="327" width="256" height="112" rx="12" fill="#e9eeff" stroke="#bdcaf6"/>
+  <rect x="54" y="327" width="256" height="112" rx="4" fill="#eeeeee" stroke="#cacaca"/>
+  <rect x="370" y="327" width="256" height="112" rx="4" fill="#eeeeee" stroke="#cacaca"/>
   <text x="182" y="362" text-anchor="middle" class="small">ComputePathToPose</text>
   <text x="182" y="395" text-anchor="middle" class="note">RateController: 1 Hz</text>
   <text x="182" y="424" text-anchor="middle" class="note">글로벌 경로 계산</text>
@@ -37,8 +37,8 @@
   <path d="M498 439 V526" class="fail"/>
   <text x="198" y="490" class="note">실패 시</text>
   <text x="514" y="490" class="note">실패 시</text>
-  <rect x="54" y="532" width="256" height="86" rx="12" fill="#eaf6f2" stroke="#b9dcd2"/>
-  <rect x="370" y="532" width="256" height="86" rx="12" fill="#eaf6f2" stroke="#b9dcd2"/>
+  <rect x="54" y="532" width="256" height="86" rx="4" fill="#f3f3f3" stroke="#d4d4d4"/>
+  <rect x="370" y="532" width="256" height="86" rx="4" fill="#f3f3f3" stroke="#d4d4d4"/>
   <text x="182" y="565" text-anchor="middle" class="small">Global Costmap 정리</text>
   <text x="182" y="596" text-anchor="middle" class="note">복구 가능한 오류만</text>
   <text x="498" y="565" text-anchor="middle" class="small">Local Costmap 정리</text>
@@ -48,13 +48,13 @@
   <text x="340" y="657" text-anchor="middle" class="note">개별 복구 성공 → 해당 작업 재시도 · 각 1회</text>
   <path d="M340 690 V763" class="fail"/>
   <text x="357" y="736" class="note">개별 복구 실패 · 횟수 소진</text>
-  <rect x="34" y="769" width="612" height="233" rx="14" fill="#fff7f1" stroke="#e8d2c5"/>
+  <rect x="34" y="769" width="612" height="233" rx="4" fill="#f8f8f8" stroke="#d6d6d6"/>
   <text x="340" y="810" text-anchor="middle" class="label">02  전체 복구 · 오류 유형 검사</text>
   <text x="340" y="848" text-anchor="middle" class="note">GoalUpdated로 전환 / RoundRobin으로 선택</text>
-  <rect x="54" y="873" width="166" height="44" rx="8" class="card"/>
-  <rect x="232" y="873" width="112" height="44" rx="8" class="card"/>
-  <rect x="356" y="873" width="112" height="44" rx="8" class="card"/>
-  <rect x="480" y="873" width="146" height="44" rx="8" class="card"/>
+  <rect x="54" y="873" width="166" height="44" rx="4" class="card"/>
+  <rect x="232" y="873" width="112" height="44" rx="4" class="card"/>
+  <rect x="356" y="873" width="112" height="44" rx="4" class="card"/>
+  <rect x="480" y="873" width="146" height="44" rx="4" class="card"/>
   <text x="137" y="902" text-anchor="middle" class="note">Costmap 정리</text>
   <text x="288" y="902" text-anchor="middle" class="note">Spin</text>
   <text x="412" y="902" text-anchor="middle" class="note">Wait</text>

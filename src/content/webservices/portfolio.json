@@ -6,7 +6,7 @@
   "inspectedAt": "2026-10-26",
   "github": "https://github.com/YooJuno/YooJuno.github.io",
   "site": "https://yoojuno.github.io/",
-  "summary": "경력·프로젝트·기술 글을 파일 기반 콘텐츠로 관리하는 개인 웹사이트입니다.",
+  "summary": "포트폴리오와 기술 글을 관리하는 개인 사이트.",
   "tech": [
     "React",
     "Vite",

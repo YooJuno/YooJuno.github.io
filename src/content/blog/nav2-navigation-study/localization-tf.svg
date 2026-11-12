@@ -2,27 +2,27 @@
   <title id="title">TF와 위치 추정의 역할</title>
   <desc id="desc">map에서 odom으로의 전역 보정과 odom에서 base_link로의 연속 이동을 구분한다. 아래 입자 그림은 AMCL의 다중 가설이 관측으로 좁혀지는 개념을 보여준다.</desc>
   <defs>
-    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#345dde" stroke-width="1.5"/></marker>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#303030" stroke-width="1.5"/></marker>
     <style>
-      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#172339}
-      .title{font-size:30px;font-weight:750}.label{font-size:25px;font-weight:700}.note{font-size:21px;fill:#526178}
-      .particle{fill:#345dde;opacity:.55}.flow{fill:none;stroke:#345dde;stroke-width:2.5;marker-end:url(#arrow)}
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#202124}
+      .title{font-size:30px;font-weight:750}.label{font-size:25px;font-weight:700}.note{font-size:21px;fill:#555555}
+      .particle{fill:#303030;opacity:.55}.flow{fill:none;stroke:#303030;stroke-width:2.5;marker-end:url(#arrow)}
     </style>
   </defs>
-  <rect width="680" height="810" rx="20" fill="#f5f7fc"/>
+  <rect width="680" height="810" rx="4" fill="#ffffff"/>
   <text x="34" y="52" class="title">전역 정확도와 로컬 연속성</text>
   <text x="34" y="84" class="note">TF 변환별 단일 발행 주체</text>
-  <rect x="34" y="126" width="150" height="79" rx="12" fill="#e9eeff" stroke="#bdcaf6"/>
-  <rect x="265" y="126" width="150" height="79" rx="12" fill="#eaf6f2" stroke="#b9dcd2"/>
-  <rect x="496" y="126" width="150" height="79" rx="12" fill="#fff" stroke="#d8e0ed"/>
+  <rect x="34" y="126" width="150" height="79" rx="4" fill="#eeeeee" stroke="#cacaca"/>
+  <rect x="265" y="126" width="150" height="79" rx="4" fill="#f3f3f3" stroke="#d4d4d4"/>
+  <rect x="496" y="126" width="150" height="79" rx="4" fill="#fff" stroke="#dfdfdf"/>
   <text x="109" y="174" text-anchor="middle" class="label">map</text>
   <text x="340" y="174" text-anchor="middle" class="label">odom</text>
   <text x="571" y="174" text-anchor="middle" class="label">base_link</text>
   <path d="M184 165 H258" class="flow"/>
   <path d="M415 165 H489" class="flow"/>
-  <path d="M225 212 V234 M457 212 V234" stroke="#b8c5dc" stroke-width="2"/>
-  <rect x="34" y="247" width="296" height="143" rx="12" fill="#fff" stroke="#d8e0ed"/>
-  <rect x="350" y="247" width="296" height="143" rx="12" fill="#fff" stroke="#d8e0ed"/>
+  <path d="M225 212 V234 M457 212 V234" stroke="#c4c4c4" stroke-width="2"/>
+  <rect x="34" y="247" width="296" height="143" rx="4" fill="#fff" stroke="#dfdfdf"/>
+  <rect x="350" y="247" width="296" height="143" rx="4" fill="#fff" stroke="#dfdfdf"/>
   <text x="54" y="281" class="label">map → odom</text>
   <text x="54" y="314" class="note">AMCL / 전역 SLAM 등</text>
   <text x="54" y="345" class="note">누적 오차를 전역 보정</text>
@@ -32,9 +32,9 @@
   <text x="370" y="345" class="note">단기적으로 연속적 이동</text>
   <text x="370" y="375" class="note">장기 드리프트는 가능</text>
   <text x="34" y="450" class="label">AMCL: 여러 위치 가설을 유지</text>
-  <rect x="34" y="476" width="270" height="199" rx="12" fill="#fff" stroke="#d8e0ed"/>
-  <rect x="376" y="476" width="270" height="199" rx="12" fill="#fff" stroke="#d8e0ed"/>
-  <path d="M57 616 V504 H279 M399 616 V504 H621" fill="none" stroke="#c1cbd9" stroke-width="8"/>
+  <rect x="34" y="476" width="270" height="199" rx="4" fill="#fff" stroke="#dfdfdf"/>
+  <rect x="376" y="476" width="270" height="199" rx="4" fill="#fff" stroke="#dfdfdf"/>
+  <path d="M57 616 V504 H279 M399 616 V504 H621" fill="none" stroke="#cacaca" stroke-width="8"/>
   <g class="particle">
     <circle cx="85" cy="533" r="5"/><circle cx="111" cy="556" r="5"/><circle cx="132" cy="527" r="5"/><circle cx="180" cy="543" r="5"/>
     <circle cx="222" cy="573" r="5"/><circle cx="241" cy="533" r="5"/><circle cx="89" cy="605" r="5"/><circle cx="137" cy="584" r="5"/>
