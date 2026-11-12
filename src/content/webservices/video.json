@@ -7,7 +7,7 @@
   "revision": "a019d6a",
   "github": "https://github.com/YooJuno/video-chatting",
   "site": "",
-  "summary": "WebRTC 기반 1:1 랜덤 매칭·초대방 통화와 채팅, 장치 권한·연결 복구를 다루는 학습용 웹 앱입니다.",
+  "summary": "WebRTC 학습용 1:1 영상 통화·채팅 앱.",
   "tech": [
     "React",
     "TypeScript",

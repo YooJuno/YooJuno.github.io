@@ -7,14 +7,14 @@ tags:
   - Ubuntu
   - Installation
   - Linux
-summary: "USB 대신 내장 디스크를 설치 매체로 사용할 때의 부팅 조건과 설치 영역·ESP·대상 파티션의 차이, 복구 시 주의점을 정리합니다."
+summary: "내장 디스크 부팅 조건과 설치 영역·복구 절차."
 ---
 
 USB 대신 내장 디스크나 네트워크에서 Ubuntu 설치 환경을 부팅할 수 있다. 지원 여부는 펌웨어·부트로더·ISO 구성에 따라 달라진다.
 
 대상은 Windows가 설치된 x86-64 UEFI/GPT PC다. 아래 절차는 환경별 확인 사항이며, 표준 설치는 [Ubuntu 공식 설치 문서](https://ubuntu.com/desktop/docs/en/latest/tutorial/install-ubuntu-desktop/)를 따른다.
 
-> **파티션을 지우기 전에:** “FAT 볼륨은 삭제해도 된다”는 판단은 위험하다. Windows 부팅에 필요한 EFI System Partition도 FAT32를 사용한다. 기존 ESP·Windows·복구 파티션을 설치 파일용 영역과 혼동하지 않는다.
+> **기존 ESP·Windows·복구 파티션은 보존한다.** Windows 부팅에 필요한 EFI System Partition도 FAT32를 사용하므로 파일시스템만 보고 삭제 대상을 정하면 안 된다.
 
 ## 1. 설치 방식·부팅 경로
 
@@ -25,7 +25,7 @@ USB 대신 내장 디스크나 네트워크에서 Ubuntu 설치 환경을 부팅
 | UEFI에서 파일을 직접 선택해 부팅 가능 | 내장 임시 영역에서 부트로더·설치 환경을 읽을 수 있는지 확인 |
 | 위 부팅 경로를 검증할 수 없음 | 공식 USB 설치나 별도로 관리되는 네트워크 부팅 환경 사용 |
 
-GRUB의 ISO 부팅과 ISO 내부 파일을 풀어 UEFI에서 실행하는 방식은 다르다. Windows 파티션에 ISO 하나를 복사하는 것만으로 설치 메뉴가 생기지는 않는다. [GNU GRUB의 loopback 부팅 설명](https://www.gnu.org/software/grub/manual/grub/html_node/Loopback-booting.html)처럼 GRUB이 이미지를 읽는 것 외에도 운영체제가 설치 파일과 루트 환경을 찾을 수 있어야 한다. 이미지와 배포판의 지원 조건을 먼저 확인한다.
+GRUB의 ISO loopback 부팅과 UEFI에서 추출된 EFI 파일을 실행하는 방식은 다르다. 두 방식 모두 부트로더와 Live 환경이 설치 파일을 찾을 수 있어야 한다. 이미지·펌웨어의 지원 조건을 먼저 확인한다. [GNU GRUB loopback 부팅](https://www.gnu.org/software/grub/manual/grub/html_node/Loopback-booting.html).
 
 ## 2. 파티션 역할
 
@@ -64,9 +64,9 @@ ESP는 부트로더를 저장하는 시스템 파티션이지 일반적인 임�
 4. **일회성 부팅 시험:** 펌웨어가 지원하는 경우 일회성 부팅 메뉴나 파일 선택 기능으로 시험한다. 메뉴 이름과 내장 영역 검색 방식은 제조사마다 다르다.
 5. **Live 환경 확인:** 설치 화면이 나타났다는 것만으로 진행하지 않고, 디스크·입력 장치·네트워크와 설치 파일 접근이 정상인지 확인한다.
 
-예를 들어 x86-64 UEFI 이미지에는 `EFI/BOOT/BOOTX64.EFI` 같은 부팅 파일이 있을 수 있지만, **그 경로를 선택하면 모든 내장 디스크에서 부팅된다는 뜻은 아니다.** 펌웨어가 영역을 읽어야 하고, 이후 부트로더와 Live 환경도 필요한 설치 파일을 찾아야 한다.
+`EFI/BOOT/BOOTX64.EFI`는 x86-64 UEFI 이미지의 부팅 경로 예다. 실제 부팅에는 펌웨어의 파일시스템 지원과 Live 환경의 설치 파일 탐색 조건이 모두 맞아야 한다.
 
-Secure Boot 오류를 만나도 무조건 기능을 끄는 방향으로 해결하지 않는다. Ubuntu의 서명된 부팅 구성, 이미지와 아키텍처, 펌웨어의 신뢰 정책부터 확인한다. [Ubuntu Secure Boot](https://documentation.ubuntu.com/security/security-features/platform-protections/secure-boot/).
+Secure Boot 오류는 이미지·아키텍처·서명된 부팅 구성·펌웨어 신뢰 정책 순으로 확인한다. [Ubuntu Secure Boot](https://documentation.ubuntu.com/security/security-features/platform-protections/secure-boot/).
 
 ## 5. 설치 대상 확인
 
@@ -83,7 +83,7 @@ Secure Boot 오류를 만나도 무조건 기능을 끄는 방향으로 해결�
 
 설치가 끝나면 새 Ubuntu를 **설치 환경이 아니라 설치된 시스템으로 부팅**해 확인한다. Windows도 유지하는 구성이라면 양쪽 부팅과 데이터 접근이 정상인지 확인한 뒤, 처음 기록한 임시 설치 매체 영역만 정리한다. EFI 영역을 임시 영역처럼 삭제해서는 안 된다.
 
-다음 상황에서는 추측으로 진행하지 않는다.
+문제 발생 시 다음 항목부터 확인한다.
 
 | 상황 | 점검 항목 |
 | --- | --- |

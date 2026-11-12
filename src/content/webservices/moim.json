@@ -7,7 +7,7 @@
   "reviewedAt": "2026-10-24T21:41:19+09:00",
   "github": "https://github.com/YooJuno/moim",
   "site": "https://moim-juno.web.app/",
-  "summary": "가입 승인부터 일정·장소 투표, 게시판, 캘린더와 회계까지 한곳에서 관리하는 모임 운영 서비스입니다.",
+  "summary": "일정 투표·캘린더·회계를 관리하는 모임 운영 서비스.",
   "tech": [
     "React",
     "TypeScript",

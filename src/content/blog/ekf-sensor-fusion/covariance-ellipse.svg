@@ -2,16 +2,16 @@
   <title id="title">공분산과 추정 오차의 상관관계</title>
   <desc id="desc">x와 y의 오차 분산이 같아도 공분산이 0이면 타원이 축에 정렬되고 양의 공분산이 있으면 오차 타원이 기울어진다. 축은 로봇의 실제 위치가 아니라 위치 추정 오차다.</desc>
   <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#657389" stroke-width="1.5"/></marker>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#777777" stroke-width="1.5"/></marker>
     <style>
-      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#172339}.title{font-size:29px;font-weight:750}.label{font-size:24px;font-weight:700}.note{font-size:21px;fill:#526178}.axis{fill:none;stroke:#657389;stroke-width:1.5;marker-end:url(#arrow)}
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#202124}.title{font-size:25px;font-weight:750}.label{font-size:24px;font-weight:700}.note{font-size:21px;fill:#555555}.axis{fill:none;stroke:#777777;stroke-width:1.5;marker-end:url(#arrow)}
     </style>
   </defs>
-  <rect width="680" height="750" rx="20" fill="#f5f7fc"/>
+  <rect width="680" height="750" rx="4" fill="#ffffff"/>
   <text x="34" y="53" class="title">공분산 · 오차의 상관관계</text>
   <text x="34" y="87" class="note">두 그림의 x·y 주변 분산은 동일</text>
-  <rect x="34" y="116" width="612" height="253" rx="14" fill="#fff" stroke="#d8e0ed"/>
-  <ellipse cx="180" cy="250" rx="56" ry="84" fill="#e7edff" stroke="#3157d5" stroke-width="2.5"/>
+  <rect x="34" y="116" width="612" height="253" rx="4" fill="#fff" stroke="#dfdfdf"/>
+  <ellipse cx="180" cy="250" rx="56" ry="84" fill="#ededed" stroke="#303030" stroke-width="2.5"/>
   <path d="M74 250H292" class="axis"/>
   <path d="M180 347V139" class="axis"/>
   <text x="264" y="278" class="note">e_x</text>
@@ -20,8 +20,8 @@
   <text x="336" y="235" class="note">x·y 오차의 선형 상관 없음</text>
   <text x="336" y="273" class="note">σx = 0.2 m</text>
   <text x="336" y="307" class="note">σy = 0.3 m</text>
-  <rect x="34" y="395" width="612" height="253" rx="14" fill="#fff" stroke="#d8e0ed"/>
-  <ellipse cx="180" cy="529" rx="90.32" ry="45.10" transform="rotate(-64.90 180 529)" fill="#e0f2e9" stroke="#15887e" stroke-width="2.5"/>
+  <rect x="34" y="395" width="612" height="253" rx="4" fill="#fff" stroke="#dfdfdf"/>
+  <ellipse cx="180" cy="529" rx="90.32" ry="45.10" transform="rotate(-64.90 180 529)" fill="#eeeeee" stroke="#666666" stroke-width="2.5"/>
   <path d="M74 529H292" class="axis"/>
   <path d="M180 626V418" class="axis"/>
   <text x="264" y="557" class="note">e_x</text>

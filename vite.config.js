@@ -5,6 +5,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { createPortfolioEntries } from './src/lib/portfolioMarkdown.js'
 import { parseBlogPost } from './src/lib/blogContent.js'
+import blogContentPlugin from './scripts/blogContentPlugin.mjs'
 import {
   DEFAULT_DESCRIPTION,
   ROUTE_META,
@@ -59,9 +60,6 @@ const portfolioContentPlugin = () => ({
   },
 })
 
-// 블로그 글 목록을 파일시스템에서 직접 읽는다.
-// src/lib/posts.js 는 Vite 전용 import.meta.glob 에 의존해 설정 파일에서
-// 재사용할 수 없으므로, 필요한 frontmatter 만 최소한으로 다시 읽는다.
 const readBlogEntries = () => {
   const blogDir = path.join(rootDir, 'src/content/blog')
   if (!fs.existsSync(blogDir)) return []
@@ -115,42 +113,6 @@ const readImageSize = (file) => {
   }
   return null
 }
-
-// src/lib/posts.js 의 import.meta.glob 키와 같은 형태로 크기 표를 만든다.
-// (예: ../content/blog/slam-where-am-i/image_1.png)
-const collectBlogImageSizes = () => {
-  const blogDir = path.join(rootDir, 'src/content/blog')
-  const sizes = {}
-  if (!fs.existsSync(blogDir)) return sizes
-
-  const walk = (dir, prefix) => {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      const full = path.join(dir, entry.name)
-      if (entry.isDirectory()) { walk(full, `${prefix}${entry.name}/`); continue }
-      if (!/\.(png|jpe?g|webp|svg|gif|avif)$/i.test(entry.name)) continue
-      const size = readImageSize(full)
-      if (size) sizes[`${prefix}${entry.name}`] = size
-    }
-  }
-  walk(blogDir, '../content/blog/')
-  return sizes
-}
-
-// 본문 이미지에 width/height 를 넣어 로딩 중 레이아웃이 밀리는 것을 막는다.
-// 브라우저에서는 파일 크기를 알 수 없으므로 빌드 시 계산해 넘긴다.
-const VIRTUAL_SIZES = 'virtual:blog-image-sizes'
-const RESOLVED_SIZES = `\0${VIRTUAL_SIZES}`
-
-const imageSizesPlugin = () => ({
-  name: 'blog-image-sizes',
-  resolveId(id) {
-    return id === VIRTUAL_SIZES ? RESOLVED_SIZES : null
-  },
-  load(id) {
-    if (id !== RESOLVED_SIZES) return null
-    return `export default ${JSON.stringify(collectBlogImageSizes())}`
-  },
-})
 
 // 사이트가 제공하는 모든 경로와 각 경로의 head 값
 const collectPages = () => {
@@ -264,5 +226,10 @@ const prerenderPlugin = () => ({
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
-  plugins: [react(), adminDirectoryPlugin(), portfolioContentPlugin(), imageSizesPlugin(), prerenderPlugin()],
+  plugins: [react(), adminDirectoryPlugin(), portfolioContentPlugin(), blogContentPlugin({ rootDir, readImageSize }), prerenderPlugin()],
+  build: {
+    assetsInlineLimit(file) {
+      if (file.replaceAll('\\', '/').includes('/src/content/blog/')) return false
+    },
+  },
 })

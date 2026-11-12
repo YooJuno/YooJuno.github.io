@@ -9,7 +9,7 @@ tags:
   - Mapping
   - Robotics
   - Computer Vision
-summary: "SLAM의 기본 개념과 동작 원리, Visual SLAM과 LiDAR SLAM의 차이점에 대해 알아봅니다."
+summary: "Visual SLAM·LiDAR SLAM의 원리와 처리 과정."
 ---
 
 # SLAM? ⇒ Where Am I?
