@@ -29,7 +29,7 @@
 .portfolio-page .hero-text h1 span {
   display: block;
   margin-top: 12px;
-  color: #4d596a;
+  color: var(--muted);
   font-size: 18px;
   font-weight: 500;
   letter-spacing: -0.025em;
@@ -52,15 +52,15 @@
   display: grid;
   gap: 6px;
   font-size: 13px;
-  color: #576273;
+  color: var(--muted);
 }
 
 .hero-contact-info a {
   display: inline-flex;
   align-items: center;
   justify-self: start;
-  min-height: 28px;
-  color: #576273;
+  min-height: 44px;
+  color: var(--muted);
 }
 
 .hero-contact-info .hero-contact-email {
@@ -110,7 +110,7 @@
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  color: #4d596a;
+  color: var(--muted);
   font-size: 13px;
   font-weight: 500;
 }
@@ -141,7 +141,7 @@
   width: 44px;
   height: 44px;
   border-radius: 8px;
-  color: #576273;
+  color: var(--muted);
 }
 
 .hero-contact-profiles svg {
@@ -153,7 +153,7 @@
 .hero-contact-profiles a:hover,
 .hero-contact-profiles a:focus-visible {
   color: var(--ink);
-  background: #f3f5f8;
+  background: var(--bg-alt);
 }
 
 .hero-contact a:focus-visible {
@@ -210,7 +210,7 @@
   padding: 16px 15px;
   border-bottom: 2px solid transparent;
   border-radius: 0;
-  color: #576273;
+  color: var(--muted);
   font-size: 14px;
   font-weight: 500;
   white-space: nowrap;
@@ -263,13 +263,13 @@
 }
 
 .portfolio-supplement h3 {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 600;
 }
 
 .portfolio-supplement summary p {
   margin-top: 4px;
-  color: #667185;
+  color: var(--muted);
   font-size: 12px;
   line-height: 1.65;
 }
@@ -288,7 +288,7 @@
   grid-template-columns: 40px minmax(0, 1fr);
   gap: 12px;
   padding: 16px 0;
-  border-top: 1px solid #e8ecf2;
+  border-top: 1px solid var(--border);
 }
 
 .supplement-kind {
@@ -296,21 +296,21 @@
   margin-top: 3px;
   padding: 3px 6px;
   border-radius: 4px;
-  background: #f3f5f9;
-  color: #667185;
+  background: var(--bg-alt);
+  color: var(--muted);
   font-size: 11px;
   text-align: center;
 }
 
 .supplement-list h4 {
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.7;
 }
 
 .supplement-list p {
   margin-top: 6px;
-  color: #576273;
-  font-size: 13px;
+  color: var(--muted);
+  font-size: 14px;
 }
 
 .supplement-list .supplement-meta {
@@ -326,12 +326,12 @@
   grid-template-columns: 56px minmax(0, 1fr);
   gap: 16px;
   padding: 12px 0;
-  border-top: 1px solid #e8ecf2;
+  border-top: 1px solid var(--border);
 }
 
 .profile-facts dt {
-  color: #576273;
-  font-size: 13px;
+  color: var(--muted);
+  font-size: 14px;
   font-weight: 600;
 }
 
@@ -344,7 +344,7 @@
 }
 
 .profile-period {
-  color: #667185;
+  color: var(--muted);
   font-size: 12px;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
@@ -371,7 +371,7 @@
   z-index: 1;
   width: 12px;
   height: 12px;
-  border: 2px solid #b3bed0;
+  border: 2px solid #8a8a8a;
   border-radius: 50%;
   background: var(--bg);
 }
@@ -387,7 +387,7 @@
   bottom: -40px;
   left: 195px;
   width: 1px;
-  background: #dce2ec;
+  background: var(--border);
 }
 
 .career-period {
@@ -399,10 +399,10 @@
   align-items: center;
   gap: 6px;
   padding: 4px 9px;
-  border: 1px solid #dfe4eb;
+  border: 1px solid var(--border);
   border-radius: 999px;
-  color: #576273;
-  background: #f0f2f5;
+  color: var(--muted);
+  background: var(--bg-alt);
   font-size: 11px;
   font-weight: 600;
   white-space: nowrap;
@@ -423,7 +423,7 @@
 
 .career-period p {
   margin-top: 8px;
-  color: #576273;
+  color: var(--muted);
   font-family: "Space Grotesk", "Noto Sans KR", sans-serif;
   font-size: 13px;
   line-height: 1.8;
@@ -437,8 +437,8 @@
 }
 
 .career-entry.is-current .career-card {
-  border-color: #b9c8ec;
-  box-shadow: 0 8px 24px rgba(49, 87, 213, 0.04);
+  border-color: #a2a2a2;
+  box-shadow: none;
 }
 
 .career-card-heading {
@@ -469,7 +469,7 @@ summary.career-card-heading::-webkit-details-marker {
 }
 
 summary.career-card-heading:hover {
-  background: #f8faff;
+  background: var(--bg-alt);
 }
 
 .career-card-heading:focus-visible {
@@ -488,7 +488,7 @@ summary.career-card-heading:hover {
   align-items: center;
   flex-shrink: 0;
   gap: 12px;
-  color: #536484;
+  color: var(--muted);
   font-size: 12px;
 }
 
@@ -524,26 +524,26 @@ summary.career-card-heading:hover {
 .career-card-body {
   margin: 0 24px;
   padding: 18px 0 24px;
-  border-top: 1px solid #e8ecf2;
+  border-top: 1px solid var(--border);
 }
 
 .career-team {
   margin-top: 4px;
-  color: #576273;
+  color: var(--muted);
   font-size: 14px;
   line-height: 1.6;
 }
 
 .career-summary {
   max-width: 680px;
-  color: #576273;
-  font-size: 14px;
+  color: var(--muted);
+  font-size: 15px;
   line-height: 1.85;
   word-break: keep-all;
 }
 
 .career-entry.is-current .career-summary {
-  color: #334e77;
+  color: var(--ink);
   font-weight: 500;
 }
 
@@ -553,12 +553,12 @@ summary.career-card-heading:hover {
   gap: 20px;
   margin-top: 18px;
   padding-top: 18px;
-  border-top: 1px solid #e8ecf2;
+  border-top: 1px solid var(--border);
 }
 
 .career-responsibilities h4 {
   margin-bottom: 6px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
 }
 
@@ -575,8 +575,8 @@ summary.career-card-heading:hover {
 .career-responsibilities ul,
 .career-responsibilities ol {
   padding-left: 18px;
-  color: #576273;
-  font-size: 14px;
+  color: var(--muted);
+  font-size: 15px;
 }
 
 .career-responsibilities ul {
@@ -616,20 +616,20 @@ summary.career-card-heading:hover {
 }
 
 .career-responsibilities p {
-  color: #576273;
-  font-size: 14px;
+  color: var(--muted);
+  font-size: 15px;
   word-break: keep-all;
 }
 
 .career-hardware {
   margin-top: 24px;
   padding-top: 18px;
-  border-top: 1px solid #e8ecf2;
+  border-top: 1px solid var(--border);
 }
 
 .career-hardware h4 {
   margin-bottom: 10px;
-  color: #576273;
+  color: var(--muted);
   font-size: 12px;
   font-weight: 500;
 }
@@ -643,10 +643,10 @@ summary.career-card-heading:hover {
 
 .career-hardware li {
   padding: 5px 9px;
-  border: 1px solid #dfe5ee;
+  border: 1px solid var(--border);
   border-radius: 6px;
-  color: #465771;
-  background: #f7f9fc;
+  color: var(--muted);
+  background: var(--bg-alt);
   font-family: "Space Grotesk", "Noto Sans KR", sans-serif;
   font-size: 12px;
   font-weight: 500;
@@ -673,13 +673,13 @@ summary.career-card-heading:hover {
 }
 
 .portfolio-page .project-detail .meta {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.75;
 }
 
 .portfolio-page .detail-body {
   padding: 8px 20px 22px;
-  color: #4d596a;
+  color: var(--muted);
   line-height: 1.85;
 }
 
@@ -689,7 +689,7 @@ summary.career-card-heading:hover {
 
 .portfolio-page .media-tile img {
   height: 168px;
-  background: #f4f6f9;
+  background: var(--bg-alt);
   object-fit: contain;
 }
 
@@ -745,7 +745,7 @@ summary.career-card-heading:hover {
   }
 
   .portfolio-page .lead {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .portfolio-section-nav {
@@ -810,11 +810,11 @@ summary.career-card-heading:hover {
   .profile-facts dd {
     grid-template-columns: minmax(0, 1fr);
     gap: 3px;
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .portfolio-page .project-detail .title {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .career-timeline {
@@ -855,7 +855,7 @@ summary.career-card-heading:hover {
   }
 
   .career-team {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .career-card-body {

@@ -170,7 +170,7 @@
 
 .project-grid.two .project-card ul li {
   padding-left: 12px;
-  border-left: 2px solid rgba(15, 79, 79, 0.2);
+  border-left: 2px solid var(--border);
 }
 
 .project-grid.two .project-card ul li::before {
@@ -369,9 +369,9 @@
 .detail-note {
   margin: 14px 0;
   padding: 12px 14px;
-  border-left: 2px solid #d8dfea;
+  border-left: 2px solid var(--border);
   border-radius: 0 8px 8px 0;
-  background: #f7f9fc;
+  background: var(--bg-alt);
 }
 
 .detail-note h4 {
@@ -417,7 +417,7 @@
 }
 
 .project-detail.is-focus {
-  transform: translateY(-2px);
+  transform: none;
 }
 
 [data-reveal] {
@@ -451,7 +451,7 @@ a.chip-link {
 }
 
 a.chip-link:hover {
-  transform: translateY(-1px);
+  transform: none;
 }
 
 .project-media {
@@ -507,7 +507,7 @@ body {
   font-weight: 400;
   line-height: 1.7;
   letter-spacing: -0.018em;
-  scrollbar-color: #b8c0cc transparent;
+  scrollbar-color: #8a8a8a transparent;
   scrollbar-width: thin;
 }
 
@@ -522,11 +522,11 @@ body::-webkit-scrollbar-track {
 body::-webkit-scrollbar-thumb {
   border: 3px solid var(--bg);
   border-radius: 10px;
-  background: #b8c0cc;
+  background: #8a8a8a;
 }
 
 body::-webkit-scrollbar-thumb:hover {
-  background: #8d97a5;
+  background: #666666;
 }
 
 button,
@@ -638,7 +638,7 @@ main.section,
   font-weight: 600;
   letter-spacing: -0.01em;
   box-shadow: none;
-  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
 }
 
 .btn.primary {
@@ -657,12 +657,12 @@ main.section,
 }
 
 .btn.ghost:hover {
-  border-color: #aeb7c2;
-  background: #f8f9fb;
+  border-color: #a2a2a2;
+  background: var(--bg-alt);
 }
 
 .btn:hover {
-  transform: translateY(-1px);
+  transform: none;
 }
 
 .pill-grid,
@@ -679,8 +679,8 @@ main.section,
   padding: 5px 9px;
   border: 1px solid var(--border);
   border-radius: 6px;
-  color: #4c5563;
-  background: #f7f8fa;
+  color: var(--muted);
+  background: var(--bg-alt);
   font-size: 12px;
   font-weight: 550;
 }
@@ -731,7 +731,7 @@ main.section,
 .panel-card ul {
   counter-reset: summary;
   gap: 14px;
-  color: #4f5967;
+  color: var(--muted);
   font-size: 14px;
 }
 
@@ -773,15 +773,15 @@ main.section,
 .project-card {
   padding: 24px;
   border-radius: var(--radius);
-  transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+  transition: border-color 160ms ease;
 }
 
 .project-card:hover,
 .post-card:hover,
 .service-link:hover {
-  border-color: #bcc5d1;
-  box-shadow: 0 10px 24px rgba(22, 27, 34, 0.05);
-  transform: translateY(-2px);
+  border-color: #a2a2a2;
+  box-shadow: none;
+  transform: none;
 }
 
 .project-card.feature {
@@ -799,7 +799,7 @@ main.section,
 }
 
 .project-grid.two .project-card ul li {
-  border-left-color: #d9dee7;
+  border-left-color: var(--border);
 }
 
 .summary,
@@ -846,7 +846,7 @@ main.section,
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 12px 30px rgba(22, 27, 34, 0.06);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 6%);
   scrollbar-width: thin;
 }
 
@@ -863,14 +863,14 @@ main.section,
 .index-link.is-active,
 .project-detail[open] summary {
   color: var(--accent);
-  background: #f1f4ff;
+  background: var(--bg-alt);
 }
 
 .project-detail {
   overflow: clip;
   scroll-margin-top: 92px;
   border-radius: var(--radius-sm);
-  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  transition: border-color 160ms ease;
 }
 
 .project-detail summary::after {
@@ -878,20 +878,20 @@ main.section,
 }
 
 .project-detail.is-focus {
-  border-color: #aab9ec;
-  box-shadow: 0 8px 20px rgba(49, 87, 213, 0.09);
+  border-color: #a2a2a2;
+  box-shadow: none;
 }
 
 .chip-link.muted {
   color: var(--muted);
   border-color: var(--border);
-  background: #f7f8fa;
+  background: var(--bg-alt);
 }
 
 a.chip-link:hover {
   color: var(--accent);
-  border-color: #bdc8ec;
-  background: #f1f4ff;
+  border-color: #a2a2a2;
+  background: var(--bg-alt);
   box-shadow: none;
 }
 
@@ -902,14 +902,14 @@ a.chip-link:hover {
 }
 
 .media-placeholder {
-  color: #77808e;
-  background: #f1f3f6;
+  color: var(--muted);
+  background: var(--bg-alt);
 }
 
 .lightbox-content {
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: 0 24px 60px rgba(10, 15, 24, 0.22);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 22%);
 }
 
 
@@ -941,7 +941,7 @@ a.chip-link:hover {
   position: absolute;
   top: 50%;
   right: 24px;
-  color: #8a94a3;
+  color: var(--muted);
   font-size: 18px;
   transform: translateY(-50%);
 }

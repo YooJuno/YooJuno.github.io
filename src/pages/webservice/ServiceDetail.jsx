@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getWebService } from '../../lib/webServices'
 import '../../styles/pages/webservice.css'
@@ -10,6 +10,7 @@ export function GitHubMark() {
 
 function ServiceDetail({ serviceId }) {
   useDocumentTitle()
+  const location = useLocation()
   const service = getWebService(serviceId)
   const localSource = service.sourceState === 'local'
   const reviewTime = service.reviewedAt
@@ -17,13 +18,35 @@ function ServiceDetail({ serviceId }) {
     : service.inspectedAt
   const dialog = useRef(null)
   const [selectedScreen, setSelectedScreen] = useState(null)
+  const [originalSize, setOriginalSize] = useState(false)
+
+  useEffect(() => {
+    if (selectedScreen && !dialog.current.open) {
+      dialog.current.showModal()
+      dialog.current.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    }
+  }, [selectedScreen])
+
+  useEffect(() => {
+    if (!location.hash) return
+    let id
+    try { id = decodeURIComponent(location.hash.slice(1)) } catch { return }
+    const target = document.getElementById(id)
+    if (target?.closest('.service-detail')) target.scrollIntoView({ behavior: 'instant', block: 'start' })
+  }, [serviceId, location.hash])
+
   const screenImageUrl = screen => service.reviewedAt
     ? `${screen.image}${screen.image.includes('?') ? '&' : '?'}v=${encodeURIComponent(service.reviewedAt)}`
     : screen.image
 
   const openScreen = screen => {
+    setOriginalSize(false)
     setSelectedScreen(screen)
-    dialog.current.showModal()
+  }
+
+  const toggleImageSize = () => {
+    setOriginalSize(value => !value)
+    dialog.current.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }
 
   return (
@@ -49,12 +72,12 @@ function ServiceDetail({ serviceId }) {
         </section>
 
         <section className="service-section" id="screens" aria-labelledby="screens-heading">
-          <div className="service-section-heading"><h2 id="screens-heading">화면 정의</h2><p>이미지를 누르면 원본 크기로 확인할 수 있습니다.</p></div>
+          <div className="service-section-heading"><h2 id="screens-heading">화면 정의</h2><p>이미지를 눌러 확대할 수 있습니다.</p></div>
           <div className="service-screen-grid">
             {service.screens.map(screen => (
               <figure className="service-screen" key={screen.id}>
                 <div className="service-screen-heading"><span>{screen.id}</span><h3>{screen.title}</h3></div>
-                <button className="service-screen-image" onClick={() => openScreen(screen)} aria-label={`${screen.title} 화면 확대`}>
+                <button className="service-screen-image" type="button" onClick={() => openScreen(screen)} aria-label={`${screen.title} 화면 확대`}>
                   <img src={screenImageUrl(screen)} width={screen.width} height={screen.height} alt={screen.alt} loading="lazy" decoding="async" />
                   <span>확대 ↗</span>
                 </button>
@@ -102,9 +125,30 @@ function ServiceDetail({ serviceId }) {
         </section>
       </div>
 
-      <dialog className="service-lightbox" ref={dialog} aria-labelledby="lightbox-heading" onClick={event => { if (event.target === dialog.current) dialog.current.close() }}>
-        <div className="service-lightbox-toolbar"><h2 id="lightbox-heading">{selectedScreen?.title || '화면 확대'}</h2><button type="button" onClick={() => dialog.current.close()} aria-label="확대 화면 닫기">닫기 ×</button></div>
-        {selectedScreen && <><img src={screenImageUrl(selectedScreen)} width={selectedScreen.width} height={selectedScreen.height} alt={selectedScreen.alt} /><p>{selectedScreen.caption}</p></>}
+      <dialog className="service-lightbox" ref={dialog} aria-labelledby="lightbox-heading" onClose={() => { setSelectedScreen(null); setOriginalSize(false) }} onKeyDown={event => {
+        if (event.key !== 'Tab') return
+        const controls = event.currentTarget.querySelectorAll('button')
+        const first = controls[0]
+        const last = controls[controls.length - 1]
+        const active = document.activeElement
+        if (active === event.currentTarget || (event.shiftKey && active === first) || (!event.shiftKey && active === last)) {
+          event.preventDefault()
+          const target = event.shiftKey ? last : first
+          target?.focus()
+        }
+      }} onClick={event => {
+        if (event.target !== dialog.current) return
+        const bounds = dialog.current.getBoundingClientRect()
+        if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) dialog.current.close()
+      }}>
+        <div className="service-lightbox-toolbar">
+          <h2 id="lightbox-heading">{selectedScreen?.title || '화면 확대'}</h2>
+          <div className="service-lightbox-actions">
+            <button type="button" onClick={toggleImageSize} aria-controls="service-lightbox-image">{originalSize ? '화면에 맞춤' : '원본 크기'}</button>
+            <button type="button" onClick={() => dialog.current.close()} aria-label="확대 화면 닫기">닫기 ×</button>
+          </div>
+        </div>
+        {selectedScreen && <><img id="service-lightbox-image" className={originalSize ? 'is-original' : undefined} src={screenImageUrl(selectedScreen)} width={selectedScreen.width} height={selectedScreen.height} alt={selectedScreen.alt} /><p>{selectedScreen.caption}</p></>}
       </dialog>
     </main>
   )
