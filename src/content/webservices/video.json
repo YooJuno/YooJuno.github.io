@@ -2,7 +2,6 @@
   "id": "video",
   "route": "/web-service/video-chatting",
   "title": "Pair · Video Chatting",
-  "status": "구현 · 배포 미정",
   "inspectedAt": "2026-10-14",
   "revision": "a019d6a",
   "github": "https://github.com/YooJuno/video-chatting",

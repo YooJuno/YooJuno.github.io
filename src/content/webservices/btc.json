@@ -2,7 +2,6 @@
   "id": "btc",
   "route": "/web-service/bitcoin-auto-trader",
   "title": "BTC Auto Trader",
-  "status": "구현 · 배포 미정",
   "inspectedAt": "2026-10-14",
   "revision": "503a0ad",
   "github": "https://github.com/YooJuno/btc-auto-trader",

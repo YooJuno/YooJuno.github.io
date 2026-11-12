@@ -2,7 +2,6 @@
   "id": "moim",
   "route": "/web-service/moim",
   "title": "모임 · moim",
-  "status": "배포 중",
   "inspectedAt": "2026-10-24",
   "reviewedAt": "2026-10-24T21:41:19+09:00",
   "github": "https://github.com/YooJuno/moim",
