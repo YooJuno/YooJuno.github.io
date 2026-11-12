@@ -62,7 +62,7 @@ function Blog() {
   }
 
   return (
-    <main className="section blog-main" id="main-content">
+    <main className="section blog-main" id="main-content" tabIndex={-1}>
       <div className="container">
         <header className="section-head">
           <h1>블로그</h1>

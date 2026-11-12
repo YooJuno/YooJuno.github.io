@@ -23,7 +23,7 @@ class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <main className="section">
+        <main className="section" id="main-content" tabIndex={-1}>
           <div className="container empty-page">
             <p className="eyebrow">오류</p>
             <h1>페이지를 표시할 수 없습니다.</h1>
