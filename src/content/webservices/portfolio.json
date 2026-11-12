@@ -2,7 +2,10 @@
   "id": "portfolio",
   "route": "/web-service/blog",
   "title": "Portfolio & Blog",
-  "inspectedAt": "2026-10-26",
+  "inspectedAt": "2026-11-12",
+  "reviewedAt": "2026-11-12T12:00:53.000Z",
+  "revision": "7bdaa96351d7b45f87f9742821d22e5e52b7338e",
+  "sourceState": "published",
   "github": "https://github.com/YooJuno/YooJuno.github.io",
   "site": "https://yoojuno.github.io/",
   "summary": "포트폴리오와 기술 글을 관리하는 개인 사이트.",
@@ -16,8 +19,8 @@
     "GitHub Pages"
   ],
   "overview": [
-    "포트폴리오 데이터와 블로그 글을 컴포넌트에서 분리했습니다. 프로젝트·경력은 개별 콘텐츠 파일에서 수정하고, 글은 폴더별 Markdown과 이미지로 관리합니다.",
-    "경로별 제목·설명·canonical과 사이트맵을 빌드할 때 생성합니다. 화면 본문은 클라이언트에서 렌더링하므로, 현재의 HTML 생성은 본문 전체를 정적 렌더링하는 SSG와는 다릅니다."
+    "경력·프로젝트는 JSON·Markdown, 블로그는 글별 Markdown·이미지로 관리합니다. 공개 화면과 /admin/ 편집기를 분리했습니다.",
+    "블로그 본문을 빌드할 때 HTML로 변환하고 글별로 지연 로딩합니다. 경로별 head와 사이트맵도 미리 생성하며, 실제 페이지 본문 표시는 브라우저에서 처리합니다."
   ],
   "screens": [
     {
@@ -26,90 +29,120 @@
       "image": "/content/images/webservices/portfolio/portfolio.png",
       "width": 1440,
       "height": 1000,
-      "alt": "유준호 포트폴리오의 소개와 경력 화면",
-      "caption": "현재 사이트를 로컬에서 실행한 화면입니다. 포트폴리오에 공개된 콘텐츠를 사용했습니다.",
+      "alt": "소개·연락처와 접힌 경력 타임라인을 보여주는 포트폴리오",
+      "caption": "공개 콘텐츠를 사용한 로컬 빌드의 소개·경력 화면입니다.",
       "annotations": [
-        "소개·연락·이력서 링크를 상단에서 확인합니다.",
-        "경력은 타임라인으로, 상세 업무는 펼침 영역으로 분리합니다.",
-        "프로젝트는 시간순으로 탐색하며 개별 상세 내용을 펼칩니다."
+        "소개·연락처와 이력서·프로필 링크를 모았습니다.",
+        "경력 행을 눌러 업무·기술·자료를 펼칩니다.",
+        "프로젝트는 한 열의 최신순 목록에서 탐색합니다."
       ]
     },
     {
       "id": "P02",
-      "title": "기술 블로그",
+      "title": "블로그 목록",
       "image": "/content/images/webservices/portfolio/blog.png",
       "width": 1440,
       "height": 1000,
-      "alt": "카테고리와 검색을 제공하는 기술 블로그 목록",
-      "caption": "실제 Markdown 콘텐츠로 렌더링한 블로그 목록입니다.",
+      "alt": "검색창과 제목·짧은 요약·발행일로 구성한 블로그 목록",
+      "caption": "제목·짧은 요약·발행일로 구성한 블로그 목록입니다.",
       "annotations": [
-        "카테고리·태그·검색어로 글을 좁힙니다.",
-        "제목·요약·날짜를 목록에서 확인합니다.",
-        "글별 URL과 내부 제목 링크로 문서에 직접 접근합니다."
+        "상단 메뉴에서 카테고리를 선택합니다.",
+        "검색창으로 제목·요약·키워드·본문을 찾습니다.",
+        "검색 조건은 URL에 남고 글에서 목록으로 돌아갈 때 유지됩니다."
+      ]
+    },
+    {
+      "id": "P03",
+      "title": "기술 글 읽기",
+      "image": "/content/images/webservices/portfolio/post.png",
+      "width": 1440,
+      "height": 1000,
+      "alt": "EKF 센서 융합 글의 제목·발행일·접힌 목차와 본문 표",
+      "caption": "EKF 글의 첫 화면입니다. 접힌 목차와 본문 표를 확인할 수 있습니다.",
+      "annotations": [
+        "제목·발행일과 본문을 구분해 표시합니다.",
+        "긴 목차는 필요한 때 펼쳐서 이동합니다.",
+        "표·코드는 본문 폭을 유지하며 가로로 탐색합니다."
       ]
     }
   ],
   "features": [
     {
-      "title": "파일 기반 콘텐츠",
-      "description": "블로그는 index.md와 같은 폴더의 이미지, 포트폴리오는 개별 JSON·Markdown으로 관리합니다. 별도 관리자에서 글을 편집해도 같은 파일 구조로 저장합니다."
+      "title": "파일 기반 편집",
+      "description": "소개·경력·프로젝트는 개별 콘텐츠 파일에서, 글은 Markdown 또는 Decap CMS에서 수정합니다."
     },
     {
-      "title": "콘텐츠 탐색",
-      "description": "블로그 검색·분류와 시간순 프로젝트 목록, 펼침형 경력·프로젝트 상세를 제공합니다."
+      "title": "글별 로딩·본문 검색",
+      "description": "블로그 목록은 메타데이터만 읽고, 선택한 글의 HTML과 검색용 본문은 각각 필요할 때 불러옵니다."
     },
     {
-      "title": "경로별 메타데이터",
-      "description": "각 페이지와 글에 제목·설명·canonical을 생성하고 sitemap.xml에 공개 경로를 기록합니다."
+      "title": "주소·키보드 탐색",
+      "description": "검색 조건과 문서 위치를 URL로 유지합니다. 본문 건너뛰기, 메뉴 닫기, 이미지 확대·포커스 복귀를 지원합니다."
     },
     {
-      "title": "빌드·배포와 오류 경계",
-      "description": "main 변경에서 린트·빌드 후 Pages에 배포하며, 경로별 오류 경계와 제한된 청크 로딩 복구를 둡니다."
+      "title": "검증 후 배포",
+      "description": "main 변경에서 린트·콘텐츠 검사·빌드를 통과한 결과물을 GitHub Pages에 배포합니다."
     }
   ],
   "architecture": [
     {
       "label": "콘텐츠 파일",
-      "detail": "Markdown·JSON·이미지"
+      "detail": "JSON·Markdown·이미지"
     },
     {
       "label": "Vite 빌드",
-      "detail": "콘텐츠 로더·메타데이터 생성"
-    },
-    {
-      "label": "React 화면",
-      "detail": "라우팅·검색·상세 펼침"
+      "detail": "블로그 HTML 청크·경로별 head·사이트맵"
     },
     {
       "label": "GitHub Pages",
-      "detail": "정적 파일 제공"
+      "detail": "빌드된 정적 파일 제공"
+    },
+    {
+      "label": "React 화면",
+      "detail": "라우팅·검색·선택한 글 로딩"
     }
   ],
   "apiTitle": "정적 리소스·모듈 인터페이스",
-  "apiNote": "공개 콘텐츠를 조회하는 REST 백엔드는 없습니다. 아래는 정적 리소스와 콘텐츠 모듈입니다. 별도 관리자 로그인용 Cloudflare Worker는 GitHub OAuth 연결을 담당합니다.",
+  "apiNote": "내부 콘텐츠 모듈과 정적 파일의 인터페이스입니다. 관리자 GitHub OAuth는 별도 Cloudflare Worker를 사용합니다.",
   "api": [
     {
       "method": "MODULE",
-      "path": "parseFrontMatter(raw)",
-      "description": "문서 메타데이터 파싱",
-      "request": "Markdown 원문",
-      "response": "data · content",
-      "access": "빌드·클라이언트 콘텐츠 처리"
+      "path": "parseBlogPost(raw, slugFromPath)",
+      "description": "글 메타데이터·본문 파싱과 검증",
+      "request": "Markdown 원문·글 폴더 이름",
+      "response": "메타데이터와 content",
+      "access": "빌드·콘텐츠 검사 단계"
     },
     {
       "method": "MODULE",
       "path": "getPostBySlug(slug)",
-      "description": "블로그 글 조회",
+      "description": "본문 로딩 없는 메타데이터 조회",
       "request": "글 slug",
-      "response": "제목·날짜·태그·렌더링된 본문",
-      "access": "공개 콘텐츠"
+      "response": "slug·제목·날짜·분류·태그·요약 또는 undefined",
+      "access": "동기 조회 · 대소문자 정규화"
+    },
+    {
+      "method": "MODULE",
+      "path": "loadPostBySlug(slug)",
+      "description": "선택한 글의 HTML 청크 로딩",
+      "request": "글 slug",
+      "response": "Promise의 결과: 글 메타데이터·html 또는 null",
+      "access": "글별 지연 로딩 · 로드 결과 재사용"
+    },
+    {
+      "method": "MODULE",
+      "path": "loadSearchText()",
+      "description": "검색용 본문 청크 로딩",
+      "request": "없음",
+      "response": "slug별 소문자 본문 맵을 담은 Promise",
+      "access": "첫 검색에 로딩 · 탭 메모리에서 재사용"
     },
     {
       "method": "GET",
       "path": "/sitemap.xml",
-      "description": "검색엔진용 경로 목록",
+      "description": "검색엔진용 공개 경로 목록",
       "request": "없음",
-      "response": "공개 URL과 글 날짜의 XML",
+      "response": "공개 URL 목록 XML",
       "access": "공개 정적 파일"
     },
     {
@@ -117,25 +150,33 @@
       "path": "/robots.txt",
       "description": "크롤러 수집 정책",
       "request": "없음",
-      "response": "수집 허용과 사이트맵 주소",
+      "response": "수집 정책과 사이트맵 주소",
       "access": "공개 정적 파일"
     }
   ],
   "decisions": [
     {
       "title": "내용과 표현 분리",
-      "description": "프로젝트·경력 데이터는 콘텐츠 파일에 두고, 페이지가 공통 표시 규칙을 담당합니다."
+      "description": "소개·경력·프로젝트 수정은 콘텐츠 파일에서 처리하고, 컴포넌트는 표시·탐색 동작을 담당합니다."
     },
     {
-      "title": "정적 호스팅에 맞춘 경로 처리",
-      "description": "페이지별 HTML 파일을 생성해 직접 접근 시 404를 줄이고 경로별 링크 미리보기를 제공합니다."
+      "title": "블로그 변환과 로딩 분리",
+      "description": "Markdown 변환은 빌드에서 처리합니다. 방문자는 목록에서 모든 본문을 내려받지 않고 필요한 글·검색 데이터만 불러옵니다."
+    },
+    {
+      "title": "정적 호스팅의 주소 처리",
+      "description": "경로별 index.html과 메타데이터를 생성하고, 미등록 경로는 404 복구 흐름으로 React Router에 전달합니다."
+    },
+    {
+      "title": "기본 HTML 요소 활용",
+      "description": "프로젝트 상세는 details, 웹서비스 캡처 확대는 dialog를 사용하고 키보드·포커스 동작을 검증했습니다."
     }
   ],
   "limitations": [
-    "검색 색인 여부는 Search Console 등 외부 도구로 별도 확인해야 합니다.",
-    "현재 HTML은 head만 경로별로 생성합니다. 본문 SSG·SSR은 추가 개선 대상입니다.",
-    "관리자는 Decap CMS로 Git의 글 파일을 편집합니다. 원격 로그인에는 GitHub OAuth 앱과 Worker 시크릿 설정이 필요합니다.",
-    "댓글·방문자 회원 기능은 없으며 공개 저장소의 CMS 초안은 비공개가 아닙니다."
+    "경로별 HTML은 head를 사전 생성하며, 본문 표시는 브라우저에서 처리합니다.",
+    "검색엔진 색인 여부는 Search Console 등 외부 도구로 별도 확인해야 합니다.",
+    "글 검색은 클라이언트 문자열 검색으로, 첫 검색에 전체 검색용 본문을 내려받습니다.",
+    "CMS 초안도 공개 저장소의 브랜치에 저장됩니다. 비밀정보를 작성하지 않습니다."
   ],
   "sources": [
     {
@@ -143,20 +184,41 @@
       "path": "src/App.jsx"
     },
     {
+      "label": "포트폴리오 콘텐츠",
+      "path": "src/lib/portfolio.js"
+    },
+    {
       "label": "블로그 로더",
       "path": "src/lib/posts.js"
     },
     {
-      "label": "콘텐츠 파서",
-      "path": "src/lib/frontMatter.js"
+      "label": "글 메타데이터 검사",
+      "path": "src/lib/blogContent.js"
     },
     {
-      "label": "빌드 플러그인",
+      "label": "블로그 본문 빌드",
+      "path": "scripts/blogContentPlugin.mjs"
+    },
+    {
+      "label": "이미지 확대",
+      "path": "src/pages/webservice/ServiceDetail.jsx"
+    },
+    {
+      "label": "메타데이터·사이트맵",
       "path": "vite.config.js"
+    },
+    {
+      "label": "관리자 편집 설정",
+      "path": "public/admin/config.yml"
+    },
+    {
+      "label": "관리자 OAuth",
+      "path": "infrastructure/cms-auth/worker.js"
     },
     {
       "label": "배포 Workflow",
       "path": ".github/workflows/deploy.yml"
     }
-  ]
+  ],
+  "architectureNote": "관리자 GitHub 인증은 별도 Cloudflare Worker가 처리하고, Decap CMS의 수정 내용은 Git 저장소에 반영합니다."
 }

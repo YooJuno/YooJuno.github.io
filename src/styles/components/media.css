@@ -51,8 +51,8 @@
 .lightbox-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(19, 16, 14, 0.6);
-  backdrop-filter: blur(2px);
+  background: rgb(0 0 0 / 72%);
+  backdrop-filter: none;
 }
 
 .lightbox-content {
@@ -85,11 +85,11 @@
   position: absolute;
   top: 8px;
   right: 8px;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--card);
   color: var(--ink);
   font-size: 18px;
   display: inline-flex;
