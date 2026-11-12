@@ -73,7 +73,7 @@ collections:
       - label: 요약
         name: summary
         widget: text
-        hint: 글 목록과 검색 결과에 표시할 설명입니다.
+        hint: 주제와 적용 범위만 짧은 한 문장으로 입력해주세요. 자세한 설명은 본문에 작성합니다.
       - label: 본문
         name: body
         widget: richtext

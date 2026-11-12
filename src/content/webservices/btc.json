@@ -7,7 +7,7 @@
   "revision": "503a0ad",
   "github": "https://github.com/YooJuno/btc-auto-trader",
   "site": "",
-  "summary": "Upbit 시세·포트폴리오·전략 설정과 자동매매 엔진의 판단 근거를 한 콘솔에서 확인합니다.",
+  "summary": "Upbit 시세·전략·자동매매 상태를 확인하는 콘솔.",
   "tech": [
     "Spring Boot",
     "React",

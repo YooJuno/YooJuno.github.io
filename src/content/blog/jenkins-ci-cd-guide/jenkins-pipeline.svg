@@ -1,24 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="680" height="1044" viewBox="0 0 680 1044" role="img" aria-labelledby="title description">
 <title id="title">정적 웹 프로젝트의 CI 단계</title>
 <desc id="description">소스 체크아웃과 실행 환경 확인 뒤 npm ci, npm run lint, npm run build를 순서대로 실행한다. 성공 시 dist를 보관하고 후처리에서 워크스페이스를 정리한다. 실패하면 다음 일반 단계는 실행하지 않는다.</desc>
-<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#6c7e9c"/></marker></defs>
-<rect width="680" height="1044" rx="18" fill="#f5f7fc"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#777777"/></marker></defs>
+<rect width="680" height="1044" rx="4" fill="#ffffff"/>
 <g font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-<text x="40" y="51" font-size="28" fill="#172339" font-weight="700">정적 웹 프로젝트의 CI 단계</text>
-<text x="40" y="85" font-size="21" fill="#52617a" font-weight="400">본문 Jenkinsfile 예제와 같은 흐름 · 운영 배포는 포함하지 않음</text>
-<rect x="40" y="122" width="600" height="92" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="158" font-size="24" fill="#172339" font-weight="700">01  Checkout</text><text x="64" y="192" font-size="22" fill="#52617a" font-weight="400">checkout scm · 빌드할 소스 리비전 확보</text>
-<path d="M 340 214 V 239" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
-<rect x="40" y="241" width="600" height="92" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="277" font-size="24" fill="#172339" font-weight="700">02  Environment</text><text x="64" y="311" font-size="22" fill="#52617a" font-weight="400">node --version · npm --version</text>
-<path d="M 340 333 V 358" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
-<rect x="40" y="360" width="600" height="92" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="396" font-size="24" fill="#172339" font-weight="700">03  Install</text><text x="64" y="430" font-size="22" fill="#52617a" font-weight="400">npm ci · 잠금 파일을 기준으로 설치</text>
-<path d="M 340 452 V 477" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
-<rect x="40" y="479" width="600" height="92" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="515" font-size="24" fill="#172339" font-weight="700">04  Lint</text><text x="64" y="549" font-size="22" fill="#52617a" font-weight="400">npm run lint · 정적 분석 실패 시 중단</text>
-<path d="M 340 571 V 596" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
-<rect x="40" y="598" width="600" height="92" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="634" font-size="24" fill="#172339" font-weight="700">05  Build</text><text x="64" y="668" font-size="22" fill="#52617a" font-weight="400">npm run build · dist 생성</text>
-<path d="M 340 690 V 715" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
-<rect x="40" y="717" width="600" height="92" rx="14" fill="#edf1ff" stroke="#c4cff5" stroke-width="1.5"/><text x="64" y="753" font-size="24" fill="#172339" font-weight="700">성공 후  Archive</text><text x="64" y="787" font-size="22" fill="#52617a" font-weight="400">dist/** 보관 · 빌드와 산출물 연결</text>
-<path d="M 340 809 V 834" fill="none" stroke="#6c7e9c" stroke-width="2.5" marker-end="url(#arrow)"/>
-<rect x="40" y="836" width="600" height="92" rx="14" fill="#eaf4f1" stroke="#c4ded6" stroke-width="1.5"/><text x="64" y="872" font-size="24" fill="#172339" font-weight="700">후처리  Cleanup</text><text x="64" y="906" font-size="22" fill="#52617a" font-weight="400">성공·실패 후 워크스페이스 정리</text>
-<text x="40" y="991" font-size="22" fill="#52617a" font-weight="400">실패하면 다음 일반 단계는 건너뛰고 후처리로 이동</text>
+<text x="40" y="51" font-size="28" fill="#202124" font-weight="700">정적 웹 프로젝트의 CI 단계</text>
+<text x="40" y="85" font-size="21" fill="#555555" font-weight="400">본문 Jenkinsfile 예제와 같은 흐름 · 운영 배포는 포함하지 않음</text>
+<rect x="40" y="122" width="600" height="92" rx="4" fill="#fff" stroke="#dfdfdf" stroke-width="1.5"/><text x="64" y="158" font-size="24" fill="#202124" font-weight="700">01  Checkout</text><text x="64" y="192" font-size="22" fill="#555555" font-weight="400">checkout scm · 빌드할 소스 리비전 확보</text>
+<path d="M 340 214 V 239" fill="none" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="241" width="600" height="92" rx="4" fill="#fff" stroke="#dfdfdf" stroke-width="1.5"/><text x="64" y="277" font-size="24" fill="#202124" font-weight="700">02  Environment</text><text x="64" y="311" font-size="22" fill="#555555" font-weight="400">node --version · npm --version</text>
+<path d="M 340 333 V 358" fill="none" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="360" width="600" height="92" rx="4" fill="#fff" stroke="#dfdfdf" stroke-width="1.5"/><text x="64" y="396" font-size="24" fill="#202124" font-weight="700">03  Install</text><text x="64" y="430" font-size="22" fill="#555555" font-weight="400">npm ci · 잠금 파일을 기준으로 설치</text>
+<path d="M 340 452 V 477" fill="none" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="479" width="600" height="92" rx="4" fill="#fff" stroke="#dfdfdf" stroke-width="1.5"/><text x="64" y="515" font-size="24" fill="#202124" font-weight="700">04  Lint</text><text x="64" y="549" font-size="22" fill="#555555" font-weight="400">npm run lint · 정적 분석 실패 시 중단</text>
+<path d="M 340 571 V 596" fill="none" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="598" width="600" height="92" rx="4" fill="#fff" stroke="#dfdfdf" stroke-width="1.5"/><text x="64" y="634" font-size="24" fill="#202124" font-weight="700">05  Build</text><text x="64" y="668" font-size="22" fill="#555555" font-weight="400">npm run build · dist 생성</text>
+<path d="M 340 690 V 715" fill="none" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="717" width="600" height="92" rx="4" fill="#f1f1f1" stroke="#cfcfcf" stroke-width="1.5"/><text x="64" y="753" font-size="24" fill="#202124" font-weight="700">성공 후  Archive</text><text x="64" y="787" font-size="22" fill="#555555" font-weight="400">dist/** 보관 · 빌드와 산출물 연결</text>
+<path d="M 340 809 V 834" fill="none" stroke="#777777" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="40" y="836" width="600" height="92" rx="4" fill="#f2f2f2" stroke="#d8d8d8" stroke-width="1.5"/><text x="64" y="872" font-size="24" fill="#202124" font-weight="700">후처리  Cleanup</text><text x="64" y="906" font-size="22" fill="#555555" font-weight="400">성공·실패 후 워크스페이스 정리</text>
+<text x="40" y="991" font-size="22" fill="#555555" font-weight="400">실패하면 다음 일반 단계는 건너뛰고 후처리로 이동</text>
 </g>
 </svg>

@@ -2,40 +2,40 @@
   <title id="title">지면 분리와 로봇의 주행 판단</title>
   <desc id="desc">시간과 좌표계를 맞춘 점군을 지면과 비지면으로 분리한다. 지면은 지형 정보, 비지면은 장애물 후보로 사용한다. 미관측 영역과 낙차는 별도 표현이나 탐지로 관리하고 로봇의 운동 능력을 고려해 주행 가능성을 판단한다.</desc>
   <defs>
-    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#3157d5" stroke-width="1.5"/></marker>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#303030" stroke-width="1.5"/></marker>
     <style>
-      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#172339}.title{font-size:29px;font-weight:750}.label{font-size:24px;font-weight:700}.note{font-size:21px;fill:#526178}.panel{fill:#fff;stroke:#d8e0ed;stroke-width:1.5}.arrow{fill:none;stroke:#3157d5;stroke-width:2.5;marker-end:url(#arrow)}
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#202124}.title{font-size:25px;font-weight:750}.label{font-size:24px;font-weight:700}.note{font-size:21px;fill:#555555}.panel{fill:#fff;stroke:#dfdfdf;stroke-width:1.5}.arrow{fill:none;stroke:#303030;stroke-width:2.5;marker-end:url(#arrow)}
     </style>
   </defs>
-  <rect width="680" height="930" rx="20" fill="#f5f7fc"/>
+  <rect width="680" height="930" rx="4" fill="#ffffff"/>
   <text x="34" y="53" class="title">지면 분리와 주행 판단</text>
   <text x="34" y="87" class="note">지면·장애물·미관측 영역의 역할 구분</text>
-  <rect x="34" y="118" width="612" height="86" rx="12" class="panel"/>
+  <rect x="34" y="118" width="612" height="86" rx="4" class="panel"/>
   <text x="58" y="155" class="label">LiDAR 점군 · 자세 · 관측 범위</text>
   <text x="58" y="185" class="note">frame_id · timestamp · 센서 외부 파라미터</text>
   <path d="M340 204V237" class="arrow"/>
-  <rect x="34" y="247" width="612" height="86" rx="12" class="panel"/>
+  <rect x="34" y="247" width="612" height="86" rx="4" class="panel"/>
   <text x="58" y="284" class="label">동기화 · 유효 점 · 자차 제거 · deskew</text>
   <text x="58" y="314" class="note">자세 회전과 스캔 운동 보정은 별도</text>
   <path d="M340 333V366" class="arrow"/>
-  <rect x="130" y="376" width="420" height="73" rx="12" class="panel"/>
+  <rect x="130" y="376" width="420" height="73" rx="4" class="panel"/>
   <text x="340" y="421" text-anchor="middle" class="label">GSeg3D / FugSeg</text>
   <path d="M340 449V472H180V495" class="arrow"/>
   <path d="M340 472H500V495" class="arrow"/>
-  <rect x="34" y="505" width="292" height="95" rx="12" fill="#e4f3eb" stroke="#bcd9c8"/>
+  <rect x="34" y="505" width="292" height="95" rx="4" fill="#efefef" stroke="#d2d2d2"/>
   <text x="180" y="544" text-anchor="middle" class="label">지면 점</text>
   <text x="180" y="576" text-anchor="middle" class="note">높이 · 경사 · 지형 후보</text>
-  <rect x="354" y="505" width="292" height="95" rx="12" fill="#fff1e5" stroke="#e7cfb7"/>
+  <rect x="354" y="505" width="292" height="95" rx="4" fill="#f3f3f3" stroke="#d2d2d2"/>
   <text x="500" y="544" text-anchor="middle" class="label">비지면 점</text>
   <text x="500" y="576" text-anchor="middle" class="note">장애물 후보 · 잡음 점검</text>
-  <path d="M646 160H664V653H648" fill="none" stroke="#8d99ad" stroke-width="2" stroke-dasharray="6 5"/>
-  <rect x="34" y="623" width="612" height="78" rx="12" class="panel"/>
+  <path d="M646 160H664V653H648" fill="none" stroke="#989898" stroke-width="2" stroke-dasharray="6 5"/>
+  <rect x="34" y="623" width="612" height="78" rx="4" class="panel"/>
   <text x="58" y="655" class="label">미관측 · 낙차: 별도 표현·탐지</text>
   <text x="58" y="685" class="note">관측 범위 · 누락 원인 · 지형 경계 확인</text>
   <path d="M180 600V610H18V776H32" class="arrow"/>
   <path d="M500 600V610H662V776H648" class="arrow"/>
   <path d="M340 701V730" class="arrow"/>
-  <rect x="34" y="740" width="612" height="104" rx="12" class="panel"/>
+  <rect x="34" y="740" width="612" height="104" rx="4" class="panel"/>
   <text x="58" y="779" class="label">로봇별 주행 가능성 · costmap · 안전 검증</text>
   <text x="58" y="814" class="note">폭 · 단차 · 경사 · 발 디딤면 · clearing 정책</text>
   <text x="340" y="892" text-anchor="middle" class="note">지형 정보와 로봇의 이동 제약을 함께 사용</text>

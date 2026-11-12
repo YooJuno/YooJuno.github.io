@@ -8,12 +8,12 @@ tags:
   - CI/CD
   - DevOps
   - Pipeline
-summary: "Controller·Agent·Jenkinsfile의 역할을 구분하고, 이 사이트의 npm 스크립트에 맞춘 CI 예제로 빌드 재현성과 안전한 배포 흐름을 설명합니다."
+summary: "Jenkinsfile로 구성하는 CI 파이프라인과 배포·롤백."
 ---
 
 Jenkins는 빌드·검사·배포 작업을 연결하고 실행 결과를 기록하는 자동화 서버다.
 
-Controller·Agent 구조, Jenkinsfile, 배포·권한 관리를 정리한다. CI 예제는 이 React/Vite 저장소의 npm 스크립트를 사용한 학습용 구성이다.
+Controller·Agent 구조부터 Jenkinsfile·배포·권한 관리까지 다룬다. CI 예제는 이 React/Vite 저장소를 기준으로 작성했다.
 
 ## 1. CI·Delivery·Deployment
 
@@ -21,7 +21,7 @@ Controller·Agent 구조, Jenkinsfile, 배포·권한 관리를 정리한다. CI
 - **Continuous Delivery:** 검증된 변경을 배포 가능한 상태로 유지한다. 운영 배포에는 사람의 승인 등이 남을 수 있다.
 - **Continuous Deployment:** 정해진 검증을 통과한 변경을 운영 환경까지 자동으로 배포한다.
 
-CI가 성공했다고 운영 배포가 끝난 것은 아니다. Jenkins도 애플리케이션을 대신 서비스하는 웹 서버가 아니라, 필요한 작업을 실행·조정하는 도구다. [Jenkins 용어집](https://www.jenkins.io/doc/book/glossary/), [Pipeline 개요](https://www.jenkins.io/doc/book/pipeline/).
+Jenkins는 CI와 배포 작업을 실행·조정한다. 애플리케이션의 실제 서비스는 배포 대상 서버가 담당한다. [Jenkins 용어집](https://www.jenkins.io/doc/book/glossary/), [Pipeline 개요](https://www.jenkins.io/doc/book/pipeline/).
 
 ## 2. Controller·Agent
 
@@ -49,7 +49,7 @@ CI가 성공했다고 운영 배포가 끝난 것은 아니다. Jenkins도 애�
 4. **입력:** 환경변수·설정 파일·빌드 모드를 구분한다.
 5. **결과물:** 어떤 실행에서 나온 파일인지 식별 가능하게 보관한다.
 
-이 저장소에는 `lint`·`build` 스크립트가 있고, 별도의 `test` 스크립트는 없다. 따라서 아래 예제도 존재하지 않는 테스트를 호출하지 않는다. Node 요구 범위는 `package.json`의 `engines`를 따른다.
+예제는 이 저장소의 `lint`·`build`를 사용한다. Node 버전은 `package.json`의 `engines`에 맞춘다.
 
 `npm ci`는 lockfile을 바탕으로 설치하며 `package.json`과 불일치하면 실패한다. 의존성 오류를 숨기려고 CI에서 lockfile을 다시 생성하기보다, 변경을 로컬에서 검토해 함께 커밋한다. [npm ci 공식 문서](https://docs.npmjs.com/cli/v11/commands/npm-ci/).
 
@@ -124,11 +124,11 @@ pipeline {
 }
 ```
 
-이 Agent를 Node 22 계열로 준비한다면 현재 저장소의 요구에 맞는 **22.12 이상**을 사용한다. label 이름만으로 버전이 고정되는 것은 아니므로 실제 이미지·설치 버전을 관리한다.
+Node 22 계열 Agent는 **22.12 이상**으로 준비한다. Label과 별도로 실제 이미지·설치 버전을 관리한다.
 
 `skipDefaultCheckout(true)`로 자동 checkout을 끄고 명시적인 단계를 둔다. `checkout scm`은 연결된 SCM의 revision을 사용하며, `post`에서 결과물을 보관한 뒤 workspace를 정리한다. `fingerprint`는 추적을 위한 기능이지 배포물의 보안 서명을 대신하지 않는다. [Jenkinsfile 사용법](https://www.jenkins.io/doc/book/pipeline/jenkinsfile/), [Declarative 문법](https://www.jenkins.io/doc/book/pipeline/syntax/).
 
-단계의 `sh` 명령이 0이 아닌 종료 코드를 반환하면 기본적으로 이후 정상 단계를 진행하지 않는다. 테스트를 추가했다면 별도 Stage와 결과 수집을 함께 설계한다. 빌드 성공만으로 화면·기능·보안 검증이 모두 끝났다고 판단하지 않는다.
+`sh` 명령의 종료 코드가 0이 아니면 이후 정상 단계를 건너뛴다. 화면·기능·보안 검사는 별도 Stage와 결과 수집으로 추가한다.
 
 ## 6. 배포·롤백
 

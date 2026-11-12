@@ -7,7 +7,7 @@
   "revision": "fef96b3",
   "github": "https://github.com/YooJuno/CCTV_Streaming",
   "site": "",
-  "summary": "ESP32-CAM 설치·서버 송출부터 MJPEG·HLS 재생과 카메라 설정까지 관리하는 웹 관제 앱입니다.",
+  "summary": "카메라 설치·송출·재생을 관리하는 웹 관제 앱.",
   "tech": [
     "ESP32-CAM",
     "Web Serial",

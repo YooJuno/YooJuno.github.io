@@ -1,17 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="680" height="882" viewBox="0 0 680 882" role="img" aria-labelledby="title description">
-<title id="title">보유 기간으로 나누는 거래 스타일</title>
+<title id="title">보유 기간별 거래 유형</title>
 <desc id="description">스캘핑은 수초에서 수분, 데이 트레이딩은 당일, 스윙은 수일에서 수주, 포지션 트레이딩은 수주에서 수개월 이상 보유하는 분류다. 기간은 관행적 범위이며 수익성이나 우열을 뜻하지 않는다.</desc>
-<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#6c7e9c"/></marker></defs>
-<rect width="680" height="882" rx="18" fill="#f5f7fc"/>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 Z" fill="#777777"/></marker></defs>
+<rect width="680" height="882" rx="4" fill="#ffffff"/>
 <g font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
-<text x="40" y="51" font-size="28" fill="#172339" font-weight="700">보유 기간으로 나누는 거래 스타일</text>
-<text x="40" y="85" font-size="21" fill="#52617a" font-weight="400">관행적인 구분이며 기간의 경계나 우열이 정해진 것은 아님</text>
-<rect x="40" y="123" width="600" height="130" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="159" font-size="24" fill="#172339" font-weight="700">스캘핑  수초~수분</text><text x="64" y="193" font-size="22" fill="#52617a" font-weight="400">작은 가격 변동을 반복해서 다루는 스타일</text><text x="64" y="223" font-size="22" fill="#52617a" font-weight="400">호가 차이·수수료·체결 지연의 영향이 큼</text>
-<rect x="40" y="274" width="600" height="130" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="310" font-size="24" fill="#172339" font-weight="700">데이 트레이딩  당일 진입·청산</text><text x="64" y="344" font-size="22" fill="#52617a" font-weight="400">통상 포지션을 다음 거래일로 넘기지 않음</text><text x="64" y="374" font-size="22" fill="#52617a" font-weight="400">장중 급변·반복 매매 비용에 주의</text>
-<rect x="40" y="425" width="600" height="130" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="461" font-size="24" fill="#172339" font-weight="700">스윙 트레이딩  수일~수주</text><text x="64" y="495" font-size="22" fill="#52617a" font-weight="400">며칠 이상 이어지는 가격 흐름을 관찰</text><text x="64" y="525" font-size="22" fill="#52617a" font-weight="400">밤사이 뉴스와 다음 개장 시 가격 차이에 노출</text>
-<rect x="40" y="576" width="600" height="130" rx="14" fill="#fff" stroke="#d8e0ee" stroke-width="1.5"/><text x="64" y="612" font-size="24" fill="#172339" font-weight="700">포지션 트레이딩  수주~수개월 이상</text><text x="64" y="646" font-size="22" fill="#52617a" font-weight="400">더 긴 추세·시장 환경을 바탕으로 포지션 유지</text><text x="64" y="676" font-size="22" fill="#52617a" font-weight="400">보유 기간이 길어도 손실 위험은 사라지지 않음</text>
-<rect x="40" y="742" width="600" height="100" rx="14" fill="#eaf4f1" stroke="#c4ded6" stroke-width="1.5"/>
-<text x="64" y="780" font-size="23" fill="#15786f" font-weight="700">보유 기간 ≠ 매매 전략 ≠ 기대 수익</text>
-<text x="64" y="814" font-size="22" fill="#52617a" font-weight="400">추세 추종·평균 회귀 등은 별도의 전략 분류</text>
+<text x="40" y="51" font-size="28" fill="#202124" font-weight="700">보유 기간별 거래 유형</text>
+<text x="40" y="85" font-size="21" fill="#555555" font-weight="400">관행적인 구분이며 기간의 경계나 우열이 정해진 것은 아님</text>
+<rect x="40" y="123" width="600" height="130" rx="4" fill="#fff" stroke="#dfdfdf" stroke-width="1.5"/><text x="64" y="159" font-size="24" fill="#202124" font-weight="700">스캘핑  수초~수분</text><text x="64" y="193" font-size="22" fill="#555555" font-weight="400">작은 가격 변동을 반복해서 다루는 스타일</text><text x="64" y="223" font-size="22" fill="#555555" font-weight="400">호가 차이·수수료·체결 지연의 영향이 큼</text>
+<rect x="40" y="274" width="600" height="130" rx="4" fill="#fff" stroke="#dfdfdf" stroke-width="1.5"/><text x="64" y="310" font-size="24" fill="#202124" font-weight="700">데이 트레이딩  당일 진입·청산</text><text x="64" y="344" font-size="22" fill="#555555" font-weight="400">통상 포지션을 다음 거래일로 넘기지 않음</text><text x="64" y="374" font-size="22" fill="#555555" font-weight="400">장중 급변·반복 매매 비용에 주의</text>
+<rect x="40" y="425" width="600" height="130" rx="4" fill="#fff" stroke="#dfdfdf" stroke-width="1.5"/><text x="64" y="461" font-size="24" fill="#202124" font-weight="700">스윙 트레이딩  수일~수주</text><text x="64" y="495" font-size="22" fill="#555555" font-weight="400">며칠 이상 이어지는 가격 흐름을 관찰</text><text x="64" y="525" font-size="22" fill="#555555" font-weight="400">밤사이 뉴스와 다음 개장 시 가격 차이에 노출</text>
+<rect x="40" y="576" width="600" height="130" rx="4" fill="#fff" stroke="#dfdfdf" stroke-width="1.5"/><text x="64" y="612" font-size="24" fill="#202124" font-weight="700">포지션 트레이딩  수주~수개월 이상</text><text x="64" y="646" font-size="22" fill="#555555" font-weight="400">더 긴 추세·시장 환경을 바탕으로 포지션 유지</text><text x="64" y="676" font-size="22" fill="#555555" font-weight="400">보유 기간이 길어도 손실 위험은 사라지지 않음</text>
+<rect x="40" y="742" width="600" height="100" rx="4" fill="#f2f2f2" stroke="#d8d8d8" stroke-width="1.5"/>
+<text x="64" y="780" font-size="23" fill="#666666" font-weight="700">보유 기간 ≠ 매매 전략 ≠ 기대 수익</text>
+<text x="64" y="814" font-size="22" fill="#555555" font-weight="400">추세 추종·평균 회귀 등은 별도의 전략 분류</text>
 </g>
 </svg>

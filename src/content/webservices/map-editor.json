@@ -9,7 +9,7 @@
   "sourceState": "published",
   "github": "https://github.com/YooJuno/map_editor",
   "site": "https://map-editor-juno.web.app/",
-  "summary": "PGM/YAML 지도와 Nav2 금지·속도 마스크를 편집하고, 개인·공유 지도를 관리하는 웹·데스크톱 도구입니다.",
+  "summary": "PGM/YAML 지도와 Nav2 금지·속도 마스크 편집기.",
   "tech": [
     "React",
     "TypeScript",
