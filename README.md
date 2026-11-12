@@ -111,11 +111,12 @@ Markdown의 업무 제목·기술 태그·자료 링크·사진은 기존 상세
 - 제거한 기술 역량 영역의 기존 `#skills`·`?section=skills` 링크는 프로젝트 목록으로 연결합니다.
 - 기존 `#contact`·`?section=contact` 링크는 소개 영역의 연락·자료 영역으로 연결합니다.
 - 이미지 확대 화면은 키보드로 열 수 있고, Tab 포커스를 대화상자 안에 유지합니다. Escape로 닫으면 원래 이미지에 포커스를 돌려줍니다.
-- 토글의 `aria-expanded`, 현재 위치의 `aria-current`, 포커스 표시와 `prefers-reduced-motion` 대응을 적용합니다.
+- 공통 메뉴는 펼침 버튼으로 조작하고 `aria-expanded`를 실제 표시 상태와 맞춥니다. Escape·바깥 클릭·포커스 이탈로 닫으며, 메뉴의 링크·버튼은 높이 44px 이상을 확보합니다.
+- 본문 건너뛰기는 각 페이지의 단일 `main`으로 포커스를 옮깁니다. 현재 위치의 `aria-current`, 키보드 포커스 표시와 `prefers-reduced-motion` 대응도 적용합니다.
 - 라우트 영역에 오류 경계를 두어 페이지 렌더링 오류가 전체 탐색 메뉴·푸터까지 제거하지 않도록 합니다. 다른 경로로 이동하면 경계를 다시 마운트합니다.
 - 페이지 모듈 로딩 실패 시 탭에서 같은 배포 버전의 자동 새로고침을 한 번만 시도합니다. 반복 실패·오프라인·저장소 접근 제한 시에는 자동 재시도를 멈추며, 오류 화면의 새로고침 버튼으로 직접 재시도할 수 있습니다.
 
-구현: [탐색·이미지 확대](src/pages/Portfolio.jsx), [라우팅·메뉴](src/App.jsx), [로딩 복구](src/lib/pageLoadRecovery.js), [오류 경계](src/components/ErrorBoundary.jsx), [모션 처리](src/hooks/useReveal.js).
+구현: [탐색·이미지 확대](src/pages/Portfolio.jsx), [라우팅·메뉴](src/App.jsx), [메뉴 스타일](src/styles/components/navigation.css), [로딩 복구](src/lib/pageLoadRecovery.js), [오류 경계](src/components/ErrorBoundary.jsx), [모션 처리](src/hooks/useReveal.js).
 
 ### 5. 초기 로딩과 이미지 표시
 

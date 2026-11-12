@@ -88,8 +88,44 @@ const NAV_SECTIONS = [
 
 const SiteNav = () => {
   const [isOpen, setIsOpen] = useState(false)
-  // 모바일에서 펼쳐 둔 섹션. 한 번에 하나만 연다.
   const [expandedId, setExpandedId] = useState('')
+  const navRef = useRef(null)
+  const toggleRef = useRef(null)
+
+  useEffect(() => {
+    if (!isOpen && !expandedId) return undefined
+    const onOutside = event => {
+      if (!navRef.current?.contains(event.target)) {
+        setIsOpen(false)
+        setExpandedId('')
+      }
+    }
+    const onEscape = event => {
+      if (event.key !== 'Escape') return
+      event.preventDefault()
+      const target = isOpen ? toggleRef.current
+        : navRef.current?.querySelector(`[aria-controls="nav-menu-${expandedId}"]`)
+      setIsOpen(false)
+      setExpandedId('')
+      target?.focus()
+    }
+    document.addEventListener('pointerdown', onOutside)
+    document.addEventListener('keydown', onEscape)
+    return () => {
+      document.removeEventListener('pointerdown', onOutside)
+      document.removeEventListener('keydown', onEscape)
+    }
+  }, [isOpen, expandedId])
+
+  useEffect(() => {
+    const viewport = window.matchMedia('(max-width: 700px)')
+    const reset = () => {
+      setIsOpen(false)
+      setExpandedId('')
+    }
+    viewport.addEventListener('change', reset)
+    return () => viewport.removeEventListener('change', reset)
+  }, [])
 
   const closeMenu = () => {
     setIsOpen(false)
@@ -99,7 +135,9 @@ const SiteNav = () => {
   const navClass = ({ isActive }) => `nav-link${isActive ? ' is-active' : ''}`
 
   return (
-    <nav className="site-nav" aria-label="주요 메뉴">
+    <nav className="site-nav" aria-label="주요 메뉴" ref={navRef} onBlur={event => {
+      if (!event.currentTarget.contains(event.relatedTarget)) closeMenu()
+    }}>
       <div className="container nav-inner">
         <Link className="brand" to="/" aria-label="홈으로 이동">
           <span className="brand-mark" aria-hidden="true">YJ</span>
@@ -107,6 +145,7 @@ const SiteNav = () => {
         </Link>
 
         <button
+          ref={toggleRef}
           className={`nav-toggle${isOpen ? ' is-open' : ''}`}
           type="button"
           aria-label={isOpen ? '메뉴 닫기' : '메뉴 열기'}
@@ -140,7 +179,6 @@ const SiteNav = () => {
                 <NavLink className={navClass} to={section.to}>
                   {section.label}
                 </NavLink>
-                {/* 데스크톱에서는 hover 로 열리므로 숨긴다. 모바일 전용 토글. */}
                 <button
                   className="dropdown-toggle"
                   type="button"
@@ -149,7 +187,7 @@ const SiteNav = () => {
                   aria-controls={`nav-menu-${section.id}`}
                   onClick={() => setExpandedId(expanded ? '' : section.id)}
                 ></button>
-                <div className="dropdown-menu" id={`nav-menu-${section.id}`}>
+                <div className="dropdown-menu" id={`nav-menu-${section.id}`} hidden={!expanded}>
                   {section.items.map((item) => (
                     <Link key={item.to} to={item.to}>
                       {item.label}
@@ -172,7 +210,7 @@ const AppRoutes = () => {
 
   return (
     <ErrorBoundary key={location.pathname}>
-      <Suspense fallback={<main className="section" aria-busy="true" />}>
+      <Suspense fallback={<main className="section" id="main-content" tabIndex={-1} aria-busy="true"><div className="container"><p role="status">페이지를 불러오는 중입니다.</p></div></main>}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<Portfolio />} />
@@ -197,6 +235,13 @@ function App() {
   return (
     <BrowserRouter>
       <div className="page">
+        <a className="skip-link" href="#main-content" onClick={event => {
+          const content = document.getElementById('main-content')
+          if (!content) return
+          event.preventDefault()
+          content.focus({ preventScroll: true })
+          content.scrollIntoView({ behavior: 'instant', block: 'start' })
+        }}>본문으로 건너뛰기</a>
         <SiteNav />
         <ScrollToTop />
         <AppRoutes />

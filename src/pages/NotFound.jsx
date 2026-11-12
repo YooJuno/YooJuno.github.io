@@ -5,7 +5,7 @@ function NotFound() {
   useDocumentTitle('페이지를 찾을 수 없습니다')
 
   return (
-    <main className="section">
+    <main className="section" id="main-content" tabIndex={-1}>
       <div className="container empty-page">
         <p className="eyebrow">404</p>
         <h1>페이지를 찾을 수 없습니다.</h1>

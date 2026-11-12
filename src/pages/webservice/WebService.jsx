@@ -8,7 +8,7 @@ function WebService() {
   useDocumentTitle()
 
   return (
-    <main className="section">
+    <main className="section" id="main-content" tabIndex={-1}>
       <div className="container">
         <div className="section-head">
           <h1>웹서비스</h1>

@@ -27,7 +27,7 @@ function ServiceDetail({ serviceId }) {
   }
 
   return (
-    <main className="section service-detail">
+    <main className="section service-detail" id="main-content" tabIndex={-1}>
       <div className="container">
         <Link to="/web-service" className="service-back">← 웹서비스 목록</Link>
         <header className="service-detail-header">
