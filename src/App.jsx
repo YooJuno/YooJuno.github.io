@@ -1,10 +1,7 @@
 import { BrowserRouter, Routes, Route, Link, NavLink, useLocation } from 'react-router-dom'
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import Home from './pages/Home.jsx'
 
-// 첫 화면(Home)만 즉시 불러오고 나머지는 방문할 때 받는다.
-// 특히 블로그는 marked 와 모든 글의 본문을 함께 들고 있어, 이걸 나누지 않으면
-// 홈만 봐도 글 전체를 내려받게 된다.
 const Portfolio = lazy(() => import('./pages/Portfolio.jsx'))
 const Blog = lazy(() => import('./pages/blog/Blog.jsx'))
 const Post = lazy(() => import('./pages/blog/Post.jsx'))
@@ -24,8 +21,16 @@ import { normalizePathname } from './lib/routeMeta'
 
 const ScrollToTop = () => {
   const location = useLocation()
+  const previousLocation = useRef(location)
 
   useEffect(() => {
+    const previous = previousLocation.current
+    previousLocation.current = location
+    const searchUpdate = normalizePathname(location.pathname) === '/blog'
+      && normalizePathname(previous.pathname) === '/blog'
+      && previous.search !== location.search && previous.hash === location.hash
+      && new URLSearchParams(previous.search).get('category') === new URLSearchParams(location.search).get('category')
+    if (searchUpdate) return
     if (!location.hash && document.activeElement instanceof HTMLElement) {
       document.activeElement.blur()
     }
@@ -36,7 +41,7 @@ const ScrollToTop = () => {
     if (!isPageAnchor) {
       window.scrollTo(0, 0)
     }
-  }, [location.pathname, location.search, location.hash])
+  }, [location])
 
   return null
 }
