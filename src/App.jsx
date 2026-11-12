@@ -16,6 +16,7 @@ const WebServiceVideo = lazy(() => import('./pages/webservice/WebServiceVideo.js
 const WebServiceBtc = lazy(() => import('./pages/webservice/WebServiceBtc.jsx'))
 const WebServiceHellog = lazy(() => import('./pages/webservice/WebServiceHellog.jsx'))
 const WebServiceMoim = lazy(() => import('./pages/webservice/WebServiceMoim.jsx'))
+const WebServiceMapEditor = lazy(() => import('./pages/webservice/WebServiceMapEditor.jsx'))
 
 const NotFound = lazy(() => import('./pages/NotFound.jsx'))
 import ErrorBoundary from './components/ErrorBoundary.jsx'
@@ -70,6 +71,7 @@ const NAV_SECTIONS = [
     label: '웹서비스',
     items: [
       { to: '/web-service/moim', label: '모임 · moim' },
+      { to: '/web-service/map-editor', label: 'Map Editor' },
       { to: '/web-service/blog', label: '블로그' },
       { to: '/web-service/cctv-streaming', label: 'CCTV Streaming' },
       { to: '/web-service/video-chatting', label: 'Video Chatting' },
@@ -173,6 +175,7 @@ const AppRoutes = () => {
           <Route path="/blog/:slug" element={<Post />} />
           <Route path="/web-service" element={<WebService />} />
           <Route path="/web-service/moim" element={<WebServiceMoim />} />
+          <Route path="/web-service/map-editor" element={<WebServiceMapEditor />} />
           <Route path="/web-service/blog" element={<WebServiceBlog />} />
           <Route path="/web-service/cctv-streaming" element={<WebServiceCctv />} />
           <Route path="/web-service/video-chatting" element={<WebServiceVideo />} />

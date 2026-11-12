@@ -14,6 +14,7 @@
 ## 수정 파일
 
 - `moim.json`: 모임 운영 서비스
+- `map-editor.json`: PGM/YAML 지도·Nav2 마스크 편집 도구
 - `portfolio.json`: 현재 사이트
 - `cctv.json`: CCTV Streaming
 - `video.json`: Pair 영상 통화
