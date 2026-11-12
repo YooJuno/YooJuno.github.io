@@ -2,7 +2,6 @@
   "id": "cctv",
   "route": "/web-service/cctv-streaming",
   "title": "CCTV Streaming",
-  "status": "구현 · 배포 미정",
   "inspectedAt": "2026-10-14",
   "revision": "fef96b3",
   "github": "https://github.com/YooJuno/CCTV_Streaming",

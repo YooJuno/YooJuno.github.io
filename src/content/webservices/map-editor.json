@@ -2,7 +2,6 @@
   "id": "map-editor",
   "route": "/web-service/map-editor",
   "title": "Map Editor",
-  "status": "배포 중",
   "inspectedAt": "2026-11-12",
   "reviewedAt": "2026-11-12T09:49:07Z",
   "revision": "3cbe314",
