@@ -1,10 +1,15 @@
 {
   "id": "map-editor",
-  "route": "/web-service/map-editor",
+  "route": "/utilities/map-editor",
+  "purpose": "로봇의 PGM/YAML 지도와 Nav2 금지·속도 마스크를 같은 좌표계에서 편집하기 위해 만들었습니다. 이미지 편집 후 메타데이터를 따로 맞추는 대신, 원본 지도와 각 마스크를 분리해 관리하고 좌표 변환·내보내기까지 한 도구에서 처리합니다.",
+  "platforms": ["웹", "Windows", "macOS", "Ubuntu"],
+  "downloadUrl": "https://github.com/YooJuno/map_editor/releases",
+  "buildUrl": "https://github.com/YooJuno/map_editor/actions/workflows/build.yml",
+  "distributionNote": "데스크톱은 Windows x64·Ubuntu 24.04 x64·macOS Apple Silicon/Intel별로 검사·패키징합니다. 버전 태그의 모든 빌드가 성공하면 GitHub Releases에 패키지와 SHA-256을 공개합니다. 웹 배포는 별도 워크플로에서 수행하며, 여기의 웹 캡처가 데스크톱 실기 검증을 뜻하지는 않습니다.",
   "title": "Map Editor",
-  "inspectedAt": "2026-11-12",
-  "reviewedAt": "2026-11-12T09:49:07Z",
-  "revision": "3cbe314",
+  "inspectedAt": "2026-11-14",
+  "reviewedAt": "2026-11-13T18:57:12.504Z",
+  "revision": "3cbe3147343cb99e20a9ffca413abfb70ee89655",
   "sourceState": "published",
   "github": "https://github.com/YooJuno/map_editor",
   "site": "https://map-editor-juno.web.app/",
@@ -80,6 +85,19 @@
         "운영체제·아키텍처별 GitHub Release 패키지를 제공합니다.",
         "실행 경로와 Qt 포함 여부, 미서명 패키지 안내를 표시합니다.",
         "SHA-256 체크섬을 제공하고, GitHub API 조회 실패 시 포함된 배포 목록을 사용합니다."
+      ]
+    },
+    {
+      "id": "ME05",
+      "title": "데스크톱 지도 편집",
+      "image": "/content/images/utilities/map-editor/desktop.png",
+      "width": 1400,
+      "height": 900,
+      "alt": "Map Editor Qt 데스크톱 앱의 밝은 지도 편집 화면",
+      "caption": "공개 저장소 docs/light.png의 실제 Qt 앱 캡처입니다. office 예제 지도를 사용했으며 이번 작업에서 데스크톱 실기 실행을 다시 검증한 화면은 아닙니다.",
+      "annotations": [
+        "웹과 별도 구현인 Qt 앱에서도 지도·마스크 레이어를 편집합니다.",
+        "해상도·원점·yaw를 지도와 함께 관리합니다."
       ]
     }
   ],

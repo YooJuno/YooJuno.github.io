@@ -120,7 +120,7 @@ Markdown의 업무 제목·기술 태그·자료 링크·사진은 기존 상세
 
 ### 5. 초기 로딩과 이미지 표시
 
-홈은 즉시 로드하고, 포트폴리오·블로그·웹서비스 페이지는 `React.lazy`와 `Suspense`로 분리했습니다.
+홈은 즉시 로드하고, 포트폴리오·블로그·웹서비스·유틸리티 페이지는 `React.lazy`와 `Suspense`로 분리했습니다.
 글 목록에서도 모든 본문을 내려받지 않도록 목록·개별 글·본문 검색 데이터를 분리했습니다. 글을 다시 열 때는 이미 로드한 결과를 재사용합니다.
 
 본문 이미지에는 지연 로딩을 적용하고, 블로그의 확인 가능한 이미지 크기는 빌드에서 계산합니다.
@@ -167,6 +167,7 @@ npm run dev
 | `npm run cms:proxy` | 로컬 관리자용 파일 편집 서버 실행 |
 | `npm run blog:backup` | 글·이미지 압축 백업과 SHA-256 manifest 생성 |
 | `npm run blog:check` | 글 메타데이터·주소·이미지 경로 검사 |
+| `npm run utilities:check` | 유틸리티 목적·라우트·지원 환경·화면 크기·이미지 검사 |
 
 GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 설정합니다.
 
@@ -183,6 +184,8 @@ GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 �
 | 관리자 컬렉션·로그인 연결 | `public/admin/config.yml`, `public/admin/settings.json`, `infrastructure/cms-auth/` |
 | 웹서비스 소개·기능·API·GitHub 링크 | `src/content/webservices/<서비스>.json` |
 | 웹서비스 실행 화면 | `public/content/images/webservices/<서비스>/`. 캡처 환경과 예시 데이터 여부를 JSON의 `caption`에 기록 |
+| 유틸리티 목적·기능·지원 OS·자동 배포·소스 | `src/content/utilities/<프로그램>.json` |
+| 유틸리티 실행 화면 | `public/content/images/utilities/<프로그램>/`. 원본 화면과 예시 데이터를 구분하고 필요한 출처·이용 조건을 보존 |
 | 새 페이지·메타데이터 | `src/App.jsx`의 라우트와 `src/lib/routeMeta.js`의 메타데이터를 함께 추가 |
 | 스타일 | `src/styles/`의 공통·페이지별 CSS |
 | 고정 URL로 제공할 파일 | `public/`. 빌드 시 파일명·경로를 유지해 복사 |
@@ -190,6 +193,7 @@ GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 �
 자세한 작성법은 [포트폴리오 수정 안내](src/content/portfolio/README.md)를 참고하세요.
 블로그는 [글 작성 규칙](src/content/blog/README.md), 관리자 연결·발행·백업은 [CMS 안내](docs/blog-cms.md)를 참고하세요.
 웹서비스 상세 페이지는 공통 컴포넌트를 사용합니다. 내용·화면 추가는 [웹서비스 수정 안내](src/content/webservices/README.md)를 참고하세요.
+유틸리티는 같은 이미지 확대·상세 컴포넌트를 재사용하되 만든 목적·지원 OS·자동 배포를 먼저 설명합니다. REST 인터페이스가 없으면 API 표를 숨깁니다. [유틸리티 수정 안내](src/content/utilities/README.md)를 참고하세요.
 `src`의 글·프로젝트·경력 이미지처럼 콘텐츠에서 참조하는 자산은 Vite가 처리합니다. 기존 이력서·논문 PDF 등 고정 URL을 유지할 파일은 `public`에서 제공합니다.
 따라서 모든 콘텐츠를 한쪽에 몰아넣기보다 **참조 방식과 배포 경로**를 기준으로 구분합니다.
 
@@ -197,4 +201,4 @@ GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 �
 
 - 관리자 GitHub 로그인은 OAuth 앱·Worker 시크릿 설정이 필요합니다. 공개 저장소의 초안 브랜치는 비공개 저장 공간이 아닙니다.
 - Markdown HTML은 저장소 작성자를 신뢰하는 전제입니다. 별도 HTML 정화(sanitization)는 없으므로 외부 사용자 입력을 그대로 렌더링하는 용도로 사용하지 않습니다.
-- CI 검증 범위는 린트·글과 이미지 경로 검사·빌드입니다. 저장소에 상시 실행되는 단위·E2E 테스트나 성능 점수 기준은 아직 구성하지 않았습니다.
+- CI 검증 범위는 린트·글과 이미지 경로·유틸리티 콘텐츠 검사·빌드입니다. 저장소에 상시 실행되는 단위·E2E 테스트나 성능 점수 기준은 아직 구성하지 않았습니다.

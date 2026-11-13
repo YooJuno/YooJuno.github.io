@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { webServices } from '../../lib/webServices'
-import { GitHubMark } from './ServiceDetail'
+import GitHubMark from '../../components/GitHubMark'
 import '../../styles/pages/webservice.css'
 
 function WebService() {
