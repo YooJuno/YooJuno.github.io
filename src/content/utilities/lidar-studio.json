@@ -1,0 +1,153 @@
+{
+  "id": "lidar-studio",
+  "title": "LiDAR Studio",
+  "summary": "LiDAR 데이터 재생·지면 분리·객체 분석·ROI 추출 도구.",
+  "github": "https://github.com/YooJuno/lidar_studio",
+  "platforms": [
+    "Ubuntu 24.04",
+    "Windows",
+    "macOS"
+  ],
+  "revision": "b291d9ac8792775cfdb52f0b6368d7be292b01e6",
+  "purpose": "LiDAR 데이터를 보면서 지면 분리 알고리즘과 파라미터를 비교하고, 필요한 영역을 데이터셋으로 추출하기 위해 만들었습니다. 재생·정렬·분석·ROI 편집을 한 화면에서 연결해 파일을 여러 도구 사이로 옮기는 과정을 줄이는 것이 목적입니다.",
+  "tech": [
+    "C++17",
+    "OpenGL",
+    "Dear ImGui",
+    "PCL",
+    "ROS 2",
+    "Python"
+  ],
+  "overview": [
+    "BIN·NPY·PCD 파일과 데이터셋 폴더를 열어 프레임별로 확인합니다. Ubuntu의 ROS 2 빌드에서는 bag 재생, LiDAR·IMU 토픽 구독과 원본 스트림 기록도 지원합니다.",
+    "기하 기반 지면 분리·군집화와 선택적 학습 모델을 구분합니다. ROI 클래스 이름은 추출 메타데이터이며, 검수된 정답 라벨을 자동으로 생성한다는 의미는 아닙니다."
+  ],
+  "screens": [
+    {
+      "id": "LS01",
+      "title": "지면 분리·파라미터",
+      "image": "/content/images/utilities/lidar-studio/ground.png",
+      "width": 1600,
+      "height": 960,
+      "alt": "지면 분리·파라미터 화면",
+      "caption": "저장소의 실제 LiDAR Studio 캡처입니다. KITTI Raw 장면에 FugSeg를 적용한 예시이며 성능 벤치마크나 정답 라벨은 아닙니다.",
+      "annotations": [
+        "지면 분리 방법과 표시 대상을 선택합니다.",
+        "지면·장애물 포인트를 같은 시점에서 확인합니다."
+      ]
+    },
+    {
+      "id": "LS02",
+      "title": "ROI 영역 편집",
+      "image": "/content/images/utilities/lidar-studio/roi.png",
+      "width": 1600,
+      "height": 960,
+      "alt": "ROI 영역 편집 화면",
+      "caption": "동일 KITTI 장면에서 차량 주변 ROI를 수동으로 배치한 원본 화면입니다. 박스는 예시 영역이며 정답 객체 주석이 아닙니다.",
+      "annotations": [
+        "2D·3D 뷰에서 영역을 이동·회전·크기 조절합니다.",
+        "원본 센서 좌표 또는 정렬된 좌표로 데이터를 추출합니다."
+      ]
+    },
+    {
+      "id": "LS03",
+      "title": "객체 검출 결과",
+      "image": "/content/images/utilities/lidar-studio/detection.png",
+      "width": 1600,
+      "height": 960,
+      "alt": "객체 검출 결과 화면",
+      "caption": "저장소의 CenterPoint tiny 추론 예시입니다. 학습 모델의 예측이며 실제 검출 정확도는 센서·장면에 따라 달라집니다.",
+      "annotations": [
+        "기하 군집과 의미 클래스가 있는 모델 예측을 구분합니다.",
+        "클래스·점수 필터로 예측 결과를 확인합니다."
+      ]
+    }
+  ],
+  "features": [
+    {
+      "title": "데이터 재생·정렬",
+      "description": "프레임 탐색·재생·회전 가능한 2D/3D 뷰와 수동·IMU 정렬을 제공합니다. 데이터셋 샘플 간 카메라 위치를 유지합니다."
+    },
+    {
+      "title": "지면 분리·군집화 비교",
+      "description": "FugSeg·GSeg3D·Patchwork++·Fast grid·Grid·RANSAC과 3D/XY 군집화를 선택합니다. 외부 알고리즘 통합과 자체 UI·입출력 구현을 구분합니다."
+    },
+    {
+      "title": "ROI·데이터셋 추출",
+      "description": "3D 박스를 편집하고 선택 프레임을 NPY·PCD·JSON으로 내보냅니다. 클래스 힌트·영역·좌표 정보도 함께 저장합니다."
+    },
+    {
+      "title": "선택적 검출·추적",
+      "description": "별도 Python 환경과 모델을 연결해 객체를 검출하고 Kalman 추적으로 ID를 유지합니다. 기본 뷰어와 지면 분리는 GPU나 모델 설치 없이 동작합니다."
+    }
+  ],
+  "architecture": [
+    {
+      "label": "파일·ROS 2 입력",
+      "detail": "포인트클라우드 파일, bag, 선택적 실시간 토픽"
+    },
+    {
+      "label": "백그라운드 분석",
+      "detail": "정렬·지면 분리·군집화·선택적 모델 추론"
+    },
+    {
+      "label": "OpenGL · ImGui",
+      "detail": "3D/2D 뷰와 프레임·파라미터·ROI 제어"
+    },
+    {
+      "label": "ROI 내보내기",
+      "detail": "NPY·PCD 포인트와 JSON 메타데이터"
+    }
+  ],
+  "decisions": [
+    {
+      "title": "분석과 UI의 분리",
+      "description": "로딩·분석을 백그라운드에서 수행하고, 설정 변경 후 오래된 결과가 최신 상태를 덮지 않도록 작업 결과를 관리합니다."
+    },
+    {
+      "title": "원본 데이터와 작업 좌표의 구분",
+      "description": "표시 ROI와 지면 제외 ROI를 분리합니다. 추출 시 원본·정렬 좌표와 프레임 정보를 명시해 후속 가공에서 기준을 확인할 수 있게 했습니다."
+    }
+  ],
+  "limitations": [
+    "사진은 저장소의 원본 캡처이며 앱의 어두운 UI를 그대로 유지했습니다. 이번 소개 작업에서 실시간 센서·실기기 주행을 검증한 것은 아닙니다.",
+    "ROS 2 bag·실시간 토픽 지원은 Ubuntu/Jazzy 빌드에 해당합니다. Windows·macOS 패키지는 일반 포인트클라우드 파일 중심입니다.",
+    "기본 뷰어와 선택적 모델·학습 환경의 의존성은 다릅니다. 최신 소스의 기능이 기존 공개 패키지에 모두 포함됐다고 보장하지 않습니다.",
+    "KITTI 파생 스크린샷: Andreas Geiger·Philip Lenz·Christoph Stiller·Raquel Urtasun, KITTI Raw. 이미지 라이선스는 CC BY-NC-SA 3.0이며 자산 폴더의 출처 안내를 따릅니다."
+  ],
+  "downloadUrl": "https://github.com/YooJuno/lidar_studio/releases",
+  "buildUrl": "https://github.com/YooJuno/lidar_studio/actions/workflows/build-release.yml",
+  "distributionNote": "Ubuntu 24.04/Jazzy·Windows x64·macOS용 검사와 패키징을 수행합니다. 버전 태그의 전체 빌드가 성공하면 배포 파일과 체크섬을 GitHub Releases에 공개합니다. 공개 패키지는 릴리스 버전을 기준으로 하며 최신 소스의 기능·검증 상태와 구분합니다.",
+  "sources": [
+    {
+      "label": "기능·사용 흐름",
+      "path": "README.md"
+    },
+    {
+      "label": "뷰어·분석 작업 관리",
+      "path": "src/viewer_app.cpp"
+    },
+    {
+      "label": "ROI 추출",
+      "path": "src/roi_export.cpp"
+    },
+    {
+      "label": "지면 분리 통합",
+      "path": "src/algorithms/pipeline.cpp"
+    },
+    {
+      "label": "원본 화면·데이터 출처",
+      "path": "docs/images/README.md"
+    },
+    {
+      "label": "OS별 자동 배포",
+      "path": ".github/workflows/build-release.yml"
+    }
+  ],
+  "route": "/utilities/lidar-studio",
+  "site": "",
+  "inspectedAt": "2026-11-14",
+  "reviewedAt": "2026-11-13T18:57:12.504Z",
+  "sourceState": "published",
+  "api": []
+}

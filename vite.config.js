@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { createPortfolioEntries } from './src/lib/portfolioMarkdown.js'
 import { parseBlogPost } from './src/lib/blogContent.js'
 import blogContentPlugin from './scripts/blogContentPlugin.mjs'
+import { validateUtilities } from './scripts/check-utilities.mjs'
 import {
   DEFAULT_DESCRIPTION,
   ROUTE_META,
@@ -49,6 +50,7 @@ const portfolioContentPlugin = () => ({
     walk(directory)
     createPortfolioEntries(projects, assets, 'project')
     createPortfolioEntries(careers, assets, 'career')
+    validateUtilities(rootDir)
     const profile = JSON.parse(fs.readFileSync(path.join(directory, 'profile.json'), 'utf8'))
     for (const field of ['name', 'role', 'email', 'phone', 'phoneHref', 'location']) {
       if (typeof profile[field] !== 'string') throw new Error(`profile.json: ${field}은 문자열이어야 합니다.`)
@@ -160,7 +162,7 @@ const escapeAttr = (value) =>
 
 // index.html 의 head 를 해당 경로 값으로 바꾼다.
 const renderHead = (html, page) => {
-  const url = toUrl(page.route)
+  const url = toUrl(page.canonicalRoute || page.route)
   const title = escapeAttr(formatTitle(page.title))
   const desc = escapeAttr(page.description || DEFAULT_DESCRIPTION)
 
@@ -208,7 +210,7 @@ const prerenderPlugin = () => ({
       fs.writeFileSync(target, html, 'utf8')
     }
 
-    const body = pages
+    const body = pages.filter(page => !page.canonicalRoute)
       .map(({ route, date }) => {
         const lastmod = date ? `\n    <lastmod>${date}</lastmod>` : ''
         return `  <url>\n    <loc>${toUrl(route)}</loc>${lastmod}\n  </url>`

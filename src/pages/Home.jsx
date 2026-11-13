@@ -19,6 +19,7 @@ function Home() {
               <Link className="btn primary home-primary" to="/portfolio">포트폴리오 보기 <span aria-hidden="true">→</span></Link>
               <Link className="home-secondary" to="/blog">블로그</Link>
               <Link className="home-secondary" to="/web-service">웹서비스</Link>
+              <Link className="home-secondary" to="/utilities">유틸리티</Link>
             </nav>
           </div>
         </div>
