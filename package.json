@@ -13,6 +13,7 @@
     "preview": "vite preview",
     "blog:backup": "node scripts/backup-blog.mjs",
     "blog:check": "node scripts/check-blog.mjs",
+    "utilities:check": "node scripts/check-utilities.mjs",
     "cms:proxy": "decap-server"
   },
   "dependencies": {

@@ -3,6 +3,8 @@ import { Suspense, lazy, useEffect, useRef, useState } from 'react'
 import Home from './pages/Home.jsx'
 
 const Portfolio = lazy(() => import('./pages/Portfolio.jsx'))
+const Utilities = lazy(() => import('./pages/utilities/Utilities.jsx'))
+const UtilityDetail = lazy(() => import('./pages/utilities/UtilityDetail.jsx'))
 const Blog = lazy(() => import('./pages/blog/Blog.jsx'))
 const Post = lazy(() => import('./pages/blog/Post.jsx'))
 
@@ -76,12 +78,24 @@ const NAV_SECTIONS = [
     label: '웹서비스',
     items: [
       { to: '/web-service/moim', label: '모임 · moim' },
-      { to: '/web-service/map-editor', label: 'Map Editor' },
       { to: '/web-service/blog', label: '블로그' },
       { to: '/web-service/cctv-streaming', label: 'CCTV Streaming' },
       { to: '/web-service/video-chatting', label: 'Video Chatting' },
       { to: '/web-service/bitcoin-auto-trader', label: 'Bitcoin Auto Trader' },
       { to: '/web-service/hellog', label: 'HelloG' },
+    ],
+  },
+  {
+    id: 'utilities',
+    to: '/utilities',
+    label: '유틸리티',
+    items: [
+      { to: '/utilities/lidar-studio', label: 'LiDAR Studio' },
+      { to: '/utilities/map-editor', label: 'Map Editor' },
+      { to: '/utilities/ubuntu-status-bar', label: 'Ubuntu Status Bar' },
+      { to: '/utilities/volidge', label: 'Volidge' },
+      { to: '/utilities/capture-board-viewer', label: 'Capture Viewer' },
+      { to: '/utilities/wifi-analyzer', label: 'WiFi Analyzer' },
     ],
   },
 ]
@@ -175,6 +189,7 @@ const SiteNav = () => {
               <div
                 className={`nav-item dropdown${expanded ? ' is-expanded' : ''}`}
                 key={section.id}
+                onFocus={() => { if (expandedId !== section.id) setExpandedId('') }}
               >
                 <NavLink className={navClass} to={section.to}>
                   {section.label}
@@ -214,6 +229,8 @@ const AppRoutes = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="/utilities" element={<Utilities />} />
+          <Route path="/utilities/:slug" element={<UtilityDetail />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<Post />} />
           <Route path="/web-service" element={<WebService />} />

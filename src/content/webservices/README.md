@@ -14,12 +14,13 @@
 ## 수정 파일
 
 - `moim.json`: 모임 운영 서비스
-- `map-editor.json`: PGM/YAML 지도·Nav2 마스크 편집 도구
 - `portfolio.json`: 현재 사이트
 - `cctv.json`: CCTV Streaming
 - `video.json`: Pair 영상 통화
 - `btc.json`: BTC Auto Trader
 - `hellog.json`: HelloG 운동 기록
+
+Map Editor는 `../utilities/map-editor.json`에서 관리합니다. LiDAR Studio 등 직접 쓰는 프로그램은 별도 **유틸리티** 메뉴에 모았습니다. 기존 Map Editor 주소는 유지하며 새 상세 주소로 연결합니다.
 
 `screens`의 이미지 경로는 `public/content/images/webservices/<서비스>/`를 사용합니다. `width`·`height`는 원본 이미지 크기입니다. 실제 프론트엔드에 예시 API 응답을 연결한 캡처는 `caption`에 그 사실을 표시합니다. 운영 계정·키·잔고·개인 기록을 캡처하지 않습니다.
 

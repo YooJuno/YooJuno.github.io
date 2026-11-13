@@ -1,0 +1,140 @@
+{
+  "id": "ubuntu-status-bar",
+  "title": "Ubuntu Status Bar",
+  "summary": "GNOME 상단 패널에서 CPU·GPU·메모리·저장장치 상태를 확인하는 확장.",
+  "github": "https://github.com/YooJuno/ubuntu_status_bar",
+  "platforms": [
+    "Ubuntu 24.04",
+    "GNOME Shell 46"
+  ],
+  "revision": "34e6f3accfe1bbaaa9bc153ec3b0f743bf6c8e56",
+  "purpose": "Ubuntu에서 작업하면서 별도 모니터링 창을 열지 않고 자원 사용 상태를 확인하기 위해 만들었습니다. 상단 패널에는 필요한 사용률만 작게 표시하고, 온도·용량·디스크 I/O는 클릭했을 때 자세히 볼 수 있도록 구성했습니다.",
+  "tech": [
+    "JavaScript",
+    "GJS",
+    "GNOME Shell",
+    "Linux /proc·/sys"
+  ],
+  "overview": [
+    "CPU·GPU·RAM·파일시스템 용량을 패널 아이콘과 수치로 표시합니다. 상세 메뉴와 설정에서 표시 항목, 갱신 주기, 저장 경로, GPU를 선택합니다.",
+    "이전 저장소 이름은 juno_tools입니다. 이름·링크를 바꾸면서 기존 설치의 확장 UUID, 설정 스키마와 juno-system-monitor 패키지·명령은 유지했습니다."
+  ],
+  "screens": [
+    {
+      "id": "UB01",
+      "title": "센서 상세 메뉴",
+      "image": "/content/images/utilities/ubuntu-status-bar/menu.png",
+      "width": 381,
+      "height": 451,
+      "alt": "센서 상세 메뉴 화면",
+      "caption": "저장소에 포함된 GNOME 46 테스트 세션의 밝은 메뉴 캡처입니다. 실제 센서값이며 이름 변경 전 동일 확장의 화면입니다.",
+      "annotations": [
+        "CPU·GPU·메모리·저장장치별 상세값을 모읍니다.",
+        "저장장치 용량과 읽기·쓰기 속도·I/O 활동률은 서로 다른 지표입니다."
+      ]
+    },
+    {
+      "id": "UB02",
+      "title": "상단 패널",
+      "image": "/content/images/utilities/ubuntu-status-bar/topbar.png",
+      "width": 950,
+      "height": 48,
+      "alt": "상단 패널 화면",
+      "caption": "실제 GNOME 상단 패널의 원본 캡처입니다. 작은 아이콘과 사용률만 표시합니다.",
+      "annotations": [
+        "추가 모니터링 창 없이 현재 자원 사용 상태를 확인합니다."
+      ]
+    },
+    {
+      "id": "UB03",
+      "title": "표시·갱신 설정",
+      "image": "/content/images/utilities/ubuntu-status-bar/settings.png",
+      "width": 1600,
+      "height": 900,
+      "alt": "표시·갱신 설정 화면",
+      "caption": "저장소의 실제 설정 화면입니다. 명칭 변경 전 캡처이며 기존 설정의 호환성을 유지합니다.",
+      "annotations": [
+        "표시 항목·갱신 주기·GPU·저장 경로를 조절합니다.",
+        "저장 경로는 비동기 검증이 성공한 경우에만 반영합니다."
+      ]
+    }
+  ],
+  "features": [
+    {
+      "title": "작은 패널·상세 메뉴",
+      "description": "패널에는 사용률, 메뉴에는 온도·VRAM·스왑·파일시스템 용량과 I/O를 표시합니다. 항목별 표시를 끌 수 있습니다."
+    },
+    {
+      "title": "지연·실패 센서 분리",
+      "description": "완료된 센서 결과를 먼저 반영하고, 미지원·실패 값은 0이 아닌 —로 표시합니다. 설정 변경 뒤 늦게 도착한 결과는 버립니다."
+    },
+    {
+      "title": "불필요한 조회 제한",
+      "description": "메뉴가 닫히면 상세 센서 조회를 줄이고 GPU 표시를 끄면 조회도 중단합니다. NVIDIA 반복 조회 프로세스를 재사용합니다."
+    }
+  ],
+  "architecture": [
+    {
+      "label": "Linux 센서",
+      "detail": "/proc, /sys, 선택적 NVIDIA 조회"
+    },
+    {
+      "label": "비동기 수집·캐시",
+      "detail": "센서별 제한·취소·완료 결과 분리"
+    },
+    {
+      "label": "GNOME 패널",
+      "detail": "작은 사용률 표시·클릭 메뉴"
+    },
+    {
+      "label": "설정·패키징",
+      "detail": "GSettings·확장 ZIP·Ubuntu .deb"
+    }
+  ],
+  "decisions": [
+    {
+      "title": "설정·설치 호환성",
+      "description": "저장소와 표시 이름만 바꾸고 확장 UUID·설정 스키마·명령·패키지 식별자를 유지해 기존 설치를 새 확장으로 오인하지 않도록 했습니다."
+    },
+    {
+      "title": "없는 정보의 명시",
+      "description": "지원하지 않는 센서를 정상 값처럼 표시하지 않습니다. 센서 실패를 항목별로 격리하고 전체 표시를 끄면 백그라운드 수집도 멈춥니다."
+    }
+  ],
+  "limitations": [
+    "지원 대상은 GNOME Shell 46입니다. Windows·macOS나 다른 GNOME 버전의 호환성을 주장하지 않습니다.",
+    "GPU 센서 지원은 드라이버와 하드웨어에 따라 달라집니다. AMD·Jetson의 일부 경로는 회귀 검사와 실기 검증 범위를 구분해야 합니다.",
+    "화면 속 사용률·온도는 당시 테스트 장치의 순간값입니다. 자원 사용량이나 성능을 일반화하는 수치가 아닙니다."
+  ],
+  "downloadUrl": "https://github.com/YooJuno/ubuntu_status_bar/releases",
+  "buildUrl": "https://github.com/YooJuno/ubuntu_status_bar/actions/workflows/check.yml",
+  "distributionNote": "Ubuntu에서 Node·GJS·설치·Debian 패키지 검사를 수행하고 .deb·확장 ZIP·설치 안내·SHA-256을 만듭니다. 버전이 일치하는 vX.Y.Z 태그는 모든 검사 후 GitHub Release로 공개합니다. Architecture: all 패키지이지만 GNOME·센서 의존성이 있으며 다른 OS용 실행 파일은 만들지 않습니다.",
+  "sources": [
+    {
+      "label": "목적·지원 환경",
+      "path": "README.md"
+    },
+    {
+      "label": "패널 표시",
+      "path": "gnome-system-monitor/extension.js"
+    },
+    {
+      "label": "비동기 센서 수집",
+      "path": "gnome-system-monitor/monitor.js"
+    },
+    {
+      "label": "확장 정보·호환성",
+      "path": "gnome-system-monitor/metadata.json"
+    },
+    {
+      "label": "검사·릴리스",
+      "path": ".github/workflows/check.yml"
+    }
+  ],
+  "route": "/utilities/ubuntu-status-bar",
+  "site": "",
+  "inspectedAt": "2026-11-14",
+  "reviewedAt": "2026-11-13T18:57:12.504Z",
+  "sourceState": "published",
+  "api": []
+}

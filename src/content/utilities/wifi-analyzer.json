@@ -1,0 +1,159 @@
+{
+  "id": "wifi-analyzer",
+  "title": "WiFi Analyzer",
+  "summary": "Wi-Fi 신호·채널 겹침과 네트워크 경로 문제를 구분하는 진단 도구.",
+  "github": "https://github.com/YooJuno/wifi_analyzer",
+  "platforms": [
+    "Windows",
+    "macOS",
+    "Ubuntu"
+  ],
+  "revision": "da60a7f943d45126e12a1af5dd7420577caa96dd",
+  "purpose": "Wi-Fi가 느리거나 불안정할 때 신호가 약한지, 주변 AP와 채널이 겹치는지, 무선 연결 바깥의 문제인지 나눠 확인하기 위해 만들었습니다. AP 목록뿐 아니라 진단 근거와 다음 확인 항목을 함께 보여주는 것이 목적입니다.",
+  "tech": [
+    "Python",
+    "Tkinter",
+    "CoreWLAN",
+    "NetworkManager",
+    "PyInstaller"
+  ],
+  "overview": [
+    "현재 연결과 주변 AP를 공통 모델로 정리하고 RSSI·SNR·대역·채널 폭·시간 추이를 확인합니다. 게이트웨이·외부 IP·DNS·HTTPS 검사는 무선 신호 분석과 별도로 수행합니다.",
+    "SSID·BSSID 등 개인 네트워크 정보가 사진에 포함되지 않도록 예시 AP 데이터를 실제 GUI에 연결해 캡처했습니다. 화면의 수치와 진단은 실환경 측정 결과가 아닙니다."
+  ],
+  "screens": [
+    {
+      "id": "WF01",
+      "title": "연결 상태·진단",
+      "image": "/content/images/utilities/wifi-analyzer/overview.png",
+      "width": 1480,
+      "height": 920,
+      "alt": "연결 상태·진단 화면",
+      "caption": "실제 GUI에 예시 AP·연결 데이터를 연결한 개요 화면입니다. 개인 SSID·BSSID나 실환경 측정값은 사용하지 않았습니다.",
+      "annotations": [
+        "신호·SNR·연결 정보와 진단 근거를 함께 확인합니다.",
+        "확인이 필요한 원인과 후속 조치를 분리합니다."
+      ]
+    },
+    {
+      "id": "WF02",
+      "title": "주변 네트워크",
+      "image": "/content/images/utilities/wifi-analyzer/networks.png",
+      "width": 1480,
+      "height": 920,
+      "alt": "주변 네트워크 화면",
+      "caption": "동일한 예시 데이터의 네트워크 목록입니다. 실제 주변 AP를 스캔한 결과가 아닙니다.",
+      "annotations": [
+        "대역·채널 폭·신호·보안과 현재 연결을 비교합니다.",
+        "필터·정렬로 확인할 AP를 좁힙니다."
+      ]
+    },
+    {
+      "id": "WF03",
+      "title": "채널 분석",
+      "image": "/content/images/utilities/wifi-analyzer/channels.png",
+      "width": 1480,
+      "height": 920,
+      "alt": "채널 분석 화면",
+      "caption": "예시 AP로 그린 채널 점유·추천 화면입니다. 그래프는 관측 신호 기반 계산값이며 스펙트럼 측정이 아닙니다.",
+      "annotations": [
+        "대역과 비교 채널 폭을 선택합니다.",
+        "RF 압력은 후보 간 상대 비교로 해석합니다."
+      ]
+    },
+    {
+      "id": "WF04",
+      "title": "시간 추이",
+      "image": "/content/images/utilities/wifi-analyzer/history.png",
+      "width": 1480,
+      "height": 920,
+      "alt": "시간 추이 화면",
+      "caption": "예시 시계열을 연결한 신호 추이 화면입니다. 실제 장소의 수신 품질이나 이동 시험을 의미하지 않습니다.",
+      "annotations": [
+        "선택 AP의 RSSI·noise 변화와 수집 시점을 확인합니다."
+      ]
+    }
+  ],
+  "features": [
+    {
+      "title": "연결·주변 AP 비교",
+      "description": "운영체제별 수집 결과를 공통 AP·연결 모델로 변환하고, 누락된 noise·채널 폭 등은 미제공 상태와 구분합니다."
+    },
+    {
+      "title": "신호·채널 진단",
+      "description": "신호·SNR·변동·채널 겹침과 후보 채널의 상대 RF 압력을 계산합니다. 각 진단에 근거와 확인 조치를 제공합니다."
+    },
+    {
+      "title": "경로 검사·리포트",
+      "description": "게이트웨이·외부 IP·DNS·HTTPS를 구분해 검사하고 관측·진단·추천·검사 결과를 JSON으로 저장합니다."
+    }
+  ],
+  "architecture": [
+    {
+      "label": "OS별 수집기",
+      "detail": "CoreWLAN · nmcli · netsh"
+    },
+    {
+      "label": "공통 데이터 모델",
+      "detail": "AP·연결 정보·미제공 값 정규화"
+    },
+    {
+      "label": "진단·시계열",
+      "detail": "신호·겹침·후보 채널·네트워크 경로"
+    },
+    {
+      "label": "Tkinter · CLI",
+      "detail": "대화형 확인·터미널·JSON 리포트"
+    }
+  ],
+  "decisions": [
+    {
+      "title": "무선 관측과 인터넷 경로 분리",
+      "description": "AP 신호만으로 회선 장애를 단정하지 않습니다. 경로 단계별 도달 여부와 ICMP 차단·DNS·HTTPS 오류를 구분합니다."
+    },
+    {
+      "title": "플랫폼 차이의 명시",
+      "description": "OS 명령과 권한이 제공하는 정보가 다르므로 누락 값을 측정값처럼 표시하지 않습니다. GUI·CLI는 같은 진단 모델을 사용합니다."
+    }
+  ],
+  "limitations": [
+    "채널 곡선·RF 압력은 AP 관측 기반 추정입니다. 실제 airtime·재전송률·비 Wi-Fi 간섭이나 처리량을 직접 측정하지 않습니다.",
+    "SSID/BSSID·noise·폭 등은 OS·드라이버·위치 권한에 따라 제공되지 않을 수 있습니다. 사진은 예시 데이터입니다.",
+    "CI는 파서·계산·진단·패키징을 확인하며 물리 무선 어댑터나 실제 주변 전파 환경을 검증하지 않습니다."
+  ],
+  "buildUrl": "https://github.com/YooJuno/wifi_analyzer/actions/workflows/release.yml",
+  "sourceNote": "화면은 공개 커밋의 tools/capture_preview.py를 GitHub Actions의 Linux/Xvfb에서 실행한 결과입니다. 예시 AP와 시계열만 사용했으며 실제 무선 스캔·위치 권한은 사용하지 않았습니다.",
+  "distributionNote": "Ubuntu x64·Windows x64와 macOS universal2 패키지를 만듭니다. macOS는 Intel 러너에서 앱·포함 바이너리의 Apple Silicon/Intel 슬라이스를 검사하며 Apple Silicon 실기 실행과는 구분합니다. 수동 빌드는 Actions Artifacts, 버전 태그는 세 OS 성공 후 GitHub Release와 SHA-256으로 공개합니다. 초기 패키지는 미서명·ad-hoc 서명이며 OS 안내가 나타날 수 있습니다.",
+  "sources": [
+    {
+      "label": "목적·사용 흐름",
+      "path": "README.md"
+    },
+    {
+      "label": "GUI·리포트",
+      "path": "wifi_gui.py"
+    },
+    {
+      "label": "진단·경로 검사",
+      "path": "diagnostics.py"
+    },
+    {
+      "label": "AP·연결 모델",
+      "path": "wifi_core.py"
+    },
+    {
+      "label": "플랫폼 선택",
+      "path": "wifi_platform.py"
+    },
+    {
+      "label": "OS별 자동 배포",
+      "path": ".github/workflows/release.yml"
+    }
+  ],
+  "route": "/utilities/wifi-analyzer",
+  "site": "",
+  "inspectedAt": "2026-11-14",
+  "reviewedAt": "2026-11-13T18:57:12.504Z",
+  "sourceState": "published",
+  "api": []
+}

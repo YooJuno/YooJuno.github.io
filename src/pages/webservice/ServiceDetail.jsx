@@ -2,16 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { getWebService } from '../../lib/webServices'
+import GitHubMark from '../../components/GitHubMark'
 import '../../styles/pages/webservice.css'
 
-export function GitHubMark() {
-  return <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.68.08-.68 1.13.08 1.72 1.16 1.72 1.16 1 1.72 2.63 1.22 3.27.93.1-.73.4-1.22.71-1.5-2.5-.28-5.13-1.25-5.13-5.57 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.13-1.45 3.07-1.15 3.07-1.15.62 1.55.23 2.7.12 2.98.72.79 1.15 1.79 1.15 3.02 0 4.33-2.63 5.29-5.14 5.57.4.35.76 1.03.76 2.08v3.09c0 .3.2.65.77.54A11.2 11.2 0 0 0 12 .8Z" /></svg>
-}
-
-function ServiceDetail({ serviceId }) {
+function ServiceDetail({ serviceId, entry }) {
   useDocumentTitle()
   const location = useLocation()
-  const service = getWebService(serviceId)
+  const service = entry || getWebService(serviceId)
   const localSource = service.sourceState === 'local'
   const reviewTime = service.reviewedAt
     ? `${new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(service.reviewedAt))} KST`
@@ -52,10 +49,10 @@ function ServiceDetail({ serviceId }) {
   return (
     <main className="section service-detail" id="main-content" tabIndex={-1}>
       <div className="container">
-        <Link to="/web-service" className="service-back">← 웹서비스 목록</Link>
+        <Link to={entry ? '/utilities' : '/web-service'} className="service-back">← {entry ? '유틸리티' : '웹서비스'} 목록</Link>
         <header className="service-detail-header">
           <div>
-            <span className="service-availability">{service.availability}</span>
+            {entry ? <p className="utility-platforms">{service.platforms.join(' · ')}</p> : <span className="service-availability">{service.availability}</span>}
             <h1>{service.title}</h1>
             <p>{service.summary}</p>
             <div className="tag-row">{service.tech.map(technology => <span key={technology}>{technology}</span>)}</div>
@@ -63,16 +60,19 @@ function ServiceDetail({ serviceId }) {
           <div className="service-actions">
             <a className="btn primary service-github" href={service.github} target="_blank" rel="noopener noreferrer"><GitHubMark /> GitHub 저장소 <span aria-hidden="true">↗</span></a>
             {service.site && <a className="btn service-live" href={service.site} target="_blank" rel="noopener noreferrer">서비스 열기 ↗</a>}
+            {service.downloadUrl && <a className="btn" href={service.downloadUrl} target="_blank" rel="noopener noreferrer">배포 파일 ↗</a>}
             <a className="service-text-link" href="#screens">화면 보기 ↓</a>
           </div>
         </header>
+
+        {service.purpose && <section className="service-section utility-purpose" aria-labelledby="purpose-heading"><h2 id="purpose-heading">만든 목적</h2><p>{service.purpose}</p></section>}
 
         <section className="service-section service-overview" aria-label="프로젝트 개요">
           {service.overview.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
         </section>
 
         <section className="service-section" id="screens" aria-labelledby="screens-heading">
-          <div className="service-section-heading"><h2 id="screens-heading">화면 정의</h2><p>이미지를 눌러 확대할 수 있습니다.</p></div>
+          <div className="service-section-heading"><h2 id="screens-heading">{entry ? '사용 화면' : '화면 정의'}</h2><p>이미지를 눌러 확대할 수 있습니다.</p></div>
           <div className="service-screen-grid">
             {service.screens.map(screen => (
               <figure className="service-screen" key={screen.id}>
@@ -82,7 +82,7 @@ function ServiceDetail({ serviceId }) {
                   <span>확대 ↗</span>
                 </button>
                 <figcaption>{screen.caption}</figcaption>
-                <ol>{screen.annotations.map(annotation => <li key={annotation}>{annotation}</li>)}</ol>
+                {screen.annotations.length > 0 && <ol>{screen.annotations.map(annotation => <li key={annotation}>{annotation}</li>)}</ol>}
               </figure>
             ))}
           </div>
@@ -99,12 +99,21 @@ function ServiceDetail({ serviceId }) {
           {service.architectureNote && <p className="service-architecture-note">{service.architectureNote}</p>}
         </section>
 
-        <section className="service-section" id="api" aria-labelledby="api-heading">
+        {service.api?.length > 0 && <section className="service-section" id="api" aria-labelledby="api-heading">
           <div className="service-section-heading"><h2 id="api-heading">{service.apiTitle || 'API 명세'}</h2><p>{service.apiNote}</p></div>
           <div className="service-api-scroll" role="region" aria-label="API 명세 표" tabIndex="0">
             <table className="service-api"><thead><tr><th scope="col">동작</th><th scope="col">인터페이스·역할</th><th scope="col">입력 → 출력</th><th scope="col">접근·주의사항</th></tr></thead><tbody>{service.api.map(endpoint => <tr key={`${endpoint.method}-${endpoint.path}`}><td><span className={`service-method method-${endpoint.method.toLowerCase()}`}>{endpoint.method}</span></td><td><code>{endpoint.path}</code><p>{endpoint.description}</p></td><td><span className="service-api-label">입력</span><p>{endpoint.request}</p><span className="service-api-label">출력</span><p>{endpoint.response}</p></td><td>{endpoint.access}</td></tr>)}</tbody></table>
           </div>
-        </section>
+        </section>}
+
+        {entry && <section className="service-section" aria-labelledby="distribution-heading">
+          <div className="service-section-heading"><h2 id="distribution-heading">지원 환경·자동 배포</h2></div>
+          <p className="service-architecture-note">{service.distributionNote}</p>
+          <div className="service-source-links">
+            {service.downloadUrl && <a href={service.downloadUrl} target="_blank" rel="noopener noreferrer">GitHub Releases ↗</a>}
+            {service.buildUrl && <a href={service.buildUrl} target="_blank" rel="noopener noreferrer">OS별 빌드·배포 워크플로 ↗</a>}
+          </div>
+        </section>}
 
         <div className="service-notes-grid">
           <section className="service-section" aria-labelledby="design-heading"><div className="service-section-heading"><h2 id="design-heading">설계 포인트</h2></div>{service.decisions.map(decision => <article className="service-decision" key={decision.title}><h3>{decision.title}</h3><p>{decision.description}</p></article>)}</section>

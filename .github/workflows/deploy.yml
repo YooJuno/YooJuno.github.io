@@ -36,6 +36,9 @@ jobs:
       - name: Validate blog content
         run: npm run blog:check
 
+      - name: Validate utility content
+        run: npm run utilities:check
+
       - name: Build
         run: npm run build
 

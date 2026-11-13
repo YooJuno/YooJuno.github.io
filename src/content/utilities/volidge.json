@@ -1,0 +1,119 @@
+{
+  "id": "volidge",
+  "title": "Volidge",
+  "summary": "macOS 오디오 인터페이스의 출력 음량을 키보드로 조절하는 오디오 브리지.",
+  "github": "https://github.com/YooJuno/volidge",
+  "platforms": [
+    "macOS 14 이상",
+    "Apple Silicon·Intel"
+  ],
+  "revision": "7315cc69bb16bdb3e33760973997f11668979648",
+  "purpose": "Audient iD14처럼 macOS 키보드 음량 조절이 직접 적용되지 않는 오디오 인터페이스를 편하게 사용하기 위해 만들었습니다. 시스템 오디오를 가상 장치로 받아 선택한 출력으로 전달하면서, 키보드 음량을 브리지의 음량에 연결합니다.",
+  "tech": [
+    "Swift 6",
+    "SwiftUI",
+    "Core Audio",
+    "AudioServerPlugIn",
+    "C"
+  ],
+  "overview": [
+    "별도 BlackHole 설치 대신 앱과 Volidge 가상 오디오 드라이버를 함께 패키징합니다. 일반 스피커·AirPods는 직접 출력하고, 브리지가 필요한 인터페이스만 가상 오디오 경로를 사용합니다.",
+    "저지연·호환 모드, 장치·샘플레이트 변경과 잠자기 복귀에 대한 경로 재구성을 제공합니다. 인터페이스의 직접 모니터링 신호는 프로그램 제어 범위가 아닙니다."
+  ],
+  "screens": [
+    {
+      "id": "VO01",
+      "title": "출력·음량 제어",
+      "image": "/content/images/utilities/volidge/control.png",
+      "width": 480,
+      "height": 350,
+      "alt": "출력·음량 제어 화면",
+      "caption": "현재 소스의 실제 SwiftUI 뷰를 밝은 외관으로 렌더링한 제어 패널 상단입니다. 오디오 라우팅·드라이버 설치는 수행하지 않았습니다.",
+      "annotations": [
+        "선택 출력과 브리지 상태를 확인합니다.",
+        "키보드 음량과 연결할 음량 및 시작·중지를 제어합니다."
+      ]
+    }
+  ],
+  "features": [
+    {
+      "title": "키보드 음량 브리지",
+      "description": "가상 입력의 시스템 오디오에 음량을 적용해 선택 출력으로 전달합니다. 원래 출력 설정은 라우팅 종료 시 복원하도록 관리합니다."
+    },
+    {
+      "title": "장치별 출력 경로",
+      "description": "기본 음량 조절을 지원하는 장치는 직접 출력하고, 필요한 인터페이스에만 브리지를 사용합니다. 출력 변경 시 경로를 재구성합니다."
+    },
+    {
+      "title": "설치·장치 복구",
+      "description": "앱·가상 드라이버를 하나의 설치 패키지로 묶고, 잠자기·USB 재연결·샘플레이트 변화에 대응합니다."
+    }
+  ],
+  "architecture": [
+    {
+      "label": "시스템 오디오",
+      "detail": "Volidge 가상 입력 장치"
+    },
+    {
+      "label": "오디오 브리지",
+      "detail": "음량 적용·버퍼·클럭 드리프트 보정"
+    },
+    {
+      "label": "물리 출력",
+      "detail": "선택 스피커·오디오 인터페이스"
+    },
+    {
+      "label": "SwiftUI · 메뉴",
+      "detail": "출력·음량·모드·로그인 실행 설정"
+    }
+  ],
+  "decisions": [
+    {
+      "title": "필요한 장치에만 브리지 적용",
+      "description": "AirPods·기본 스피커는 직접 출력해 불필요한 가상 입력 경로를 피합니다. 브리지가 필요한 인터페이스와 분리했습니다."
+    },
+    {
+      "title": "설치 검증과 실기 검증 분리",
+      "description": "CI는 앱·드라이버·설치 파일의 메타데이터와 아키텍처를 검사하되 드라이버를 설치하거나 시스템 음량을 변경하지 않습니다."
+    }
+  ],
+  "limitations": [
+    "CI와 화면 렌더링은 실제 오디오 인터페이스·AirPods 연결이나 종단 지연을 검증하지 않습니다.",
+    "브리지 모드의 마이크 권한은 가상 시스템 오디오 입력에 필요합니다. 물리 마이크 녹음 기능은 아닙니다.",
+    "현재 패키지는 ad-hoc 서명이며 Developer ID 설치 서명·Apple 공증을 포함하지 않습니다. DAW가 물리 장치로 직접 출력하면 브리지를 우회합니다."
+  ],
+  "buildUrl": "https://github.com/YooJuno/volidge/actions/workflows/release.yml",
+  "distributionNote": "macOS Apple Silicon·Intel 러너에서 각각 앱·드라이버·.pkg를 빌드하고 서명 구조·CPU 아키텍처·설치 파일 내용을 검사합니다. 두 빌드가 성공한 버전 태그만 GitHub Release로 공개합니다. 태그 전 빌드는 Actions Artifacts에서 받을 수 있으며 GitHub 로그인이 필요합니다. Core Audio 전용 앱이므로 Windows·Linux 빌드는 제공하지 않습니다.",
+  "sources": [
+    {
+      "label": "사용 목적·제약",
+      "path": "README.md"
+    },
+    {
+      "label": "오디오 경로",
+      "path": "Sources/Vol/AudioRouter.swift"
+    },
+    {
+      "label": "제어 패널",
+      "path": "Sources/Vol/ControlPanel.swift"
+    },
+    {
+      "label": "가상 오디오 장치",
+      "path": "Drivers/VolDevice/VolDevice.c"
+    },
+    {
+      "label": "설치 패키지",
+      "path": "scripts/build_pkg.sh"
+    },
+    {
+      "label": "OS·CPU별 자동 배포",
+      "path": ".github/workflows/release.yml"
+    }
+  ],
+  "route": "/utilities/volidge",
+  "site": "",
+  "inspectedAt": "2026-11-14",
+  "reviewedAt": "2026-11-13T18:57:12.504Z",
+  "sourceState": "published",
+  "api": []
+}
