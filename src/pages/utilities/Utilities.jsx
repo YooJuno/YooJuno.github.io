@@ -12,7 +12,7 @@ export default function Utilities() {
         <div className="section-head"><h1>유틸리티</h1><p>직접 쓰기 위해 만든 분석·편집·시스템 관리 프로그램입니다.</p></div>
         <div className="utility-list">
           {utilities.map(utility => {
-            const screen = utility.screens[0]
+            const screen = utility.screens.find(item => item.id === utility.previewScreen) || utility.screens[0]
             return (
               <article className="utility-card" key={utility.id}>
                 <Link className="utility-preview" to={utility.route} aria-label={`${utility.title} 상세 보기`}>
@@ -22,8 +22,9 @@ export default function Utilities() {
                   <p className="utility-platforms">{utility.platforms.join(' · ')}</p>
                   <h2><Link to={utility.route}>{utility.title}</Link></h2>
                   <p>{utility.summary}</p>
+                  <ul className="utility-highlights">{utility.workflow.map(step => <li key={step.title}>{step.title}</li>)}</ul>
                   <div className="utility-links">
-                    <Link to={utility.route}>목적·화면·구현 보기 →</Link>
+                    <Link to={utility.route}>자세히 보기 <span aria-hidden="true">→</span></Link>
                     <a href={utility.github} target="_blank" rel="noopener noreferrer" aria-label={`${utility.title} GitHub 저장소`}><GitHubMark /> GitHub ↗</a>
                   </div>
                 </div>

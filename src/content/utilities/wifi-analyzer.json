@@ -9,7 +9,7 @@
     "Ubuntu"
   ],
   "revision": "da60a7f943d45126e12a1af5dd7420577caa96dd",
-  "purpose": "Wi-Fi가 느리거나 불안정할 때 신호가 약한지, 주변 AP와 채널이 겹치는지, 무선 연결 바깥의 문제인지 나눠 확인하기 위해 만들었습니다. AP 목록뿐 아니라 진단 근거와 다음 확인 항목을 함께 보여주는 것이 목적입니다.",
+  "purpose": "Wi-Fi가 느리거나 불안정할 때 신호·채널 문제와 공유기 이후의 경로 문제를 나누어 확인하기 위해 만들었습니다. 주변 AP 관측값에 진단 근거와 다음 확인 항목을 붙입니다.",
   "tech": [
     "Python",
     "Tkinter",
@@ -18,8 +18,8 @@
     "PyInstaller"
   ],
   "overview": [
-    "현재 연결과 주변 AP를 공통 모델로 정리하고 RSSI·SNR·대역·채널 폭·시간 추이를 확인합니다. 게이트웨이·외부 IP·DNS·HTTPS 검사는 무선 신호 분석과 별도로 수행합니다.",
-    "SSID·BSSID 등 개인 네트워크 정보가 사진에 포함되지 않도록 예시 AP 데이터를 실제 GUI에 연결해 캡처했습니다. 화면의 수치와 진단은 실환경 측정 결과가 아닙니다."
+    "운영체제별 CoreWLAN·nmcli·netsh 결과를 공통 AP·연결 모델로 변환합니다. GUI와 CLI는 같은 신호·채널 진단 로직을 사용합니다.",
+    "무선 관측과 네트워크 경로 검사를 분리합니다. AP 신호만으로 인터넷 장애를 단정하지 않고 게이트웨이·외부 IP·DNS·HTTPS 단계별 결과를 확인합니다."
   ],
   "screens": [
     {
@@ -29,7 +29,7 @@
       "width": 1480,
       "height": 920,
       "alt": "연결 상태·진단 화면",
-      "caption": "실제 GUI에 예시 AP·연결 데이터를 연결한 개요 화면입니다. 개인 SSID·BSSID나 실환경 측정값은 사용하지 않았습니다.",
+      "caption": "실제 GUI에 예시 AP를 연결한 개요 화면. 진단 수치는 실환경 측정 결과가 아닙니다.",
       "annotations": [
         "신호·SNR·연결 정보와 진단 근거를 함께 확인합니다.",
         "확인이 필요한 원인과 후속 조치를 분리합니다."
@@ -42,7 +42,7 @@
       "width": 1480,
       "height": 920,
       "alt": "주변 네트워크 화면",
-      "caption": "동일한 예시 데이터의 네트워크 목록입니다. 실제 주변 AP를 스캔한 결과가 아닙니다.",
+      "caption": "같은 예시 데이터의 AP 목록. 주변 실제 네트워크를 스캔한 결과는 아닙니다.",
       "annotations": [
         "대역·채널 폭·신호·보안과 현재 연결을 비교합니다.",
         "필터·정렬로 확인할 AP를 좁힙니다."
@@ -55,7 +55,7 @@
       "width": 1480,
       "height": 920,
       "alt": "채널 분석 화면",
-      "caption": "예시 AP로 그린 채널 점유·추천 화면입니다. 그래프는 관측 신호 기반 계산값이며 스펙트럼 측정이 아닙니다.",
+      "caption": "예시 AP의 채널 점유·추천 결과. 스펙트럼 측정이 아닌 관측 신호 기반 계산입니다.",
       "annotations": [
         "대역과 비교 채널 폭을 선택합니다.",
         "RF 압력은 후보 간 상대 비교로 해석합니다."
@@ -68,7 +68,7 @@
       "width": 1480,
       "height": 920,
       "alt": "시간 추이 화면",
-      "caption": "예시 시계열을 연결한 신호 추이 화면입니다. 실제 장소의 수신 품질이나 이동 시험을 의미하지 않습니다.",
+      "caption": "예시 시계열의 RSSI·noise 변화. 실제 장소의 이동·수신 품질 시험은 아닙니다.",
       "annotations": [
         "선택 AP의 RSSI·noise 변화와 수집 시점을 확인합니다."
       ]
@@ -117,12 +117,12 @@
     }
   ],
   "limitations": [
-    "채널 곡선·RF 압력은 AP 관측 기반 추정입니다. 실제 airtime·재전송률·비 Wi-Fi 간섭이나 처리량을 직접 측정하지 않습니다.",
-    "SSID/BSSID·noise·폭 등은 OS·드라이버·위치 권한에 따라 제공되지 않을 수 있습니다. 사진은 예시 데이터입니다.",
-    "CI는 파서·계산·진단·패키징을 확인하며 물리 무선 어댑터나 실제 주변 전파 환경을 검증하지 않습니다."
+    "채널 곡선·RF 압력은 주변 AP 신호로 계산한 상대 비교값입니다. 실제 airtime·재전송률·비 Wi-Fi 간섭·처리량 측정은 아닙니다.",
+    "SSID/BSSID·noise·채널 폭은 OS·드라이버·위치 권한에 따라 제공되지 않을 수 있습니다.",
+    "CI는 파서·진단·패키징을 검사합니다. macOS universal2의 CPU 슬라이스 검사와 Apple Silicon 실기 실행, 실제 무선 환경 검증은 별개입니다."
   ],
   "buildUrl": "https://github.com/YooJuno/wifi_analyzer/actions/workflows/release.yml",
-  "sourceNote": "화면은 공개 커밋의 tools/capture_preview.py를 GitHub Actions의 Linux/Xvfb에서 실행한 결과입니다. 예시 AP와 시계열만 사용했으며 실제 무선 스캔·위치 권한은 사용하지 않았습니다.",
+  "sourceNote": "공개 소스의 tools/capture_preview.py를 Linux/Xvfb에서 실행했습니다. 실제 Tkinter GUI에 예시 AP·시계열만 연결한 화면으로, 개인 SSID/BSSID·무선 스캔·위치 권한을 사용하지 않았습니다.",
   "distributionNote": "Ubuntu x64·Windows x64와 macOS universal2 패키지를 만듭니다. macOS는 Intel 러너에서 앱·포함 바이너리의 Apple Silicon/Intel 슬라이스를 검사하며 Apple Silicon 실기 실행과는 구분합니다. 수동 빌드는 Actions Artifacts, 버전 태그는 세 OS 성공 후 GitHub Release와 SHA-256으로 공개합니다. 초기 패키지는 미서명·ad-hoc 서명이며 OS 안내가 나타날 수 있습니다.",
   "sources": [
     {
@@ -155,5 +155,36 @@
   "inspectedAt": "2026-11-14",
   "reviewedAt": "2026-11-13T18:57:12.504Z",
   "sourceState": "published",
-  "api": []
+  "api": [],
+  "workflow": [
+    {
+      "title": "현재 연결 확인",
+      "description": "연결 AP의 RSSI·SNR·링크 정보와 진단 근거를 확인합니다. OS가 주지 않는 값은 미제공으로 표시합니다."
+    },
+    {
+      "title": "주변 채널 비교",
+      "description": "같은 대역의 AP와 채널 폭·겹침을 비교하고 시간 추이에서 신호 변동을 확인합니다."
+    },
+    {
+      "title": "경로 진단·저장",
+      "description": "게이트웨이·외부 IP·DNS·HTTPS를 구분해 검사합니다. 관측·진단 결과는 JSON 리포트로 저장합니다."
+    }
+  ],
+  "compatibility": [
+    {
+      "environment": "Windows · x64",
+      "format": ".zip",
+      "note": "netsh wlan. noise·채널 폭은 기본 명령에서 미제공"
+    },
+    {
+      "environment": "macOS · ARM·Intel",
+      "format": "universal2 .zip",
+      "note": "CoreWLAN. SSID/BSSID는 위치 권한에 영향"
+    },
+    {
+      "environment": "Ubuntu · x64",
+      "format": ".tar.gz",
+      "note": "NetworkManager·Tk 사용. noise·채널 폭은 환경별 차이"
+    }
+  ]
 }

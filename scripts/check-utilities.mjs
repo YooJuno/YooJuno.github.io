@@ -12,7 +12,7 @@ export function validateUtilities(root) {
     const check = (valid, message) => {
       if (!valid) throw new Error(`${filename}: ${message}`)
     }
-    for (const field of ['id', 'title', 'summary', 'purpose', 'github', 'revision', 'distributionNote']) {
+    for (const field of ['id', 'title', 'summary', 'purpose', 'github', 'revision', 'distributionNote', 'buildUrl']) {
       check(typeof entry[field] === 'string' && entry[field].trim(), `${field} 값을 확인하세요.`)
     }
     check(entry.id === filename.slice(0, -5) && !ids.has(entry.id), '파일 이름과 ID 또는 중복 ID를 확인하세요.')
@@ -21,8 +21,17 @@ export function validateUtilities(root) {
     check(entry.summary.length <= 110, '요약은 110자 이내로 작성하세요.')
     check(/^[a-f0-9]{40}$/.test(entry.revision), '확인한 전체 커밋 SHA를 입력하세요.')
     check(Array.isArray(entry.platforms) && entry.platforms.length, '지원 환경을 입력하세요.')
-    for (const field of ['tech', 'overview', 'screens', 'features', 'architecture', 'decisions', 'limitations', 'sources']) {
+    for (const field of ['tech', 'overview', 'screens', 'features', 'architecture', 'decisions', 'limitations', 'sources', 'workflow', 'compatibility']) {
       check(Array.isArray(entry[field]) && entry[field].length, `${field} 항목을 입력하세요.`)
+    }
+    check(entry.workflow.length === 3, '사용 흐름은 핵심 작업 3단계로 작성하세요.')
+    for (const step of entry.workflow) {
+      check(typeof step.title === 'string' && step.title.trim() && typeof step.description === 'string' && step.description.trim(), '사용 흐름의 제목·설명을 입력하세요.')
+    }
+    for (const target of entry.compatibility) {
+      for (const field of ['environment', 'format', 'note']) {
+        check(typeof target[field] === 'string' && target[field].trim(), `지원 환경의 ${field} 값을 입력하세요.`)
+      }
     }
     for (const field of ['github', 'site', 'downloadUrl', 'buildUrl']) {
       if (entry[field]) check(new URL(entry[field]).protocol === 'https:', `${field}는 실제 HTTPS 주소여야 합니다.`)
@@ -41,6 +50,7 @@ export function validateUtilities(root) {
       check(bytes.readUInt32BE(16) === screen.width && bytes.readUInt32BE(20) === screen.height, `이미지 원본 크기를 확인하세요: ${screen.image}`)
       screens += 1
     }
+    check(!entry.previewScreen || screenIds.has(entry.previewScreen), '목록에 표시할 previewScreen ID를 확인하세요.')
   }
   return { entries: ids.size, screens }
 }
