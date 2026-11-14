@@ -21,6 +21,11 @@ export function validateUtilities(root) {
     check(entry.route === `/utilities/${entry.id}` && ROUTE_META[entry.route], '라우트와 메타데이터를 확인하세요.')
     check(entry.summary.length <= 110, '요약은 110자 이내로 작성하세요.')
     check(/^[a-f0-9]{40}$/.test(entry.revision), '확인한 전체 커밋 SHA를 입력하세요.')
+    check(['published', 'local'].includes(entry.sourceState), '소스 공개 상태를 확인하세요.')
+    if (entry.sourceState === 'local') {
+      check(/^[a-f0-9]{64}$/.test(entry.sourceSnapshot), '로컬 작업본의 SHA-256을 입력하세요.')
+      check(typeof entry.sourceNote === 'string' && entry.sourceNote.trim(), '로컬 작업본의 검토 범위를 설명하세요.')
+    }
     check(Array.isArray(entry.platforms) && entry.platforms.length, '지원 환경을 입력하세요.')
     for (const field of ['tech', 'overview', 'screens', 'features', 'architecture', 'decisions', 'limitations', 'sources', 'examples', 'compatibility']) {
       check(Array.isArray(entry[field]) && entry[field].length, `${field} 항목을 입력하세요.`)

@@ -2,10 +2,10 @@
   "id": "btc",
   "route": "/web-service/bitcoin-auto-trader",
   "title": "BTC Auto Trader",
-  "inspectedAt": "2026-10-14",
-  "revision": "503a0ad",
+  "inspectedAt": "2026-11-14",
+  "revision": "503a0ad30d74a7db4f4ccafe442ed2791c047ce2",
   "github": "https://github.com/YooJuno/btc-auto-trader",
-  "site": "",
+  "site": "https://auto-trader-juno.web.app/",
   "summary": "Upbit 시세·전략·자동매매 상태를 확인하는 콘솔.",
   "tech": [
     "Spring Boot",
@@ -16,7 +16,7 @@
     "Lightweight Charts"
   ],
   "overview": [
-    "Spring Boot 백엔드, React 콘솔, PostgreSQL로 구성된 자동매매 프로젝트입니다. 시세·캔들·보유 자산과 주문 이력, 엔진의 진입·청산·건너뜀 판단을 함께 조회합니다.",
+    "Spring Boot 백엔드, React 콘솔, PostgreSQL로 구성된 자동매매 프로젝트입니다. 시세·캔들·자산·주문과 엔진의 진입·청산·건너뜀 판단을 조회합니다. 공개 웹 주소는 실시간 연결 없는 예시 데이터 미리보기입니다.",
     "OAuth2 로그인 세션을 사용하고 사용자별 설정·거래소 자격증명·데이터베이스를 분리합니다. 모의매매(PAPER)와 실거래(LIVE) 모드를 구분하며, 엔진 중지와 보유 자산 청산을 별도 동작으로 제공합니다."
   ],
   "screens": [
@@ -27,7 +27,7 @@
       "width": 1440,
       "height": 1000,
       "alt": "자산 요약과 보유 포지션, 시세 차트가 있는 BTC Auto Trader 콘솔",
-      "caption": "실제 React 프론트엔드에 예시 계정·시세·잔고 응답을 연결했습니다. 거래소와 매매 백엔드는 실행하지 않았습니다.",
+      "caption": "공개 Hosting의 정적 미리보기입니다. 자산·차트·판단은 예시 데이터이며 거래소·실계좌와 연결되지 않습니다.",
       "annotations": [
         "모의·실계좌 모드와 엔진 상태를 구분합니다.",
         "자산·보유 종목·캔들 차트로 현재 상태를 확인합니다.",
@@ -41,7 +41,7 @@
       "width": 1440,
       "height": 1000,
       "alt": "사용자별 종목과 전략 설정을 편집하는 BTC Auto Trader 화면",
-      "caption": "실제 설정 화면에 예시 데이터를 사용했습니다. 설정 저장·엔진 실행·주문 요청은 운영 서버로 전달하지 않았습니다.",
+      "caption": "실제 React 설정 화면에 예시 데이터를 연결한 자료입니다. 자격증명 저장·엔진 실행·실제 주문은 수행하지 않았습니다.",
       "annotations": [
         "종목별 전략·주문 한도·일시정지 설정을 관리합니다.",
         "사용자 계정 설정과 거래소 키 상태를 분리합니다.",
@@ -189,5 +189,9 @@
       "label": "모의매매·인증 구성",
       "path": "README.md"
     }
-  ]
+  ],
+  "reviewedAt": "2026-11-14T08:13:27Z",
+  "sourceState": "published",
+  "siteLabel": "공개 미리보기",
+  "sourceNote": "소스는 공개 커밋의 서버·콘솔 구현 기준입니다. 공개 Hosting 화면은 예시 데이터만 표시하는 정적 미리보기이며 거래소 연결·실시간 매매·실계좌 성과를 제공하지 않습니다. 매매 서버·스케줄러·주문은 실행하지 않았습니다."
 }

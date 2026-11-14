@@ -2,8 +2,8 @@
   "id": "cctv",
   "route": "/web-service/cctv-streaming",
   "title": "CCTV Streaming",
-  "inspectedAt": "2026-10-14",
-  "revision": "fef96b3",
+  "inspectedAt": "2026-11-14",
+  "revision": "fef96b3981099ac856fc6c21a98144980270dbc7",
   "github": "https://github.com/YooJuno/CCTV_Streaming",
   "site": "",
   "summary": "카메라 설치·송출·재생을 관리하는 웹 관제 앱.",
@@ -20,7 +20,7 @@
   ],
   "overview": [
     "기본 수신 방식은 카메라가 서버로 JPEG 프레임을 보내는 HTTP(S) push입니다. 서버는 최신 프레임을 MJPEG로 제공하고, FFmpeg로 변환한 HLS도 함께 제공합니다. 서버가 카메라의 사설 IP에 직접 접속할 필요는 없습니다.",
-    "브라우저에서 USB 펌웨어 설치, Wi-Fi·서버 설정, 장치 연결 상태와 송출 설정을 관리합니다. 기존 LAN 환경의 MJPEG pull converter도 선택적으로 사용할 수 있습니다."
+    "브라우저에서 USB 펌웨어 설치, Wi-Fi·서버 설정, 장치 연결 상태와 송출 설정을 관리합니다. LAN의 MJPEG pull converter도 선택적으로 사용할 수 있습니다."
   ],
   "screens": [
     {
@@ -242,8 +242,8 @@
   ],
   "decisions": [
     {
-      "title": "Push 기본·LAN pull 선택",
-      "description": "카메라가 서버로 나가는 연결을 사용해 사설 카메라 IP 접근 문제를 줄였습니다. 기존 LAN pull converter는 별도 실행 방식으로 남겼습니다."
+      "title": "Push·LAN pull 입력",
+      "description": "카메라가 서버로 연결하는 JPEG push와 LAN pull converter를 지원합니다. 장치 입력과 브라우저의 재생 경로를 분리합니다."
     },
     {
       "title": "영상 출력 경로 분리",
@@ -255,7 +255,6 @@
     }
   ],
   "limitations": [
-    "화면은 예시 API 응답·테스트 이미지로 확인했습니다. 실제 ESP32-CAM, USB 기록, Wi-Fi 연결, JPEG push 수신과 장거리 무선 품질은 이 검수에서 시험하지 않았습니다.",
     "MJPEG 수신 통계와 HLS 플레이리스트 지연은 촬영부터 화면까지의 전체 지연을 뜻하지 않습니다. 목표 FPS와 지연은 실장비·네트워크에서 측정해야 합니다.",
     "USB 설치는 지원 브라우저·보안 컨텍스트·USB-UART 연결 조건이 필요합니다. UI 캡처는 펌웨어 설치 성공의 증거가 아닙니다.",
     "현재 RTSP, WebRTC와 시청자별 ABR 다중 화질 스트림은 포함하지 않습니다. 공개 운영의 HTTPS·장치 키·저장소·접근 정책은 별도 배포 설계가 필요합니다."
@@ -294,7 +293,7 @@
       "path": "apps/cctv/device/main.cpp"
     }
   ],
-  "reviewedAt": "2026-10-14T15:10:07+09:00",
+  "reviewedAt": "2026-11-14T08:13:27Z",
   "sourceState": "published",
-  "sourceNote": "dev에 반영된 개발 버전을 기준으로 정리했습니다. 소스 공개와 실제 서비스 배포는 별개입니다."
+  "sourceNote": "공개 dev 커밋의 실제 프론트엔드에 예시 API·시험 영상을 연결했습니다. ESP32-CAM·USB 펌웨어 기록·Wi-Fi 자격·운영 계정은 사용하지 않았습니다."
 }
