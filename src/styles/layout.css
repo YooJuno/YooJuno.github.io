@@ -24,7 +24,7 @@
 }
 
 .section-head p {
-  color: var(--muted);
+  color: var(--ink);
   max-width: 640px;
 }
 

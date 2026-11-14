@@ -21,7 +21,7 @@
 }
 
 .home-role {
-  color: var(--muted);
+  color: var(--ink);
   font-size: 20px;
   font-weight: 500;
 }
@@ -29,7 +29,7 @@
 .home-description {
   max-width: 660px;
   margin-top: 28px;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 17px;
   line-height: 1.9;
   word-break: keep-all;

@@ -29,7 +29,7 @@
 .portfolio-page .hero-text h1 span {
   display: block;
   margin-top: 12px;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 18px;
   font-weight: 500;
   letter-spacing: -0.025em;
@@ -60,7 +60,7 @@
   align-items: center;
   justify-self: start;
   min-height: 44px;
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .hero-contact-info .hero-contact-email {
@@ -110,7 +110,7 @@
   align-items: center;
   gap: 8px;
   min-height: 44px;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 13px;
   font-weight: 500;
 }
@@ -141,7 +141,7 @@
   width: 44px;
   height: 44px;
   border-radius: 8px;
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .hero-contact-profiles svg {
@@ -210,7 +210,7 @@
   padding: 16px 15px;
   border-bottom: 2px solid transparent;
   border-radius: 0;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 14px;
   font-weight: 500;
   white-space: nowrap;
@@ -309,11 +309,12 @@
 
 .supplement-list p {
   margin-top: 6px;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 14px;
 }
 
 .supplement-list .supplement-meta {
+  color: var(--muted);
   font-size: 12px;
 }
 
@@ -330,7 +331,7 @@
 }
 
 .profile-facts dt {
-  color: var(--muted);
+  color: var(--ink);
   font-size: 14px;
   font-weight: 600;
 }
@@ -529,21 +530,20 @@ summary.career-card-heading:hover {
 
 .career-team {
   margin-top: 4px;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 14px;
   line-height: 1.6;
 }
 
 .career-summary {
   max-width: 680px;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 15px;
   line-height: 1.85;
   word-break: keep-all;
 }
 
 .career-entry.is-current .career-summary {
-  color: var(--ink);
   font-weight: 500;
 }
 
@@ -575,7 +575,7 @@ summary.career-card-heading:hover {
 .career-responsibilities ul,
 .career-responsibilities ol {
   padding-left: 18px;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 15px;
 }
 
@@ -616,7 +616,7 @@ summary.career-card-heading:hover {
 }
 
 .career-responsibilities p {
-  color: var(--muted);
+  color: var(--ink);
   font-size: 15px;
   word-break: keep-all;
 }
@@ -645,7 +645,7 @@ summary.career-card-heading:hover {
   padding: 5px 9px;
   border: 1px solid var(--border);
   border-radius: 6px;
-  color: var(--muted);
+  color: var(--ink);
   background: var(--bg-alt);
   font-family: "Space Grotesk", "Noto Sans KR", sans-serif;
   font-size: 12px;
@@ -679,7 +679,7 @@ summary.career-card-heading:hover {
 
 .portfolio-page .detail-body {
   padding: 8px 20px 22px;
-  color: var(--muted);
+  color: var(--ink);
   line-height: 1.85;
 }
 
