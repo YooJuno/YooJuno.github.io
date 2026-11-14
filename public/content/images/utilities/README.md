@@ -4,8 +4,8 @@
 
 | 프로그램 | 자료·조건 |
 | --- | --- |
-| LiDAR Studio | b291d9ac8792775cfdb52f0b6368d7be292b01e6의 docs/images 원본 3장. KITTI 파생 이미지의 저자·CC BY-NC-SA 3.0은 lidar-studio/README.md에 별도 보존 |
-| Map Editor | 기존 공개 웹앱의 office 예제 캡처 4장을 재사용. 추가 desktop.png는 3cbe3147343cb99e20a9ffca413abfb70ee89655의 docs/light.png 원본 |
+| LiDAR Studio | b291d9ac8792775cfdb52f0b6368d7be292b01e6의 docs/images 원본 3장과 docs/media/demo.mp4의 22초 export.png. KITTI 정적 화면과 Patchwork++ 데모 입력을 구분하고 출처·CC BY-NC-SA 3.0·BSD 고지를 lidar-studio/README.md에 보존 |
+| Map Editor | 기존 공개 웹앱의 office 예제 캡처 4장을 재사용. desktop.png는 3cbe3147343cb99e20a9ffca413abfb70ee89655의 docs/light.png 원본. crop.png는 2026-11-14 밝은 웹앱에서 동일 공개 예제를 잘라 캡처. 로그인·클라우드 쓰기 없이 ZIP 세 레이어의 크기·원점 일치 확인 |
 | Ubuntu Status Bar | 34e6f3accfe1bbaaa9bc153ec3b0f743bf6c8e56의 docs/menu.png·topbar.png·settings.png. 이름 변경 전 GNOME 46 테스트 화면이며 센서 수치는 당시 장치의 순간값 |
 | Volidge | 7315cc69bb16bdb3e33760973997f11668979648의 실제 ControlPanel SwiftUI 뷰를 AppKit 밝은 외관에서 렌더링. 상단 제어부만 캡처했으며 드라이버 설치·오디오 라우팅·마이크 접근은 수행하지 않음 |
 | Capture Viewer | b540049585949252dfc4e4048ae532eb3d6472c4의 실제 PySide6 창·도움말. 격리한 설정과 장치 미사용 데모 신호로 생성 |
