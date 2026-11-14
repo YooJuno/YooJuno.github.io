@@ -363,7 +363,7 @@
 
 .detail-body {
   padding: 0 18px 18px;
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .detail-note {
@@ -582,7 +582,7 @@ main.section,
 }
 
 .section-head p {
-  color: var(--muted);
+  color: var(--ink);
   font-size: 16px;
 }
 
@@ -619,7 +619,7 @@ main.section,
 
 .lead {
   max-width: 680px;
-  color: var(--muted);
+  color: var(--ink);
   font-size: clamp(15px, 1.5vw, 17px);
   line-height: 1.75;
   word-break: keep-all;
@@ -807,7 +807,7 @@ main.section,
 .info-list,
 .timeline-item p,
 .activity-grid p {
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .mini-card {

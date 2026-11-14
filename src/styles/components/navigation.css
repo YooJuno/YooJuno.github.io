@@ -75,7 +75,7 @@
   align-items: center;
   min-height: 68px;
   padding: 0 8px 0 12px;
-  color: var(--muted);
+  color: var(--ink);
   white-space: nowrap;
 }
 
@@ -157,7 +157,7 @@
   min-height: 44px;
   padding: 10px;
   border-radius: 3px;
-  color: var(--muted);
+  color: var(--ink);
   font-size: 13px;
 }
 
