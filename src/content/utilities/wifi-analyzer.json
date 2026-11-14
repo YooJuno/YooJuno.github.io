@@ -86,6 +86,10 @@
     {
       "title": "경로 검사·리포트",
       "description": "게이트웨이·외부 IP·DNS·HTTPS를 구분해 검사하고 관측·진단·추천·검사 결과를 JSON으로 저장합니다."
+    },
+    {
+      "title": "시간 추이·관측 조건 보존",
+      "description": "선택 AP의 RSSI·noise를 시간순으로 확인합니다. 리포트에는 데이터 출처·경고·폭의 제공 여부를 남겨 서로 다른 OS 관측을 같은 측정처럼 비교하지 않도록 합니다."
     }
   ],
   "architecture": [
@@ -119,7 +123,8 @@
   "limitations": [
     "채널 곡선·RF 압력은 주변 AP 신호로 계산한 상대 비교값입니다. 실제 airtime·재전송률·비 Wi-Fi 간섭·처리량 측정은 아닙니다.",
     "SSID/BSSID·noise·채널 폭은 OS·드라이버·위치 권한에 따라 제공되지 않을 수 있습니다.",
-    "CI는 파서·진단·패키징을 검사합니다. macOS universal2의 CPU 슬라이스 검사와 Apple Silicon 실기 실행, 실제 무선 환경 검증은 별개입니다."
+    "CI는 파서·진단·패키징을 검사합니다. macOS universal2의 CPU 슬라이스 검사와 Apple Silicon 실기 실행, 실제 무선 환경 검증은 별개입니다.",
+    "JSON 리포트에는 SSID·BSSID 등 네트워크 식별 정보가 포함됩니다. 외부 공유 전 직접 비식별 처리해야 합니다."
   ],
   "buildUrl": "https://github.com/YooJuno/wifi_analyzer/actions/workflows/release.yml",
   "sourceNote": "공개 소스의 tools/capture_preview.py를 Linux/Xvfb에서 실행했습니다. 실제 Tkinter GUI에 예시 AP·시계열만 연결한 화면으로, 개인 SSID/BSSID·무선 스캔·위치 권한을 사용하지 않았습니다.",
@@ -153,23 +158,9 @@
   "route": "/utilities/wifi-analyzer",
   "site": "",
   "inspectedAt": "2026-11-14",
-  "reviewedAt": "2026-11-13T18:57:12.504Z",
+  "reviewedAt": "2026-11-14T02:18:03Z",
   "sourceState": "published",
   "api": [],
-  "workflow": [
-    {
-      "title": "현재 연결 확인",
-      "description": "연결 AP의 RSSI·SNR·링크 정보와 진단 근거를 확인합니다. OS가 주지 않는 값은 미제공으로 표시합니다."
-    },
-    {
-      "title": "주변 채널 비교",
-      "description": "같은 대역의 AP와 채널 폭·겹침을 비교하고 시간 추이에서 신호 변동을 확인합니다."
-    },
-    {
-      "title": "경로 진단·저장",
-      "description": "게이트웨이·외부 IP·DNS·HTTPS를 구분해 검사합니다. 관측·진단 결과는 JSON 리포트로 저장합니다."
-    }
-  ],
   "compatibility": [
     {
       "environment": "Windows · x64",
@@ -185,6 +176,30 @@
       "environment": "Ubuntu · x64",
       "format": ".tar.gz",
       "note": "NetworkManager·Tk 사용. noise·채널 폭은 환경별 차이"
+    }
+  ],
+  "examples": [
+    {
+      "title": "신호 약화와 채널 겹침 구분",
+      "input": "현재 연결 AP와 주변 AP 관측값. 소개 화면은 예시 AP 데이터.",
+      "steps": [
+        "개요에서 현재 AP의 RSSI·SNR·진단 근거를 확인합니다. noise가 미제공이면 SNR을 실제 측정값처럼 해석하지 않습니다.",
+        "네트워크·채널 분석에서 같은 대역의 AP, 채널 폭과 겹침을 비교합니다. 시간 추이에서 선택 AP의 RSSI 변동을 확인합니다.",
+        "후보 채널은 같은 대역·비교 폭으로 검토합니다. 설정을 바꾼다면 같은 위치에서 재관측해 전후 조건을 맞춥니다."
+      ],
+      "result": "관측 신호 기반 진단과 후보 채널의 상대 RF 압력·확인 조치.",
+      "note": "AP 개수·신호만으로 실제 처리량이나 간섭 원인을 확정할 수 없습니다. 채널 추천은 스펙트럼·airtime 측정 결과가 아닙니다."
+    },
+    {
+      "title": "DNS·HTTPS 문제 분리와 리포트 저장",
+      "input": "현재 Wi-Fi 연결 정보와 단계별 네트워크 경로 검사.",
+      "steps": [
+        "경로 진단을 실행해 게이트웨이·외부 IP·DNS·HTTPS 결과를 각각 확인합니다.",
+        "ICMP 실패만으로 인터넷 단절을 단정하지 않고 DNS·HTTPS 응답과 오류 내용을 함께 확인합니다.",
+        "리포트 저장으로 관측·진단·추천·경로 검사 결과를 JSON에 보관합니다. 외부 공유 전 SSID·BSSID 등 식별 정보를 가립니다."
+      ],
+      "result": "connection·observations·findings·recommendations·path_diagnostics를 담은 로컬 JSON.",
+      "note": "검사를 실행하지 않았다면 path_diagnostics는 null입니다. 이 기능은 회선 속도 측정이나 자동 공유기 설정 변경을 수행하지 않습니다."
     }
   ]
 }

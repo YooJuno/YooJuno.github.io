@@ -7,6 +7,7 @@ export function validateUtilities(root) {
   const directory = path.join(root, 'src/content/utilities')
   const ids = new Set()
   let screens = 0
+  let examples = 0
   for (const filename of fs.readdirSync(directory).filter(name => name.endsWith('.json'))) {
     const entry = JSON.parse(fs.readFileSync(path.join(directory, filename), 'utf8'))
     const check = (valid, message) => {
@@ -21,13 +22,21 @@ export function validateUtilities(root) {
     check(entry.summary.length <= 110, '요약은 110자 이내로 작성하세요.')
     check(/^[a-f0-9]{40}$/.test(entry.revision), '확인한 전체 커밋 SHA를 입력하세요.')
     check(Array.isArray(entry.platforms) && entry.platforms.length, '지원 환경을 입력하세요.')
-    for (const field of ['tech', 'overview', 'screens', 'features', 'architecture', 'decisions', 'limitations', 'sources', 'workflow', 'compatibility']) {
+    for (const field of ['tech', 'overview', 'screens', 'features', 'architecture', 'decisions', 'limitations', 'sources', 'examples', 'compatibility']) {
       check(Array.isArray(entry[field]) && entry[field].length, `${field} 항목을 입력하세요.`)
     }
-    check(entry.workflow.length === 3, '사용 흐름은 핵심 작업 3단계로 작성하세요.')
-    for (const step of entry.workflow) {
-      check(typeof step.title === 'string' && step.title.trim() && typeof step.description === 'string' && step.description.trim(), '사용 흐름의 제목·설명을 입력하세요.')
+    check(entry.examples.length <= 3, '사용 예시는 핵심 작업 3개 이내로 작성하세요.')
+    const exampleTitles = new Set()
+    for (const example of entry.examples) {
+      for (const field of ['title', 'input', 'result', 'note']) {
+        check(typeof example[field] === 'string' && example[field].trim(), `사용 예시의 ${field} 값을 입력하세요.`)
+      }
+      check(!exampleTitles.has(example.title), '사용 예시 제목이 중복되었습니다.')
+      exampleTitles.add(example.title)
+      check(Array.isArray(example.steps) && example.steps.length > 0 && example.steps.length <= 5, '사용 예시의 조작 순서는 1–5단계로 작성하세요.')
+      check(example.steps.every(step => typeof step === 'string' && step.trim()), '사용 예시의 조작 설명을 입력하세요.')
     }
+    examples += entry.examples.length
     for (const target of entry.compatibility) {
       for (const field of ['environment', 'format', 'note']) {
         check(typeof target[field] === 'string' && target[field].trim(), `지원 환경의 ${field} 값을 입력하세요.`)
@@ -50,12 +59,11 @@ export function validateUtilities(root) {
       check(bytes.readUInt32BE(16) === screen.width && bytes.readUInt32BE(20) === screen.height, `이미지 원본 크기를 확인하세요: ${screen.image}`)
       screens += 1
     }
-    check(!entry.previewScreen || screenIds.has(entry.previewScreen), '목록에 표시할 previewScreen ID를 확인하세요.')
   }
-  return { entries: ids.size, screens }
+  return { entries: ids.size, screens, examples }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const result = validateUtilities(fileURLToPath(new URL('../', import.meta.url)))
-  console.log(`유틸리티 ${result.entries}개·화면 ${result.screens}개: 목적·주소·이미지·지원 환경 확인 완료`)
+  console.log(`유틸리티 ${result.entries}개·화면 ${result.screens}개·사용 예시 ${result.examples}개: 목적·주소·이미지·지원 환경 확인 완료`)
 }
