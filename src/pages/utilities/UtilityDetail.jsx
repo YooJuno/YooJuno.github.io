@@ -47,9 +47,21 @@ function UtilityArticle({ utility }) {
 
         <section className="utility-section utility-purpose" aria-labelledby="purpose-heading">
           <h2 id="purpose-heading">만든 목적</h2>
-          <div className="utility-section-body"><p>{utility.purpose}</p>
-            <h3 className="utility-workflow-heading">사용 흐름</h3>
-            <ol className="utility-workflow">{utility.workflow.map(step => <li key={step.title}><h4>{step.title}</h4><p>{step.description}</p></li>)}</ol>
+          <div className="utility-section-body"><p>{utility.purpose}</p></div>
+        </section>
+
+        <section className="utility-section" aria-labelledby="examples-heading">
+          <h2 id="examples-heading">사용 예시</h2>
+          <div className="utility-section-body utility-examples">
+            {utility.examples.map(example => (
+              <article className="utility-example" key={example.title}>
+                <h3>{example.title}</h3>
+                <p className="utility-example-input"><strong>입력</strong>{example.input}</p>
+                <ol>{example.steps.map(step => <li key={step}>{step}</li>)}</ol>
+                <p className="utility-example-result"><strong>출력·동작</strong>{example.result}</p>
+                <p className="utility-example-note">{example.note}</p>
+              </article>
+            ))}
           </div>
         </section>
 
