@@ -114,7 +114,7 @@
 }
 
 .post-card p {
-  color: var(--muted);
+  color: var(--ink);
   font-size: 15px;
   line-height: 1.75;
   word-break: keep-all;
@@ -181,6 +181,7 @@
   border-radius: 0;
   background: transparent;
   box-shadow: none;
+  color: var(--ink);
   font-size: 16px;
   line-height: 1.9;
   letter-spacing: -0.005em;
@@ -316,7 +317,7 @@
   margin: 24px 0;
   padding: 4px 0 4px 20px;
   border-left: 2px solid #b5b5b5;
-  color: var(--muted);
+  color: var(--ink);
 }
 
 .post-content blockquote p {

@@ -31,14 +31,14 @@
 .service-availability { display: inline-flex; align-items: center; padding: 4px 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-alt); color: var(--ink); font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; }
 .service-detail-header .service-availability { margin-bottom: 12px; }
 .service-detail-header h1 { font-size: clamp(29px, 4vw, 44px); letter-spacing: -1.5px; margin: 0 0 16px; }
-.service-detail-header p { color: var(--muted); font-size: 16px; line-height: 1.85; max-width: 730px; margin-bottom: 18px; }
+.service-detail-header p { color: var(--ink); font-size: 16px; line-height: 1.85; max-width: 730px; margin-bottom: 18px; }
 .service-actions { display: flex; flex-direction: column; align-items: stretch; gap: 10px; }
 .service-actions .btn { justify-content: center; }
 .service-github { gap: 10px; }
 .service-text-link { font-size: 14px; color: var(--muted); text-align: center; padding: 8px 4px; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; }
 .service-section { padding: 38px 0; border-bottom: 1px solid var(--border); min-width: 0; scroll-margin-top: 92px; }
 .service-overview { max-width: 900px; border: 0; padding-bottom: 0; }
-.service-overview p { line-height: 1.9; color: var(--muted); font-size: 16px; }
+.service-overview p { line-height: 1.9; color: var(--ink); font-size: 16px; }
 .service-overview p + p { margin-top: 12px; }
 .service-section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 18px; margin-bottom: 23px; }
 .service-section-heading h2 { font-size: 23px; margin: 0; letter-spacing: -.7px; font-weight: 600; overflow-wrap: anywhere; }
@@ -53,37 +53,37 @@
 .service-screen-image img { display: block; width: 100%; height: auto; object-fit: contain; object-position: top; }
 .service-screen-image > span { position: absolute; bottom: 10px; right: 10px; font-size: 11px; border-radius: 4px; padding: 5px 8px; color: #fff; background: rgb(0 0 0 / 72%); }
 .service-screen figcaption { font-size: 13px; line-height: 1.8; color: var(--muted); padding: 14px 18px 0; }
-.service-screen ol { list-style: decimal-leading-zero; padding: 0 20px 0 39px; margin: 14px 0 19px; color: var(--muted); font-size: 14px; line-height: 1.85; }
+.service-screen ol { list-style: decimal-leading-zero; padding: 0 20px 0 39px; margin: 14px 0 19px; color: var(--ink); font-size: 14px; line-height: 1.85; }
 .service-screen li { padding-left: 4px; }
 .service-feature-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 32px; }
 .service-feature-grid article { padding: 20px 0; border-top: 1px solid var(--border); }
 .service-feature-grid h3, .service-decision h3 { font-size: 16px; margin: 0 0 9px; }
-.service-feature-grid p, .service-decision p { color: var(--muted); line-height: 1.85; font-size: 15px; margin: 0; }
+.service-feature-grid p, .service-decision p { color: var(--ink); line-height: 1.85; font-size: 15px; margin: 0; }
 .service-architecture { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; list-style: none; padding: 0; margin: 0; }
 .service-architecture li { position: relative; display: flex; flex-direction: column; gap: 8px; border: 0; padding: 16px 0; border-radius: 0; background: transparent; border-top: 1px solid var(--border); }
-.service-architecture-note { font-size: 14px; color: var(--muted); line-height: 1.9; margin: 18px 0 0; overflow-wrap: anywhere; }
+.service-architecture-note { font-size: 14px; color: var(--ink); line-height: 1.9; margin: 18px 0 0; overflow-wrap: anywhere; }
 .service-architecture strong { font-size: 15px; }
-.service-architecture span { font-size: 14px; color: var(--muted); line-height: 1.8; overflow-wrap: anywhere; }
+.service-architecture span { font-size: 14px; color: var(--ink); line-height: 1.8; overflow-wrap: anywhere; }
 .service-api-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 6px; background: var(--card); overscroll-behavior-x: contain; }
 .service-api { width: 100%; min-width: 760px; border-collapse: collapse; text-align: left; font-size: 14px; }
-.service-api th { background: var(--bg-alt); color: var(--muted); font-size: 13px; font-weight: 600; }
+.service-api th { background: var(--bg-alt); color: var(--ink); font-size: 13px; font-weight: 600; }
 .service-api th, .service-api td { padding: 15px 18px; vertical-align: top; border-bottom: 1px solid var(--border); line-height: 1.8; }
 .service-api tbody tr:last-child td { border-bottom: 0; }
 .service-api td:first-child { width: 80px; }
 .service-api td:nth-child(2) { width: 34%; }
 .service-api td:nth-child(3) { width: 31%; }
-.service-api td:nth-child(4) { color: var(--muted); }
+.service-api td:nth-child(4) { color: var(--ink); }
 .service-api code { font-size: 13px; color: var(--ink); word-break: break-word; background: transparent; padding: 0; }
-.service-api p { font-size: 14px; color: var(--muted); margin: 4px 0; line-height: 1.8; }
+.service-api p { font-size: 14px; color: var(--ink); margin: 4px 0; line-height: 1.8; }
 .service-method { display: inline-block; font-size: 11px; font-weight: 600; color: var(--ink); background: var(--bg-alt); border-radius: 4px; padding: 2px 6px; border: 1px solid var(--border); white-space: nowrap; }
 .service-api-label { font-size: 12px; color: var(--muted); }
 .service-notes-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; }
 .service-decision + .service-decision { margin-top: 22px; }
-.service-limit-list { padding-left: 18px; margin: 0; color: var(--muted); font-size: 15px; line-height: 1.85; }
+.service-limit-list { padding-left: 18px; margin: 0; color: var(--ink); font-size: 15px; line-height: 1.85; }
 .service-limit-list li + li { margin-top: 11px; }
 .service-sources { border: 0; }
 .service-source-links { display: flex; gap: 10px; flex-wrap: wrap; }
-.service-source-links a, .service-source-pending { font-size: 13px; color: var(--muted); border: 1px solid var(--border); padding: 8px 12px; border-radius: 4px; background: var(--card); display: inline-flex; align-items: center; min-height: 44px; }
+.service-source-links a, .service-source-pending { font-size: 13px; color: var(--ink); border: 1px solid var(--border); padding: 8px 12px; border-radius: 4px; background: var(--card); display: inline-flex; align-items: center; min-height: 44px; }
 .service-source-pending { display: inline-flex; align-items: center; gap: 8px; }
 .service-source-pending small { color: var(--muted); font-size: 11px; }
 .service-lightbox { width: min(1500px, 96vw); max-width: none; max-height: 94dvh; padding: 20px; border: 1px solid var(--border); border-radius: 6px; background: var(--card); }
