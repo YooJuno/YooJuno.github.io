@@ -41,7 +41,7 @@ function ServiceDetail({ serviceId }) {
           </div>
           <div className="service-actions">
             <a className="btn primary service-github" href={service.github} target="_blank" rel="noopener noreferrer"><GitHubMark /> GitHub 저장소 <span aria-hidden="true">↗</span></a>
-            {service.site && <a className="btn service-live" href={service.site} target="_blank" rel="noopener noreferrer">서비스 열기 ↗</a>}
+            {service.site && <a className="btn service-live" href={service.site} target="_blank" rel="noopener noreferrer">{service.siteLabel || '서비스 열기'} ↗</a>}
             {service.downloadUrl && <a className="btn" href={service.downloadUrl} target="_blank" rel="noopener noreferrer">배포 파일 ↗</a>}
             <a className="service-text-link" href="#screens">화면 보기 ↓</a>
           </div>

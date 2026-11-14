@@ -2,9 +2,9 @@
   "id": "portfolio",
   "route": "/web-service/blog",
   "title": "Portfolio & Blog",
-  "inspectedAt": "2026-11-12",
-  "reviewedAt": "2026-11-12T12:00:53.000Z",
-  "revision": "7bdaa96351d7b45f87f9742821d22e5e52b7338e",
+  "inspectedAt": "2026-11-14",
+  "reviewedAt": "2026-11-14T08:13:27Z",
+  "revision": "c073f19df9117f09254f85d2272c4c80d93ca5b9",
   "sourceState": "published",
   "github": "https://github.com/YooJuno/YooJuno.github.io",
   "site": "https://yoojuno.github.io/",
@@ -64,6 +64,19 @@
         "긴 목차는 필요한 때 펼쳐서 이동합니다.",
         "표·코드는 본문 폭을 유지하며 가로로 탐색합니다."
       ]
+    },
+    {
+      "id": "P04",
+      "title": "유틸리티 목록",
+      "image": "/content/images/webservices/portfolio/utilities.png",
+      "width": 1440,
+      "height": 1000,
+      "alt": "이미지 없이 프로그램 이름·용도·지원 환경·GitHub 링크로 정리한 유틸리티 목록",
+      "caption": "현재 사이트 코드의 유틸리티 목록입니다. 사진은 프로그램 상세에서 제공합니다.",
+      "annotations": [
+        "목록은 이름·짧은 용도·지원 환경으로 탐색합니다.",
+        "상세에는 목적·입력·조작·출력·실제 화면과 소스가 있습니다."
+      ]
     }
   ],
   "features": [
@@ -82,6 +95,10 @@
     {
       "title": "검증 후 배포",
       "description": "main 변경에서 린트·콘텐츠 검사·빌드를 통과한 결과물을 GitHub Pages에 배포합니다."
+    },
+    {
+      "title": "웹서비스·유틸리티 카탈로그",
+      "description": "프로그램별 JSON에서 목적·화면·기능·사용 예시·지원 환경·소스 정보를 관리합니다. 유틸리티 목록은 텍스트로 탐색하고 상세에서 실제 화면을 확인합니다."
     }
   ],
   "architecture": [
@@ -188,6 +205,14 @@
       "path": "src/lib/portfolio.js"
     },
     {
+      "label": "유틸리티 데이터",
+      "path": "src/lib/utilities.js"
+    },
+    {
+      "label": "프로그램 콘텐츠 검사",
+      "path": "scripts/check-utilities.mjs"
+    },
+    {
       "label": "블로그 로더",
       "path": "src/lib/posts.js"
     },
@@ -200,8 +225,8 @@
       "path": "scripts/blogContentPlugin.mjs"
     },
     {
-      "label": "이미지 확대",
-      "path": "src/pages/webservice/ServiceDetail.jsx"
+      "label": "공통 이미지 확대",
+      "path": "src/components/ScreenLightbox.jsx"
     },
     {
       "label": "메타데이터·사이트맵",
@@ -220,5 +245,6 @@
       "path": ".github/workflows/deploy.yml"
     }
   ],
-  "architectureNote": "관리자 GitHub 인증은 별도 Cloudflare Worker가 처리하고, Decap CMS의 수정 내용은 Git 저장소에 반영합니다."
+  "architectureNote": "관리자 GitHub 인증은 별도 Cloudflare Worker가 처리하고, Decap CMS의 수정 내용은 Git 저장소에 반영합니다.",
+  "sourceNote": "공개된 사이트 코드와 콘텐츠의 실제 로컬 빌드 화면입니다. 관리자 OAuth 인증·저장소 글 쓰기는 이 화면 검수에 포함하지 않았습니다."
 }

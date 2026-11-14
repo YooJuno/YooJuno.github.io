@@ -13,6 +13,7 @@ function UtilityArticle({ utility }) {
   const index = utilities.indexOf(utility)
   const previous = utilities[index - 1]
   const next = utilities[index + 1]
+  const localSource = utility.sourceState === 'local'
   useDocumentTitle()
 
   useEffect(() => {
@@ -93,8 +94,12 @@ function UtilityArticle({ utility }) {
         <section className="utility-section utility-references" aria-labelledby="source-heading">
           <h2 id="source-heading">소스 코드</h2>
           <div className="utility-section-body">
-            <div className="utility-source-links">{utility.sources.map(source => <a key={source.path} href={`${utility.github}/blob/${utility.revision}/${source.path}`} target="_blank" rel="noopener noreferrer" title={source.path}>{source.label} <span aria-hidden="true">↗</span></a>)}</div>
-            <details className="utility-disclosure"><summary>검토 기준·화면 출처</summary><p><time dateTime={utility.reviewedAt}>{utility.inspectedAt}</time> 검토 · 기준 커밋 <a href={`${utility.github}/commit/${utility.revision}`} target="_blank" rel="noopener noreferrer"><code>{utility.revision.slice(0, 7)}</code> ↗</a></p>{utility.sourceNote && <p>{utility.sourceNote}</p>}<p>화면의 예시 데이터·원본 출처는 각 이미지 설명에 표시했습니다. 소스의 기능과 공개 배포본은 버전에 따라 다를 수 있습니다.</p></details>
+            <div className="utility-source-links">{utility.sources.map(source => localSource
+              ? <span className="service-source-pending" key={source.path} title={source.path}>{source.label}<small>로컬</small></span>
+              : <a key={source.path} href={`${utility.github}/blob/${utility.revision}/${source.path}`} target="_blank" rel="noopener noreferrer" title={source.path}>{source.label} <span aria-hidden="true">↗</span></a>)}</div>
+            <details className="utility-disclosure"><summary>검토 기준·화면 출처</summary><p><time dateTime={utility.reviewedAt}>{utility.inspectedAt}</time> 검토 · {localSource
+              ? <>로컬 작업본 · 기준 HEAD <code>{utility.revision.slice(0, 7)}</code></>
+              : <>기준 커밋 <a href={`${utility.github}/commit/${utility.revision}`} target="_blank" rel="noopener noreferrer"><code>{utility.revision.slice(0, 7)}</code> ↗</a></>}</p>{utility.sourceNote && <p>{utility.sourceNote}</p>}<p>화면의 예시 데이터·원본 출처는 각 이미지 설명에 표시했습니다. 소스의 기능과 공개 배포본은 버전에 따라 다를 수 있습니다.</p></details>
           </div>
         </section>
 

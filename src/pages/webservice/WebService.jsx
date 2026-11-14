@@ -24,7 +24,7 @@ function WebService() {
               </Link>
               <div className="service-card-links">
                 <a href={service.github} target="_blank" rel="noopener noreferrer" aria-label={`${service.title} GitHub 저장소`}><GitHubMark /> GitHub ↗</a>
-                {service.site && <a className="service-live" href={service.site} target="_blank" rel="noopener noreferrer" aria-label={`${service.title} 서비스 열기`}>서비스 열기 ↗</a>}
+                {service.site && <a className="service-live" href={service.site} target="_blank" rel="noopener noreferrer" aria-label={`${service.title} ${service.siteLabel || '서비스 열기'}`}>{service.siteLabel || '서비스 열기'} ↗</a>}
                 <Link to={service.route} className="btn">구현 살펴보기 →</Link>
               </div>
             </article>

@@ -16,6 +16,9 @@
 - `buildUrl`, `distributionNote`: OS·CPU별 자동 빌드, 태그 릴리스 조건, 서명·공증과 지원 범위.
 - `revision`, `reviewedAt`, `sources`: 확인한 전체 커밋 SHA·검토 시각·실제 소스 경로.
 - `sourceNote`: 캡처 방법·검증하지 않은 항목·자산 출처. 본문의 기능 설명과 분리해 검토 기록에 모읍니다.
+- `sourceState`: 공개 커밋은 `published`, 미공개 작업본은 `local`. 로컬 작업본은 `revision`에 기준 HEAD, `sourceSnapshot`에 검토 파일 집합의 SHA-256을 기록합니다. 미공개 경로에는 GitHub 링크를 만들지 않습니다.
+
+소개는 현재 기능·사용법·제약만 설명합니다. 버전 비교나 변경 이력은 본문에 넣지 않습니다. 공개 브랜치와 로컬 작업본, 소스 기능과 배포 파일을 구분합니다.
 
 REST 서버가 없는 도구에는 `api: []`를 사용합니다. 가상의 API 표는 표시하지 않습니다.
 
@@ -31,7 +34,7 @@ REST 서버가 없는 도구에는 `api: []`를 사용합니다. 가상의 API �
 
 WiFi Analyzer 화면은 `tools/capture_preview.py`가 실제 GUI에 예시 데이터를 연결해 생성합니다. Wi-Fi 스캔이나 위치 권한을 요청하지 않습니다. Capture Viewer는 실제 앱의 장치 미사용 데모 모드입니다.
 
-LiDAR `export.png`는 저장소 데모 영상의 22초 프레임입니다. KITTI 정적 화면과 다른 Patchwork++ Quick preview 입력이며, 영상·데이터 출처와 라이선스는 자산 폴더에 따로 보존합니다. Map Editor `crop.png`는 공개 office 예제를 밝은 웹앱에서 자르는 화면입니다. 로그인·클라우드 저장 없이 적용·ZIP 내보내기와 레이어 크기·원점을 확인했습니다.
+LiDAR의 밝은 점군·파노라마·내보내기 화면은 공개 Patchwork++ 예제로 실행한 CPU 빌드입니다. KITTI ROI 원본·객체 검출 영상 프레임은 데이터 이용 조건과 함께 별도로 관리합니다. Map Editor는 공개 office 예제로 데스크톱 크기·모바일 화면을 캡처합니다. Volidge는 실제 SwiftUI 뷰에 예시 상태를 주입하며 오디오 라우터를 시작하거나 개인 금융 정보가 있는 후원 영역을 캡처하지 않습니다. 세부 출처는 자산 폴더를 따릅니다.
 
 기존 Map Editor 데이터는 이 폴더로 옮겼습니다. `/web-service/map-editor`의 검색 조건·해시는 `/utilities/map-editor`로 연결하며 새 주소만 sitemap에 등록합니다.
 

@@ -2,8 +2,8 @@
   "id": "moim",
   "route": "/web-service/moim",
   "title": "모임 · moim",
-  "inspectedAt": "2026-10-24",
-  "reviewedAt": "2026-10-24T21:41:19+09:00",
+  "inspectedAt": "2026-11-14",
+  "reviewedAt": "2026-11-14T08:13:27Z",
   "github": "https://github.com/YooJuno/moim",
   "site": "https://moim-juno.web.app/",
   "summary": "일정 투표·캘린더·회계를 관리하는 모임 운영 서비스.",
@@ -12,14 +12,12 @@
     "TypeScript",
     "Firebase Authentication",
     "Cloud Firestore",
-    "Firebase Hosting",
-    "Firestore Security Rules",
-    "Google Calendar API",
-    "Vite"
+    "Cloudflare Workers",
+    "Firebase Hosting"
   ],
   "overview": [
-    "모임 운영에 필요한 일정 조율, 참여 응답, 공지·사진 공유와 회계 기록을 하나의 웹 앱으로 묶었습니다. 관리자·회계 담당·일반 멤버의 사이트 권한을 구분하고, Google 로그인 후 가입 승인을 받아 이용하도록 구성했습니다.",
-    "React·TypeScript 프론트엔드가 Firebase Authentication과 Firestore에 직접 연결합니다. 별도의 REST 서버 대신 실시간 구독·트랜잭션·보안 규칙을 사용하며, 정적 앱은 Firebase Hosting에 배포했습니다."
+    "일정 조율·참석 응답·게시판·사진·회계를 함께 관리하는 모임 운영 앱입니다. Google·카카오 로그인과 가입 승인, 운영 직책·사이트 권한을 구분하고 홈에서 미응답 투표·다가오는 일정·생일을 확인합니다.",
+    "React·TypeScript 앱이 Firestore 구독·트랜잭션·보안 규칙을 사용합니다. Cloudflare Worker는 소셜 계정 연결, 장소 검색, 카카오 캘린더·문자 연동을 담당하며 비밀키는 브라우저에 두지 않습니다."
   ],
   "screens": [
     {
@@ -52,16 +50,16 @@
     },
     {
       "id": "M03",
-      "title": "일정 투표·결과",
+      "title": "일정 투표",
       "image": "/content/images/webservices/moim/poll.png",
       "width": 1440,
       "height": 1000,
       "alt": "일정 후보별 가능한 인원과 연속 시간대 결과를 보여주는 투표 상세",
-      "caption": "샘플 모임원의 응답으로 시간대 집계를 확인한 화면입니다. 운영 Firestore의 투표나 응답은 변경하지 않았습니다.",
+      "caption": "샘플 모임의 일정 투표 화면입니다. 후보·응답은 예시이며 운영 Firestore와 분리했습니다.",
       "annotations": [
         "가능한 시간을 여러 구간으로 선택하거나 가능한 시간 없음을 저장합니다.",
         "겹치는 연속 시간대와 참여 인원을 비교합니다.",
-        "관리자은 선택한 구간을 일정으로 확정해 캘린더에 연결합니다."
+        "관리자는 선택한 구간을 일정으로 확정해 캘린더에 연결합니다."
       ]
     },
     {
@@ -75,7 +73,7 @@
       "annotations": [
         "확정 일정·공휴일·생일을 달력에서 확인합니다.",
         "일정별 참석 응답, 장소·메뉴 투표와 MVP 투표를 제공합니다.",
-        "관리자이 선택한 일정·참가자만 Google 캘린더에 반영합니다."
+        "관리자가 선택한 일정·참가자만 Google 캘린더에 반영합니다."
       ]
     },
     {
@@ -88,189 +86,226 @@
       "caption": "샘플 데이터로 구성한 회계 화면입니다. 표시 금액은 실제 회비·지출 내역이 아니며 운영 영수증에는 접근하지 않았습니다.",
       "annotations": [
         "기간별 수입·지출·잔액과 개별 내역을 확인합니다.",
-        "관리자·회계 담당가 기록과 영수증 첨부를 관리합니다.",
+        "관리자·회계 담당자가 기록과 영수증 첨부를 관리합니다.",
         "승인된 모임원은 회계를 조회하고, 변경 권한은 역할별로 제한합니다."
+      ]
+    },
+    {
+      "id": "M06",
+      "title": "회계 엑셀 가져오기",
+      "image": "/content/images/webservices/moim/bank-import.png",
+      "width": 1440,
+      "height": 1000,
+      "alt": "모임 회계 장부의 카카오뱅크 XLSX 가져오기와 파일 비밀번호 입력 안내",
+      "caption": "샘플 모드의 실제 가져오기 폼입니다. 원본 은행 파일·비밀번호·실제 계좌 정보를 사용하지 않았습니다.",
+      "annotations": [
+        "파일과 비밀번호를 브라우저 Worker에서 처리합니다.",
+        "거래 미리보기·중복 검토 후 새 거래만 반영합니다."
       ]
     }
   ],
   "features": [
     {
-      "title": "가입 승인·역할 관리",
-      "description": "Google 로그인 후 가입 대기·승인·거절을 구분합니다. 관리자은 가입·설정·권한을, 회계 담당는 회계를, 모임원은 참여·게시 활동을 담당합니다."
+      "title": "가입 승인·계정 연결",
+      "description": "Google·카카오 로그인, 필수 가입 정보, 승인 대기·활성·거절 상태를 구분합니다. 관리자·회계 담당·일반 권한과 회장·부회장·총무 직책은 별도입니다."
     },
     {
       "title": "시간대별 일정 조율",
-      "description": "후보 날짜·시간대에 가능한 구간을 응답하고 겹치는 연속 구간을 집계합니다. 투표 수정·마감·재개·일정 확정을 지원합니다."
+      "description": "여러 날짜의 시간 구간을 선택하고 가능한 연속 구간을 집계합니다. 미응답 우선 정렬·마감·재개·일정 확정·공유 링크 복귀와 모바일 길게 누르기·가장자리 스크롤을 지원합니다."
     },
     {
-      "title": "캘린더·장소 투표",
-      "description": "확정 일정과 참석 응답을 관리하고 장소·메뉴 후보에 투표합니다. 장소를 확정하면 일정 정보도 함께 갱신하며 자주 쓰는 장소를 재사용합니다."
+      "title": "일정·장소·MVP 투표",
+      "description": "일정 초대·참석 응답과 장소·메뉴 투표를 관리합니다. MVP는 참석자를 대상으로 일정 종료부터 1시간 동안 참여하며 시간·참가 조건을 규칙에서도 검사합니다."
     },
     {
-      "title": "게시판·사진첩",
-      "description": "공지·자유 글·정보·사진첩과 댓글·좋아요를 제공합니다. 사진은 브라우저에서 압축해 별도 문서로 저장하고 필요할 때 불러옵니다."
+      "title": "게시판·사진·파일",
+      "description": "게시물·댓글·좋아요·사진첩과 일반 파일 첨부를 제공합니다. 이미지는 압축하고 파일은 청크로 저장하며 실제 열람·다운로드 시 불러옵니다."
     },
     {
-      "title": "회계·영수증",
-      "description": "수입·지출, 기간별 집계와 CSV 내보내기를 제공합니다. 회계 기록과 영수증을 연결하고 관리자·회계 담당의 변경 권한을 검사합니다."
+      "title": "회계·엑셀 가져오기",
+      "description": "수입·지출·영수증·검색 결과 CSV를 관리합니다. 카카오뱅크 XLSX를 브라우저 Worker에서 해석하고 미리보기·중복 검토 후 새 거래만 반영합니다."
     },
     {
-      "title": "명부·개인정보 분리",
-      "description": "사전 명부와 가입 계정을 관리자가 연결합니다. 회장·부회장·총무 직책과 사이트 권한을 분리하고, 전화번호·거주지는 본인과 관리자만 조회합니다."
+      "title": "외부 캘린더·장소",
+      "description": "Google 캘린더 일정 생성·초대, 설정으로 허용된 카카오 톡캘린더 동기화와 네이버 장소 검색을 제공합니다. 지도·길찾기는 선택한 외부 앱으로 연결합니다."
     },
     {
-      "title": "Google 캘린더 연동",
-      "description": "관리자이 추가 권한을 연결해 일정을 생성·갱신하고 선택한 모임원에게 초대합니다. 캘린더 액세스 토큰은 브라우저 메모리에서 관리합니다."
+      "title": "모바일·개인 설정",
+      "description": "언어·라이트/다크·프로필·연락처·월일 생일을 관리합니다. 가입 승인 대기자는 열람하고 활성 멤버는 허용된 참여 동작을 수행합니다."
     },
     {
-      "title": "시간 조건 기반 MVP",
-      "description": "참석자로 등록한 모임원을 대상으로 종료 10분 전부터 종료 후 24시간까지 투표합니다. 참가 자격과 시간 조건은 Firestore 규칙에서도 검사합니다."
+      "title": "관리자 문자 알림",
+      "description": "설정된 SMS 서비스에서 대상·문구·예상 비용을 미리보고 발송합니다. 일정 확정 시 자동 접수는 별도 설정이며 기본값은 꺼짐입니다."
     }
   ],
   "architecture": [
     {
-      "label": "React + TypeScript",
-      "detail": "역할별 화면·투표·캘린더·회계"
+      "label": "React · TypeScript",
+      "detail": "일정·투표·게시판·회계·개인 설정"
     },
     {
-      "label": "Firebase Authentication",
-      "detail": "Google 로그인·사용자 UID"
+      "label": "Firebase Auth · Firestore",
+      "detail": "인증·실시간 문서·트랜잭션·규칙"
     },
     {
-      "label": "Cloud Firestore + Rules",
-      "detail": "실시간 데이터·트랜잭션·접근 제어"
+      "label": "Cloudflare Worker",
+      "detail": "소셜 계정·장소·캘린더·SMS 연동"
     },
     {
-      "label": "Firebase Hosting",
-      "detail": "정적 앱 배포·HTTPS·SPA 라우팅"
+      "label": "Hosting · 로컬 처리",
+      "detail": "정적 앱·사진 압축·파일/은행 Worker"
     }
   ],
   "architectureNote": "브라우저가 Firebase SDK로 인증·데이터 서비스를 사용합니다. 화면의 권한 표시와 별개로 Firestore 보안 규칙이 요청을 검사하며, Google 캘린더는 사용자가 별도로 연결·실행하는 외부 연동입니다.",
-  "apiTitle": "Firebase SDK·데이터 구조",
-  "apiNote": "자체 REST API를 구성한 프로젝트가 아닙니다. 아래는 SDK 호출·Firestore 문서·권한의 관계이며, 마지막 두 항목은 실제 Google Calendar HTTP API입니다.",
+  "apiTitle": "Firestore·연동 서버 인터페이스",
+  "apiNote": "모임 데이터는 Firebase SDK로 접근하며, 소셜·장소·캘린더·문자는 별도 Worker 경로입니다.",
   "api": [
     {
       "method": "AUTH",
-      "path": "GoogleAuthProvider · signInWithPopup · onAuthStateChanged",
-      "description": "Google 로그인·인증 상태 구독",
-      "request": "Google 로그인 동의",
-      "response": "Firebase 사용자 UID · 인증 상태",
-      "access": "로그인과 가입 승인은 별개이며 초기 관리자 지정은 관리자 작업"
+      "path": "GoogleAuthProvider · signInWithCustomToken",
+      "description": "인증·소셜 로그인",
+      "request": "Google 로그인 또는 Worker 교환 토큰",
+      "response": "Firebase UID·인증 상태",
+      "access": "가입 승인과 서비스별 권한은 별도 검사"
+    },
+    {
+      "method": "GET",
+      "path": "/config · /account/providers",
+      "description": "공개 연동 설정·계정 연결 상태",
+      "request": "공개 설정 또는 Firebase ID token",
+      "response": "공급자·캘린더·SMS 설정, 본인 연결 상태",
+      "access": "계정 상태는 인증 필요. 비밀키·외부 토큰을 응답하지 않음"
+    },
+    {
+      "method": "GET",
+      "path": "/oauth/{provider}/start · /oauth/{provider}/callback",
+      "description": "소셜 로그인 시작·콜백",
+      "request": "공급자·상태·challenge·허용 return origin",
+      "response": "인가 이동·일회용 교환 코드",
+      "access": "허용 공급자·origin·만료·요청 빈도 검사"
+    },
+    {
+      "method": "POST",
+      "path": "/oauth/exchange · /oauth/{provider}/link/start",
+      "description": "일회용 교환·계정 연결 시작",
+      "request": "교환 코드·검증값 또는 인증된 본인 연결 요청",
+      "response": "Firebase custom token·연결 결과·인가 URL",
+      "access": "상태·요청 origin·Firebase 인증 검사. 계정 연결은 본인 대상"
     },
     {
       "method": "SDK",
       "path": "members/{uid} · profiles/{uid}",
-      "description": "가입·명부·개인 프로필",
-      "request": "가입 정보 · 상태·역할·투표 생성 권한",
-      "response": "허용된 회원 목록 · 개인 정보",
-      "access": "가입 승인·역할 변경은 관리자, 연락처·거주지는 본인·관리자만 조회"
-    },
-    {
-      "method": "SDK",
-      "path": "posts/{id} · comments/{id} · photos/{id}",
-      "description": "게시물·댓글·압축 사진",
-      "request": "카테고리 · 본문 · 사진 참조",
-      "response": "실시간 게시 데이터 · 개별 사진",
-      "access": "승인된 회원만 접근, 공지·고정 글은 관리자 권한"
+      "description": "명부·역할·개인 설정",
+      "request": "가입 정보·권한·연락처·언어·테마",
+      "response": "허용된 명부·프로필",
+      "access": "공유 members와 비공개 profiles의 읽기 범위 분리"
     },
     {
       "method": "SDK",
       "path": "polls/{id} · votes/{pollId_uid}",
-      "description": "일정 후보·시간대 응답",
-      "request": "날짜·시간 후보 · 선택 slotIds",
-      "response": "투표 상태 · 응답 · 시간대별 집계",
-      "access": "응답은 본인 문서에 저장, 마감·수정과의 동시 변경은 트랜잭션·규칙으로 검사"
+      "description": "일정 후보·가능 시간",
+      "request": "후보·응답 구간·마감·확정 요청",
+      "response": "시간대 집계·응답·확정 일정",
+      "access": "활성 멤버·생성 권한·마감·트랜잭션 검사"
     },
     {
       "method": "SDK",
-      "path": "events/{id} · rsvps/{eventId_uid}",
-      "description": "확정 일정·참석 응답",
-      "request": "선택 시간·장소 · going/notGoing",
-      "response": "일정 · 참석자 · 캘린더 연결 정보",
-      "access": "일정 관리는 관리자, 참석 응답은 본인만 변경"
+      "path": "events/{id} · rsvps/{eventId_uid} · mvpVotes/{eventId_uid}",
+      "description": "일정·참석·MVP",
+      "request": "일정·참석 응답·MVP 후보",
+      "response": "일정·참석자·투표 결과",
+      "access": "MVP는 종료 시각부터 1시간 미만, 참가자·후보 자격 검사"
     },
     {
       "method": "SDK",
-      "path": "ballots/{id} · ballotResponses/{ballotId_uid}",
-      "description": "장소·메뉴 투표",
-      "request": "후보 · 단일 선택 optionId",
-      "response": "응답 · 확정 장소",
-      "access": "확정 시 일정 장소도 트랜잭션으로 갱신, 마감 후 응답 제한"
+      "path": "posts/{id} · comments/{id} · photos/{id}",
+      "description": "게시물·댓글·사진",
+      "request": "본문·이미지 참조·압축 이미지",
+      "response": "허용된 게시물·미디어",
+      "access": "읽기·작성·삭제 권한을 구분. 실제 데이터는 지연 조회"
     },
     {
       "method": "SDK",
-      "path": "mvpVotes/{eventId_uid}",
-      "description": "모임별 MVP 투표",
-      "request": "eventId · candidateId",
-      "response": "본인 응답 · 투표 결과",
-      "access": "참석자·후보 자격과 종료 10분 전~종료 후 24시간 조건 검사"
+      "path": "postFiles/{id} · postFiles/{id}/chunks/{chunkId}",
+      "description": "일반 파일 첨부",
+      "request": "파일 메타데이터·청크·SHA-256",
+      "response": "검증한 로컬 다운로드",
+      "access": "게시물 연결·소유권 검사. 파일당 5 MiB·게시물당 3개"
     },
     {
       "method": "SDK",
       "path": "ledger/{id} · receipts/{entryId}",
       "description": "회계·영수증",
-      "request": "수입/지출 · 금액 · 분류 · 첨부",
-      "response": "장부 내역 · 요청한 영수증",
-      "access": "승인 회원 조회, 관리자·회계 담당만 변경, 장부와 첨부 상태를 함께 저장"
+      "request": "수입·지출·분류·메모·압축 영수증",
+      "response": "장부·집계·검색 결과·CSV",
+      "access": "관리자·회계 담당만 변경. 은행 거래는 중복을 검사해 원자적으로 반영"
     },
     {
-      "method": "SDK",
-      "path": "places/{id} · settings/club · settings/bylaws",
-      "description": "저장 장소·모임 설정·회칙",
-      "request": "장소 이름·주소 · 모임 정보 · 회칙",
-      "response": "설정과 장소 목록",
-      "access": "승인 회원 조회, 관리자만 변경"
+      "method": "GET",
+      "path": "/places/search",
+      "description": "이름 기반 장소 검색",
+      "request": "검색어·Firebase ID token",
+      "response": "장소 이름·주소 후보",
+      "access": "공급자 설정·인증·요청 빈도 검사"
+    },
+    {
+      "method": "POST",
+      "path": "/calendar/kakao/events/{eventId}/add · /calendar/kakao/events/{eventId}/sync",
+      "description": "카카오 캘린더 연결·동기화",
+      "request": "인증된 사용자·모임 일정",
+      "response": "외부 일정·동기화 상태",
+      "access": "서버 설정·사용자 권한·제공자 허용 범위 검사"
+    },
+    {
+      "method": "POST",
+      "path": "/notifications/sms/events/{eventId}/preview · /notifications/sms/events/{eventId}/send",
+      "description": "SMS 미리보기·명시적 발송",
+      "request": "일정·인증·발송 확인값",
+      "response": "대상·문구·예상 비용 또는 접수 결과",
+      "access": "관리자·문자 설정·요청 검증. send는 유료 발송"
     },
     {
       "method": "POST",
       "path": "https://www.googleapis.com/calendar/v3/calendars/primary/events",
-      "description": "Google 캘린더 일정·초대 생성",
-      "request": "OAuth 토큰 · 일정 · 선택 참석자 · sendUpdates=all",
-      "response": "Google 일정 ID · 캘린더 링크",
-      "access": "관리자이 별도로 연결·실행, 토큰은 메모리에만 보관"
-    },
-    {
-      "method": "PATCH",
-      "path": "https://www.googleapis.com/calendar/v3/calendars/primary/events/{eventId}",
-      "description": "연결한 Google 일정 갱신",
-      "request": "OAuth 토큰 · 변경 일정·참석자 · sendUpdates=all",
-      "response": "갱신된 일정 · 연결 정보",
-      "access": "해당 일정을 연결한 관리자만 처리, 상시 자동 동기화가 아닌 명시적 반영"
+      "description": "Google 일정·선택 멤버 초대",
+      "request": "추가 OAuth 동의·일정·초대 대상",
+      "response": "외부 일정 ID·초대",
+      "access": "관리자가 명시적으로 실행. 재반영은 연결한 관리자의 PATCH 사용"
     }
   ],
   "decisions": [
     {
-      "title": "SDK와 보안 규칙으로 역할 분리",
-      "description": "별도 API 서버 운영 대신 Firebase 인증·문서 구독·규칙을 사용했습니다. UI에서 버튼을 숨기는 것과 데이터 변경 권한 검사를 분리했습니다."
+      "title": "역할·데이터 경계",
+      "description": "문서 규칙에서 승인 상태·역할·소유자를 검사합니다. members의 공유 연락처·생일과 본인·관리자용 profiles 원본을 분리합니다."
     },
     {
-      "title": "운영 데이터의 일관성",
-      "description": "투표 확정·장소 반영·응답 수정에 트랜잭션을 사용합니다. 회계와 첨부는 함께 저장하고, 규칙에서 관련 문서의 저장 후 상태도 검사합니다."
+      "title": "파일·은행 데이터의 로컬 처리",
+      "description": "파일·사진은 필요할 때 읽고 크기·무결성을 확인합니다. 은행 원본과 비밀번호는 브라우저 Worker 메모리에서 처리하고 서버·저장소·오류 기록에 보관하지 않습니다."
     },
     {
-      "title": "작은 미디어 문서·지연 조회",
-      "description": "사진·영수증은 압축한 뒤 별도 문서로 보관하고 목록에는 참조만 둡니다. 로그인 상태가 바뀌면 이미지 캐시를 비워 이전 계정의 데이터를 남기지 않도록 처리합니다."
+      "title": "충돌·취소·초안 보호",
+      "description": "투표 확정·응답·회계 반영은 트랜잭션으로 처리합니다. 저장 전 닫기를 확인하고 계정 변경·취소된 요청의 늦은 응답은 적용하지 않습니다."
     },
     {
-      "title": "샘플 모드와 운영 환경 분리",
-      "description": "샘플 모드는 localStorage·IndexedDB를 사용하며 운영 Firebase에 쓰지 않습니다. 일부 Firebase 설정이 누락되거나 연결에 실패하면 오류를 안내합니다."
+      "title": "조회·이미지 비용 관리",
+      "description": "공개 설정 요청을 합치고 사진은 보이는 영역 근처에서 불러옵니다. 가공 결과는 관련 데이터 변경 때 계산하며 주기적인 서버 재조회 없이 화면 시각 조건을 갱신합니다."
     }
   ],
   "limitations": [
-    "공개 배포 주소와 로그인 화면을 확인했습니다. 내부 화면·기능 흐름은 로컬 샘플 모드 기준이며, 운영 회원 가입·승인·회계 데이터 변경은 실행하지 않았습니다.",
-    "Google 캘린더 연동은 구현 코드를 검토했지만 실제 OAuth 권한 부여나 초대 메일 발송은 이 검수에서 실행하지 않았습니다.",
-    "현재 데이터 모델은 하나의 모임을 기준으로 합니다. 데이터 증가 시 전체 컬렉션 구독 범위·페이지네이션·읽기량과 이미지 보관 방식을 추가 검토해야 합니다.",
-    "MVP 안내는 사이트를 열어 둔 참여자 대상입니다. 앱이 닫힌 상태의 푸시·문자·카카오톡 예약 발송은 포함하지 않습니다.",
-    "모바일·브라우저 흐름 검사는 운영 부하·보안 감사를 대신하지 않습니다. Firestore 규칙·인덱스 변경은 코드 배포와 함께 관리해야 합니다."
+    "단일 모임 데이터 모델입니다. 문서 구독·청크 파일·이미지 저장은 Firestore 읽기·쓰기·용량 할당량의 영향을 받습니다.",
+    "이메일·연락처·거주 지역·생일 월일의 공유 범위는 members 규칙을 따릅니다. profiles 원본은 본인·관리자만 읽습니다.",
+    "카카오 캘린더는 서비스 설정·제공자 검수·허용 계정 조건을 따릅니다. 네이버 로그인도 서버 키·공급자 설정이 있어야 표시됩니다.",
+    "SMS는 SOLAPI의 유료 발송입니다. 설정·대상·비용을 확인해야 하며 이 소개 검수에서는 실제 문자를 보내지 않았습니다.",
+    "은행 가져오기는 지원 형식의 XLSX 파일 처리이며 실시간 은행 연동이 아닙니다. 파일당 5 MB·1회 400건 제한을 적용합니다."
   ],
-  "sourceNote": "공개된 cab76c5 커밋 기준입니다. 로그인 화면은 공개 배포본, 내부 화면은 같은 커밋의 로컬 샘플 모드로 확인했습니다.",
+  "sourceNote": "공개 커밋의 실제 앱을 Firebase와 분리된 샘플 모드로 렌더링했습니다. 로그인 화면은 공개 배포본이며 내부 이름·일정·금액·사진은 예시입니다. 운영 가입·회계·파일 업로드, 실제 OAuth·캘린더 초대·문자 발송은 실행하지 않았습니다.",
   "sources": [
     {
-      "label": "기능·권한·실행",
+      "label": "기능·권한",
       "path": "README.md"
     },
     {
-      "label": "SDK·상태 관리",
+      "label": "상태·문서 구독·저장",
       "path": "src/lib/store.tsx"
     },
     {
@@ -282,22 +317,30 @@
       "path": "src/lib/poll-results.ts"
     },
     {
+      "label": "MVP 시간 조건",
+      "path": "src/lib/mvp.ts"
+    },
+    {
+      "label": "소셜·연동 서버",
+      "path": "services/auth-worker/src/app.ts"
+    },
+    {
+      "label": "은행 파일 처리",
+      "path": "src/lib/bank-import.ts"
+    },
+    {
+      "label": "파일 청크",
+      "path": "src/lib/attachments.ts"
+    },
+    {
       "label": "Google 캘린더",
       "path": "src/lib/google-calendar.ts"
     },
     {
-      "label": "사진·영수증 압축",
-      "path": "src/lib/receipt.ts"
-    },
-    {
-      "label": "Hosting·SPA 설정",
-      "path": "firebase.json"
-    },
-    {
-      "label": "Firebase 통합 검사",
-      "path": "tests/firebase.integration.ts"
+      "label": "미디어 지연 조회",
+      "path": "src/lib/group-photo.ts"
     }
   ],
-  "revision": "cab76c5",
+  "revision": "e9b911e358453192eeb0f5ab20d5732d230bdd3b",
   "sourceState": "published"
 }
