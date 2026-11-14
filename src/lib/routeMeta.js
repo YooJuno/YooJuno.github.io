@@ -37,7 +37,7 @@ export const ROUTE_META = {
   },
   '/web-service/moim': {
     title: '모임 · moim',
-    description: 'React·TypeScript·Firebase 기반 모임 운영 서비스. 가입 승인, 일정·장소 투표, 캘린더·게시판·회계를 제공하며 Firebase Hosting에서 운영합니다.',
+    description: 'React·Firebase 기반 모임 운영 서비스. 가입 승인, 일정 투표, 캘린더·게시판·회계와 외부 서비스 연동의 구현.',
   },
   '/web-service/map-editor': {
     title: 'Map Editor',
@@ -54,11 +54,11 @@ export const ROUTE_META = {
   },
   '/web-service/bitcoin-auto-trader': {
     title: 'BTC Auto Trader',
-    description: 'Upbit 시세·포트폴리오·전략 설정·엔진 판단 로그를 연결하는 자동매매 콘솔의 구현과 API.',
+    description: 'Upbit 자동매매 콘솔의 기능·구조·API와 예시 데이터로 제공하는 공개 미리보기.',
   },
   '/web-service/hellog': {
     title: 'HelloG',
-    description: 'Spring Boot·React·H2 기반 운동 기록 앱. 세트별 입력·기록 탐색·개인 기구 관리의 화면과 API.',
+    description: 'React·Firebase 기반 운동 기록 앱. 세트 입력, 기록 탐색, 개인 기구 관리와 사용자별 데이터 구조.',
   },
   '/utilities': {
     title: '유틸리티',
@@ -66,11 +66,11 @@ export const ROUTE_META = {
   },
   '/utilities/lidar-studio': {
     title: 'LiDAR Studio',
-    description: '포인트클라우드 재생, 지면 분리 비교, 객체 검출과 ROI 데이터 추출을 위한 데스크톱 도구.',
+    description: '점군·센서 파노라마 탐색, 지면 분리, 객체 검출과 ROI 데이터 추출을 위한 데스크톱 도구.',
   },
   '/utilities/map-editor': {
     title: 'Map Editor',
-    description: 'PGM/YAML 지도와 Nav2 금지·속도 마스크를 편집하는 웹·데스크톱 도구.',
+    description: 'PGM/YAML 지도와 Nav2 금지·속도 마스크 편집기. 모바일 터치 편집과 웹·데스크톱 파일 처리를 지원합니다.',
   },
   '/utilities/ubuntu-status-bar': {
     title: 'Ubuntu Status Bar',
@@ -86,7 +86,7 @@ export const ROUTE_META = {
   },
   '/utilities/wifi-analyzer': {
     title: 'WiFi Analyzer',
-    description: 'Wi-Fi 신호·채널 겹침과 네트워크 경로를 구분해 확인하는 다중 플랫폼 진단 도구.',
+    description: 'Wi-Fi 신호·채널·네트워크 경로 진단과 CSV·JSONL 연속 측정을 지원하는 다중 플랫폼 도구.',
   },
 }
 

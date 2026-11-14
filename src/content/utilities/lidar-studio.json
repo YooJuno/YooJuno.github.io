@@ -1,15 +1,15 @@
 {
   "id": "lidar-studio",
   "title": "LiDAR Studio",
-  "summary": "LiDAR 데이터 재생·지면 분리·객체 분석·ROI 추출 도구.",
+  "summary": "점군 재생·파노라마·지면 분리·객체 검출·ROI 추출 도구.",
   "github": "https://github.com/YooJuno/lidar_studio",
   "platforms": [
     "Ubuntu 24.04",
-    "Windows",
-    "macOS"
+    "Windows x64",
+    "macOS 15+ · Apple Silicon"
   ],
-  "revision": "b291d9ac8792775cfdb52f0b6368d7be292b01e6",
-  "purpose": "지면 분리 파라미터를 바꿀 때마다 결과를 다른 뷰어에서 확인하고, 필요한 포인트를 따로 추출하는 과정을 줄이기 위해 만들었습니다. 같은 프레임에서 지면·장애물·ROI를 확인하고 분석 결과를 데이터셋으로 내보냅니다.",
+  "revision": "4107c96b558ec73ccb3b418c1d66f57c43472769",
+  "purpose": "LiDAR 점군을 탐색하고 지면 분리·객체 분석·영역 추출을 한 작업 공간에서 수행하기 위해 만들었습니다. 프레임과 시점을 유지하며 결과를 비교하고, 필요한 점군과 좌표 정보를 데이터셋으로 저장합니다.",
   "tech": [
     "C++17",
     "OpenGL",
@@ -19,21 +19,21 @@
     "Python"
   ],
   "overview": [
-    "C++ 뷰어가 파일·ROS 2 입력, 정렬, 지면 분리와 ROI 편집을 담당합니다. FugSeg·GSeg3D·Patchwork++는 외부 구현을 통합했으며, 기본 뷰어와 지면 분리는 Python·GPU 없이 동작합니다.",
-    "학습 기반 검출은 별도 Python 환경에서 실행합니다. 기하 군집에는 의미 클래스가 없고, ROI 클래스 이름은 추출용 메타데이터입니다."
+    "C++·OpenGL·Dear ImGui로 3D·2D·센서 파노라마를 표시합니다. 파일·데이터셋 폴더, Ubuntu/Jazzy의 bag·실시간 토픽을 입력받아 정렬·지면 분리·군집화·ROI 편집을 수행합니다.",
+    "객체 검출은 별도 CPU/GPU 추론 환경과 연결합니다. macOS ARM64 패키지는 tiny·AWML ShortRange 모델과 CPU 런타임을 포함하며, Linux·Windows는 모델 실행 환경을 준비해 사용합니다."
   ],
   "screens": [
     {
       "id": "LS01",
-      "title": "지면 분리·파라미터",
+      "title": "점군·지면 분리 설정",
       "image": "/content/images/utilities/lidar-studio/ground.png",
       "width": 1600,
       "height": 960,
       "alt": "지면 분리·파라미터 화면",
-      "caption": "KITTI Raw 장면에 FugSeg를 적용한 저장소 원본 캡처. 지면·장애물 포인트를 구분한 예시입니다.",
+      "caption": "공개 Patchwork++ 예제 점군을 라이트 테마에서 표시한 실제 CPU 빌드 화면입니다. 실장비·정확도 측정 결과는 아닙니다.",
       "annotations": [
         "지면 분리 방법과 표시 대상을 선택합니다.",
-        "지면·장애물 포인트를 같은 시점에서 확인합니다."
+        "점군·좌표축과 프레임별 처리 정보를 확인합니다."
       ]
     },
     {
@@ -43,7 +43,7 @@
       "width": 1600,
       "height": 960,
       "alt": "ROI 영역 편집 화면",
-      "caption": "같은 KITTI 장면에 수동 ROI를 배치한 화면. 박스는 추출 영역이며 정답 객체 주석은 아닙니다.",
+      "caption": "KITTI 장면에 수동 ROI를 배치한 실제 앱 화면입니다. 박스는 추출 영역이며 정답 객체 주석은 아닙니다.",
       "annotations": [
         "2D·3D 뷰에서 영역을 이동·회전·크기 조절합니다.",
         "원본 센서 좌표 또는 정렬된 좌표로 데이터를 추출합니다."
@@ -53,10 +53,10 @@
       "id": "LS03",
       "title": "객체 검출 결과",
       "image": "/content/images/utilities/lidar-studio/detection.png",
-      "width": 1600,
-      "height": 960,
+      "width": 1120,
+      "height": 524,
       "alt": "객체 검출 결과 화면",
-      "caption": "CenterPoint tiny의 예측 결과. 기하 군집과 달리 클래스·신뢰도를 표시합니다.",
+      "caption": "저장소의 KITTI 연속 스캔 데모에서 추출한 CenterPoint tiny 예측·추적 화면. FugSeg로 지면을 숨긴 상태이며 정답 주석은 아닙니다.",
       "annotations": [
         "기하 군집과 의미 클래스가 있는 모델 예측을 구분합니다.",
         "클래스·점수 필터로 예측 결과를 확인합니다."
@@ -66,36 +66,53 @@
       "id": "LS04",
       "title": "ROI 내보내기 설정",
       "image": "/content/images/utilities/lidar-studio/export.png",
-      "width": 1280,
-      "height": 768,
+      "width": 1600,
+      "height": 960,
       "alt": "LiDAR Studio의 ROI 내보내기 창에서 프레임 범위, 클래스 힌트, 원본·정렬 좌표와 저장 폴더를 선택하는 화면",
-      "caption": "저장소 demo.mp4의 22초 프레임. Patchwork++ 공개 Quick preview를 사용한 실제 내보내기 설정이며 KITTI 정적 화면과는 다른 입력입니다.",
+      "caption": "공개 예제의 실제 ROI 내보내기 창. 프레임·좌표계·클래스 힌트·저장 폴더를 선택합니다.",
       "annotations": [
         "현재 프레임·구간·좌표계와 저장 대상을 지정합니다.",
         "NPY·PCD와 원본 프레임·변환 정보의 JSON을 함께 내보냅니다."
+      ]
+    },
+    {
+      "id": "LS05",
+      "title": "센서 파노라마",
+      "image": "/content/images/utilities/lidar-studio/panorama.png",
+      "width": 1600,
+      "height": 960,
+      "alt": "밝은 LiDAR Studio에서 공개 점군을 방위각·고도 파노라마와 거리 색상으로 표시한 화면",
+      "caption": "동일 공개 점군의 실제 파노라마 투영입니다. 영상 합성이나 카메라 촬영 이미지가 아닙니다.",
+      "annotations": [
+        "센서 기준 각도·거리를 색상으로 확인합니다.",
+        "커서 기준 확대·이동과 프레임 전환에서 탐색 시점을 유지합니다."
       ]
     }
   ],
   "features": [
     {
-      "title": "데이터 재생·정렬",
-      "description": "프레임 탐색·재생·회전 가능한 2D/3D 뷰와 수동·IMU 정렬을 제공합니다. 데이터셋 샘플 간 카메라 위치를 유지합니다."
+      "title": "3D·2D·센서 파노라마",
+      "description": "회전 가능한 2D·3D와 센서 기준 방위각·고도 파노라마를 제공합니다. 파노라마는 거리 색상·점 색상을 선택하고, 커서 기준 확대·이동·프레임 전환에서 시점을 유지합니다."
     },
     {
-      "title": "지면 분리·군집화 비교",
-      "description": "FugSeg·GSeg3D·Patchwork++·Fast grid·Grid·RANSAC을 선택해 지면 결과를 비교합니다. 3D·XY 군집화의 거리·높이 조건도 조절할 수 있습니다."
+      "title": "지면 분리·기하 군집",
+      "description": "FugSeg·GSeg3D·Patchwork++·Fast grid·Grid·RANSAC을 선택합니다. 지면·비지면 표시와 3D·XY 군집 조건을 같은 장면에서 비교합니다."
+    },
+    {
+      "title": "객체 검출·추적",
+      "description": "AWML ShortRange·CenterPoint tiny 예측의 클래스·신뢰도를 필터링하고 Kalman 추적으로 ID를 유지합니다. 기하 군집은 의미 클래스가 없는 별도 분석입니다."
     },
     {
       "title": "ROI·데이터셋 추출",
-      "description": "3D 박스를 편집하고 선택 프레임을 NPY·PCD·JSON으로 내보냅니다. 클래스 힌트·영역·좌표 정보도 함께 저장합니다."
+      "description": "3D 박스의 위치·크기·회전·클래스 힌트를 편집하고, 선택 프레임·구간을 NPY·PCD·JSON으로 저장합니다. 원본·정렬 좌표와 변환 행렬을 보존합니다."
     },
     {
-      "title": "선택적 검출·추적",
-      "description": "별도 Python 환경과 모델을 연결해 객체를 검출하고 Kalman 추적으로 ID를 유지합니다. 기본 뷰어와 지면 분리는 GPU나 모델 설치 없이 동작합니다."
+      "title": "공개 예제·실시간 기록",
+      "description": "센서·길이별 공개 기록을 검증해 다운로드하고 캐시를 관리합니다. ROS 2에서는 표시 정지와 구독·원본 bag 기록을 분리합니다."
     },
     {
-      "title": "공개 예제·원본 스트림 기록",
-      "description": "내장 예제에서 센서·길이를 선택해 다운로드하고 프로필별로 다시 엽니다. ROS 2 입력에서는 표시를 멈춰도 구독·원본 bag 기록은 유지할 수 있습니다."
+      "title": "라이트·다크 테마",
+      "description": "설정의 Appearance에서 UI와 점군 캔버스를 함께 전환합니다. 테마는 자동 저장하며 Viewer·Point clouds·Train에서 공유합니다."
     }
   ],
   "architecture": [
@@ -118,89 +135,89 @@
   ],
   "decisions": [
     {
-      "title": "분석과 UI의 분리",
-      "description": "로딩·분석을 백그라운드에서 수행하고, 설정 변경 후 오래된 결과가 최신 상태를 덮지 않도록 작업 결과를 관리합니다."
+      "title": "분석과 화면 상태 분리",
+      "description": "파일 읽기·분석·모델 추론을 작업 스레드로 분리하고 설정·프레임이 바뀐 작업의 결과를 제외합니다. 클래스·점수 변경은 캐시된 예측을 필터링합니다."
     },
     {
-      "title": "원본 데이터와 작업 좌표의 구분",
-      "description": "표시 ROI와 지면 제외 ROI를 분리합니다. 추출 시 원본·정렬 좌표와 프레임 정보를 명시해 후속 가공에서 기준을 확인할 수 있게 했습니다."
+      "title": "센서 좌표와 표시 좌표 분리",
+      "description": "파노라마는 센서 원점 기준으로 투영하고 같은 방향의 가까운 반환을 표시합니다. ROI 내보내기는 좌표계·프레임·강체 변환을 명시합니다."
     },
     {
-      "title": "다운로드·메모리 범위 제한",
-      "description": "예제 파일은 크기·SHA-256을 검사하고 완료한 스캔만 재사용합니다. 프레임 읽기 캐시와 동시 다운로드 수를 제한해 전체 기록을 메모리에 올리지 않습니다."
+      "title": "패키지·예제 무결성",
+      "description": "공개 예제의 크기·SHA-256, macOS 앱의 서명·리소스·모델 런타임을 검사합니다. 세 플랫폼 검증을 통과한 패키지와 체크섬을 Release에 게시합니다."
     }
   ],
   "limitations": [
     "ROS 2 bag·토픽은 Ubuntu/Jazzy 빌드에서 지원합니다. Windows·macOS는 파일 입력 중심입니다.",
-    "학습 모델·가중치·Python 환경은 기본 뷰어와 별도로 준비합니다. 검출 정확도는 센서·장면에 따라 달라집니다.",
-    "ROI 이름·클래스 힌트는 초안 메타데이터입니다. 검수된 정답 라벨이나 성능 평가 결과를 생성하는 기능은 아닙니다.",
-    "검출 추적의 속도·궤적은 센서 기준 상대 운동입니다. odometry로 센서 자체 움직임을 보상한 세계 좌표 속도는 아닙니다."
+    "macOS ARM64 앱은 ad-hoc 서명이며 Apple 공증을 포함하지 않습니다. 장치·OS의 실행 허용 조건을 확인해야 합니다.",
+    "ROI 이름·클래스 힌트는 초안 메타데이터이며 내보낸 점군은 미라벨 상태입니다. 검출 예측·지면 분류를 정답 라벨로 저장하지 않습니다.",
+    "추적 속도·궤적은 센서 기준 상대 운동입니다. 자차 운동을 보상한 세계 좌표 속도가 아닙니다."
   ],
-  "downloadUrl": "https://github.com/YooJuno/lidar_studio/releases",
+  "downloadUrl": "https://github.com/YooJuno/lidar_studio/releases/latest",
   "buildUrl": "https://github.com/YooJuno/lidar_studio/actions/workflows/build-release.yml",
-  "distributionNote": "Ubuntu 24.04/Jazzy·Windows x64·macOS용 검사와 패키징을 수행합니다. 버전 태그의 전체 빌드가 성공하면 배포 파일과 체크섬을 GitHub Releases에 공개합니다. 공개 패키지는 릴리스 버전을 기준으로 하며 최신 소스의 기능·검증 상태와 구분합니다.",
+  "distributionNote": "main과 버전 태그에서 Ubuntu·Windows·macOS 패키지를 검증합니다. 모든 플랫폼이 통과하면 패키지·SHA-256을 먼저 업로드한 뒤 버전별 GitHub Release를 공개합니다. macOS 다운로드는 Apple Silicon용이며 앱·CPU 모델 런타임을 포함합니다. 설치 파일의 기능은 해당 릴리스 커밋을 기준으로 확인합니다.",
   "sources": [
     {
-      "label": "기능·사용 흐름",
+      "label": "기능·지원 환경",
       "path": "README.md"
     },
     {
-      "label": "뷰어·분석 작업 관리",
+      "label": "뷰어·화면 상태",
       "path": "src/viewer_app.cpp"
+    },
+    {
+      "label": "파노라마 투영",
+      "path": "include/lidar_viewer/panorama.hpp"
+    },
+    {
+      "label": "테마",
+      "path": "include/lidar_viewer/ui_theme.hpp"
     },
     {
       "label": "ROI 추출",
       "path": "src/roi_export.cpp"
     },
     {
-      "label": "지면 분리 통합",
-      "path": "src/algorithms/pipeline.cpp"
-    },
-    {
-      "label": "원본 화면·데이터 출처",
-      "path": "docs/images/README.md"
-    },
-    {
-      "label": "공개 예제·좌표·추출 안내",
+      "label": "공개 예제·좌표",
       "path": "docs/examples.md"
     },
     {
-      "label": "예제 다운로드·검증",
-      "path": "src/example_dataset.cpp"
+      "label": "macOS 모델 패키징",
+      "path": "tools/bundle_macos_detector.py"
     },
     {
-      "label": "데모 영상·출처",
+      "label": "검증·Release 공개",
+      "path": "tools/publish_release.py"
+    },
+    {
+      "label": "화면 데이터 출처",
       "path": "docs/media/SOURCE.md"
-    },
-    {
-      "label": "OS별 자동 배포",
-      "path": ".github/workflows/build-release.yml"
     }
   ],
   "route": "/utilities/lidar-studio",
   "site": "",
   "inspectedAt": "2026-11-14",
-  "reviewedAt": "2026-11-14T02:18:03Z",
+  "reviewedAt": "2026-11-14T08:13:27Z",
   "sourceState": "published",
   "api": [],
   "compatibility": [
     {
-      "environment": "Ubuntu 24.04",
+      "environment": "Ubuntu 24.04 · x64",
       "format": ".deb",
-      "note": "ROS 2 Jazzy 빌드: 파일·bag·실시간 토픽"
+      "note": "Jazzy 빌드: 파일·bag·실시간 토픽. 검출 환경 별도 준비"
     },
     {
-      "environment": "Windows",
+      "environment": "Windows · x64",
       "format": ".zip",
-      "note": "BIN·NPY·PCD 파일 입력"
+      "note": "파일 입력·선택적 CPU/GPU 검출"
     },
     {
-      "environment": "macOS",
+      "environment": "macOS 15+ · ARM64",
       "format": ".dmg",
-      "note": "BIN·NPY·PCD 파일 입력"
+      "note": "파일 입력·CPU 모델/런타임 포함. Intel 미지원"
     }
   ],
-  "sourceNote": "화면은 저장소의 KITTI Raw 원본 캡처입니다. 실시간 센서·실기기 주행 검증과는 별개입니다. KITTI Raw: Andreas Geiger·Philip Lenz·Christoph Stiller·Raquel Urtasun. 파생 이미지 라이선스 CC BY-NC-SA 3.0; 자산 폴더의 출처 안내를 보존합니다. 추가 export.png는 같은 커밋 docs/media/demo.mp4의 22초 프레임을 추출했습니다. Quick preview 데이터는 KAIST Urban Robotics Lab의 Patchwork++ 예제(BSD 2-Clause), 데모 영상·추출 화면은 CC BY-NC-SA 3.0입니다.",
+  "sourceNote": "밝은 점군·파노라마·내보내기 화면은 이 커밋을 ROS 없는 CPU 빌드로 실행한 Xvfb 캡처입니다. Patchwork++ 공개 예제만 사용했습니다. ROI·객체 예측의 KITTI 화면 출처와 데이터 이용 조건은 자산 폴더에 보존합니다. 실시간 센서·주행·물리 장치 성능 검증은 포함하지 않습니다.",
   "examples": [
     {
       "title": "같은 프레임에서 지면 분리 비교",
@@ -208,7 +225,7 @@
       "steps": [
         "Open… → Driving examples…에서 Quick preview를 열거나 로컬 파일을 선택합니다. Space로 재생을 멈추고 비교할 프레임을 고정합니다.",
         "Align에서 센서 높이·자세를 확인한 뒤 Ground의 Method를 바꿉니다. All points·Ground only·Obstacles only로 분류 경계를 확인합니다.",
-        "카메라와 프레임을 유지한 채 파라미터를 조절하고, 다시 사용할 설정은 Save profile로 저장합니다."
+        "파노라마 또는 2D·3D 시점을 유지하며 파라미터를 조절하고 Save profile로 설정을 저장합니다. UI 테마는 Settings → Appearance에서 선택합니다."
       ],
       "result": "동일 장면의 지면·비지면 분류와 재사용할 설정 프로파일.",
       "note": "화면의 처리 시간만으로 알고리즘 성능을 일반화하지 않습니다. 입력 정렬·설정·프레임을 맞춰 비교해야 합니다."
@@ -223,6 +240,17 @@
       ],
       "result": "NPY(float32, N×4 XYZI)·binary PCD와 원본 프레임·ROI·변환 행렬을 기록한 JSON.",
       "note": "Ground only 표시와 지면 제외 박스는 추출 범위를 바꾸지 않습니다. 내보낸 점군은 annotation_status: unlabeled이며 정답 라벨은 별도로 작성합니다."
+    },
+    {
+      "title": "센서 파노라마에서 거리 확인",
+      "input": "단일 점군 또는 프레임 시퀀스.",
+      "steps": [
+        "상단 시점을 Panorama로 바꾸고 거리 색상을 선택합니다.",
+        "드래그로 방위각·고도를 이동하고 커서 위치를 기준으로 확대합니다. 프레임을 넘겨 같은 방향의 변화를 확인합니다.",
+        "3D·2D와 전환해 동일한 물체의 공간 위치를 함께 확인합니다."
+      ],
+      "result": "센서 기준 각도·거리의 파노라마와 시점별 탐색 상태.",
+      "note": "파노라마는 점군 투영입니다. 카메라 영상이나 깊이 센서의 원본 이미지가 아닙니다."
     }
   ]
 }

@@ -2,22 +2,22 @@
   "id": "hellog",
   "route": "/web-service/hellog",
   "title": "HelloG",
-  "inspectedAt": "2026-10-14",
-  "revision": "20caa94",
+  "inspectedAt": "2026-11-14",
+  "revision": "4ca2404a104b30ce9be1f0bc4f6ae7a0fae3cb16",
   "github": "https://github.com/YooJuno/hellog",
   "site": "https://hellog-juno.web.app/",
   "summary": "기구·세트별 운동 기록을 관리하는 웹 앱.",
   "tech": [
     "React",
-    "Spring Boot",
-    "Spring Data JPA",
-    "H2",
-    "Google OAuth2",
-    "Lucide"
+    "JavaScript",
+    "Firebase Authentication",
+    "Cloud Firestore",
+    "Firebase Hosting",
+    "GitHub Actions"
   ],
   "overview": [
-    "부위를 고르고 기구·중량·횟수를 입력하는 기록 흐름, 이전 운동의 검색·기간 필터, 사용자 기구 목록을 한 앱으로 구성했습니다.",
-    "서버는 로그인한 사용자와 기록 소유자를 함께 조회해 데이터를 분리합니다. 프론트엔드는 작성 중인 폼을 사용자별 localStorage 초안으로 저장하며, 서버의 최종 운동 기록과는 구분합니다."
+    "부위·기구·세트의 무게·횟수·메모를 기록하고 검색·기간 필터·통계로 운동 내역을 확인합니다. 기본 운동 목록과 개인 운동·제조사 목록을 함께 관리합니다.",
+    "React 앱이 Firebase Authentication으로 로그인하고 UID별 Firestore 문서에 접근합니다. 인증 SDK는 초기 화면에서, 기록 저장소와 통계 화면은 필요한 시점에 불러옵니다."
   ],
   "screens": [
     {
@@ -27,7 +27,7 @@
       "width": 1440,
       "height": 1000,
       "alt": "부위와 기구를 고르고 중량과 반복 횟수를 입력하는 HelloG 화면",
-      "caption": "실제 프론트엔드에 예시 사용자·기구·운동 기록을 연결했습니다. 실제 사용자 기록은 사용하지 않았습니다.",
+      "caption": "현재 React 입력 화면에 예시 인증·운동 데이터를 연결한 캡처입니다. 실제 개인 기록을 사용하지 않았습니다.",
       "annotations": [
         "부위·기구·장비 유형을 선택하고 종목을 구성합니다.",
         "세트별 kg·횟수를 추가하고 운동 메모를 남깁니다.",
@@ -41,144 +41,166 @@
       "width": 1440,
       "height": 1000,
       "alt": "이전 운동과 운동량을 검색·필터링하는 HelloG 기록보기 화면",
-      "caption": "예시 기록으로 실제 기록보기 UI를 렌더링했습니다. 통계는 예시 입력에 대한 화면 표시입니다.",
+      "caption": "예시 기록으로 렌더링한 검색·통계 화면입니다. 표시 통계는 예시 입력에 대한 값입니다.",
       "annotations": [
         "검색어·부위·날짜 범위로 운동을 좁힙니다.",
         "기록의 세트·횟수·볼륨과 추이를 확인합니다.",
         "기존 기록을 다시 불러와 수정·복사·삭제합니다."
       ]
+    },
+    {
+      "id": "H03",
+      "title": "운동·기구 목록",
+      "image": "/content/images/webservices/hellog/machines.png",
+      "width": 1440,
+      "height": 1000,
+      "alt": "HelloG의 부위·기구별 운동 목록과 개인 운동 관리 화면",
+      "caption": "기본 운동·예시 계정으로 렌더링한 실제 기구 목록입니다. 운영 사용자 데이터에는 접근하지 않았습니다.",
+      "annotations": [
+        "기본 운동과 개인 운동을 같은 목록에서 탐색합니다.",
+        "기본 운동 숨김과 개인 운동 삭제를 구분합니다."
+      ]
     }
   ],
   "features": [
     {
-      "title": "세트 단위 기록",
-      "description": "날짜·제목·종목·세트의 중량과 횟수를 묶어 저장하고 수정합니다."
+      "title": "세트별 기록·편집",
+      "description": "날짜·제목·종목·무게·횟수·메모를 저장합니다. 세트 추가·복제, 기록 수정·복제·삭제와 루틴 요약을 제공합니다."
     },
     {
-      "title": "기록 탐색·통계",
-      "description": "검색·부위·날짜 필터와 운동량 요약으로 이전 운동을 확인합니다."
+      "title": "검색·필터·통계",
+      "description": "기록을 검색하고 부위·날짜 조건으로 좁힙니다. 운동량·종목별 추이는 지연 로딩한 통계 화면에서 확인합니다."
     },
     {
-      "title": "나의 기구 목록",
-      "description": "기본 기구와 개인 기구를 구분하고 부위·장비·제조사 기준으로 관리합니다."
+      "title": "기본·개인 운동 목록",
+      "description": "기본 운동 50개와 개인 운동을 통합해 표시합니다. 기구·제조사·부위로 관리하며 기본 운동 숨김과 개인 운동 삭제를 구분합니다."
     },
     {
-      "title": "회원별 기록·초안",
-      "description": "로그인 사용자와 기록의 소유자를 대조해 접근을 제한하고, 사용자별 브라우저 초안을 복원합니다."
+      "title": "Google 로그인·UID 분리",
+      "description": "로그인 UID의 workouts·machines·hiddenMachines에 접근합니다. Firestore 규칙에서도 문서 소유자를 검사합니다."
+    },
+    {
+      "title": "계정별 초안 복구",
+      "description": "작성 중인 폼을 계정별 localStorage에 보관하고 복구·비우기를 제공합니다. 임시 입력과 Firestore에 저장한 최종 기록을 구분합니다."
     }
   ],
   "architecture": [
     {
-      "label": "React 폼",
-      "detail": "기록·필터·기구·초안"
+      "label": "React · 폼·목록",
+      "detail": "운동 입력·검색·기구·계정별 초안"
     },
     {
-      "label": "Spring Security",
-      "detail": "OAuth2·현재 사용자"
+      "label": "Firebase Authentication",
+      "detail": "Google 로그인·현재 사용자 UID"
     },
     {
-      "label": "Controller + JPA",
-      "detail": "소유권 조회·검증·트랜잭션"
+      "label": "Cloud Firestore · Rules",
+      "detail": "UID별 운동·개인 기구·숨김 목록"
     },
     {
-      "label": "H2 파일 DB",
-      "detail": "운동·종목·세트·기구"
+      "label": "Firebase Hosting · Actions",
+      "detail": "정적 웹앱·검증 후 자동 배포"
     }
   ],
-  "apiNote": "Workout·GymMachine·Auth Controller와 DTO 기준입니다. 예시 필드이며 전체 스키마는 소스에서 확인할 수 있습니다.",
+  "apiNote": "현재 화면이 사용하는 인증·Firestore SDK 구조입니다. 서버 REST API 경로가 아닙니다.",
   "api": [
     {
-      "method": "GET",
-      "path": "/api/auth/me",
-      "description": "현재 로그인 상태",
-      "request": "세션",
-      "response": "authenticated · googleLoginEnabled · user",
-      "access": "로그인 여부에 따른 상태 응답"
+      "method": "AUTH",
+      "path": "subscribeAuth · signIn · signOut",
+      "description": "Google 로그인·인증 상태",
+      "request": "Google 로그인 동작",
+      "response": "현재 사용자·인증 상태",
+      "access": "Firebase Authentication. Firestore 저장소는 로그인 후 로딩"
     },
     {
-      "method": "GET",
-      "path": "/api/workouts",
-      "description": "내 운동 목록",
-      "request": "로그인 세션",
-      "response": "날짜·종목·sets·totalVolume 등의 목록",
-      "access": "현재 사용자 소유 기록"
+      "method": "SDK",
+      "path": "users/{uid}/workouts/{workoutId}",
+      "description": "운동 기록 조회·저장·수정·삭제",
+      "request": "날짜·제목·메모·종목·세트",
+      "response": "기록·정렬된 목록·파생 합계",
+      "access": "로그인 UID와 경로 소유자 일치. 생성·수정 시각은 서버 timestamp"
     },
     {
-      "method": "POST",
-      "path": "/api/workouts",
-      "description": "운동 저장",
-      "request": "workoutDate · title · exercises[].sets[]",
-      "response": "201 · WorkoutResponse · Location",
-      "access": "회원·입력값 검증"
+      "method": "SDK",
+      "path": "users/{uid}/machines/{machineId}",
+      "description": "개인 운동·기구 관리",
+      "request": "부위·이름·장비 유형·제조사",
+      "response": "개인 기구 목록",
+      "access": "소유 UID만 접근. 기본 운동은 정적 데이터와 병합"
     },
     {
-      "method": "PUT",
-      "path": "/api/workouts/{id}",
-      "description": "운동 수정",
-      "request": "수정할 WorkoutRequest",
-      "response": "WorkoutResponse",
-      "access": "id와 owner를 함께 조회"
+      "method": "SDK",
+      "path": "users/{uid}/hiddenMachines/{defaultId}",
+      "description": "기본 운동 숨김",
+      "request": "기본 운동 ID·hidden",
+      "response": "계정별 숨김 상태",
+      "access": "소유 UID·기본 운동 ID 형식 검사"
     },
     {
-      "method": "DELETE",
-      "path": "/api/workouts/{id}",
-      "description": "운동 삭제",
-      "request": "기록 id",
-      "response": "204 No Content",
-      "access": "현재 사용자 소유 기록"
-    },
-    {
-      "method": "GET",
-      "path": "/api/machines",
-      "description": "기구 목록",
-      "request": "로그인 세션",
-      "response": "기구·부위·장비·제조사 정보",
-      "access": "계정 기준 기구 조회"
-    },
-    {
-      "method": "POST",
-      "path": "/api/machines",
-      "description": "개인 기구 추가",
-      "request": "category · name · equipmentType · manufacturer",
-      "response": "MachineResponse",
-      "access": "필수 필드 검증·사용자 범위"
+      "method": "LOCAL",
+      "path": "health-logger-workout-draft-v1:{uid}",
+      "description": "작성 중 초안",
+      "request": "입력 폼·수정 대상·저장 시각",
+      "response": "동일 계정의 브라우저 초안",
+      "access": "localStorage. 서버 기록·다른 기기 동기화와 별개"
     }
   ],
   "decisions": [
     {
-      "title": "계층형 운동 데이터",
-      "description": "운동 세션 아래 종목과 세트를 분리해 중량·횟수·전체 볼륨을 관리합니다."
+      "title": "인증·저장소 지연 로딩",
+      "description": "로그아웃 화면은 인증 기능만 로드합니다. Firestore 저장소는 기록 작업 시, 통계는 해당 화면을 열 때 불러옵니다."
     },
     {
-      "title": "초안과 서버 기록 분리",
-      "description": "브라우저에 사용자별 초안을 보관해 입력 중 이탈을 줄이고, 최종 저장은 인증된 서버 요청으로 처리합니다."
+      "title": "UID·문서 규칙",
+      "description": "호출자가 전달한 소유자 값 대신 현재 Firebase 사용자의 UID를 사용합니다. 규칙은 소유권·문서 필드·건수·서버 시각을 검사합니다."
+    },
+    {
+      "title": "빠른 입력과 초안",
+      "description": "입력·필터 상태와 저장 결과를 분리하고 계정별 초안을 복구합니다. 폼 변경 때 전체 기록 통계를 반복 계산하지 않도록 가공 데이터를 관리합니다."
     }
   ],
   "limitations": [
-    "캡처에는 예시 API 응답을 사용했습니다. OAuth 제공자·운영 DB를 연결한 통합 검증은 포함하지 않습니다.",
-    "H2 파일 DB의 백업·동시 접근·운영 이관과 사용자 데이터 보존 정책은 별도 관리가 필요합니다.",
-    "localStorage 초안은 기기·브라우저 단위입니다. 서버 동기화나 다른 기기 간 초안 공유 기능은 아닙니다."
+    "초안은 기기·브라우저의 localStorage에 보관합니다. 다른 기기에서 이어 쓰는 서버 동기화 기능은 아닙니다.",
+    "운동 목록은 해당 사용자의 문서를 한 번에 읽어 정렬합니다. 기록량이 커지면 조회 범위·페이지네이션을 검토해야 합니다.",
+    "중첩 종목·세트의 세부 검증은 클라이언트가 수행합니다. Firestore 규칙은 문서 구조·소유권 등 허용 범위를 검사합니다."
   ],
   "sources": [
     {
-      "label": "화면·초안·검색",
+      "label": "기능·실행",
+      "path": "README.md"
+    },
+    {
+      "label": "기록·검색·초안",
       "path": "frontend/src/App.jsx"
     },
     {
-      "label": "운동 API",
-      "path": "backend/src/main/java/com/healthlogger/backend/workout/WorkoutController.java"
+      "label": "Firestore 저장소",
+      "path": "frontend/src/lib/firebaseRepository.js"
     },
     {
-      "label": "운동 DTO",
-      "path": "backend/src/main/java/com/healthlogger/backend/workout/WorkoutDtos.java"
+      "label": "인증·오류 처리",
+      "path": "frontend/src/lib/firebaseClient.js"
     },
     {
-      "label": "기구 API",
-      "path": "backend/src/main/java/com/healthlogger/backend/gym/GymMachineController.java"
+      "label": "저장소 로더",
+      "path": "frontend/src/lib/workoutService.js"
     },
     {
-      "label": "인증 상태",
-      "path": "backend/src/main/java/com/healthlogger/backend/auth/AuthController.java"
+      "label": "기본 운동",
+      "path": "frontend/src/data/defaultMachines.js"
+    },
+    {
+      "label": "데이터 접근 규칙",
+      "path": "firestore.rules"
+    },
+    {
+      "label": "자동 배포",
+      "path": ".github/workflows/firebase.yml"
     }
-  ]
+  ],
+  "reviewedAt": "2026-11-14T08:13:27Z",
+  "sourceState": "published",
+  "architectureNote": "화면의 데이터 저장은 Firebase SDK를 직접 사용합니다. 별도 운동 REST API 서버는 운영 경로에 포함하지 않습니다.",
+  "apiTitle": "Firebase 데이터·클라이언트 인터페이스",
+  "sourceNote": "공개 소스의 실제 React 화면에 예시 인증·기구·기록을 연결했습니다. 개인 운동 기록·실제 Google 로그인·운영 Firestore 변경은 사용하지 않았습니다."
 }

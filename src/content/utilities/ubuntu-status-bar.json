@@ -7,7 +7,7 @@
     "Ubuntu 24.04",
     "GNOME Shell 46"
   ],
-  "revision": "34e6f3accfe1bbaaa9bc153ec3b0f743bf6c8e56",
+  "revision": "2d344441075444602b89a01fe4424c8bf399cbc3",
   "purpose": "작업 중 자원 사용률을 확인하려고 모니터링 창을 따로 여는 불편을 줄이기 위해 만들었습니다. 패널에는 사용률만 작게 두고, 온도·메모리 용량·디스크 I/O는 클릭 메뉴에서 확인합니다.",
   "tech": [
     "JavaScript",
@@ -17,7 +17,7 @@
   ],
   "overview": [
     "Linux의 /proc·/sys와 선택적 NVIDIA 조회 결과를 GJS로 수집합니다. 수집 완료 시점이 다른 센서는 개별 반영하며, 메뉴가 닫히면 온도·디스크 I/O 등 상세 조회를 줄입니다.",
-    "저장소 이름은 juno_tools에서 ubuntu_status_bar로 변경했습니다. 기존 설치와 설정을 유지하도록 확장 UUID·GSettings 스키마·juno-system-monitor 명령은 바꾸지 않았습니다."
+    "GSettings로 표시 항목·갱신 주기·GPU·저장 경로를 보관합니다. 확장 UUID는 system-monitor@juno-tools, 설정 스키마는 org.gnome.shell.extensions.juno-system-monitor이며 juno-system-monitor 명령으로 활성화·설정을 관리합니다."
   ],
   "screens": [
     {
@@ -27,7 +27,7 @@
       "width": 381,
       "height": 451,
       "alt": "센서 상세 메뉴 화면",
-      "caption": "GNOME 46 테스트 세션의 실제 센서 메뉴. 이름 변경 전 동일 확장의 밝은 테마입니다.",
+      "caption": "GNOME 46 테스트 세션의 실제 센서 상세 메뉴입니다. 표시값은 캡처 시점의 순간값입니다.",
       "annotations": [
         "CPU·GPU·메모리·저장장치별 상세값을 모읍니다.",
         "저장장치 용량과 읽기·쓰기 속도·I/O 활동률은 서로 다른 지표입니다."
@@ -52,7 +52,7 @@
       "width": 1600,
       "height": 900,
       "alt": "표시·갱신 설정 화면",
-      "caption": "표시 항목·갱신 주기·GPU·저장 경로 설정. 이름 변경 전 원본 캡처입니다.",
+      "caption": "표시 항목·갱신 주기·GPU·저장 경로를 설정하는 실제 확장 설정 화면입니다.",
       "annotations": [
         "표시 항목·갱신 주기·GPU·저장 경로를 조절합니다.",
         "저장 경로는 비동기 검증이 성공한 경우에만 반영합니다."
@@ -145,17 +145,17 @@
   "route": "/utilities/ubuntu-status-bar",
   "site": "",
   "inspectedAt": "2026-11-14",
-  "reviewedAt": "2026-11-14T02:18:03Z",
+  "reviewedAt": "2026-11-14T08:13:27Z",
   "sourceState": "published",
   "api": [],
   "compatibility": [
     {
       "environment": "Ubuntu 24.04 · GNOME 46",
       "format": ".deb · 확장 ZIP",
-      "note": "X11·Wayland. 기존 UUID·설정 스키마·CLI 유지"
+      "note": "X11·Wayland. GSettings·관리 CLI 제공"
     }
   ],
-  "sourceNote": "화면은 GNOME 46 테스트 세션의 실제 센서 캡처입니다. 이름 변경 전 동일 확장의 화면이며 사용률·온도는 캡처 시점의 순간값입니다. 확장 UUID와 설정 스키마는 이름 변경 후에도 유지했습니다.",
+  "sourceNote": "저장소의 GNOME 46 테스트 세션에서 캡처한 패널·상세 메뉴·설정 화면입니다. 센서값은 당시 장치의 순간값이며 일반적인 자원 사용량·성능 보장이 아닙니다.",
   "examples": [
     {
       "title": "작업 디스크의 용량과 I/O 확인",
