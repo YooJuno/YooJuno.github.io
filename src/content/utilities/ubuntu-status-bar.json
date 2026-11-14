@@ -8,7 +8,7 @@
     "GNOME Shell 46"
   ],
   "revision": "34e6f3accfe1bbaaa9bc153ec3b0f743bf6c8e56",
-  "purpose": "Ubuntu에서 작업하면서 별도 모니터링 창을 열지 않고 자원 사용 상태를 확인하기 위해 만들었습니다. 상단 패널에는 필요한 사용률만 작게 표시하고, 온도·용량·디스크 I/O는 클릭했을 때 자세히 볼 수 있도록 구성했습니다.",
+  "purpose": "작업 중 자원 사용률을 확인하려고 모니터링 창을 따로 여는 불편을 줄이기 위해 만들었습니다. 패널에는 사용률만 작게 두고, 온도·메모리 용량·디스크 I/O는 클릭 메뉴에서 확인합니다.",
   "tech": [
     "JavaScript",
     "GJS",
@@ -16,8 +16,8 @@
     "Linux /proc·/sys"
   ],
   "overview": [
-    "CPU·GPU·RAM·파일시스템 용량을 패널 아이콘과 수치로 표시합니다. 상세 메뉴와 설정에서 표시 항목, 갱신 주기, 저장 경로, GPU를 선택합니다.",
-    "이전 저장소 이름은 juno_tools입니다. 이름·링크를 바꾸면서 기존 설치의 확장 UUID, 설정 스키마와 juno-system-monitor 패키지·명령은 유지했습니다."
+    "Linux의 /proc·/sys와 선택적 NVIDIA 조회 결과를 GJS로 수집합니다. 수집 완료 시점이 다른 센서는 개별 반영하며, 메뉴가 닫히면 온도·디스크 I/O 등 상세 조회를 줄입니다.",
+    "저장소 이름은 juno_tools에서 ubuntu_status_bar로 변경했습니다. 기존 설치와 설정을 유지하도록 확장 UUID·GSettings 스키마·juno-system-monitor 명령은 바꾸지 않았습니다."
   ],
   "screens": [
     {
@@ -27,7 +27,7 @@
       "width": 381,
       "height": 451,
       "alt": "센서 상세 메뉴 화면",
-      "caption": "저장소에 포함된 GNOME 46 테스트 세션의 밝은 메뉴 캡처입니다. 실제 센서값이며 이름 변경 전 동일 확장의 화면입니다.",
+      "caption": "GNOME 46 테스트 세션의 실제 센서 메뉴. 이름 변경 전 동일 확장의 밝은 테마입니다.",
       "annotations": [
         "CPU·GPU·메모리·저장장치별 상세값을 모읍니다.",
         "저장장치 용량과 읽기·쓰기 속도·I/O 활동률은 서로 다른 지표입니다."
@@ -40,7 +40,7 @@
       "width": 950,
       "height": 48,
       "alt": "상단 패널 화면",
-      "caption": "실제 GNOME 상단 패널의 원본 캡처입니다. 작은 아이콘과 사용률만 표시합니다.",
+      "caption": "20px 아이콘과 사용률로 구성한 실제 GNOME 상단 패널.",
       "annotations": [
         "추가 모니터링 창 없이 현재 자원 사용 상태를 확인합니다."
       ]
@@ -52,7 +52,7 @@
       "width": 1600,
       "height": 900,
       "alt": "표시·갱신 설정 화면",
-      "caption": "저장소의 실제 설정 화면입니다. 명칭 변경 전 캡처이며 기존 설정의 호환성을 유지합니다.",
+      "caption": "표시 항목·갱신 주기·GPU·저장 경로 설정. 이름 변경 전 원본 캡처입니다.",
       "annotations": [
         "표시 항목·갱신 주기·GPU·저장 경로를 조절합니다.",
         "저장 경로는 비동기 검증이 성공한 경우에만 반영합니다."
@@ -93,18 +93,17 @@
   ],
   "decisions": [
     {
-      "title": "설정·설치 호환성",
-      "description": "저장소와 표시 이름만 바꾸고 확장 UUID·설정 스키마·명령·패키지 식별자를 유지해 기존 설치를 새 확장으로 오인하지 않도록 했습니다."
+      "title": "센서별 비동기 처리",
+      "description": "느린 센서 하나가 전체 갱신을 막지 않도록 결과를 개별 반영합니다. 설정 변경 전 요청의 늦은 응답은 버립니다."
     },
     {
-      "title": "없는 정보의 명시",
-      "description": "지원하지 않는 센서를 정상 값처럼 표시하지 않습니다. 센서 실패를 항목별로 격리하고 전체 표시를 끄면 백그라운드 수집도 멈춥니다."
+      "title": "미지원 값과 실제 0의 구분",
+      "description": "센서 실패·미지원 값은 —로 표시합니다. 저장 경로 검증에 실패하면 기존 설정을 유지합니다."
     }
   ],
   "limitations": [
-    "지원 대상은 GNOME Shell 46입니다. Windows·macOS나 다른 GNOME 버전의 호환성을 주장하지 않습니다.",
-    "GPU 센서 지원은 드라이버와 하드웨어에 따라 달라집니다. AMD·Jetson의 일부 경로는 회귀 검사와 실기 검증 범위를 구분해야 합니다.",
-    "화면 속 사용률·온도는 당시 테스트 장치의 순간값입니다. 자원 사용량이나 성능을 일반화하는 수치가 아닙니다."
+    "확인한 데스크톱 환경은 GNOME Shell 46입니다. 다른 GNOME 버전이나 Windows·macOS는 지원 대상이 아닙니다.",
+    "GPU 정보는 드라이버·장치에 따라 다릅니다. 일부 AMD·Jetson 경로의 회귀 검사와 실장비 검증 범위는 구분해야 합니다."
   ],
   "downloadUrl": "https://github.com/YooJuno/ubuntu_status_bar/releases",
   "buildUrl": "https://github.com/YooJuno/ubuntu_status_bar/actions/workflows/check.yml",
@@ -136,5 +135,28 @@
   "inspectedAt": "2026-11-14",
   "reviewedAt": "2026-11-13T18:57:12.504Z",
   "sourceState": "published",
-  "api": []
+  "api": [],
+  "previewScreen": "UB01",
+  "workflow": [
+    {
+      "title": "패널에서 확인",
+      "description": "CPU·GPU·메모리·저장장치 아이콘과 사용률을 작업 창 위에서 확인합니다."
+    },
+    {
+      "title": "상세값 펼치기",
+      "description": "패널을 눌러 온도·VRAM·스왑·여유 공간·읽기·쓰기 속도를 확인합니다."
+    },
+    {
+      "title": "표시 항목 설정",
+      "description": "필요한 센서와 갱신 주기, GPU, 저장 경로를 선택합니다. 표시를 끈 GPU는 조회도 중단합니다."
+    }
+  ],
+  "compatibility": [
+    {
+      "environment": "Ubuntu 24.04 · GNOME 46",
+      "format": ".deb · 확장 ZIP",
+      "note": "X11·Wayland. 기존 UUID·설정 스키마·CLI 유지"
+    }
+  ],
+  "sourceNote": "화면은 GNOME 46 테스트 세션의 실제 센서 캡처입니다. 이름 변경 전 동일 확장의 화면이며 사용률·온도는 캡처 시점의 순간값입니다. 확장 UUID와 설정 스키마는 이름 변경 후에도 유지했습니다."
 }

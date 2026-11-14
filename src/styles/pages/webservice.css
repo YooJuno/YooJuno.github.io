@@ -92,7 +92,7 @@
 .service-lightbox-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 .service-lightbox-toolbar h2 { margin: 0; font-size: 18px; }
 .service-lightbox-toolbar button { border: 1px solid var(--border); border-radius: 6px; padding: 7px 12px; background: var(--card); cursor: pointer; min-height: 44px; font-size: 14px; flex-shrink: 0; }
-.service-lightbox > img { display: block; max-width: 100%; width: 100%; height: auto; }
+.service-lightbox > img { display: block; max-width: 100%; width: auto; height: auto; margin-inline: auto; }
 .service-lightbox > img.is-original { max-width: none; width: auto; }
 .service-lightbox > p { color: var(--muted); font-size: 14px; line-height: 1.8; margin-top: 12px; }
 @media (max-width: 850px) {

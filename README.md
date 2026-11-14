@@ -193,7 +193,7 @@ GitHub 저장소의 **Settings → Pages → Source**는 **GitHub Actions**로 �
 자세한 작성법은 [포트폴리오 수정 안내](src/content/portfolio/README.md)를 참고하세요.
 블로그는 [글 작성 규칙](src/content/blog/README.md), 관리자 연결·발행·백업은 [CMS 안내](docs/blog-cms.md)를 참고하세요.
 웹서비스 상세 페이지는 공통 컴포넌트를 사용합니다. 내용·화면 추가는 [웹서비스 수정 안내](src/content/webservices/README.md)를 참고하세요.
-유틸리티는 같은 이미지 확대·상세 컴포넌트를 재사용하되 만든 목적·지원 OS·자동 배포를 먼저 설명합니다. REST 인터페이스가 없으면 API 표를 숨깁니다. [유틸리티 수정 안내](src/content/utilities/README.md)를 참고하세요.
+유틸리티는 전용 상세 레이아웃에서 큰 화면 갤러리·만든 목적·3단계 사용 흐름·구현·OS별 지원 범위를 설명합니다. 이미지 확대는 웹서비스와 공통 컴포넌트로 처리하며, 자동 배포·검토 기록은 접어서 표시합니다. REST 서버가 없는 도구에 가상 API를 붙이지 않습니다. [유틸리티 수정 안내](src/content/utilities/README.md)를 참고하세요.
 `src`의 글·프로젝트·경력 이미지처럼 콘텐츠에서 참조하는 자산은 Vite가 처리합니다. 기존 이력서·논문 PDF 등 고정 URL을 유지할 파일은 `public`에서 제공합니다.
 따라서 모든 콘텐츠를 한쪽에 몰아넣기보다 **참조 방식과 배포 경로**를 기준으로 구분합니다.
 
