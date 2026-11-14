@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="760" viewBox="0 0 640 760" role="img" aria-labelledby="title desc">
+  <title id="title">PipelineSequence의 경로 갱신</title>
+  <desc id="desc">첫 경로가 생성되기 전에는 추종을 기다린다. 경로 A를 추종하는 동안 planner는 새 경로 B를 계산할 수 있다. 새 경로가 완료되면 FollowPath가 갱신된 경로를 전달한다. 비동기 작업 상태의 개념도이며 스레드 구성이나 실측 시간을 나타내지 않는다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#303030" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#202124}
+      .heading{font-size:30px;font-weight:700}.label{font-size:26px;font-weight:650}.note{font-size:24px}
+      .card{fill:#fff;stroke:#a8a8a8;stroke-width:1.5}.arrow{fill:none;stroke:#303030;stroke-width:2;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="640" height="760" fill="#fff"/>
+  <text x="30" y="49" class="heading">재계획 중 경로 추종</text>
+  <text x="165" y="103" text-anchor="middle" class="label">Planner</text>
+  <text x="475" y="103" text-anchor="middle" class="label">Controller</text>
+  <text x="34" y="150" class="note">1. 첫 경로 준비</text>
+  <rect x="35" y="172" width="260" height="86" rx="4" class="card"/>
+  <rect x="345" y="172" width="260" height="86" rx="4" fill="#f4f4f4" stroke="#a8a8a8"/>
+  <text x="165" y="224" text-anchor="middle" class="label">경로 A 생성</text>
+  <text x="475" y="224" text-anchor="middle" class="label">첫 경로 대기</text>
+  <path d="M295 239 H340" class="arrow"/>
+  <text x="320" y="214" text-anchor="middle" class="note">A</text>
+  <text x="34" y="330" class="note">2. 기존 경로로 주행</text>
+  <rect x="35" y="352" width="260" height="86" rx="4" class="card"/>
+  <rect x="345" y="352" width="260" height="86" rx="4" class="card"/>
+  <text x="165" y="404" text-anchor="middle" class="label">경로 B 계산 중</text>
+  <text x="475" y="404" text-anchor="middle" class="label">경로 A 추종</text>
+  <path d="M165 267 V302 M475 267 V302" class="arrow"/>
+  <text x="34" y="510" class="note">3. 새 경로 전달</text>
+  <rect x="35" y="532" width="260" height="86" rx="4" class="card"/>
+  <rect x="345" y="532" width="260" height="86" rx="4" class="card"/>
+  <text x="165" y="584" text-anchor="middle" class="label">경로 B 완료</text>
+  <text x="475" y="584" text-anchor="middle" class="label">경로 B 추종</text>
+  <path d="M295 593 H340" class="arrow"/>
+  <text x="320" y="568" text-anchor="middle" class="note">B</text>
+  <path d="M165 447 V482 M475 447 V482" class="arrow"/>
+  <text x="33" y="688" class="note">비동기 작업의 상태 전환 개념도</text>
+  <text x="33" y="730" class="note">BT tick·계획 요청·제어 주기는 별도</text>
+</svg>

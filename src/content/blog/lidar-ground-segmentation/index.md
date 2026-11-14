@@ -443,4 +443,4 @@ FugSeg 논문도 혼잡한 장면의 트램 하부를 지면으로 오분류하�
 - [FugSeg 원논문, arXiv v1](https://arxiv.org/abs/2605.08952v1), [IEEE DOI](https://doi.org/10.1109/TITS.2026.3682176): 불확실성 기반 기울기·SGL·CGP·지면 높이 추정.
 - [FugSeg C++ 기준점 `623f860`](https://github.com/Leo-YuLi/FugSeg/tree/623f860cce70ffe0e3f673cd246254938ce8babe): `src/fugseg/src/fugseg.cpp`의 처리 순서·센서 초기값·기울기 함수.
 - [Patchwork](https://arxiv.org/abs/2108.05560): 극좌표 영역 분할·국소 평면 기반의 비교 기준.
-- [EKF 센서 융합](/blog/ekf-sensor-fusion/), [Nav2 주행 파이프라인](/blog/nav2-navigation-study/): 자세·좌표계·costmap 연결에 관한 별도 글.
+- [EKF 센서 융합](/blog/ekf-sensor-fusion/), [Nav2 위치 추정과 경로 계획](/blog/nav2-navigation-study/): 자세·좌표계·costmap 연결에 관한 별도 글.

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="680" height="1390" viewBox="0 0 680 1390" role="img" aria-labelledby="title desc">
-  <title id="title">로봇 구동 방식과 Nav2 운동 모델</title>
+  <title id="title">구동 방식별 차체 움직임과 Nav2 운동 모델</title>
   <desc id="desc">2륜 차동, 4륜 스키드, 메카넘, Ackermann, 독립 조향, 사족보행을 위에서 본 개념도로 비교한다. 바퀴 개수가 아니라 실행 가능한 몸체 속도와 조향 제약을 기준으로 Nav2 모델을 선택한다.</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto-start-reverse"><path d="M0 0 7 4 0 8" fill="none" stroke="#303030" stroke-width="1.5"/></marker>

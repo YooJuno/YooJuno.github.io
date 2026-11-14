@@ -10,7 +10,7 @@
     </style>
   </defs>
   <rect width="680" height="810" rx="4" fill="#ffffff"/>
-  <text x="34" y="52" class="title">전역 정확도와 로컬 연속성</text>
+  <text x="34" y="52" class="title">TF와 위치 추정</text>
   <text x="34" y="84" class="note">TF 변환별 단일 발행 주체</text>
   <rect x="34" y="126" width="150" height="79" rx="4" fill="#eeeeee" stroke="#cacaca"/>
   <rect x="265" y="126" width="150" height="79" rx="4" fill="#f3f3f3" stroke="#d4d4d4"/>

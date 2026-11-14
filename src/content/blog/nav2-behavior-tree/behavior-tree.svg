@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="680" height="1100" viewBox="0 0 680 1100" role="img" aria-labelledby="title desc">
-  <title id="title">Nav2 BT의 정상 주행과 두 단계 복구</title>
+  <title id="title">Nav2 기본 BT의 개별 작업 복구와 전체 복구</title>
   <desc id="desc">바깥 RecoveryNode 안에서 PipelineSequence가 계획과 추종을 조정한다. 각 작업 실패 시 오류를 검사하고 해당 costmap을 정리해 재시도한다. 해결되지 않으면 전체 복구를 실행한다. 복구 성공 후 정상 주행을 재시도하고 횟수를 소진하면 실패한다.</desc>
   <defs>
     <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0 8 4 0 8" fill="none" stroke="#303030" stroke-width="1.5"/></marker>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="730" viewBox="0 0 640 730" role="img" aria-labelledby="title desc">
+  <title id="title">관측 범위·예측 범위·정지 거리</title>
+  <desc id="desc">로컬 costmap의 범위, 센서가 관측한 공간, MPPI의 예측 구간을 서로 다른 경계로 표시한다. 정지 거리는 반응 지연 동안의 이동과 제동 거리에 여유를 더한 근사이며 관측 범위나 예측 거리와 같지 않다.</desc>
+  <defs>
+    <pattern id="unknown" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0 12 L12 0" stroke="#ddd" stroke-width="1"/></pattern>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#303030" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#202124}
+      .heading{font-size:30px;font-weight:700}.label{font-size:26px;font-weight:650}.note{font-size:24px}
+      .arrow{fill:none;stroke:#303030;stroke-width:2.5;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="640" height="730" fill="#fff"/>
+  <text x="30" y="49" class="heading">예측 범위와 정지 거리</text>
+  <rect x="35" y="99" width="570" height="281" fill="#fff" stroke="#555" stroke-width="2"/>
+  <rect x="420" y="100" width="184" height="279" fill="url(#unknown)"/>
+  <path d="M420 100 V380" stroke="#555" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="66" y="145" class="label">센서 관측 공간</text>
+  <text x="456" y="145" class="note">미관측</text>
+  <rect x="93" y="199" width="72" height="48" fill="#eee" stroke="#202124" stroke-width="2"/>
+  <path d="M132 223 H176" class="arrow"/>
+  <text x="84" y="285" class="note">로봇</text>
+  <path d="M179 223 C245 205 310 212 382 249" class="arrow"/>
+  <text x="220" y="187" class="note">예측 구간</text>
+  <path d="M164 308 H321" stroke="#303030" stroke-width="3"/>
+  <path d="M164 298 V318 M321 298 V318" stroke="#303030" stroke-width="2"/>
+  <text x="183" y="350" class="note">정지 거리</text>
+  <text x="382" y="419" class="note">로컬 costmap 경계</text>
+  <rect x="35" y="453" width="570" height="225" rx="4" fill="#fafafa" stroke="#d6d6d6"/>
+  <text x="57" y="498" class="label">정지 거리의 근사</text>
+  <text x="57" y="545" class="note">반응 지연 중 이동 + 제동 + 여유</text>
+  <text x="57" y="590" class="note">v × latency + v² / (2a) + margin</text>
+  <text x="57" y="640" class="note">정지 장애물·일정 감속 가정</text>
+  <text x="34" y="714" class="note">거리 관계를 설명한 개념도 · 실제 측정 아님</text>
+</svg>
