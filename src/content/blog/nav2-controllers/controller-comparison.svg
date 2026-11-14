@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="680" height="1000" viewBox="0 0 680 1000" role="img" aria-labelledby="title desc">
-  <title id="title">RPP, DWB, MPPI의 제어 방식 비교</title>
+  <title id="title">Nav2 RPP·DWB·MPPI의 제어 방식</title>
   <desc id="desc">RPP는 lookahead 목표점으로 향하는 곡률을 계산하고, DWB는 후보 궤적 중 점수가 좋은 명령을 선택한다. MPPI는 여러 입력 시퀀스의 비용을 이용해 제어 시퀀스를 갱신한다.</desc>
   <defs>
     <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#303030" stroke-width="1.5"/></marker>

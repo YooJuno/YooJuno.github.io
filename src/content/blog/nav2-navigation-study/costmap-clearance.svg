@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="790" viewBox="0 0 640 790" role="img" aria-labelledby="title desc">
+  <title id="title">Footprint 충돌 검사와 Inflation 비용</title>
+  <desc id="desc">위는 몸체 방향에 따라 회전하는 다각형 footprint와 장애물이다. 아래는 장애물과의 거리에 따른 inflation 비용의 감쇠 개념이다. 외형 충돌과 주변 경로 비용을 구분하며 실제 costmap 수치나 성능 측정은 아니다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 7 4 0 8" fill="none" stroke="#303030" stroke-width="1.5"/></marker>
+    <style>
+      text{font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;fill:#202124}
+      .heading{font-size:30px;font-weight:700}.label{font-size:26px;font-weight:650}.note{font-size:24px}
+      .line{fill:none;stroke:#303030;stroke-width:2;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="640" height="790" fill="#fff"/>
+  <text x="30" y="48" class="heading">Footprint와 Inflation</text>
+  <rect x="20" y="80" width="600" height="300" rx="4" fill="#fff" stroke="#d6d6d6"/>
+  <text x="42" y="123" class="label">1. 로봇 외형의 충돌 검사</text>
+  <rect x="460" y="165" width="108" height="142" fill="#303030"/>
+  <text x="460" y="342" class="note">장애물</text>
+  <rect x="216" y="195" width="180" height="78" fill="#eee" stroke="#202124" stroke-width="3" transform="rotate(-25 306 234)"/>
+  <circle cx="306" cy="234" r="5" fill="#202124"/>
+  <path d="M306 234 l56 -26" class="line"/>
+  <path d="M207 320 L242 274" class="line"/>
+  <text x="46" y="346" class="note">다각형 footprint</text>
+  <text x="46" y="166" class="note">위치 + 방향에 따른 외형</text>
+  <rect x="20" y="402" width="600" height="358" rx="4" fill="#fff" stroke="#d6d6d6"/>
+  <text x="42" y="448" class="label">2. 장애물 주변의 경로 비용</text>
+  <path d="M90 651 H579 M90 651 V485" class="line"/>
+  <text x="42" y="501" class="note">비용</text>
+  <path d="M100 502 C190 527 330 580 547 646" fill="none" stroke="#303030" stroke-width="3"/>
+  <path d="M100 502 C143 596 212 636 547 646" fill="none" stroke="#303030" stroke-width="3" stroke-dasharray="8 6"/>
+  <text x="278" y="526" class="note">작은 k: 완만한 감쇠</text>
+  <path d="M235 517 H266" stroke="#303030" stroke-width="3"/>
+  <text x="278" y="489" class="note">큰 k: 빠른 감쇠</text>
+  <path d="M235 480 H266" stroke="#303030" stroke-width="3" stroke-dasharray="7 5"/>
+  <text x="276" y="690" class="note">장애물에서 멀어지는 거리</text>
+  <text x="44" y="734" class="note">지수 감쇠 구간의 개념도 · 실제 수치 아님</text>
+</svg>
