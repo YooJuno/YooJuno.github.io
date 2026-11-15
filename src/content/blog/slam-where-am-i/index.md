@@ -2,7 +2,7 @@
 title: "SLAM, Where Am I"
 slug: "slam-where-am-i"
 date: "2024-08-30"
-category: "개발"
+category: "로보틱스"
 tags:
   - SLAM
   - Localization

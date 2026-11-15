@@ -2,12 +2,22 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { marked } from 'marked'
+import { parse } from 'yaml'
 import { parseBlogPost } from '../src/lib/blogContent.js'
+import { BLOG_CATEGORIES } from '../src/lib/blogCategories.js'
 
 const root = fileURLToPath(new URL('../', import.meta.url))
 const directory = path.join(root, 'src/content/blog')
 const seen = new Set()
 let count = 0
+
+const cms = parse(fs.readFileSync(path.join(root, 'public/admin/config.yml'), 'utf8'))
+const categoryField = cms.collections.find(collection => collection.name === 'posts')
+  ?.fields.find(field => field.name === 'category')
+if (JSON.stringify(categoryField?.options) !== JSON.stringify(BLOG_CATEGORIES)
+    || !BLOG_CATEGORIES.includes(categoryField?.default)) {
+  throw new Error('관리자 카테고리를 src/lib/blogCategories.js와 동일하게 설정해주세요.')
+}
 
 const checkImage = (href, folder) => {
   if (!href || /^(?:https?:|data:|\/\/)/i.test(href)) return
@@ -36,4 +46,4 @@ for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
   count += 1
 }
 
-console.log(`블로그 ${count}개 글의 메타데이터·주소·이미지 경로 확인 완료`)
+console.log(`블로그 ${count}개 글의 메타데이터·주소·이미지 경로·관리자 카테고리 확인 완료`)

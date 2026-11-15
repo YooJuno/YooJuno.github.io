@@ -2,7 +2,7 @@
 title: "LiDAR 지면 분리: GSeg3D와 FugSeg"
 slug: "lidar-ground-segmentation"
 date: "2026-11-12"
-category: "개발"
+category: "로보틱스"
 tags:
   - LiDAR
   - Ground Segmentation

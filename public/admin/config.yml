@@ -61,8 +61,8 @@ collections:
       - label: 카테고리
         name: category
         widget: select
-        options: [개발, 음악, 여행, 코딩테스트, 트레이딩]
-        default: 개발
+        options: [로보틱스, 웹·보안, 개발 환경·배포, 트레이딩]
+        default: 로보틱스
       - label: 태그
         name: tags
         widget: list

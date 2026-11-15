@@ -1,6 +1,7 @@
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useNavigationType, useSearchParams } from 'react-router-dom'
 import { getCachedSearchText, loadSearchText, posts } from '../../lib/posts'
+import { BLOG_CATEGORIES } from '../../lib/blogCategories'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import '../../styles/pages/blog.css'
 
@@ -17,13 +18,21 @@ function Blog() {
   if (searchDraft.locationKey !== location.key) {
     setSearchDraft({ locationKey: location.key, value: query })
   }
-  const activeCategory = searchParams.get('category') || ''
+  const requestedCategory = searchParams.get('category') || ''
+  const activeCategory = BLOG_CATEGORIES.includes(requestedCategory) ? requestedCategory : ''
   const normalizedQuery = query.trim().toLowerCase()
   const deferredQuery = useDeferredValue(normalizedQuery)
   const [searchText, setSearchText] = useState(getCachedSearchText)
   const [searchError, setSearchError] = useState(false)
 
   useDocumentTitle(activeCategory ? `블로그 · ${activeCategory}` : undefined)
+
+  useEffect(() => {
+    if (!searchParams.has('category') || activeCategory) return
+    const next = new URLSearchParams(searchParams)
+    next.delete('category')
+    setSearchParams(next, { replace: true, preventScrollReset: true, state: { blogFilter: true } })
+  }, [activeCategory, searchParams, setSearchParams])
 
   useEffect(() => {
     if (!normalizedQuery || searchText) return undefined
@@ -53,6 +62,12 @@ function Blog() {
   if (query) resultParams.set('q', query)
   else resultParams.delete('q')
   const resultSearch = resultParams.toString()
+  const categoryParams = category => {
+    const next = new URLSearchParams(resultParams)
+    if (category) next.set('category', category)
+    else next.delete('category')
+    return next
+  }
   const updateQuery = value => {
     setSearchDraft({ locationKey: location.key, value })
     const next = new URLSearchParams(searchParams)
@@ -67,10 +82,35 @@ function Blog() {
         <header className="section-head">
           <h1>블로그</h1>
           <p>개발 과정과 기술 메모를 기록합니다.</p>
-          {activeCategory && (
-            <p className="category-note"><span>{activeCategory}</span><Link to="/blog">전체 글</Link></p>
-          )}
         </header>
+
+        <div className="blog-category-controls">
+          <nav className="blog-category-links" aria-label="글 분류">
+            {['', ...BLOG_CATEGORIES].map(category => (
+              <Link
+                key={category || 'all'}
+                to={{ pathname: location.pathname, search: categoryParams(category).toString() }}
+                state={{ blogFilter: true }}
+                preventScrollReset
+                aria-current={activeCategory === category ? 'page' : undefined}
+              >{category || '전체'}</Link>
+            ))}
+          </nav>
+          <div className="blog-category-select">
+            <label htmlFor="blog-category">글 분류</label>
+            <select
+              id="blog-category"
+              value={activeCategory}
+              onChange={event => setSearchParams(categoryParams(event.target.value), {
+                preventScrollReset: true,
+                state: { blogFilter: true },
+              })}
+            >
+              <option value="">전체</option>
+              {BLOG_CATEGORIES.map(category => <option key={category} value={category}>{category}</option>)}
+            </select>
+          </div>
+        </div>
 
         <form className="blog-controls" role="search" onSubmit={event => event.preventDefault()}>
           <label className="visually-hidden" htmlFor="blog-search">글 검색</label>
@@ -100,7 +140,11 @@ function Blog() {
             <div className="empty">
               <p>{normalizedQuery ? '검색 결과가 없습니다.' : activeCategory ? `“${activeCategory}” 카테고리에 등록된 글이 없습니다.` : '아직 등록된 글이 없습니다.'}</p>
               {normalizedQuery && <button type="button" className="text-button" onClick={() => updateQuery('')}>검색어 지우기</button>}
-              {activeCategory && <Link to="/blog">전체 글 보기</Link>}
+              {activeCategory && <Link
+                to={{ pathname: location.pathname, search: categoryParams('').toString() }}
+                state={{ blogFilter: true }}
+                preventScrollReset
+              >전체 분류에서 보기</Link>}
             </div>
           )}
           {filtered.map(post => (

@@ -2,7 +2,7 @@
 title: "Jenkins"
 slug: "jenkins-ci-cd-guide"
 date: "2026-02-23"
-category: "개발"
+category: "개발 환경·배포"
 tags:
   - Jenkins
   - CI/CD

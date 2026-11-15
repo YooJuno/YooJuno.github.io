@@ -2,7 +2,7 @@
 title: "로봇 시스템 엔지니어"
 slug: "systems-engineering-role"
 date: "2026-10-14"
-category: "개발"
+category: "로보틱스"
 tags:
   - Systems Engineering
   - Robotics
