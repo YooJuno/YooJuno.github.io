@@ -2,7 +2,7 @@
 title: "[Nav2] Behavior Tree와 주행 복구"
 slug: "nav2-behavior-tree"
 date: "2026-11-15"
-category: "로보틱스"
+category: "Planning"
 tags:
   - ROS2
   - Nav2

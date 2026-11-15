@@ -2,7 +2,7 @@
 title: "[Nav2] 위치 추정과 경로 계획"
 slug: "nav2-navigation-study"
 date: "2026-10-14"
-category: "로보틱스"
+category: "Planning"
 tags:
   - ROS2
   - Nav2
