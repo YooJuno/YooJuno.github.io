@@ -2,7 +2,7 @@
 title: "CORS"
 slug: "cors"
 date: "2026-02-20"
-category: "개발"
+category: "웹·보안"
 tags:
   - Web
   - 보안

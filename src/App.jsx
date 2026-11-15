@@ -19,6 +19,7 @@ const WebServiceMapEditor = lazy(() => import('./pages/webservice/WebServiceMapE
 
 const NotFound = lazy(() => import('./pages/NotFound.jsx'))
 import ErrorBoundary from './components/ErrorBoundary.jsx'
+import { BLOG_CATEGORIES } from './lib/blogCategories'
 import { normalizePathname } from './lib/routeMeta'
 
 const ScrollToTop = () => {
@@ -28,11 +29,12 @@ const ScrollToTop = () => {
   useEffect(() => {
     const previous = previousLocation.current
     previousLocation.current = location
-    const searchUpdate = normalizePathname(location.pathname) === '/blog'
+    const blogControlUpdate = normalizePathname(location.pathname) === '/blog'
       && normalizePathname(previous.pathname) === '/blog'
       && previous.search !== location.search && previous.hash === location.hash
-      && new URLSearchParams(previous.search).get('category') === new URLSearchParams(location.search).get('category')
-    if (searchUpdate) return
+      && (location.state?.blogFilter === true
+        || new URLSearchParams(previous.search).get('category') === new URLSearchParams(location.search).get('category'))
+    if (blogControlUpdate) return
     if (!location.hash && document.activeElement instanceof HTMLElement) {
       document.activeElement.blur()
     }
@@ -64,13 +66,10 @@ const NAV_SECTIONS = [
     id: 'blog',
     to: '/blog',
     label: '블로그',
-    items: [
-      { to: '/blog?category=개발', label: '개발' },
-      { to: '/blog?category=음악', label: '음악' },
-      { to: '/blog?category=여행', label: '여행' },
-      { to: '/blog?category=코딩테스트', label: '코딩테스트' },
-      { to: '/blog?category=트레이딩', label: '트레이딩' },
-    ],
+    items: BLOG_CATEGORIES.map(category => ({
+      to: `/blog?${new URLSearchParams({ category })}`,
+      label: category,
+    })),
   },
   {
     id: 'web-service',

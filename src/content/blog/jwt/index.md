@@ -2,7 +2,7 @@
 title: "JWT"
 slug: "jwt"
 date: "2026-02-21"
-category: "개발"
+category: "웹·보안"
 tags:
   - Web
   - 보안

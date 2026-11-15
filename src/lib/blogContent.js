@@ -1,4 +1,5 @@
 import { parseFrontMatter } from './frontMatter.js'
+import { BLOG_CATEGORIES } from './blogCategories.js'
 
 export const parseBlogPost = (raw, slugFromPath) => {
   const { data, content } = parseFrontMatter(raw)
@@ -11,6 +12,9 @@ export const parseBlogPost = (raw, slugFromPath) => {
   if (slug !== slugFromPath) fail('slug와 글 폴더 이름이 달라 기존 주소가 변경될 수 있습니다.')
   for (const field of ['title', 'date', 'category', 'summary']) {
     if (typeof data[field] !== 'string' || !data[field].trim()) fail(`${field}를 입력해주세요.`)
+  }
+  if (!BLOG_CATEGORIES.includes(data.category)) {
+    fail(`category는 ${BLOG_CATEGORIES.join(', ')} 중에서 선택해주세요.`)
   }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(data.date) || Number.isNaN(Date.parse(data.date)) ||
       new Date(data.date).toISOString().slice(0, 10) !== data.date) {
