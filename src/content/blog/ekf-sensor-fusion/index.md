@@ -2,7 +2,7 @@
 title: "EKF 센서 융합"
 slug: "ekf-sensor-fusion"
 date: "2026-11-12"
-category: "개발"
+category: "로보틱스"
 tags:
   - EKF
   - State Estimation

@@ -2,7 +2,7 @@
 title: "사족보행 오도메트리: 관절·IMU 융합"
 slug: "quadruped-leg-imu-odometry"
 date: "2026-11-12"
-category: "개발"
+category: "로보틱스"
 tags:
   - Legged Odometry
   - Sensor Fusion

@@ -2,7 +2,7 @@
 title: "GitHub Actions"
 slug: "github-actions-guide"
 date: "2026-10-14"
-category: "개발"
+category: "개발 환경·배포"
 tags:
   - GitHub Actions
   - CI/CD
