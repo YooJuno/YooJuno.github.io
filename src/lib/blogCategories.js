@@ -3,6 +3,7 @@ export const BLOG_CATEGORIES = [
   'Planning',
   'Control',
   '시스템 통합',
+  '프로그래밍',
   '웹·보안',
   '개발 환경·배포',
   '트레이딩',

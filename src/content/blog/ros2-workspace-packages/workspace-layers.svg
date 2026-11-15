@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="340" viewBox="0 0 680 340" role="img" aria-labelledby="title desc">
+  <title id="title">ROS 2 underlay와 overlay 빌드 구조</title>
+  <desc id="desc">설치된 ROS 2를 underlay로 읽고 개발 워크스페이스의 src를 colcon으로 빌드한다. install의 환경을 읽은 실행 셸에서 overlay 패키지를 사용한다.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#444"/></marker></defs>
+  <rect width="680" height="340" fill="#fff"/>
+  <g fill="none" stroke="#555" stroke-width="1.5">
+    <rect x="34" y="26" width="612" height="76" rx="4"/>
+    <rect x="34" y="151" width="180" height="70" rx="4"/>
+    <rect x="250" y="151" width="180" height="70" rx="4"/>
+    <rect x="466" y="151" width="180" height="70" rx="4"/>
+    <path d="M 214 186 H 247 M 430 186 H 463" marker-end="url(#arrow)"/>
+    <path d="M 340 102 V 148" marker-end="url(#arrow)"/>
+    <rect x="166" y="271" width="348" height="44" rx="4"/>
+    <path d="M 556 221 V 293 H 518" marker-end="url(#arrow)"/>
+  </g>
+  <g fill="#202020" font-family="system-ui, sans-serif" text-anchor="middle">
+    <text x="340" y="57" font-size="23" font-weight="600">Underlay: /opt/ros/jazzy</text>
+    <text x="340" y="84" font-size="18">ROS 2 + installed dependencies</text>
+    <text x="124" y="193" font-size="23">src/</text>
+    <text x="340" y="193" font-size="23">colcon build</text>
+    <text x="556" y="193" font-size="23">install/</text>
+    <text x="340" y="252" font-size="18">Overlay: ~/ros2_ws</text>
+    <text x="340" y="300" font-size="21">source environment → run node</text>
+  </g>
+</svg>
