@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigationType, useSearchParams } from 'react-rou
 import { getCachedSearchText, loadSearchText, posts } from '../../lib/posts'
 import { BLOG_CATEGORIES, normalizeBlogCategory } from '../../lib/blogCategories'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
+import BlogDates from '../../components/BlogDates'
 import '../../styles/pages/blog.css'
 
 function Blog() {
@@ -158,7 +159,7 @@ function Blog() {
             >
               <div className="post-meta">
                 <span className="post-category">{post.category}</span>
-                <time dateTime={post.date}>{post.date}</time>
+                <BlogDates date={post.date} updated={post.updated} />
               </div>
               <h2>{post.title}</h2>
               <p>{post.summary}</p>

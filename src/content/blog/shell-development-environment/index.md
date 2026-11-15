@@ -1,7 +1,8 @@
 ---
 title: "Bash·Zsh 개발 환경 설정"
 slug: "shell-development-environment"
-date: "2026-11-15"
+date: "2025-03-25"
+updated: "2026-11-15"
 category: "개발 환경·배포"
 tags: [Bash, Zsh, Linux]
 summary: "시작 파일·PATH·alias와 프로젝트별 환경 분리."

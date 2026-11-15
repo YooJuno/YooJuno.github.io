@@ -23,12 +23,12 @@ export default function blogContentPlugin({ rootDir, readImageSize }) {
     .flatMap(entry => {
       const file = path.join(directory, entry.name, 'index.md')
       if (!fs.existsSync(file)) return []
-      const { slug, title, date, category, tags, summary, content } = parseBlogPost(fs.readFileSync(file, 'utf8'), entry.name)
-      return [{ slug, title, date, category, tags, summary, content, file }]
+      const { slug, title, date, updated, category, tags, summary, content } = parseBlogPost(fs.readFileSync(file, 'utf8'), entry.name)
+      return [{ slug, title, date, updated, category, tags, summary, content, file }]
     })
     .sort((first, second) => second.date.localeCompare(first.date))
 
-  const metadata = ({ slug, title, date, category, tags, summary }) => ({ slug, title, date, category, tags, summary })
+  const metadata = ({ slug, title, date, updated, category, tags, summary }) => ({ slug, title, date, updated, category, tags, summary })
 
   const renderPost = (post, context) => {
     const renderer = new marked.Renderer()
