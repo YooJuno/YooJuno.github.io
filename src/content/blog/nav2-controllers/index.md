@@ -2,7 +2,7 @@
 title: "[Nav2] 컨트롤러 비교 — RPP·DWB·MPPI"
 slug: "nav2-controllers"
 date: "2026-11-15"
-category: "로보틱스"
+category: "Control"
 tags:
   - ROS2
   - Nav2
