@@ -1,7 +1,7 @@
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useNavigationType, useSearchParams } from 'react-router-dom'
 import { getCachedSearchText, loadSearchText, posts } from '../../lib/posts'
-import { BLOG_CATEGORIES } from '../../lib/blogCategories'
+import { BLOG_CATEGORIES, normalizeBlogCategory } from '../../lib/blogCategories'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import '../../styles/pages/blog.css'
 
@@ -19,7 +19,7 @@ function Blog() {
     setSearchDraft({ locationKey: location.key, value: query })
   }
   const requestedCategory = searchParams.get('category') || ''
-  const activeCategory = BLOG_CATEGORIES.includes(requestedCategory) ? requestedCategory : ''
+  const activeCategory = normalizeBlogCategory(requestedCategory)
   const normalizedQuery = query.trim().toLowerCase()
   const deferredQuery = useDeferredValue(normalizedQuery)
   const [searchText, setSearchText] = useState(getCachedSearchText)
@@ -28,11 +28,12 @@ function Blog() {
   useDocumentTitle(activeCategory ? `블로그 · ${activeCategory}` : undefined)
 
   useEffect(() => {
-    if (!searchParams.has('category') || activeCategory) return
+    if (!searchParams.has('category') || (requestedCategory && requestedCategory === activeCategory)) return
     const next = new URLSearchParams(searchParams)
-    next.delete('category')
+    if (activeCategory) next.set('category', activeCategory)
+    else next.delete('category')
     setSearchParams(next, { replace: true, preventScrollReset: true, state: { blogFilter: true } })
-  }, [activeCategory, searchParams, setSearchParams])
+  }, [activeCategory, requestedCategory, searchParams, setSearchParams])
 
   useEffect(() => {
     if (!normalizedQuery || searchText) return undefined

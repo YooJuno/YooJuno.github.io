@@ -61,7 +61,7 @@ collections:
       - label: 카테고리
         name: category
         widget: select
-        options: [Perception, Planning, Control, 로보틱스, 웹·보안, 개발 환경·배포, 트레이딩]
+        options: [Perception, Planning, Control, 시스템 통합, 웹·보안, 개발 환경·배포, 트레이딩]
         default: Perception
       - label: 태그
         name: tags
