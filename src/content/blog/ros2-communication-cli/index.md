@@ -1,7 +1,8 @@
 ---
 title: "[ROS 2] 토픽·서비스·액션과 CLI"
 slug: "ros2-communication-cli"
-date: "2026-11-15"
+date: "2025-04-04"
+updated: "2026-11-15"
 category: "시스템 통합"
 tags: [ROS2, QoS, CLI]
 summary: "통신 방식·인터페이스·QoS와 실행 중인 노드 진단."

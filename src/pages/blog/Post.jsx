@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { getLoadedPost, getPostBySlug, loadPostBySlug } from '../../lib/posts'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
+import BlogDates from '../../components/BlogDates'
 import '../../styles/pages/blog.css'
 
 function Post() {
@@ -54,7 +55,7 @@ function Post() {
         <header className="post-header">
           <p className="post-meta">
             <Link className="post-category" to={`/blog?category=${encodeURIComponent(metadata.category)}`}>{metadata.category}</Link>
-            <time dateTime={metadata.date}>{metadata.date}</time>
+            <BlogDates date={metadata.date} updated={metadata.updated} />
           </p>
           <h1>{metadata.title}</h1>
         </header>
