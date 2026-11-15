@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="600" viewBox="0 0 640 600" role="img" aria-labelledby="title desc">
+  <title id="title">클러스터 연결 조건</title>
+  <desc id="desc">A와 B, B와 C가 가까우면 A와 C가 멀어도 연결된다. 높이가 다른 점 쌍은 3D와 XY 거리 규칙에 따라 직접 연결 여부가 달라진다.</desc>
+  <rect width="640" height="600" fill="#fff"/>
+  <g font-family="Noto Sans KR, sans-serif" fill="#202124">
+    <text x="28" y="38" font-size="23" font-weight="600">클러스터 연결 조건</text>
+    <rect x="28" y="60" width="584" height="226" rx="4" fill="#fafafa" stroke="#dedede"/>
+    <text x="48" y="92" font-size="17" font-weight="600">연쇄 연결</text>
+    <path d="M110 155H510" stroke="#555" stroke-width="2"/>
+    <g fill="#202124">
+      <circle cx="110" cy="155" r="7"/>
+      <circle cx="310" cy="155" r="7"/>
+      <circle cx="510" cy="155" r="7"/>
+    </g>
+    <g font-size="16" text-anchor="middle">
+      <text x="110" y="134">A</text><text x="310" y="134">B</text><text x="510" y="134">C</text>
+      <text x="210" y="185">0.40 m</text><text x="410" y="185">0.40 m</text>
+    </g>
+    <text x="48" y="230" font-size="16">ε = 0.55 m → A·B·C는 같은 연결 성분</text>
+    <text x="48" y="258" font-size="15">A–C 거리는 0.80 m지만 B를 통해 연결된다.</text>
+    <rect x="28" y="306" width="584" height="266" rx="4" fill="#fafafa" stroke="#dedede"/>
+    <text x="48" y="339" font-size="17" font-weight="600">높이가 다른 점 쌍</text>
+    <path d="M86 486V368M86 486H340" fill="none" stroke="#888"/>
+    <path d="M158 462L258 386M158 462H258V386" fill="none" stroke="#555" stroke-dasharray="5 4"/>
+    <circle cx="158" cy="462" r="6" fill="#202124"/><circle cx="258" cy="386" r="6" fill="#202124"/>
+    <g font-size="14">
+      <text x="62" y="375">z</text><text x="326" y="508">XY</text>
+      <text x="166" y="484">ΔXY = 0.20 m</text>
+      <text x="276" y="427">Δz = 1.00 m</text>
+      <text x="386" y="386">ε = 0.55 m</text>
+      <text x="386" y="414">수직 간격 ≤ 2.50 m</text>
+    </g>
+    <text x="48" y="531" font-size="15">3D 거리 1.02 m: 직접 연결되지 않음</text>
+    <text x="48" y="554" font-size="15">XY 거리 0.20 m + 수직 조건 통과: 직접 연결</text>
+  </g>
+</svg>
