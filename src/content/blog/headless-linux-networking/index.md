@@ -1,7 +1,7 @@
 ---
 title: "모니터 없는 Linux 장치의 Wi-Fi·SSH 연결"
 slug: "headless-linux-networking"
-date: "2026-11-15"
+date: "2025-03-01"
 updated: "2026-11-15"
 category: "시스템 통합"
 tags: [Linux, NetworkManager, SSH]

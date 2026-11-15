@@ -1,7 +1,7 @@
 ---
 title: "[ROS 2] 워크스페이스와 패키지"
 slug: "ros2-workspace-packages"
-date: "2026-11-15"
+date: "2025-03-01"
 updated: "2026-11-15"
 category: "시스템 통합"
 tags: [ROS2, colcon, ament]

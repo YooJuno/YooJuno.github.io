@@ -1,7 +1,7 @@
 ---
 title: "Windows C++ 개발 환경: WSL·MSYS2"
 slug: "windows-wsl-cpp"
-date: "2026-11-15"
+date: "2025-03-01"
 updated: "2026-11-15"
 category: "개발 환경·배포"
 tags: [Windows, WSL, C++]

@@ -1,7 +1,7 @@
 ---
 title: "[Python] 자료구조와 복사·정렬"
 slug: "python-collections"
-date: "2026-11-15"
+date: "2025-03-01"
 updated: "2026-11-15"
 category: "프로그래밍"
 tags: [Python, Collections, Algorithms]

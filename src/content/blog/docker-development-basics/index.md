@@ -1,7 +1,7 @@
 ---
 title: "Docker 개발 환경: 실행·파일·포트"
 slug: "docker-development-basics"
-date: "2026-11-15"
+date: "2025-03-01"
 updated: "2026-11-15"
 category: "개발 환경·배포"
 tags: [Docker, Containers, Linux]

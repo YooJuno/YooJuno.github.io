@@ -1,7 +1,7 @@
 ---
 title: "Visual SLAM 빌드·실행 환경"
 slug: "visual-slam-development-environment"
-date: "2026-11-15"
+date: "2025-03-01"
 updated: "2026-11-15"
 category: "Perception"
 tags: [SLAM, OpenCV, ROS2]

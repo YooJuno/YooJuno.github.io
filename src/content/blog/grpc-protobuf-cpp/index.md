@@ -1,7 +1,7 @@
 ---
 title: "gRPC·Protobuf C++ 통신"
 slug: "grpc-protobuf-cpp"
-date: "2026-11-15"
+date: "2025-03-01"
 updated: "2026-11-15"
 category: "시스템 통합"
 tags: [gRPC, Protobuf, C++]

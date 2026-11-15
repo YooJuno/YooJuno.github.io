@@ -1,7 +1,7 @@
 ---
 title: "CMake·OpenCV·Eigen 개발 환경"
 slug: "cmake-opencv-eigen"
-date: "2026-11-15"
+date: "2025-03-01"
 updated: "2026-11-15"
 category: "개발 환경·배포"
 tags: [CMake, OpenCV, Eigen]

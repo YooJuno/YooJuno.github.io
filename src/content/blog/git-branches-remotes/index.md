@@ -1,7 +1,7 @@
 ---
 title: "[Git] 브랜치와 원격 저장소"
 slug: "git-branches-remotes"
-date: "2026-11-15"
+date: "2025-03-01"
 updated: "2026-11-15"
 category: "개발 환경·배포"
 tags: [Git, Branch, Workflow]

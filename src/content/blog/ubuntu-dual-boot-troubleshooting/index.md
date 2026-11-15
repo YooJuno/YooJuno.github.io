@@ -1,7 +1,7 @@
 ---
 title: "Ubuntu 듀얼부팅: GRUB과 시간 설정"
 slug: "ubuntu-dual-boot-troubleshooting"
-date: "2026-11-15"
+date: "2025-03-01"
 updated: "2026-11-15"
 category: "개발 환경·배포"
 tags: [Ubuntu, UEFI, GRUB]

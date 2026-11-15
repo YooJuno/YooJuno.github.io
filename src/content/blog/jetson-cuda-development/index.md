@@ -1,7 +1,7 @@
 ---
 title: "Jetson CUDA 개발 환경과 CMake"
 slug: "jetson-cuda-development"
-date: "2026-11-15"
+date: "2026-01-21"
 updated: "2026-11-15"
 category: "시스템 통합"
 tags: [Jetson, CUDA, CMake]
