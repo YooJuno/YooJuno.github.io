@@ -2,7 +2,7 @@
 title: "ESP-AT: Wi-Fi 연결과 TCP 데이터 송수신"
 slug: "esp-at-networking"
 date: "2025-03-01"
-updated: "2026-11-15"
+updated: "2025-03-01"
 category: "시스템 통합"
 tags: [ESP32, ESP-AT, TCP]
 summary: "AT 명령 흐름·전송 바이트 수·비동기 응답 처리."

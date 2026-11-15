@@ -2,7 +2,7 @@
 title: "CMake·OpenCV·Eigen 개발 환경"
 slug: "cmake-opencv-eigen"
 date: "2025-03-01"
-updated: "2026-11-15"
+updated: "2025-03-01"
 category: "개발 환경·배포"
 tags: [CMake, OpenCV, Eigen]
 summary: "라이브러리 검색·타깃 연결·버전 충돌과 빌드 진단."

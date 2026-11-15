@@ -2,7 +2,7 @@
 title: "Docker 개발 환경: 실행·파일·포트"
 slug: "docker-development-basics"
 date: "2025-03-01"
-updated: "2026-11-15"
+updated: "2025-03-01"
 category: "개발 환경·배포"
 tags: [Docker, Containers, Linux]
 summary: "컨테이너 수명·파일 보존·bind mount·포트 공개."

@@ -57,12 +57,16 @@ collections:
         date_format: YYYY-MM-DD
         time_format: false
         format: YYYY-MM-DD
-        hint: 기존 글의 원래 작성일을 유지해주세요. 최종 수정일은 저장 시 자동 기록됩니다.
+        hint: 기존 글의 원래 작성일을 유지해주세요. 노션에서 이전한 글은 원문 생성일을 사용합니다.
       - label: 최종 수정일
         name: updated
-        widget: hidden
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: false
+        format: YYYY-MM-DD
         required: false
         default: ''
+        hint: 노션에서 이전한 글은 원문의 마지막 편집일을 입력합니다. 저장 시 자동으로 바뀌지 않습니다.
       - label: 카테고리
         name: category
         widget: select
