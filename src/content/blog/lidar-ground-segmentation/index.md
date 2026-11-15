@@ -1,8 +1,8 @@
 ---
-title: "LiDAR 지면 분리: GSeg3D와 FugSeg"
+title: "[LiDAR] 지면 분리 — GSeg3D·FugSeg"
 slug: "lidar-ground-segmentation"
 date: "2026-11-12"
-category: "로보틱스"
+category: "Perception"
 tags:
   - LiDAR
   - Ground Segmentation
@@ -10,12 +10,18 @@ tags:
   - FugSeg
   - ROS2
   - Perception
-summary: "GSeg3D·FugSeg의 원리와 ROS 2 적용·검증."
+summary: "GSeg3D·FugSeg의 원리와 LiDAR Studio·ROS 2 적용."
 ---
 
 LiDAR 지면 분리(ground segmentation)는 포인트 클라우드에서 **지면에 해당하는 점과 그 외의 점을 구분하는 작업**이다. 평평한 실내에서는 높이 기준만으로 시작할 수 있지만, 경사로·연석·잔디·반사체가 있는 환경에서는 지면의 국소 형상과 연결 관계가 필요하다.
 
-**GSeg3D·FugSeg의 논문과 공개 구현**을 바탕으로 원리·파라미터·ROS 2 연결을 정리한다. 성능 수치는 각 논문의 보고값이며, 적용 절차는 별도 검증을 위한 제안이다.
+**GSeg3D·FugSeg의 논문과 공개 구현**, LiDAR Studio의 실제 연결 코드를 기준으로 원리·파라미터·좌표계를 정리한다. 논문의 성능 수치와 앱 화면의 관찰 결과는 구분한다.
+
+**LiDAR 시리즈**
+
+- **지면 분리 — GSeg3D·FugSeg** — 현재 글
+- [포인트 클라우드 클러스터링](/blog/lidar-point-cloud-clustering/)
+- [3D 객체 검출 — CenterPoint](/blog/lidar-object-detection/)
 
 <details class="post-toc" id="목차">
 <summary>목차</summary>
@@ -24,7 +30,7 @@ LiDAR 지면 분리(ground segmentation)는 포인트 클라우드에서 **지�
 2. [기본 분리 방식](#2-기본-분리-방식)
 3. [GSeg3D 논문과 구현](#3-gseg3d-논문과-구현)
 4. [FugSeg 논문과 구현](#4-fugseg-논문과-구현)
-5. [비교와 선택 기준](#5-비교와-선택-기준)
+5. [비교와 선택 기준](#5-비교와-선택-기준) · [LiDAR Studio 적용](#52-lidar-studio의-구현)
 6. [ROS 2 적용](#6-ros-2-적용)
 7. [센서별 튜닝](#7-센서별-튜닝)
 8. [평가 지표와 실험](#8-평가-지표와-실험)
@@ -231,6 +237,8 @@ SGL은 가까운 곳에서 먼 곳으로만 한 번 훑는 처리보다 넓은 �
 
 ## 5. 비교와 선택 기준
 
+### 5.1 논문·공개 코어 비교
+
 | 항목 | GSeg3D | FugSeg |
 | --- | --- | --- |
 | 주 표현 | x·y·z의 3D 격자 | 방위각·거리의 극좌표 격자와 높이 정보 |
@@ -248,6 +256,74 @@ SGL은 가까운 곳에서 먼 곳으로만 한 번 훑는 처리보다 넓은 �
 4. **최종 판단:** 분리 정확도뿐 아니라 지연·설정 복잡도·센서 변경 비용까지 포함한다.
 
 선택은 동일한 rosbag과 평가 기준으로 검증한 뒤 결정한다.
+
+### 5.2 LiDAR Studio의 구현
+
+앱 부분의 기준은 [`4107c96`](https://github.com/YooJuno/lidar_studio/tree/4107c96b558ec73ccb3b418c1d66f57c43472769)이다. 다음 여섯 방법을 같은 입력·정렬·화면에서 비교할 수 있다.
+
+| Method | 앱에서의 처리 | 확인할 차이 |
+| --- | --- | --- |
+| FugSeg | 공개 코어에 센서 높이·측정 오차·버퍼 설정 연결 | 반사 잡음·지면 연결·높이 보간 |
+| GSeg3D | 공개 코어의 두 단계 3D 격자 분리 | 평면·연결성·기준 높이 |
+| Patchwork++ | 공개 구현의 적응형 국소 평면 처리 | 영역별 지면 추정과 시간에 따른 상태 |
+| Fast grid | 앱의 coarse/fine 높이 격자 | 국소 저점·연결·높이 허용 폭 |
+| Grid | 앱의 연결된 높이 셀 | 셀 간 높이 변화와 연결 범위 |
+| RANSAC | 앱의 전역 평면과 국소 높이 확인 | 평면 하나로 설명되지 않는 경사 변화 |
+
+Fast grid를 GSeg3D의 GPU 버전으로 보거나, Grid를 FugSeg의 극좌표 격자와 같은 구현으로 보면 안 된다. 이름이 비슷해도 분리 경로가 다르다. [방식 선택 코드](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/src/algorithms/ground_removal.cpp).
+
+Patchwork++는 Patchwork를 확장해 적응형 지면 가능성 추정(A-GLE), 시간 정보를 이용한 재분류(TGR), 영역별 수직 평면 처리(R-VPF), 반사 잡음 제거(RNR)를 제시한다. 시간 상태를 쓰는 방법을 비교할 때는 프레임 순서·시퀀스 초기화 조건도 맞춘다. [Patchwork++, IROS 2022](https://arxiv.org/abs/2207.11919).
+
+### 5.3 코어와 어댑터의 경계
+
+```text
+입력 점군 → 파일 기준 높이 보정·Align
+  ├─ 전체 정렬 점군 → 별도 학습 검출
+  └─ 지면 제외 ROI를 뺀 점 → 지면 분리
+       → 지면 / 비지면 + 분리에서 제외한 점
+       → 비지면 군집화 → 표시 ROI·표시 모드
+```
+
+Ground exclusion은 **분리 연산에서 제외하는 영역**이다. 제외한 점은 지면으로 라벨링하지 않고 비지면 쪽에 다시 붙인다. Display ROI·Ground only·Obstacles only는 표시 선택이며, 학습 모델 입력을 같은 범위로 자르는 기능이 아니다.
+
+| 어댑터 | 실제 연결 |
+| --- | --- |
+| GSeg3D | 1차 지면 후보만 2차로 전달. 최종 지면을 원본 인덱스로 복원하고 나머지 점은 비지면으로 보존 |
+| FugSeg | 정렬 좌표를 코어가 기대하는 센서 기준 높이로 바꾸고, 결과 인덱스를 원본 점에 대응 |
+
+앱의 GSeg3D 코어는 `116f510`이고 앞 절의 공개 코어 분석 기준 `e5aa4c2`와 구분한다. 빌드 단계에서 희소 셀·가상 seed의 초기 상태와 평면 근거 검사를 생성 헤더에 보완한다. FugSeg는 `623f860` 코어에 장착 높이·각도/거리 오차 설정, KITTI 고정 자차 crop 해제, 입력 크기에 따른 버퍼 확장을 연결한다. **상위 저장소의 기본값과 앱의 실제 실행 조건은 다르다.**
+
+[GSeg3D 어댑터](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/src/algorithms/ground_removal_gseg3d.cpp), [생성 헤더 보완](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/cmake/GSeg3D.cmake), [FugSeg 어댑터](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/src/algorithms/ground_removal_fugseg.cpp), [센서 설정 연결](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/cmake/FugSeg.cmake).
+
+높이 설정은 특히 구분해야 한다.
+
+| 값 | 의미 |
+| --- | --- |
+| 앱 `gseg3d_ground_height_m` | 정렬 좌표에서의 지면 기준 z. 센서에서 지면까지의 거리 아님 |
+| 앱 `sensor_height_m` | Align·파일 높이 보정·지면 기준으로 계산해 코어에 전달하는 장착 높이 |
+| ROS 2 `lidar_to_ground` | 다음 절의 공식 wrapper가 사용하는 부호 있는 센서–지면 거리 |
+
+BIN 파일의 초기 높이 보정은 첫 프레임 z 분포의 12% 지점을 지면으로 가정한다. 이는 캘리브레이션 측정값이 아니다. 경사·저지대·잡음이 섞이면 로봇 근방의 바닥과 차이가 날 수 있으므로 Align과 Ground reference를 실제 점군에서 확인한다. [파일 높이 추정](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/src/data_io.cpp).
+
+### 5.4 실제 화면과 비교 절차
+
+![밝은 LiDAR Studio에서 공개 예제에 FugSeg를 적용하고 전체 점과 지면 분류를 표시한 실제 화면](./studio-fugseg.png)
+
+**FugSeg.** 공개 Patchwork++ 예제 `000000.bin`의 실제 CPU 실행 화면이다. Ground → All points에서 지면 라벨을 함께 표시했다.
+
+![같은 프레임과 시점에서 GSeg3D 지면 분리를 표시한 실제 LiDAR Studio 화면](./studio-gseg3d.png)
+
+**GSeg3D.** 같은 입력·시점·지면 기준을 유지하고 방식만 바꿨다. 화면의 Ground points와 처리 시간은 각 실행의 상태값이며 정확도나 알고리즘 간 성능 순위가 아니다.
+
+이 예제는 초기 파일 정렬 뒤 근방 바닥의 높이를 참고해 Ground reference를 `0.22 m`로 두었다. 다른 센서에 적용할 권장 높이가 아니다. 원본 포인트·알고리즘 결과를 재구성하지 않았으며, 정답 라벨 대조·ROS 센서 연결·주행 검증은 포함하지 않는다. [화면 출처·설정·데이터 이용 조건](/content/images/blog/lidar-study/SOURCE.md).
+
+1. 프레임을 멈추고 좌표축·높이·차체 기울기를 확인한다.
+2. Method를 선택하고 All points → Ground only → Obstacles only를 번갈아 본다.
+3. 바닥 누락과 낮은 물체의 지면 오분류를 따로 찾는다.
+4. 한 번에 한 파라미터만 바꾸고 동일한 시점·프레임에서 비교한다.
+5. 경사·원거리·반사체·가림 장면을 추가하고 설정을 프로파일로 저장한다.
+
+앱 조작은 [LiDAR Studio 사용 안내](/utilities/lidar-studio/), 비지면 점의 후속 처리는 [클러스터링](/blog/lidar-point-cloud-clustering/)·[객체 검출](/blog/lidar-object-detection/)에서 이어진다.
 
 ## 6. ROS 2 적용
 
@@ -337,13 +413,11 @@ ROS 2에 연결할 때는 최소한 다음 작업이 필요하다.
 
 `_lidarHeight=1.73`, KITTI 차체 영역, 특정 각도 오차를 XT32·VLP16·다른 설치 높이에 그대로 사용하지 않는다. 범용적인 표현 방식과 **코드의 센서별 초기값**은 다른 문제다.
 
-### 6.5 Nav2·사족보행 연결
+### 6.5 Nav2·SLAM 연결
 
 비지면 점군은 obstacle/voxel layer의 marking 입력 후보가 된다. 다만 ground 제거 후 남은 점만 clearing에도 사용하면, 원래 지면을 맞고 끝나던 ray가 사라져 이전 장애물의 제거 동작이 바뀔 수 있다. marking·clearing·관측 범위를 별도로 검증한다.
 
 지면 정보까지 사용하는 [Nav2 Ground Terrain 튜토리얼](https://docs.nav2.org/rolling/tutorials/general_tutorials/navigation2_with_ground_consistency_layer/navigation2_with_ground_consistency_layer/)도 참고할 수 있다. 링크는 rolling 문서이므로 사용하는 ROS 배포판에서 플러그인 제공 여부와 인터페이스를 따로 확인한다.
-
-사족보행에서는 경사·발 디딤면·단차·복부 여유·접촉 안정성을 추가로 고려한다. 계단의 윗면이 지면으로 분리돼도, 해당 지점을 기존 2D costmap에서 바로 free로 만드는 판단은 별개다.
 
 SLAM용 점군과 장애물 분리용 점군도 목적이 다르다. 모든 지면을 SLAM에서 제거하면 유효한 평면 제약을 잃거나 장면에 따라 정합이 더 불안정해질 수 있으므로 입력 경로를 분리해 검증한다.
 
@@ -443,4 +517,8 @@ FugSeg 논문도 혼잡한 장면의 트램 하부를 지면으로 오분류하�
 - [FugSeg 원논문, arXiv v1](https://arxiv.org/abs/2605.08952v1), [IEEE DOI](https://doi.org/10.1109/TITS.2026.3682176): 불확실성 기반 기울기·SGL·CGP·지면 높이 추정.
 - [FugSeg C++ 기준점 `623f860`](https://github.com/Leo-YuLi/FugSeg/tree/623f860cce70ffe0e3f673cd246254938ce8babe): `src/fugseg/src/fugseg.cpp`의 처리 순서·센서 초기값·기울기 함수.
 - [Patchwork](https://arxiv.org/abs/2108.05560): 극좌표 영역 분할·국소 평면 기반의 비교 기준.
+- [Patchwork++](https://arxiv.org/abs/2207.11919): 적응형 지면 가능성·시간 기반 재분류·수직 평면·반사 잡음 처리.
+- [LiDAR Studio 고정 소스](https://github.com/YooJuno/lidar_studio/tree/4107c96b558ec73ccb3b418c1d66f57c43472769): 앱의 실제 지면 분리·높이·원본 인덱스 연결.
 - [EKF 센서 융합](/blog/ekf-sensor-fusion/), [Nav2 위치 추정과 경로 계획](/blog/nav2-navigation-study/): 자세·좌표계·costmap 연결에 관한 별도 글.
+
+**다음 글:** [포인트 클라우드 클러스터링](/blog/lidar-point-cloud-clustering/)
