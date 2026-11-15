@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="770" viewBox="0 0 640 770" role="img" aria-labelledby="title desc">
+  <title id="title">LiDAR Studio의 기하 분석과 학습 검출</title>
+  <desc id="desc">정렬 점군에서 지면 분리와 군집화 경로, 전체 점군 기반 CenterPoint 검출 경로로 분기한다. 검출은 Pillar, BEV 특징, 중심과 속성 예측, 박스 복원과 NMS, 표시 필터로 이어진다.</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#555"/></marker></defs>
+  <rect width="640" height="770" fill="#fff"/>
+  <g font-family="Noto Sans KR, sans-serif" fill="#202124">
+    <text x="28" y="38" font-size="23" font-weight="600">기하 분석과 학습 검출</text>
+    <rect x="160" y="64" width="320" height="64" rx="4" fill="#f5f5f5" stroke="#888"/>
+    <text x="320" y="91" text-anchor="middle" font-size="17" font-weight="600">좌표·높이를 정렬한 점군</text>
+    <text x="320" y="114" text-anchor="middle" font-size="14">무효 반환 제거 · 프레임 연결</text>
+    <path d="M320 128V150H168V176M320 150H472V176" fill="none" stroke="#555" marker-end="url(#arrow)"/>
+    <path d="M168 150V176" fill="none" stroke="#555" marker-end="url(#arrow)"/>
+    <rect x="28" y="176" width="280" height="110" rx="4" fill="#fafafa" stroke="#dedede"/>
+    <text x="48" y="205" font-size="17" font-weight="600">기하 분석</text>
+    <text x="48" y="235" font-size="15">지면 분리 → 비지면 군집화</text>
+    <text x="48" y="261" font-size="15">점 집합·기하 박스</text>
+    <rect x="332" y="176" width="280" height="110" rx="4" fill="#fafafa" stroke="#dedede"/>
+    <text x="352" y="205" font-size="17" font-weight="600">학습 검출</text>
+    <text x="352" y="235" font-size="15">지면 제거 전 전체 점군</text>
+    <text x="352" y="261" font-size="15">모델 범위·입력 수 제한</text>
+    <path d="M472 286V316" stroke="#555" marker-end="url(#arrow)"/>
+    <rect x="160" y="316" width="452" height="76" rx="4" fill="#fafafa" stroke="#dedede"/>
+    <text x="180" y="346" font-size="17" font-weight="600">Pillar 인코딩 → BEV 특징 맵</text>
+    <text x="180" y="373" font-size="15">XY 격자 · 점 특징 · encoder · scatter</text>
+    <path d="M386 392V422" stroke="#555" marker-end="url(#arrow)"/>
+    <rect x="160" y="422" width="452" height="76" rx="4" fill="#fafafa" stroke="#dedede"/>
+    <text x="180" y="452" font-size="17" font-weight="600">Backbone · CenterPoint head</text>
+    <text x="180" y="479" font-size="15">중심 heatmap · offset · 높이 · 치수 · 회전</text>
+    <path d="M386 498V528" stroke="#555" marker-end="url(#arrow)"/>
+    <rect x="160" y="528" width="452" height="76" rx="4" fill="#fafafa" stroke="#dedede"/>
+    <text x="180" y="558" font-size="17" font-weight="600">박스 복원 · 유효성 검사 · NMS</text>
+    <text x="180" y="585" font-size="15">클래스·점수·3D 회전 박스</text>
+    <path d="M386 604V634" stroke="#555" marker-end="url(#arrow)"/>
+    <rect x="160" y="634" width="452" height="76" rx="4" fill="#f5f5f5" stroke="#888"/>
+    <text x="180" y="664" font-size="17" font-weight="600">캐시된 예측 → 표시 필터</text>
+    <text x="180" y="691" font-size="15">Targets · Min score · 선택적 추적</text>
+    <text x="28" y="744" font-size="15">Display ROI·지면 표시 선택은 모델 입력 crop과 다르다.</text>
+  </g>
+</svg>

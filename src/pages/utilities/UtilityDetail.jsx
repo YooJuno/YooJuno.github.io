@@ -91,6 +91,15 @@ function UtilityArticle({ utility }) {
           </div>
         </section>
 
+        {utility.readings?.length > 0 && (
+          <section className="utility-section" aria-labelledby="readings-heading">
+            <h2 id="readings-heading">관련 글</h2>
+            <div className="utility-section-body utility-source-links">
+              {utility.readings.map(reading => <Link key={reading.slug} to={`/blog/${reading.slug}/`}>{reading.title} <span aria-hidden="true">→</span></Link>)}
+            </div>
+          </section>
+        )}
+
         <section className="utility-section utility-references" aria-labelledby="source-heading">
           <h2 id="source-heading">소스 코드</h2>
           <div className="utility-section-body">

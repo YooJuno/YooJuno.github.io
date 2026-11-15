@@ -10,6 +10,20 @@
   ],
   "revision": "4107c96b558ec73ccb3b418c1d66f57c43472769",
   "purpose": "LiDAR 점군을 탐색하고 지면 분리·객체 분석·영역 추출을 한 작업 공간에서 수행하기 위해 만들었습니다. 프레임과 시점을 유지하며 결과를 비교하고, 필요한 점군과 좌표 정보를 데이터셋으로 저장합니다.",
+  "readings": [
+    {
+      "title": "[LiDAR] 지면 분리 — GSeg3D·FugSeg",
+      "slug": "lidar-ground-segmentation"
+    },
+    {
+      "title": "[LiDAR] 포인트 클라우드 클러스터링",
+      "slug": "lidar-point-cloud-clustering"
+    },
+    {
+      "title": "[LiDAR] 3D 객체 검출 — CenterPoint",
+      "slug": "lidar-object-detection"
+    }
+  ],
   "tech": [
     "C++17",
     "OpenGL",

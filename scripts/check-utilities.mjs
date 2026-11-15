@@ -42,6 +42,17 @@ export function validateUtilities(root) {
       check(example.steps.every(step => typeof step === 'string' && step.trim()), '사용 예시의 조작 설명을 입력하세요.')
     }
     examples += entry.examples.length
+    if (entry.readings !== undefined) {
+      check(Array.isArray(entry.readings), '관련 글은 title·slug 목록으로 입력하세요.')
+      const readingSlugs = new Set()
+      for (const reading of entry.readings) {
+        check(typeof reading.title === 'string' && reading.title.trim(), '관련 글의 제목을 입력하세요.')
+        check(typeof reading.slug === 'string' && /^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(reading.slug)
+          && !readingSlugs.has(reading.slug), '관련 글의 주소 또는 중복을 확인하세요.')
+        readingSlugs.add(reading.slug)
+        check(fs.existsSync(path.join(root, 'src/content/blog', reading.slug, 'index.md')), `관련 글이 없습니다: ${reading.slug}`)
+      }
+    }
     for (const target of entry.compatibility) {
       for (const field of ['environment', 'format', 'note']) {
         check(typeof target[field] === 'string' && target[field].trim(), `지원 환경의 ${field} 값을 입력하세요.`)

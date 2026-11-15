@@ -61,7 +61,7 @@ collections:
       - label: 카테고리
         name: category
         widget: select
-        options: [로보틱스, 웹·보안, 개발 환경·배포, 트레이딩]
+        options: [로보틱스, Perception, 웹·보안, 개발 환경·배포, 트레이딩]
         default: 로보틱스
       - label: 태그
         name: tags
