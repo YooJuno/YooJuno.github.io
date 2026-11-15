@@ -2,7 +2,7 @@
 title: "MySQL 계정과 접근 권한"
 slug: "mysql-users-privileges"
 date: "2025-03-22"
-updated: "2026-11-15"
+updated: "2025-03-22"
 category: "웹·보안"
 tags: [MySQL, Authentication, Privileges]
 summary: "user@host·최소 권한·GRANT·REVOKE·계정 삭제."

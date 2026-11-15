@@ -2,7 +2,7 @@
 title: "[C++] 객체 수명과 스마트 포인터"
 slug: "cpp-memory-ownership"
 date: "2025-03-01"
-updated: "2026-11-15"
+updated: "2025-03-01"
 category: "프로그래밍"
 tags: [C++, RAII, Smart Pointers]
 summary: "RAII·소유권·move·순환 참조와 콜백 수명."

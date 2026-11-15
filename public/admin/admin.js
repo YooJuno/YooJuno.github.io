@@ -97,9 +97,10 @@ const start = async () => {
         const folder = path.split('/').at(-2)
         if (data.get('slug') !== folder) throw new Error('기존 글의 주소는 변경할 수 없습니다.')
       }
-      const updated = todayInSeoul()
-      if (data.get('date') > updated) throw new Error('작성일은 오늘 이후로 지정할 수 없습니다.')
-      return data.set('updated', updated)
+      if (data.get('date') > todayInSeoul()) throw new Error('작성일은 오늘 이후로 지정할 수 없습니다.')
+      const updated = data.get('updated')
+      if (updated && updated < data.get('date')) throw new Error('최종 수정일은 작성일보다 빠를 수 없습니다.')
+      return data
     },
   })
   await cms.init({ config })

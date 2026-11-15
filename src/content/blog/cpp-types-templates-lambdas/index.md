@@ -2,7 +2,7 @@
 title: "[C++] 타입 추론·템플릿·람다"
 slug: "cpp-types-templates-lambdas"
 date: "2025-03-01"
-updated: "2026-11-15"
+updated: "2025-03-01"
 category: "프로그래밍"
 tags: [C++, Templates, Lambda]
 summary: "auto·참조·constexpr와 템플릿·람다의 사용 기준."
