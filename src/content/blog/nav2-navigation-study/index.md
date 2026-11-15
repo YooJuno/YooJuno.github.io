@@ -1,5 +1,5 @@
 ---
-title: "Nav2 1. 위치 추정과 경로 계획"
+title: "[Nav2] 위치 추정과 경로 계획"
 slug: "nav2-navigation-study"
 date: "2026-10-14"
 category: "개발"
@@ -12,11 +12,11 @@ summary: "TF·Costmap·글로벌 플래너의 역할과 연결."
 
 Nav2의 경로 계획에는 **현재 위치, 장애물 비용지도, 로봇의 이동 제약**이 필요하다. 이 글은 센서와 지도에서 글로벌 경로가 만들어지는 과정까지 다룬다.
 
-**Nav2 학습 시리즈**
+**Nav2 시리즈**
 
-1. **위치 추정과 경로 계획** — 현재 글
-2. [경로 추종과 컨트롤러](/blog/nav2-controllers/)
-3. [Behavior Tree와 주행 실행](/blog/nav2-behavior-tree/)
+- **위치 추정과 경로 계획** — 현재 글
+- [컨트롤러 비교 — RPP·DWB·MPPI](/blog/nav2-controllers/)
+- [Behavior Tree와 주행 복구](/blog/nav2-behavior-tree/)
 
 > **기준: ROS 2 Jazzy · Nav2 소스 `645abd9` · 검토 2026-11-15.** 설정은 원리를 설명하는 부분 예시이며 실기체 검증 결과가 아니다. 도식은 직접 작성했다.
 
@@ -206,7 +206,7 @@ planner_server:
 3. Footprint·costmap 해상도·계획 시간을 맞춘다.
 4. 생성 경로를 실제 controller가 추종할 수 있는지 확인한다.
 
-`expected_planner_frequency`는 계산 성능의 경고 기준이다. 주기적 재계획은 [3편의 BT](/blog/nav2-behavior-tree/#4-주기와-실패-전파)에서 구성한다. [Planner Server](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/core_servers/configuring_planner_server/).
+`expected_planner_frequency`는 계산 성능의 경고 기준이다. 주기적 재계획은 [Behavior Tree](/blog/nav2-behavior-tree/#4-주기와-실패-전파)에서 구성한다. [Planner Server](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/core_servers/configuring_planner_server/).
 
 ## 6. 관측과 비교 실험
 
@@ -236,7 +236,7 @@ ros2 param get /planner_server GridBased.plugin
 
 동일한 지도·시작·목표·footprint에서 Smac 2D와 Hybrid-A*를 비교한다. 경로 모양만 보지 말고 계획 시간·길이·최소 여유·곡률·후진 구간을 기록한다. Inflation 실험에서는 planner를 고정하고 반경 또는 감쇠 계수 하나만 바꾼다. 이 절은 실험 설계이며 측정 결과를 제시한 것은 아니다.
 
-**다음 글:** [Nav2 2. 경로 추종과 컨트롤러](/blog/nav2-controllers/)
+**다음 글:** [컨트롤러 비교 — RPP·DWB·MPPI](/blog/nav2-controllers/)
 
 ### 참고 자료
 

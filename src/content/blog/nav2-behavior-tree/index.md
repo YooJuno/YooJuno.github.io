@@ -1,5 +1,5 @@
 ---
-title: "Nav2 3. Behavior Tree와 주행 실행"
+title: "[Nav2] Behavior Tree와 주행 복구"
 slug: "nav2-behavior-tree"
 date: "2026-11-15"
 category: "개발"
@@ -12,11 +12,11 @@ summary: "계획·추종·재계획·복구의 실행 흐름과 진단."
 
 Behavior Tree(BT)는 **어떤 작업을 실행하고, 완료·실패·목표 변경에 어떻게 대응할지** 정한다. Nav2에서는 Planner·Controller 등의 액션을 연결해 하나의 주행 작업을 구성한다.
 
-**Nav2 학습 시리즈**
+**Nav2 시리즈**
 
-1. [위치 추정과 경로 계획](/blog/nav2-navigation-study/)
-2. [경로 추종과 컨트롤러](/blog/nav2-controllers/)
-3. **Behavior Tree와 주행 실행** — 현재 글
+- [위치 추정과 경로 계획](/blog/nav2-navigation-study/)
+- [컨트롤러 비교 — RPP·DWB·MPPI](/blog/nav2-controllers/)
+- **Behavior Tree와 주행 복구** — 현재 글
 
 > **기준: ROS 2 Jazzy · Nav2 소스 `645abd9` · 검토 2026-11-15.** XML은 학습용 구성이다. 도식·시나리오는 원본 구현을 설명하기 위한 자료이며 실기체 실행 결과가 아니다.
 
@@ -86,7 +86,7 @@ Blackboard는 트리 안에서 데이터를 공유하는 키·값 저장소이�
 | `planner_id="GridBased"` | 문자열 ID. Planner Server YAML의 `GridBased` 선택 |
 | `controller_id="FollowPath"` | 문자열 ID. Controller Server YAML의 `FollowPath` 선택 |
 
-`{path}`는 `/path` 토픽 이름이 아니다. 출력은 `{global_path}`, 입력은 `{path}`로 두면 같은 데이터를 연결한 것이 아니다. ID와 실제 알고리즘 클래스의 관계는 [1편 플래너 설정](/blog/nav2-navigation-study/#5-플래너-설정과-선택), [2편 컨트롤러 설정](/blog/nav2-controllers/#54-부분-설정)과 연결된다. [Blackboard와 Port](https://www.behaviortree.dev/docs/tutorial-basics/tutorial_02_basic_ports/).
+`{path}`는 `/path` 토픽 이름이 아니다. 출력은 `{global_path}`, 입력은 `{path}`로 두면 같은 데이터를 연결한 것이 아니다. ID와 실제 알고리즘 클래스의 관계는 [플래너 설정](/blog/nav2-navigation-study/#5-플래너-설정과-선택), [컨트롤러 설정](/blog/nav2-controllers/#54-부분-설정)과 연결된다. [Blackboard와 Port](https://www.behaviortree.dev/docs/tutorial-basics/tutorial_02_basic_ports/).
 
 ### 3.2 최소 계획·추종 트리
 
@@ -258,7 +258,7 @@ ros2 topic echo /odom --once
 
 기록에는 사용 XML·파라미터·지도·시작·목표, 시간순 액션 결과·오류 코드·복구 횟수·최종 속도를 포함한다. 성공률·도착 시간·복구 횟수를 비교하면 알고리즘 문제와 실행 정책 문제를 분리하기 쉽다.
 
-**이전:** [경로 추종과 컨트롤러](/blog/nav2-controllers/) · **시리즈 시작:** [위치 추정과 경로 계획](/blog/nav2-navigation-study/)
+**이전:** [컨트롤러 비교 — RPP·DWB·MPPI](/blog/nav2-controllers/) · **시리즈 시작:** [위치 추정과 경로 계획](/blog/nav2-navigation-study/)
 
 ### 참고 자료
 
