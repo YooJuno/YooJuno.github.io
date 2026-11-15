@@ -153,7 +153,7 @@ const SiteNav = () => {
     }}>
       <div className="container nav-inner">
         <Link className="brand" to="/" aria-label="홈으로 이동">
-          <span className="brand-mark" aria-hidden="true">YJ</span>
+          <img className="brand-mark" src="/favicon.ico" alt="" width="30" height="30" decoding="async" />
           <span>Yoo Juno</span>
         </Link>
 
