@@ -1,5 +1,5 @@
 ---
-title: "Nav2 2. 경로 추종과 컨트롤러"
+title: "[Nav2] 컨트롤러 비교 — RPP·DWB·MPPI"
 slug: "nav2-controllers"
 date: "2026-11-15"
 category: "개발"
@@ -12,11 +12,11 @@ summary: "구동 모델과 RPP·DWB·MPPI의 원리·설정·튜닝."
 
 Nav2 Controller는 경로·현재 상태·로컬 장애물 정보를 받아 **지금 실행할 몸체 속도**를 계산한다. 모터 속도·조향각·관절 토크를 제어하는 하위 구동기와는 역할이 다르다.
 
-**Nav2 학습 시리즈**
+**Nav2 시리즈**
 
-1. [위치 추정과 경로 계획](/blog/nav2-navigation-study/)
-2. **경로 추종과 컨트롤러** — 현재 글
-3. [Behavior Tree와 주행 실행](/blog/nav2-behavior-tree/)
+- [위치 추정과 경로 계획](/blog/nav2-navigation-study/)
+- **컨트롤러 비교 — RPP·DWB·MPPI** — 현재 글
+- [Behavior Tree와 주행 복구](/blog/nav2-behavior-tree/)
 
 > **기준: ROS 2 Jazzy · Nav2 소스 `645abd9` · 검토 2026-11-15.** 수치와 YAML은 학습용 예시다. 실기체 성능·안전 검증 결과가 아니며, 설치된 패키지의 파라미터와 대조해야 한다.
 
@@ -363,7 +363,7 @@ goal_checker:
 
 공통 지표는 경로 횡오차·최소 장애물 간격·명령 대비 실제 속도·계산 시간 p95/p99·주기 초과 횟수다. 20 Hz의 주기 예산은 50 ms이므로 평균 계산 시간만으로 여유를 판단하지 않는다. 제어에 쓰는 같은 odometry를 평가 기준으로 사용한 결과는 절대 위치 정확도와 구분한다.
 
-**이전:** [위치 추정과 경로 계획](/blog/nav2-navigation-study/) · **다음:** [Behavior Tree와 주행 실행](/blog/nav2-behavior-tree/)
+**이전:** [위치 추정과 경로 계획](/blog/nav2-navigation-study/) · **다음:** [Behavior Tree와 주행 복구](/blog/nav2-behavior-tree/)
 
 ### 참고 자료
 
