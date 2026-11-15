@@ -2,6 +2,7 @@
 title: "[ROS 2] 워크스페이스와 패키지"
 slug: "ros2-workspace-packages"
 date: "2026-11-15"
+updated: "2026-11-15"
 category: "시스템 통합"
 tags: [ROS2, colcon, ament]
 summary: "underlay·overlay·colcon 빌드와 실행 파일 등록."

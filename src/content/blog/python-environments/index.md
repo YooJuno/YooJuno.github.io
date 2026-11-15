@@ -2,6 +2,7 @@
 title: "[Python] 실행 환경과 의존성"
 slug: "python-environments"
 date: "2026-11-15"
+updated: "2026-11-15"
 category: "개발 환경·배포"
 tags: [Python, venv, Conda]
 summary: "인터프리터·pip·venv·Conda 환경 분리와 재현."

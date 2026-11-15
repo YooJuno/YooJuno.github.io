@@ -2,6 +2,7 @@
 title: "Ubuntu 한글 입력과 한·영 키 설정"
 slug: "ubuntu-korean-input"
 date: "2026-11-15"
+updated: "2026-11-15"
 category: "개발 환경·배포"
 tags: [Ubuntu, IBus, Fcitx5]
 summary: "IBus·Fcitx5와 X11·Wayland 입력 문제 구분."

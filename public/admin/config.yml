@@ -51,13 +51,18 @@ collections:
         widget: string
         pattern: ['^[a-zA-Z0-9][a-zA-Z0-9_-]*$', '영문·숫자·하이픈·밑줄만 사용해주세요.']
         hint: '새 글은 영문 소문자와 하이픈을 권장합니다. 기존 글의 주소는 변경하지 않습니다.'
-      - label: 발행일
+      - label: 작성일
         name: date
         widget: datetime
         date_format: YYYY-MM-DD
         time_format: false
         format: YYYY-MM-DD
-        hint: 기존 글은 최초 발행일을 유지해주세요.
+        hint: 기존 글의 원래 작성일을 유지해주세요. 최종 수정일은 저장 시 자동 기록됩니다.
+      - label: 최종 수정일
+        name: updated
+        widget: hidden
+        required: false
+        default: ''
       - label: 카테고리
         name: category
         widget: select

@@ -78,6 +78,7 @@ const readBlogEntries = () => {
       return {
         slug: post.slug,
         date: post.date,
+        updated: post.updated,
         title: post.title,
         description: post.summary,
       }
@@ -141,6 +142,7 @@ const collectPages = () => {
       title: post.title,
       description: post.description,
       date: post.date,
+      updated: post.updated,
     })),
   ]
 }
@@ -211,8 +213,9 @@ const prerenderPlugin = () => ({
     }
 
     const body = pages.filter(page => !page.canonicalRoute)
-      .map(({ route, date }) => {
-        const lastmod = date ? `\n    <lastmod>${date}</lastmod>` : ''
+      .map(({ route, date, updated }) => {
+        const modified = updated || date
+        const lastmod = modified ? `\n    <lastmod>${modified}</lastmod>` : ''
         return `  <url>\n    <loc>${toUrl(route)}</loc>${lastmod}\n  </url>`
       })
       .join('\n')

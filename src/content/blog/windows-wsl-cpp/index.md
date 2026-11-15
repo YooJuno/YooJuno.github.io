@@ -2,6 +2,7 @@
 title: "Windows C++ 개발 환경: WSL·MSYS2"
 slug: "windows-wsl-cpp"
 date: "2026-11-15"
+updated: "2026-11-15"
 category: "개발 환경·배포"
 tags: [Windows, WSL, C++]
 summary: "Linux 개발용 WSL과 Windows 실행 파일용 도구 구분."

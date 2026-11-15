@@ -2,6 +2,7 @@
 title: "[Python] 자료구조와 복사·정렬"
 slug: "python-collections"
 date: "2026-11-15"
+updated: "2026-11-15"
 category: "프로그래밍"
 tags: [Python, Collections, Algorithms]
 summary: "list·dict·set·deque·heapq와 얕은 복사·깊은 복사."

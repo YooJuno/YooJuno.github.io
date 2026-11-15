@@ -2,6 +2,7 @@
 title: "gRPC·Protobuf C++ 통신"
 slug: "grpc-protobuf-cpp"
 date: "2026-11-15"
+updated: "2026-11-15"
 category: "시스템 통합"
 tags: [gRPC, Protobuf, C++]
 summary: "메시지 정의·RPC·스트리밍·크기 제한과 오류 처리."

@@ -3,6 +3,14 @@ const message = document.getElementById('status-message')
 const retry = document.getElementById('retry')
 const local = ['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname)
 
+const todayInSeoul = () => {
+  const parts = new Intl.DateTimeFormat('en', {
+    timeZone: 'Asia/Seoul', year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(new Date())
+  const values = Object.fromEntries(parts.map(part => [part.type, part.value]))
+  return `${values.year}-${values.month}-${values.day}`
+}
+
 window.CMS_MANUAL_INIT = true
 retry.addEventListener('click', () => window.location.reload())
 
@@ -65,11 +73,16 @@ const start = async () => {
   cms.registerPreviewTemplate('posts', ({ entry, widgetFor }) => {
     const data = entry.get('data')
     const create = window.h
+    const date = String(data.get('date') || '').slice(0, 10)
+    const updated = String(data.get('updated') || '').slice(0, 10)
     return create('main', { className: 'post-main' },
       create('header', { className: 'post-header' },
         create('div', { className: 'post-meta' },
           create('span', null, data.get('category')),
-          create('time', null, String(data.get('date') || '').slice(0, 10))),
+          create('span', { className: 'post-date' }, '작성 ', create('time', { dateTime: date }, date)),
+          updated && updated !== date
+            ? create('span', { className: 'post-date' }, '최종 수정 ', create('time', { dateTime: updated }, updated))
+            : null),
         create('h1', null, data.get('title')),
         create('div', { className: 'post-tags' },
           ...(data.get('tags')?.toArray() || []).map(tag => create('span', { key: tag }, `#${tag}`)))),
@@ -84,7 +97,9 @@ const start = async () => {
         const folder = path.split('/').at(-2)
         if (data.get('slug') !== folder) throw new Error('기존 글의 주소는 변경할 수 없습니다.')
       }
-      return data
+      const updated = todayInSeoul()
+      if (data.get('date') > updated) throw new Error('작성일은 오늘 이후로 지정할 수 없습니다.')
+      return data.set('updated', updated)
     },
   })
   await cms.init({ config })

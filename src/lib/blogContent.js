@@ -16,14 +16,22 @@ export const parseBlogPost = (raw, slugFromPath) => {
   if (!BLOG_CATEGORIES.includes(data.category)) {
     fail(`category는 ${BLOG_CATEGORIES.join(', ')} 중에서 선택해주세요.`)
   }
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(data.date) || Number.isNaN(Date.parse(data.date)) ||
-      new Date(data.date).toISOString().slice(0, 10) !== data.date) {
-    fail('발행일은 유효한 YYYY-MM-DD 날짜여야 합니다.')
+  const isDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
+    && !Number.isNaN(Date.parse(value)) && new Date(value).toISOString().slice(0, 10) === value
+  if (!isDate(data.date)) {
+    fail('작성일은 유효한 YYYY-MM-DD 날짜여야 합니다.')
+  }
+  const updated = data.updated === '' || data.updated === null ? undefined : data.updated
+  if (updated !== undefined && !isDate(updated)) {
+    fail('최종 수정일은 유효한 YYYY-MM-DD 날짜여야 합니다.')
+  }
+  if (updated && updated < data.date) {
+    fail('최종 수정일은 작성일보다 빠를 수 없습니다.')
   }
   if (!Array.isArray(data.tags) || !data.tags.every(tag => typeof tag === 'string' && tag.trim())) {
     fail('tags는 비어 있지 않은 문자열 목록이어야 합니다.')
   }
   if (!content.trim()) fail('본문이 비어 있습니다.')
 
-  return { ...data, slug, tags: [...new Set(data.tags)], content }
+  return { ...data, slug, updated, tags: [...new Set(data.tags)], content }
 }
