@@ -693,6 +693,26 @@ summary.career-card-heading:hover {
   object-fit: contain;
 }
 
+#proj-rail-inspection .media-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  margin: 14px 0 24px;
+}
+
+#proj-rail-inspection .media-tile {
+  margin: 0;
+  padding: 0;
+}
+
+#proj-rail-inspection .media-tile img {
+  height: auto;
+  max-height: 340px;
+  aspect-ratio: 16 / 10;
+}
+
+#proj-rail-inspection .media-tile figcaption {
+  padding: 0 10px 8px;
+}
+
 .portfolio-page .media-tile img:focus-visible,
 .portfolio-page .lightbox-close:focus-visible {
   outline: 2px solid var(--accent);
