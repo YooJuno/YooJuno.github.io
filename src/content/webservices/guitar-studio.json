@@ -3,15 +3,15 @@
   "route": "/web-service/guitar-studio",
   "title": "JUNO Studio",
   "inspectedAt": "2026-11-18",
-  "reviewedAt": "2026-11-18T11:23:48+09:00",
-  "revision": "985b7723e84282ba310d914bf57e639f0e1faee6",
+  "reviewedAt": "2026-11-18T11:30:16+09:00",
+  "revision": "eba0f6b55e0163f24591f46d3f8985730658fc6f",
   "sourceState": "published",
   "github": "https://github.com/YooJuno/guitar-studio",
   "site": "https://guitar-juno.web.app/",
   "summary": "기타·베이스 튜너, 코드별 스케일 지판, 재즈 반주와 메트로놈을 모은 웹 연습실.",
   "tech": ["React", "TypeScript", "Web Audio", "Firebase"],
   "overview": [
-    "마이크나 오디오 인터페이스로 튜닝하고, 재즈 반주의 키와 템포를 바꿔 연습할 수 있습니다. 차트의 코드를 누르면 해당 코드에 쓸 스케일과 지판이 열립니다."
+    "마이크나 오디오 인터페이스로 튜닝하고, 재즈 반주의 키와 템포를 바꿔 연습할 수 있습니다. 차트의 코드를 누르면 추천 스케일과 추천 이유, 지판이 열립니다."
   ],
   "screens": [
     {
@@ -20,8 +20,8 @@
       "image": "/content/images/webservices/guitar-studio/chord-scale.jpg",
       "width": 390,
       "height": 700,
-      "alt": "Autumn Leaves의 Cm7을 누르면 C 도리안의 구성음과 코드톤이 표시되는 기타 지판",
-      "caption": "공개 앱에서 Autumn Leaves의 Cm7을 선택한 게스트 화면.",
+      "alt": "Autumn Leaves의 Cm7을 누르면 C 도리안의 추천 이유, 구성음과 코드톤이 표시되는 기타 지판",
+      "caption": "Autumn Leaves의 Cm7에서 C 도리안 확인.",
       "annotations": []
     },
     {
@@ -52,7 +52,7 @@
     },
     {
       "title": "코드와 스케일",
-      "description": "코드 구성음과 추천 스케일을 현재 튜닝의 지판에서 확인합니다. 재즈 차트는 곡의 키와 이어지는 화음을 반영합니다."
+      "description": "코드 구성음과 추천 스케일을 현재 튜닝의 지판에서 확인합니다. 스케일마다 코드톤과의 관계, 곡의 키나 이어지는 화음에 따른 추천 이유를 표시합니다."
     },
     {
       "title": "재즈 차트와 반주",
