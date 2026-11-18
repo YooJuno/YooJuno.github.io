@@ -35,6 +35,10 @@ export const ROUTE_META = {
     title: 'Portfolio & Blog',
     description: '포트폴리오와 기술 기록을 관리하는 사이트의 구조와 기능 정리.',
   },
+  '/web-service/guitar-studio': {
+    title: 'JUNO Studio',
+    description: '기타·베이스 튜너, 코드별 스케일 지판, 재즈 차트·반주와 메트로놈을 모은 웹 연습실.',
+  },
   '/web-service/moim': {
     title: '모임 · moim',
     description: 'React·Firebase 기반 모임 운영 서비스. 가입 승인, 일정 투표, 캘린더·게시판·회계와 외부 서비스 연동의 구현.',

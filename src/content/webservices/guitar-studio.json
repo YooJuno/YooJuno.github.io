@@ -1,0 +1,113 @@
+{
+  "id": "guitar-studio",
+  "route": "/web-service/guitar-studio",
+  "title": "JUNO Studio",
+  "inspectedAt": "2026-11-18",
+  "reviewedAt": "2026-11-18T11:23:48+09:00",
+  "revision": "985b7723e84282ba310d914bf57e639f0e1faee6",
+  "sourceState": "published",
+  "github": "https://github.com/YooJuno/guitar-studio",
+  "site": "https://guitar-juno.web.app/",
+  "summary": "기타·베이스 튜너, 코드별 스케일 지판, 재즈 반주와 메트로놈을 모은 웹 연습실.",
+  "tech": ["React", "TypeScript", "Web Audio", "Firebase"],
+  "overview": [
+    "마이크나 오디오 인터페이스로 튜닝하고, 재즈 반주의 키와 템포를 바꿔 연습할 수 있습니다. 차트의 코드를 누르면 해당 코드에 쓸 스케일과 지판이 열립니다."
+  ],
+  "screens": [
+    {
+      "id": "G01",
+      "title": "재즈 차트 · 코드별 스케일",
+      "image": "/content/images/webservices/guitar-studio/chord-scale.jpg",
+      "width": 390,
+      "height": 700,
+      "alt": "Autumn Leaves의 Cm7을 누르면 C 도리안의 구성음과 코드톤이 표시되는 기타 지판",
+      "caption": "공개 앱에서 Autumn Leaves의 Cm7을 선택한 게스트 화면.",
+      "annotations": []
+    },
+    {
+      "id": "G02",
+      "title": "기타·베이스 튜너",
+      "image": "/content/images/webservices/guitar-studio/tuner.jpg",
+      "width": 960,
+      "height": 690,
+      "alt": "악기와 튜닝을 선택하고 한 현씩 또는 동시에 측정하는 튜너",
+      "caption": "마이크를 켜기 전 튜너 대기 화면.",
+      "annotations": []
+    },
+    {
+      "id": "G03",
+      "title": "메트로놈",
+      "image": "/content/images/webservices/guitar-studio/metronome.jpg",
+      "width": 390,
+      "height": 700,
+      "alt": "BPM, 박별 강세, 리듬, 타이머, 프리셋을 조절하는 메트로놈",
+      "caption": "기본 100 BPM과 4박으로 열린 게스트 화면.",
+      "annotations": []
+    }
+  ],
+  "features": [
+    {
+      "title": "단음·동시 튜닝",
+      "description": "기타 6·7·8현과 베이스 4·5·6현, 드롭·오픈·사용자 튜닝을 지원합니다. 입력 장치와 채널을 선택할 수 있습니다."
+    },
+    {
+      "title": "코드와 스케일",
+      "description": "코드 구성음과 추천 스케일을 현재 튜닝의 지판에서 확인합니다. 재즈 차트는 곡의 키와 이어지는 화음을 반영합니다."
+    },
+    {
+      "title": "재즈 차트와 반주",
+      "description": "피아노·베이스·드럼 반주의 키와 템포를 바꾸고 마디를 반복합니다. 기기의 음원과 PDF도 불러올 수 있습니다."
+    },
+    {
+      "title": "메트로놈",
+      "description": "탭 템포, 박별 강세와 쉼, 세분박, 스윙, 카운트인, 타이머와 프리셋을 제공합니다."
+    }
+  ],
+  "architecture": [
+    {"label": "React · TypeScript", "detail": "연습 도구 UI와 지판"},
+    {"label": "Web Audio", "detail": "입력 피치 분석과 반주·박자 예약"},
+    {"label": "Firebase", "detail": "Google 로그인, 계정 설정, 정적 호스팅"}
+  ],
+  "apiTitle": "인증·설정 데이터",
+  "apiNote": "Firebase SDK를 사용합니다.",
+  "api": [
+    {
+      "method": "AUTH",
+      "path": "GoogleAuthProvider · signInWithPopup",
+      "description": "Google 팝업 로그인",
+      "request": "사용자가 선택한 Google 계정",
+      "response": "Firebase 사용자와 UID",
+      "access": "Google 인증"
+    },
+    {
+      "method": "SDK",
+      "path": "users/{uid}/preferences/main",
+      "description": "연습 설정 읽기·저장",
+      "request": "설정과 스키마 버전",
+      "response": "계정의 설정 문서",
+      "access": "경로의 UID와 일치하는 계정만 읽고 쓸 수 있음"
+    }
+  ],
+  "decisions": [
+    {
+      "title": "브라우저에서 오디오 처리",
+      "description": "마이크 입력과 선택한 음원은 기기에서 처리하고, 로그인 시 연습 설정만 Firestore에 저장합니다."
+    },
+    {
+      "title": "반주와 차트가 같은 키 사용",
+      "description": "선택한 키를 차트, 반주, 코드별 스케일에 함께 적용합니다."
+    }
+  ],
+  "limitations": [
+    "튜닝 감도와 지연은 입력 장치와 브라우저에 따라 달라집니다.",
+    "스케일은 코드와 진행을 기준으로 제안합니다. 멜로디의 음에 따라 다른 스케일을 고를 수 있습니다."
+  ],
+  "sources": [
+    {"label": "튜너와 입력 장치", "path": "src/TunerView.tsx"},
+    {"label": "코드별 스케일", "path": "src/lib/chord-scales.ts"},
+    {"label": "재즈 반주", "path": "src/lib/backing.ts"},
+    {"label": "메트로놈", "path": "src/lib/metronome.ts"},
+    {"label": "인증과 설정 저장", "path": "src/lib/firebase.ts"},
+    {"label": "Firestore 접근 규칙", "path": "firestore.rules"}
+  ]
+}

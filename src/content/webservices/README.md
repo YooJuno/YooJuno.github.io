@@ -14,6 +14,7 @@
 
 ## 수정 파일
 
+- `guitar-studio.json`: 기타·베이스 연습 도구
 - `moim.json`: 모임 운영 서비스
 - `portfolio.json`: 현재 사이트
 - `cctv.json`: CCTV Streaming

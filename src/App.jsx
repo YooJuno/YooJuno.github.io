@@ -14,6 +14,7 @@ const WebServiceCctv = lazy(() => import('./pages/webservice/WebServiceCctv.jsx'
 const WebServiceVideo = lazy(() => import('./pages/webservice/WebServiceVideo.jsx'))
 const WebServiceBtc = lazy(() => import('./pages/webservice/WebServiceBtc.jsx'))
 const WebServiceHellog = lazy(() => import('./pages/webservice/WebServiceHellog.jsx'))
+const WebServiceGuitarStudio = lazy(() => import('./pages/webservice/WebServiceGuitarStudio.jsx'))
 const WebServiceMoim = lazy(() => import('./pages/webservice/WebServiceMoim.jsx'))
 const WebServiceMapEditor = lazy(() => import('./pages/webservice/WebServiceMapEditor.jsx'))
 
@@ -76,6 +77,7 @@ const NAV_SECTIONS = [
     to: '/web-service',
     label: '웹서비스',
     items: [
+      { to: '/web-service/guitar-studio', label: 'JUNO Studio' },
       { to: '/web-service/moim', label: '모임 · moim' },
       { to: '/web-service/blog', label: '블로그' },
       { to: '/web-service/cctv-streaming', label: 'CCTV Streaming' },
@@ -233,6 +235,7 @@ const AppRoutes = () => {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<Post />} />
           <Route path="/web-service" element={<WebService />} />
+          <Route path="/web-service/guitar-studio" element={<WebServiceGuitarStudio />} />
           <Route path="/web-service/moim" element={<WebServiceMoim />} />
           <Route path="/web-service/map-editor" element={<WebServiceMapEditor />} />
           <Route path="/web-service/blog" element={<WebServiceBlog />} />
