@@ -3,8 +3,8 @@
   "route": "/web-service/guitar-studio",
   "title": "JUNO Studio",
   "inspectedAt": "2026-11-18",
-  "reviewedAt": "2026-11-18T11:30:16+09:00",
-  "revision": "eba0f6b55e0163f24591f46d3f8985730658fc6f",
+  "reviewedAt": "2026-11-18T12:52:41+09:00",
+  "revision": "89e99f17be0323f7c5fd058ac07b19d4aaddf2ce",
   "sourceState": "published",
   "github": "https://github.com/YooJuno/guitar-studio",
   "site": "https://guitar-juno.web.app/",
@@ -56,7 +56,7 @@
     },
     {
       "title": "재즈 차트와 반주",
-      "description": "피아노·베이스·드럼 반주의 키와 템포를 바꾸고 마디를 반복합니다. 기기의 음원과 PDF도 불러올 수 있습니다."
+      "description": "피아노·베이스·드럼 반주의 키와 템포를 바꾸고 믹서에서 악기별 볼륨을 조정합니다. 반주는 곡 끝에서 멈추며, 기기의 음원과 PDF도 열 수 있습니다."
     },
     {
       "title": "메트로놈",
