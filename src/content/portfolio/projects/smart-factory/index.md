@@ -3,10 +3,10 @@ id: "proj-smart-factory"
 title: "스마트 팩토리 로봇팔 자동화 & 디지털 트윈"
 start: "2025-04"
 end: "2025-05"
-meta: "SSAFY · 3인 · 팀장/PM"
+meta: "SSAFY · 3인 · 팀장"
 ---
 
-웹에서 Dobot 로봇팔을 제어하고 RoboDK에서 같은 동작을 시뮬레이션하는 자동화 공정을 만들었습니다. 3인 팀의 팀장·PM으로 ROS2 시스템, 서버, 영상처리와 로봇 모션 제어를 맡았습니다.
+웹에서 Dobot 로봇팔을 제어하고 RoboDK에서 같은 동작을 시뮬레이션하는 자동화 공정을 만들었습니다. 3인 팀의 팀장으로 ROS2 시스템, 서버, 영상처리와 로봇 모션 제어를 맡았습니다.
 
 - 카메라 영상에서 Coordinate Board 를 Perspective Transformation 해 원근 제거
 - 원근이 제거된 RoI 를 실시간 웹 스트리밍하고, 화면 클릭으로 로봇 목적지 지정
