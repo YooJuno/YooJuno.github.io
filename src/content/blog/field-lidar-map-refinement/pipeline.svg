@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 568" role="img" aria-labelledby="chart-title chart-description">
+  <title id="chart-title">현장 LiDAR 매핑 처리 흐름</title>
+  <desc id="chart-description">장착 회전과 중력을 보정한 점군으로 KISS-ICP가 오도메트리를 추정하고 GSeg3D가 지면점과 비지면점을 구분한다. 별도 단계에서 주변 지면 높이를 기준으로 비지면점을 걸러 만든 2D 스캔을 오도메트리와 함께 SLAM Toolbox에 입력한다. 지도는 기하 보정과 구역별 검증을 거친다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+      <path d="M0 0L9 4.5L0 9Z" fill="#626262"/>
+    </marker>
+  </defs>
+  <rect x="0.5" y="0.5" width="639" height="567" rx="13" fill="#fff" stroke="#d7d7d7"/>
+  <g fill="none" stroke="#626262" stroke-width="1.8">
+    <path d="M320 132V146H164 M320 146H476"/>
+    <path d="M164 146V168" marker-end="url(#arrow)"/>
+    <path d="M476 146V168" marker-end="url(#arrow)"/>
+    <path d="M476 249V274" marker-end="url(#arrow)"/>
+    <path d="M164 249V378H320 M476 354V378H320"/>
+    <path d="M320 378V398" marker-end="url(#arrow)"/>
+    <path d="M320 467V490" marker-end="url(#arrow)"/>
+  </g>
+  <g fill="#f6f6f6" stroke="#d0d0d0">
+    <rect x="105" y="61" width="430" height="71" rx="7"/>
+    <rect x="26" y="169" width="276" height="80" rx="7"/>
+    <rect x="338" y="169" width="276" height="80" rx="7"/>
+    <rect x="338" y="275" width="276" height="79" rx="7" fill="#fff"/>
+    <rect x="105" y="399" width="430" height="68" rx="7"/>
+    <rect x="105" y="491" width="430" height="54" rx="7"/>
+  </g>
+  <g font-family="'Nanum Gothic', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif" text-anchor="middle">
+    <g fill="#252525" font-size="24" font-weight="700">
+      <text x="26" y="41" text-anchor="start">처리 흐름</text>
+      <text x="320" y="92">LiDAR + IMU</text>
+      <text x="164" y="205">KISS-ICP</text>
+      <text x="476" y="205">GSeg3D</text>
+      <text x="476" y="310">지면 기준 높이 필터</text>
+      <text x="320" y="428">SLAM Toolbox</text>
+      <text x="320" y="526">기하 보정 · 구역별 검증</text>
+    </g>
+    <g fill="#515151" font-size="22">
+      <text x="320" y="119">장착 회전 및 중력 보정</text>
+      <text x="164" y="233">오도메트리 추정</text>
+      <text x="476" y="233">지면점과 비지면점 분리</text>
+      <text x="476" y="338">2D 스캔 투영</text>
+      <text x="320" y="455">2D 자세 그래프와 점유 격자</text>
+    </g>
+  </g>
+</svg>
