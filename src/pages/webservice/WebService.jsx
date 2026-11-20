@@ -1,38 +1,18 @@
-import { Link } from 'react-router-dom'
+import ProjectIndex from '../../components/ProjectIndex'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import { webServices } from '../../lib/webServices'
-import GitHubMark from '../../components/GitHubMark'
-import '../../styles/pages/webservice.css'
 
-function WebService() {
+const entries = webServices.map(({ id, title, route, availability, github, site, siteLabel }) => ({
+  id, title, route, meta: availability, github, site, siteLabel: siteLabel || '서비스 열기',
+}))
+
+export default function WebService() {
   useDocumentTitle()
-
   return (
-    <main className="section" id="main-content" tabIndex={-1}>
-      <div className="container">
-        <div className="section-head">
-          <h1>웹서비스</h1>
-          <p>실제 구현한 서비스의 화면·기능·API와 소스 코드를 정리했습니다.</p>
-        </div>
-        <div className="project-grid one service-list">
-          {webServices.map(service => (
-            <article className="project-card compact service-card" key={service.id}>
-              <Link className="service-card-content" to={service.route}>
-                <h2>{service.title}</h2>
-                <p className="summary">{service.summary}</p>
-                <div className="meta-row"><span className="service-availability">{service.availability}</span><span>{service.tech.slice(0, 4).join(' · ')}</span></div>
-              </Link>
-              <div className="service-card-links">
-                <a href={service.github} target="_blank" rel="noopener noreferrer" aria-label={`${service.title} GitHub 저장소`}><GitHubMark /> GitHub ↗</a>
-                {service.site && <a className="service-live" href={service.site} target="_blank" rel="noopener noreferrer" aria-label={`${service.title} ${service.siteLabel || '서비스 열기'}`}>{service.siteLabel || '서비스 열기'} ↗</a>}
-                <Link to={service.route} className="btn">구현 살펴보기 →</Link>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </main>
+    <ProjectIndex
+      title="웹서비스"
+      intro="실제 구현한 서비스의 화면·기능·API와 소스 코드를 정리했습니다."
+      entries={entries}
+    />
   )
 }
-
-export default WebService

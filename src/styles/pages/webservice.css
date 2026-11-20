@@ -19,13 +19,7 @@
 
 .service-detail { word-break: keep-all; overflow-wrap: anywhere; }
 
-.service-list .service-card { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 28px; padding: 26px 28px; }
-.service-card-content { display: block; flex: 1; min-width: 0; }
-.service-card-content h2 { font-size: 20px; margin: 0 0 9px; }
-.service-card-content .summary { margin-bottom: 12px; }
-.service-card-links { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; flex-shrink: 0; }
-.service-card-links a { display: inline-flex; gap: 7px; align-items: center; font-size: 14px; min-height: 44px; }
-.service-card-links svg, .service-github svg { width: 18px; height: 18px; flex-shrink: 0; }
+.service-github svg { width: 18px; height: 18px; flex-shrink: 0; }
 .service-back { display: inline-flex; font-size: 14px; color: var(--muted); margin-bottom: 24px; align-items: center; min-height: 44px; }
 .service-detail-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 36px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
 .service-availability { display: inline-flex; align-items: center; padding: 4px 8px; border: 1px solid var(--border); border-radius: 4px; background: var(--bg-alt); color: var(--ink); font-size: 12px; font-weight: 500; line-height: 1.4; white-space: nowrap; }
@@ -96,8 +90,6 @@
 .service-lightbox > img.is-original { max-width: none; width: auto; }
 .service-lightbox > p { color: var(--muted); font-size: 14px; line-height: 1.8; margin-top: 12px; }
 @media (max-width: 850px) {
-  .service-list .service-card { align-items: flex-start; flex-direction: column; gap: 16px; padding: 22px; }
-  .service-card-links { width: 100%; justify-content: space-between; }
   .service-detail-header { grid-template-columns: 1fr; gap: 22px; }
   .service-actions { flex-direction: row; flex-wrap: wrap; }
   .service-text-link { align-self: center; margin-left: 5px; font-size: 14px; }
