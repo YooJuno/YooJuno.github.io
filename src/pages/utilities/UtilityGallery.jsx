@@ -16,31 +16,19 @@ function prefersReducedMotion() {
 export default function UtilityGallery({ screens }) {
   const [selectedId, setSelectedId] = useState(screens[0].id)
   const [expanded, setExpanded] = useState(false)
-  const [animationEnabled, setAnimationEnabled] = useState(null)
   const reducedMotion = useSyncExternalStore(subscribeToMotionPreference, prefersReducedMotion)
   const screen = screens.find(item => item.id === selectedId)
   const index = screens.indexOf(screen)
   const hasDemos = screens.some(item => item.animation)
-  const playing = Boolean(screen.animation && (animationEnabled ?? !reducedMotion))
-  const stageImage = playing && !expanded ? screen.animation : screen.image
+  const stageImage = !reducedMotion && !expanded ? screen.animation ?? screen.image : screen.image
 
   return (
     <section className="utility-gallery" id="screens" aria-label="사용 화면">
       <figure className="utility-gallery-figure" id={screen.id}>
-        <div className={`utility-gallery-frame${screen.animation ? ' has-animation' : ''}`}>
-          <button className={`utility-gallery-stage${screens.length === 1 ? ' is-single' : ''}`} type="button" onClick={() => setExpanded(true)} aria-label={`${screen.title} 화면 확대`}>
-            <img id="utility-gallery-media" key={stageImage} src={stageImage} alt={screen.alt} width={screen.width} height={screen.height} decoding="async" fetchPriority={index === 0 ? 'high' : 'auto'} />
-            <span className="utility-gallery-enlarge">확대 ↗</span>
-          </button>
-          {screen.animation && (
-            <button
-              className="utility-gallery-animation"
-              type="button"
-              aria-controls="utility-gallery-media"
-              onClick={() => setAnimationEnabled(!playing)}
-            >{playing ? 'GIF 정지' : 'GIF 재생'}</button>
-          )}
-        </div>
+        <button className={`utility-gallery-stage${screens.length === 1 ? ' is-single' : ''}`} type="button" onClick={() => setExpanded(true)} aria-label={`${screen.title} 화면 확대`}>
+          <img key={stageImage} src={stageImage} alt={screen.alt} width={screen.width} height={screen.height} decoding="async" fetchPriority={index === 0 ? 'high' : 'auto'} />
+          <span className="utility-gallery-enlarge">확대 ↗</span>
+        </button>
         <figcaption className="utility-gallery-caption" aria-live="polite" aria-atomic="true">
           <div>
             <p className="utility-gallery-position">{String(index + 1).padStart(2, '0')} / {String(screens.length).padStart(2, '0')}</p>
