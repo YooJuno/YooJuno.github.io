@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="252" viewBox="0 0 640 252" role="img" aria-labelledby="title desc">
+  <title id="title">LeGO-LOAM의 두 단계 스캔 정합</title>
+  <desc id="desc">왼쪽에서 현재 특징점을 이전 스캔의 지면 평면에 정합해 z, roll, pitch를 구한다. 오른쪽에서 이 값을 고정하고 현재 모서리 특징점을 이전 스캔의 선에 정합해 x, y, yaw를 구한다. 점선은 각 정합에서 줄이는 거리다.</desc>
+  <rect width="640" height="252" fill="#fff"/>
+  <g fill="#252525" font-family="system-ui, Noto Sans KR, sans-serif" text-anchor="middle">
+    <g font-size="23" font-weight="600">
+      <text x="165" y="43">지면 평면 정합</text>
+      <text x="475" y="43">모서리 정합</text>
+    </g>
+    <path d="M63 179H215L265 128H113Z" fill="#f1f1f1" stroke="#8a8a8a" stroke-width="1.5"/>
+    <g fill="#8a8a8a">
+      <circle cx="120" cy="163" r="3"/>
+      <circle cx="185" cy="138" r="3"/>
+      <circle cx="209" cy="164" r="3"/>
+    </g>
+    <path d="M499 77L428 95V181L499 166L565 185V99Z" fill="#f5f5f5" stroke="#8a8a8a" stroke-width="1.5" stroke-linejoin="round"/>
+    <path d="M499 77V166" stroke="#4b4b4b" stroke-width="2"/>
+    <g fill="#676767">
+      <circle cx="499" cy="93" r="3"/>
+      <circle cx="499" cy="152" r="3"/>
+    </g>
+    <path d="M165 94V153M458 123H499" fill="none" stroke="#525252" stroke-width="1.6" stroke-dasharray="5 4"/>
+    <circle cx="165" cy="94" r="5"/>
+    <circle cx="458" cy="123" r="5"/>
+    <g fill="#fff" stroke="#525252" stroke-width="1.5">
+      <circle cx="165" cy="153" r="4"/>
+      <circle cx="499" cy="123" r="4"/>
+    </g>
+    <path d="M303 125H337M329 117L337 125L329 133" fill="none" stroke="#686868" stroke-width="1.5"/>
+    <g font-size="22">
+      <text x="165" y="221">z · roll · pitch</text>
+      <text x="475" y="221">x · y · yaw</text>
+    </g>
+  </g>
+</svg>
