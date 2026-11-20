@@ -18,7 +18,7 @@ DDDMR Navigation은 3D LiDAR로 지도를 만들고, 저장한 지도에서 로�
 
 ![왼쪽의 Navigation 2는 2D 비용 격자를, 오른쪽의 DDD Navigation은 지면 그래프를 전역 및 로컬 플래너에 연결한다](./demo-architecture.png)
 
-*DDDMR GitHub README의 공식 프레임워크 비교도. 하단의 `Cost map 2D`와 `Perception 3D`에서 각각 두 플래너로 이어지는 화살표를 보면 계획에 사용하는 환경 표현의 차이가 드러난다. [공식 README](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/README.md)*
+*공식 구성 비교도. Nav2 플래너 입력은 `Cost map 2D`, DDDMR 플래너 입력은 `Perception 3D`. [공식 README](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/README.md)*
 
 왼쪽은 SLAM Toolbox의 2D 지도에 AMCL을 쓰는 대표 Nav2 구성이다. Nav2의 Voxel Layer는 3D 센서 관측을 받아도 표준 `Costmap2D`에 전달할 때 이를 XY 격자로 투영한다. 오른쪽의 DDDMR은 높이 `z`가 있는 지면 점을 노드로 두고 인접 노드를 연결한다. 위아래 통로가 같은 XY 위치를 지나도 그래프에서 서로 다른 노드로 유지할 수 있다. Nav2도 위치 추정기와 플래너를 플러그인이나 외부 구성으로 바꿀 수 있으므로, 그림은 두 스택의 대표 조합을 비교한다. [Nav2 Voxel Layer 문서](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/core_servers/costmap_2d/costmap_plugins/voxel/) · [Nav2 구성 요소](https://docs.nav2.org/jazzy/getting_started/navigation_concepts/)
 
@@ -28,17 +28,19 @@ DDDMR Navigation은 3D LiDAR로 지도를 만들고, 저장한 지도에서 로�
 
 ## LeGO-LOAM-BOR 지도 제작
 
-### 스캔 투영·특징 정합
+### 거리 영상 투영·특징 추출
 
 회전형 LiDAR 스캔을 수직각과 방위각으로 배열하고 각 칸에 반사점까지의 거리를 놓으면 거리 영상(range image)이 된다. DDDMR은 장착 자세와 지면 관측 범위를 반영해 인접 스캔 행의 점을 비교하고, 점 사이의 기울기가 완만한 곳을 지면 후보로 삼는다. 주변 거리 값의 변화가 큰 점에서는 모서리 특징을, 변화가 작은 점에서는 평탄한 표면 특징을 고른다. [거리 영상과 특징 추출 구현](https://github.com/dfl-rlab/dddmr_navigation/tree/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src)
 
 ![거리 영상으로 LiDAR 점의 이웃을 찾고 모서리와 표면을 정합한 뒤 포즈 그래프에 재방문 제약을 추가하는 과정](./mapping-workflow.svg)
 
-*직접 그린 맵핑 과정. 포즈 그래프의 실선은 연속 자세를, 점선은 시간상 떨어진 키프레임을 잇는 재방문 제약을 나타낸다.*
+*지도 제작 흐름도. 실선은 연속 자세 제약, 점선은 재방문 제약.*
+
+### 오도메트리와 지도 정합
 
 자체 LiDAR 오도메트리(`laser_odometry`)는 연속 스캔의 특징 대응으로 이동량을 추정한다. `wheel_odometry` 모드는 외부 오도메트리를 받는다. 두 경우 모두 지도 정합에서는 예측한 자세를 초기값으로 사용해 현재 모서리 점을 주변 키프레임의 선에, 표면 점을 평면에 맞춘다. 평행한 벽만 길게 이어지면 벽을 따라 움직이는 방향의 오차는 이 거리들에 작게 반영된다. 통로를 가로지르는 구조나 끝점이 보일 때 그 방향의 이동을 더 잘 구분할 수 있다. [특징 대응 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src/featureAssociation.cpp) · [스캔 지도 정합 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src/mapOptimization.cpp)
 
-### 루프 폐쇄·지도 저장
+### 루프 폐쇄
 
 재방문 후보를 찾으면 현재 키프레임의 점군을 과거 키프레임 주변 점군에 ICP로 맞춘다. 채택한 상대 자세를 포즈 그래프에 넣으면 최적화가 이전 키프레임의 배치도 갱신한다. 맞는 제약은 누적 드리프트를 줄이고, 잘못된 제약은 서로 다른 장소를 가까이 끌어당길 수 있다. [포즈 그래프 최적화와 루프 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src/mapOptimization.cpp)
 
@@ -46,7 +48,9 @@ DDDMR Navigation은 3D LiDAR로 지도를 만들고, 저장한 지도에서 로�
 
 *공식 LeGO-LOAM-BOR 지도 예시. 파란 점군에는 주변 구조가, 노란 선에는 키프레임 궤적과 연결이 보인다. 길게 나란히 진행한 구간과 양 끝에서 돌아나가는 지점을 함께 볼 수 있다. [공식 맵핑 문서](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/README.md)*
 
-| 저장 결과 | 내용 |
+### 지도 파일
+
+| 파일 | 내용 |
 | --- | --- |
 | `poses.pcd`, `edges.pcd` | 지도 좌표계의 키프레임 자세와 그래프에서 연결된 키프레임 인덱스 쌍 |
 | `pcd/<id>_feature.pcd`, `_surface.pcd`, `_ground.pcd` | 키프레임별 모서리·표면·지면 점군 |
@@ -70,15 +74,19 @@ MCL 3DL은 RViz 등에서 받은 초기 자세 주변에 입자를 뿌린다. �
 
 입자별 최근접점 검색은 현재 서브맵의 특징·지면에 한정된다. 현재 서브맵 중심에서 일정 거리만큼 이동하면 최신 추정 자세 주변의 키프레임을 모아 다음 창의 KD 트리를 준비하고, 준비가 끝나면 다음 관측 갱신에서 교체한다. 큰 지도에서도 입자마다 검색하는 점군의 범위를 줄이는 방식이다. [서브맵 준비와 교체 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_mcl_3dl/src/sub_maps.cpp)
 
-## 지면 그래프 A*·3D 충돌 검사
+## 3D 경로 계획
 
 Perception 3D는 저장 지면에서 정적 그래프를 만들고 센서가 관측한 장애물로 근처 노드의 통과 비용을 갱신한다. 플러그인은 새 장애물을 표시하고, 해당 공간이 비었다는 관측을 얻으면 이전 표시를 지운다. 전역 경로의 연결은 저장 지면에 달려 있고, 주행 중 피해야 하는 장애물은 실시간 관측으로 갱신된다. [Perception 3D](https://github.com/dfl-rlab/dddmr_navigation/tree/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_perception_3d)
+
+### 지면 그래프 A*
 
 글로벌 플래너는 현재 자세와 목표에 대응하는 지면 노드를 찾고, A*로 간선을 따라 후보를 확장한다. `f = g + h`에서 `g`는 지나온 간선의 길이에 장애물 근접 비용과 방향 전환 비용 등을 더한 값이고, `h`는 목표까지의 3D 직선 거리다. 장애물과의 여유가 차체 내접 반경보다 작은 노드는 건너뛴다. 경사로 위아래를 제대로 잇는 경로를 얻으려면 지도에도 그 경사로를 따라 이어지는 간선이 있어야 한다. [A* 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_global_planner/src/a_star_on_pre_graph.cpp)
 
 ![공식 글로벌 계획 데모에서 녹색 경로가 지그재그 경사로의 연결을 따라가고 오른쪽에 실제 경사로 사진이 있다](./demo-global-plan.png)
 
 *공식 글로벌 플래너 데모. 초록색 경로가 경사로의 굽이를 따라 높이를 바꾸는 부분을 오른쪽 현장 사진과 비교할 수 있다. [글로벌 플래너 문서](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_global_planner/README.md)*
+
+### 로컬 궤적과 충돌 검사
 
 로컬 플래너는 전역 경로의 가까운 구간을 참고해 구동계가 실행할 수 있는 짧은 궤적들을 만든다. 후보의 여러 자세에 차체 외형을 3D 직육면체로 놓고 장애물 점이 그 안에 들어오는지 검사한다. 충돌하지 않는 후보는 전역 경로를 따라가는 정도와 진행 방향 등을 비용으로 비교한다. P2P Move Base는 목표 접수에서 전역 계획, 방향 정렬, 경로 추종, 도착 확인, 재계획과 복구까지의 상태를 관리한다. [3D 충돌 평가 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_local_planner/mpc_critics/models/collision_model.cpp) · [P2P Move Base](https://github.com/dfl-rlab/dddmr_navigation/tree/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_p2p_move_base)
 
@@ -115,7 +123,7 @@ Perception 3D는 저장 지면에서 정적 그래프를 만들고 센서가 관
 
 구간 겹침은 별도로 셌다. 기록 시각이 60초 이상 떨어졌고 시험 지도에서는 2 m 이내로 가까운 자세 쌍을 골랐다. 두 끝점의 시각을 각각 0.15초 이내에서 참고 지도와 대응시켜, 그곳에서 5 m 넘게 떨어져 있으면 구조 불일치로 집계했다. 외부 오도메트리에서 루프를 켰을 때 5,883/7,311쌍(80.5%), 껐을 때 409/2,216쌍(18.5%)이 해당했다. 루프를 끈 실행에서도 방향 벌어짐은 12.84°로 남았다. 두 지표는 각각 경로 방향과 서로 다른 구역의 겹침을 보여준다.
 
-## V1 지도 기반 MCL 위치 도약
+## MCL 위치 도약
 
 V1 지도에서 시작 자세를 대응 키프레임으로 한 번 지정했다. 이후 별도로 계산한 KISS-ICP·IMU 오도메트리로 16,621개 스캔을 재생했다. 입자는 150개를 사용했다. 재표본화 잡음의 표준편차는 X/Y 각각 0.05 m, yaw 0.01185 rad로 줄였다. 측정 갱신 7,372번에서 특징과 오도메트리의 시각 불일치는 0건이었다. 0.5초 이내 상대 XY 이동량이 입력과 1 m 넘게 어긋난 보정은 12번 발생했다.
 
@@ -125,7 +133,9 @@ V1 지도에서 시작 자세를 대응 키프레임으로 한 번 지정했다.
 
 도약 직전 구간의 특징 프레임 23개는 모두 처리됐고, 대응하는 측정 시각도 일치했다. 지도 자체에 통로 왜곡과 겹침이 있으므로, 이 시험에서는 지도 형상과 MCL 계산의 영향을 분리하기 어렵다.
 
-## 20 m 루프 오정합·수정 후 재생
+## 루프 정합 오류
+
+### ICP 초기값 비교
 
 기록의 141초 부근에서 처음 확인한 문제 루프는 현재 점군과 과거 점군을 이미 공통 지도 좌표에 놓고도, 두 키프레임의 위치 차이 약 20 m를 ICP 초기 보정값으로 다시 적용했다. 현재 관측을 과거 관측 쪽으로 미리 옮겨 놓은 뒤 정합한 셈이다. 두 점군과 ICP 솔버를 고정하고 초기 보정만 바꿔 그 제약을 재현했다. [루프 정합 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src/mapOptimization.cpp)
 
@@ -137,6 +147,8 @@ V1 지도에서 시작 자세를 대응 키프레임으로 한 번 지정했다.
 ![동일한 관측 점군을 보정 전과 원본 초기값 및 항등 초기값으로 나란히 비교한 결과](./xt32-first-loop.png)
 
 *주황색은 현재 관측, 회색은 과거 관측이다. 가운데에서는 주황색 점군이 약 20 m 이동해 점수 기준을 통과한다. 오른쪽에서는 초기 보정을 주지 않아 이동량이 작고 같은 기준에서 기각된다.*
+
+### 수정 후 통로 겹침
 
 별도 재생에서는 초기 보정을 바로잡고 회전 변환, 거리 기준의 단위, 수렴 검사, 중복 제약 처리도 수정했다. 600초까지만 재생한 비교에서는 원본 대조군과 수정군의 첫 네 주행 구간 방향이 모두 약 0.53° 벌어졌다. 더 긴 재생에서 저장한 수정군 스냅샷을 비교하니 1,031.448초 시점부터 참고 지도에서 분리된 구간이 겹쳤다. 이 시점에 비교한 1,839쌍 중 39쌍이 구조 불일치에 해당했다.
 
