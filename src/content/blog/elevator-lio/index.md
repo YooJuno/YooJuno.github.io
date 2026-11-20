@@ -22,7 +22,7 @@ summary: "엘리베이터의 수직 운동을 분리하는 LiDAR–IMU 추정 �
 
 [![Office3 데이터의 문 닫힘, 엘리베이터 상승, 상층 복도 진입 장면. 왼쪽은 LiDAR 점군과 추정 궤적, 오른쪽은 현장 영상.](/content/images/blog/elevator-lio/office3-ascent.gif)](/content/images/blog/elevator-lio/office3-ascent.gif)
 
-*Office3 159–183초 · 1.55배속. 주황색 선은 추정 궤적이고, 청록색은 추정 높이에 맞춰 표시한 LiDAR 스캔이다. 오른쪽은 같은 시각의 현장 영상이다. 정차 후 추정 높이는 상승 전보다 약 4.0 m 높았다.* [GIF 크게 보기](/content/images/blog/elevator-lio/office3-ascent.gif) · [Zhang 외, Elevator-LIO Dataset](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+*159–183초 구간. 정차 후 추정 높이는 출발 높이보다 약 4.0 m 높았다.* [Zhang 외, Elevator-LIO Dataset](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 ## 상태 모델과 IMU 전파
 
@@ -68,7 +68,7 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 
 [기본 설정](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/yaml/runtime/mapping.yaml#L49-L66) · [정차 상태 머신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorSelfExit.cpp#L89-L151) · [종료 시 상태 반영](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/node/LidarPipeline.cpp#L338-L387)
 
-- 정차 제약은 엘리베이터의 운동 상태에 적용한다. 속도와 변위 오차의 교차 공분산을 이용해 누적 높이 오차도 보정한다. [정차 측정 갱신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorProcess.cpp#L170-L200)
+- 정차 시 속도와 변위 오차의 교차 공분산으로 누적 높이 오차를 보정한다. [정차 측정 갱신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorProcess.cpp#L170-L200)
 
 ## 건물 기준 오도메트리 계산
 
@@ -77,7 +77,7 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 3. **위치 합성** · 건물 기준 위치는 <code>p_world = p_rel + z_e · e_z</code>다. 수직 평행 이동 모델이므로 x·y 위치와 자세는 그대로 쓰고, <code>/LIO/odom_imu</code>의 <code>pose.pose.position.z</code>에 <code>p_z + z_e</code>를 발행한다. [논문 식 (31)](https://arxiv.org/html/2605.24495v1#S5.E31) · [발행 코드](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/node/publish.cpp#L17-L46)
 4. **정차 후 전환** · 엘리베이터의 수직 속도와 가속도가 0인 조건으로 변위를 보정한다. 보정한 <code>z_e</code>를 <code>p_z</code>에 더하고 엘리베이터 상태를 초기화해 도착 층 높이에서 일반 LIO를 이어간다.
 
-- 로봇이 제자리에 서 있는 동안 엘리베이터가 4 m 올라가면 <code>p_z</code>는 거의 일정하고 <code>z_e</code>가 약 4 m 증가한다. 건물 기준 로봇 높이도 약 4 m 증가한다.
+- 로봇이 제자리에 서 있는 동안 엘리베이터가 4 m 올라가면 <code>p_z</code>는 거의 일정하고 <code>z_e</code>와 건물 기준 로봇 높이는 약 4 m 증가한다.
 - 같은 메시지의 <code>twist.twist.linear.z</code>에는 탑승 중 로봇의 상대 수직 속도 <code>v_rel.z</code>가 들어간다.
 
 ## 논문 실험과 한계
@@ -102,31 +102,28 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 
 ![Mall2 카메라 영상의 탑승 전 로비, L5 정차, L1 하차 후 장면](./mall2-camera.jpg)
 
-*Mall2의 탑승 전 로비, L5 정차, L1 하차 후 장면.* [Zhang 외, 데이터셋 일부 발췌](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+*Mall2 카메라 영상.* [Zhang 외, 데이터셋 일부 발췌](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 ## 전체 시퀀스 매핑
 
-- 원본 ROS 1 bag을 SQLite3 rosbag2로 변환했다. ROS 2 Jazzy에서 LiDAR·IMU와 기록된 모드 전환 신호를 재생해 시퀀스별 지도를 생성했다. [변환 안내](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/scripts/README.md#convert_rosbag1_to_rosbag2py)
-
-- 20개 시퀀스를 각각 매핑해 3D 점군 맵을 저장했다. LiDAR 스캔 153,823개 중 153,035개에서 자세 추정값을 얻었다. 자세 로그는 각 시퀀스의 녹화 시간 중 최소 약 97.6%를 포함한다.
+- 원본 ROS 1 bag을 rosbag2로 변환했다. ROS 2 Jazzy에서 LiDAR·IMU와 기록된 모드 전환 신호를 재생해 20개 시퀀스를 매핑했다. [변환 안내](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/scripts/README.md#convert_rosbag1_to_rosbag2py)
+- LiDAR 스캔 153,823개 중 153,035개에서 자세 추정값을 얻었다. 자세 로그는 각 시퀀스의 녹화 시간 중 최소 약 97.6%를 포함한다.
 - LiDAR 기록률이 약 10 Hz인 시퀀스는 8개, 약 50 Hz인 시퀀스는 12개다.
 
 ### Campus2 층간 매핑
 
 [![직접 재현한 Campus2 점군의 측면도. 점은 층별 높이에 따라 색을 입혔고, 왼쪽 흰 선은 엘리베이터 이동 궤적이다.](/content/images/blog/elevator-lio/campus2-floor-detail.jpg)](/content/images/blog/elevator-lio/campus2-floor-detail.jpg)
 
-*직접 재현한 Campus2 맵. 점의 색은 지도 좌표계의 높이를 나타낸다. 흰 선은 탑승 모드가 켜진 여섯 구간의 추정 궤적이다.*
+*Campus2 재현 결과 · 탑승 모드 6회*
 
 [![논문의 Campus2 매핑 결과와 5층부터 10층까지의 엘리베이터 구간 확대도.](/content/images/blog/elevator-lio/paper-mapping-example.jpg)](/content/images/blog/elevator-lio/paper-mapping-example.jpg)
 
-*논문의 Campus2 매핑 결과. 흰 선은 전체 주행 궤적이다. 오른쪽은 5층부터 10층까지의 이동 구간이다.* [Zhang 외, 그림 8 일부 확대](https://arxiv.org/html/2605.24495v1#S6.F8) · [공식 매핑 예시](https://xiaofan4122.github.io/Elevator_LIO_Page/static/images/Scenarios.png) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+*논문 결과. 흰 선은 전체 주행 궤적.* [Zhang 외, 그림 8 일부 확대](https://arxiv.org/html/2605.24495v1#S6.F8) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 <details>
 <summary>전체 시퀀스 평면도와 매핑 결과</summary>
 
-![Office·Campus·Dormitory·Mall 전체 20개 시퀀스의 점군 맵 평면도](./dataset-maps.jpg)
-
-*시퀀스별 ikd-tree 맵의 평면도. 색은 각 맵의 상대 높이를 나타낸다. 흰 선은 거리 눈금이다.*
+![20개 시퀀스의 점군 맵 평면도. 점 색은 각 맵의 상대 높이, 흰 선은 거리 눈금.](./dataset-maps.jpg)
 
 | 시퀀스 | LiDAR 스캔 | 자세 출력 | ikd-tree 맵 점 수 |
 | --- | ---: | ---: | ---: |
@@ -160,17 +157,13 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 
 ![Campus1 기본 설정 재생과 기록된 진입 신호 재생의 추정 높이 비교](./campus1-entry-replay.png)
 
-*음영은 탑승 모드가 켜진 구간이다. 위는 기본 설정, 아래는 기록된 진입 신호를 사용한 재생 결과다.*
+*음영은 탑승 모드 구간.*
 
 ## Office1 높이 추정
 
-- ROS 2 Jazzy에서 94초 시퀀스를 재생했다. 두 번의 탑승 모두 모드가 자동으로 시작되고 종료됐다.
-- 첫 이동 후 추정 높이는 약 −3.8 m에서 유지됐고, 두 번째 이동 후 출발 높이 부근으로 돌아왔다. 탑승 모드 종료 시점에 높이 추정값이 한 번씩 바뀐다.
+- 94초 시퀀스에서 두 번의 탑승 모두 모드가 자동으로 시작되고 종료됐다.
+- <code>/LIO/odom_imu</code>의 추정 높이는 첫 이동 후 약 −3.8 m에서 유지됐고, 두 번째 이동 후 출발 높이 부근으로 돌아왔다. 각 탑승 모드가 종료될 때 높이 보정이 반영됐다.
 
-![Office1 추정 높이와 두 번의 자동 탑승 구간](./office1-height.png)
+![Office1 추정 높이. 음영은 두 번의 자동 탑승 구간.](./office1-height.png)
 
-*음영은 <code>/LIO/in_elevator</code>가 켜진 구간이다. 그래프는 <code>/LIO/odom_imu</code>의 높이 추정값을 나타낸다.*
-
-![Office1 점군의 평면도와 측면도](./office1-map.jpg)
-
-*점 273,857개로 구성된 ikd-tree 맵. 빨간 선은 평면에 투영한 오도메트리 궤적이다.*
+![Office1 점군의 평면도와 측면도. 평면도의 빨간 선은 오도메트리 궤적.](./office1-map.jpg)
