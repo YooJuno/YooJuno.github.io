@@ -3,14 +3,28 @@ import { Link, useLocation, useNavigationType, useSearchParams } from 'react-rou
 import { getCachedSearchText, loadSearchText, posts } from '../../lib/posts'
 import { BLOG_CATEGORIES, normalizeBlogCategory } from '../../lib/blogCategories'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
-import BlogDates from '../../components/BlogDates'
+import BlogDate from '../../components/BlogDate'
 import '../../styles/pages/blog.css'
+
+const categoryPostCounts = new Map()
+for (const { category } of posts) {
+  categoryPostCounts.set(category, (categoryPostCounts.get(category) ?? 0) + 1)
+}
+const categoryOptions = [
+  { category: '', label: '전체', count: posts.length },
+  ...BLOG_CATEGORIES.map(category => ({
+    category,
+    label: category,
+    count: categoryPostCounts.get(category) ?? 0,
+  })).sort((first, second) => second.count - first.count),
+]
 
 function Blog() {
   const [searchParams, setSearchParams] = useSearchParams()
   const location = useLocation()
   const navigationType = useNavigationType()
   const searchInput = useRef(null)
+  const categoryNavigation = useRef(null)
   const urlQuery = searchParams.get('q') || ''
   const [searchDraft, setSearchDraft] = useState({ locationKey: location.key, value: urlQuery })
   const query = searchDraft.locationKey === location.key
@@ -27,6 +41,20 @@ function Blog() {
   const [searchError, setSearchError] = useState(false)
 
   useDocumentTitle(activeCategory ? `블로그 · ${activeCategory}` : undefined)
+
+  useEffect(() => {
+    const navigation = categoryNavigation.current
+    const activeLink = navigation?.querySelector('[aria-current="page"]')
+    if (!activeLink || navigation.scrollWidth <= navigation.clientWidth) return
+
+    const navigationBounds = navigation.getBoundingClientRect()
+    const linkBounds = activeLink.getBoundingClientRect()
+    if (linkBounds.left < navigationBounds.left) {
+      navigation.scrollLeft += linkBounds.left - navigationBounds.left
+    } else if (linkBounds.right > navigationBounds.right) {
+      navigation.scrollLeft += linkBounds.right - navigationBounds.right
+    }
+  }, [activeCategory])
 
   useEffect(() => {
     if (!searchParams.has('category') || (requestedCategory && requestedCategory === activeCategory)) return
@@ -86,86 +114,79 @@ function Blog() {
           <p>개발 과정과 기술 메모를 기록합니다.</p>
         </header>
 
-        <div className="blog-category-controls">
-          <nav className="blog-category-links" aria-label="글 분류">
-            {['', ...BLOG_CATEGORIES].map(category => (
-              <Link
-                key={category || 'all'}
-                to={{ pathname: location.pathname, search: categoryParams(category).toString() }}
-                state={{ blogFilter: true }}
-                preventScrollReset
-                aria-current={activeCategory === category ? 'page' : undefined}
-              >{category || '전체'}</Link>
-            ))}
-          </nav>
-          <div className="blog-category-select">
-            <label htmlFor="blog-category">글 분류</label>
-            <select
-              id="blog-category"
-              value={activeCategory}
-              onChange={event => setSearchParams(categoryParams(event.target.value), {
-                preventScrollReset: true,
-                state: { blogFilter: true },
-              })}
-            >
-              <option value="">전체</option>
-              {BLOG_CATEGORIES.map(category => <option key={category} value={category}>{category}</option>)}
-            </select>
-          </div>
-        </div>
-
-        <form className="blog-controls" role="search" onSubmit={event => event.preventDefault()}>
-          <label className="visually-hidden" htmlFor="blog-search">글 검색</label>
-          <input
-            id="blog-search"
-            className="blog-search"
-            ref={searchInput}
-            type="search"
-            placeholder="제목, 본문, 키워드 검색"
-            value={query}
-            onChange={event => updateQuery(event.target.value)}
-          />
-          {query && (
-            <button className="blog-search-clear" type="button" aria-label="검색어 지우기" onClick={() => {
-              updateQuery('')
-              searchInput.current?.focus()
-            }}>지우기</button>
-          )}
-        </form>
-        <p className="blog-result-summary" role="status" aria-live="polite">
-          {searching ? '본문 검색 중…' : `${filtered.length}개의 글`}
-        </p>
-        {searchError && normalizedQuery && <p className="blog-search-error" role="alert">본문 검색을 불러오지 못했습니다. 제목·요약·키워드로 검색한 결과입니다.</p>}
-
-        <div className="blog-grid blog-list single" aria-busy={searching}>
-          {!searching && filtered.length === 0 && (
-            <div className="empty">
-              <p>{normalizedQuery ? '검색 결과가 없습니다.' : activeCategory ? `“${activeCategory}” 카테고리에 등록된 글이 없습니다.` : '아직 등록된 글이 없습니다.'}</p>
-              {normalizedQuery && <button type="button" className="text-button" onClick={() => updateQuery('')}>검색어 지우기</button>}
-              {activeCategory && <Link
-                to={{ pathname: location.pathname, search: categoryParams('').toString() }}
-                state={{ blogFilter: true }}
-                preventScrollReset
-              >전체 분류에서 보기</Link>}
-            </div>
-          )}
-          {filtered.map(post => (
+        <nav className="blog-category-links" aria-label="글 분류" ref={categoryNavigation}>
+          {categoryOptions.map(({ category, label, count }) => (
             <Link
-              className="post-card post-link-card"
-              key={post.slug}
-              to={`/blog/${post.slug}`}
-              state={{ from: `${location.pathname}${resultSearch ? `?${resultSearch}` : ''}` }}
-              aria-label={`${post.title} 자세히 보기`}
+              key={category || 'all'}
+              to={{ pathname: location.pathname, search: categoryParams(category).toString() }}
+              state={{ blogFilter: true }}
+              preventScrollReset
+              aria-current={activeCategory === category ? 'page' : undefined}
+              aria-label={`${label}, 글 ${count}개`}
             >
-              <div className="post-meta">
-                <span className="post-category">{post.category}</span>
-                <BlogDates date={post.date} updated={post.updated} />
-              </div>
-              <h2>{post.title}</h2>
-              <p>{post.summary}</p>
+              {label}<span className="blog-category-count">{count}</span>
             </Link>
           ))}
-        </div>
+        </nav>
+
+        <section aria-labelledby="blog-list-heading">
+          <div className="blog-list-toolbar">
+            <div className="blog-list-heading">
+              <h2 id="blog-list-heading">{activeCategory || '전체 글'}</h2>
+              <p className="blog-result-summary" role="status">
+                {searching ? '본문 검색 중…' : `${filtered.length}개의 글`}
+              </p>
+            </div>
+            <form className="blog-controls" role="search" onSubmit={event => event.preventDefault()}>
+              <label className="visually-hidden" htmlFor="blog-search">글 검색</label>
+              <input
+                id="blog-search"
+                className="blog-search"
+                ref={searchInput}
+                type="search"
+                placeholder="제목, 본문, 키워드 검색"
+                value={query}
+                onChange={event => updateQuery(event.target.value)}
+              />
+              {query && (
+                <button className="blog-search-clear" type="button" aria-label="검색어 지우기" onClick={() => {
+                  updateQuery('')
+                  searchInput.current?.focus()
+                }}>지우기</button>
+              )}
+            </form>
+          </div>
+          {searchError && normalizedQuery && <p className="blog-search-error" role="alert">본문 검색을 불러오지 못했습니다. 제목·요약·키워드로 검색한 결과입니다.</p>}
+
+          <div className="blog-list" aria-busy={searching}>
+            {!searching && filtered.length === 0 && (
+              <div className="empty">
+                <p>{normalizedQuery ? '검색 결과가 없습니다.' : activeCategory ? `“${activeCategory}” 카테고리에 등록된 글이 없습니다.` : '아직 등록된 글이 없습니다.'}</p>
+                {normalizedQuery && <button type="button" className="text-button" onClick={() => updateQuery('')}>검색어 지우기</button>}
+                {activeCategory && <Link
+                  to={{ pathname: location.pathname, search: categoryParams('').toString() }}
+                  state={{ blogFilter: true }}
+                  preventScrollReset
+                >전체 분류에서 보기</Link>}
+              </div>
+            )}
+            {filtered.map(post => (
+              <Link
+                className="post-card post-link-card"
+                key={post.slug}
+                to={`/blog/${post.slug}`}
+                state={{ from: `${location.pathname}${resultSearch ? `?${resultSearch}` : ''}` }}
+                aria-label={`${post.title} 자세히 보기`}
+              >
+                <h3>{post.title}</h3>
+                <div className="post-meta">
+                  <span className="post-category">{post.category}</span>
+                  <BlogDate date={post.date} />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
       </div>
     </main>
   )
