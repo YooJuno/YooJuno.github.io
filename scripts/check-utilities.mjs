@@ -5,6 +5,7 @@ import { ROUTE_META } from '../src/lib/routeMeta.js'
 
 export function validateUtilities(root) {
   const directory = path.join(root, 'src/content/utilities')
+  const imagesRoot = path.resolve(root, 'public/content/images')
   const ids = new Set()
   let screens = 0
   let examples = 0
@@ -68,11 +69,25 @@ export function validateUtilities(root) {
       check(screen.title && screen.alt && screen.caption && Array.isArray(screen.annotations), '화면 제목·대체 텍스트·출처 설명을 확인하세요.')
       check(screen.image.startsWith('/content/images/'), '화면 이미지는 public/content/images 안에서 관리하세요.')
       const imagePath = path.resolve(root, 'public', `.${screen.image}`)
-      check(imagePath.startsWith(path.resolve(root, 'public/content/images') + path.sep), '이미지 경로 범위를 확인하세요.')
+      check(imagePath.startsWith(imagesRoot + path.sep), '이미지 경로 범위를 확인하세요.')
       check(fs.existsSync(imagePath), `이미지가 없습니다: ${screen.image}`)
       const bytes = fs.readFileSync(imagePath)
       check(bytes.subarray(0, 8).toString('hex') === '89504e470d0a1a0a', '화면 캡처는 PNG로 저장하세요.')
       check(bytes.readUInt32BE(16) === screen.width && bytes.readUInt32BE(20) === screen.height, `이미지 원본 크기를 확인하세요: ${screen.image}`)
+      if (screen.animation !== undefined) {
+        check(typeof screen.animation === 'string' && /^\/content\/images\/[^%?#\\]+\.gif$/.test(screen.animation), '시연 영상은 public/content/images 안의 GIF를 사용하세요.')
+        const animationPath = path.resolve(root, 'public', `.${screen.animation}`)
+        check(animationPath.startsWith(imagesRoot + path.sep), 'GIF 경로 범위를 확인하세요.')
+        check(fs.existsSync(animationPath) && fs.statSync(animationPath).isFile(), `GIF 파일이 없습니다: ${screen.animation}`)
+        check(fs.realpathSync(animationPath).startsWith(fs.realpathSync(imagesRoot) + path.sep), 'GIF 경로 범위를 확인하세요.')
+        const signature = fs.readFileSync(animationPath).subarray(0, 6).toString('latin1')
+        check(signature === 'GIF87a' || signature === 'GIF89a', `GIF 파일 형식을 확인하세요: ${screen.animation}`)
+      }
+      if (screen.source !== undefined) {
+        const { label, url } = screen.source ?? {}
+        check(typeof label === 'string' && label.trim() && typeof url === 'string' && url.startsWith('https://') && URL.canParse(url),
+          '화면 출처의 이름과 HTTPS 주소를 확인하세요.')
+      }
       screens += 1
     }
   }

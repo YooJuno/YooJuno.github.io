@@ -1,5 +1,21 @@
 # LiDAR Studio 화면 출처
 
+## 데이터셋 시연 GIF
+
+GIF와 PNG 미리보기는 실제 LiDAR Studio 화면에서 만들었습니다. GIF 인코딩 과정에서 크기와 색상 수를 줄였습니다.
+
+| 데모 | 데이터와 화면 기록 |
+| --- | --- |
+| `object-detection`, `ground-segmentation` | KITTI Raw `2011_09_26_drive_0005_sync`, 스캔 20–109. LiDAR Studio의 [원본 데모와 캡처 설정](https://github.com/YooJuno/lidar_studio/blob/a97eb7dc8fd8051602a5a4e4e4e3070528f3d193/docs/media/SOURCE.md)에서 가져왔습니다. |
+| `elevator-lio-replay` | Elevator-LIO `Campus1`, Livox MID-360. ROS 2로 변환한 기록의 시작 부분을 `CustomMsg` 지원을 추가한 로컬 빌드에서 재생했습니다. |
+| `urbanv2x-panorama`, `urbanv2x-clustering` | UrbanV2X `hkstp_s_02`, Hesai AT128P. 각각 앱의 141–181번과 140–185번 연속 스캔을 10 Hz 기록 시간에 맞춰 편집했습니다. |
+| `roi-export`, `dataset-review` | 같은 UrbanV2X 기록의 첫 7프레임에서 도로변 ROI를 추출하고, 저장된 샘플 7개를 검수했습니다. |
+| `driving-examples` | 앱에서 저장된 UrbanV2X AT128P 30초 기록을 열고 3D에서 2D로 전환했습니다. |
+
+- **KITTI Raw** · Andreas Geiger, Philip Lenz, Christoph Stiller, Raquel Urtasun. [데이터](https://www.cvlibs.net/datasets/kitti/raw_data.php) · [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/)
+- **UrbanV2X** · Qijun Qin 외, TAS Lab / The Hong Kong Polytechnic University. [데이터](https://huggingface.co/datasets/polyutaslab/UrbanV2X) · [논문](https://doi.org/10.1109/ITSC60802.2025.11423762) · [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+- **Elevator-LIO Dataset** · Yifan Zhang 외. [데이터](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset) · [논문](https://arxiv.org/abs/2605.24495) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
 ## KITTI 자료
 
 `roi.png`는 b291d9ac8792775cfdb52f0b6368d7be292b01e6의 docs/images 원본입니다. `detection.png`는 4107c96b558ec73ccb3b418c1d66f57c43472769의 docs/media/object-detection.mp4에서 4초 프레임을 추출한 1120×524 이미지입니다. UI·박스·수치를 재구성하지 않았습니다.
