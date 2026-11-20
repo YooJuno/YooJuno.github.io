@@ -26,7 +26,7 @@ summary: "엘리베이터의 수직 운동을 분리하는 LiDAR–IMU 추정 �
 
 ## 상태 모델과 IMU 전파
 
-- 반복 오차 상태 칼만 필터(IESKF)는 21차원 오차 상태를 사용한다. 여기에는 로봇의 자세·위치·속도, IMU 바이어스, 중력 벡터, 엘리베이터의 수직 변위·속도·가속도가 포함된다. [상태 정의](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/include/support/type.h#L31-L44)
+- 공개 구현의 반복 오차 상태 칼만 필터(IESKF)는 21차원 오차 상태를 사용한다. 여기에는 로봇의 자세·위치·속도, IMU 바이어스, 중력 벡터, 엘리베이터의 수직 변위·속도·가속도가 포함된다. [상태 정의](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/include/support/type.h#L31-L44)
 - 엘리베이터는 수직축을 따라 평행 이동한다고 가정한다. 아래 식에서 <code>R</code>은 IMU 좌표계의 벡터를 건물 기준 좌표계로 회전시키는 행렬이고, <code>e_z</code>는 위쪽 방향의 단위벡터다. [IMU 전파 코드](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/estimator/IMUProcess.cpp#L288-L319)
 
 ~~~text
@@ -38,11 +38,9 @@ p_rel⁺  = p_rel + v_rel · Δt + ½ a_rel · Δt²
 
 v_e⁺    = v_e + a_e · Δt
 z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
-
-건물 기준 높이 = p_z + z_e
 ~~~
 
-- <code>p_z</code>는 로봇의 상대 위치 <code>p_rel</code>의 높이 성분이다. <code>z_e</code>는 엘리베이터의 수직 변위다. 예를 들어 로봇이 제자리에 서 있는 동안 엘리베이터가 4 m 올라가면 <code>p_z</code>는 거의 그대로이고 <code>z_e</code>가 약 4 m 늘어난다.
+- <code>p_z</code>는 엘리베이터 기준 로봇 위치 <code>p_rel</code>의 높이 성분이다. <code>z_e</code>는 건물 기준 엘리베이터의 수직 변위다. 탑승 모드에 들어갈 때 <code>z_e</code>를 0으로 두고 이후 상승·하강 변위를 누적한다. [탑승 상태 초기화](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorProcess.cpp#L85-L91)
 
 ![LiDAR가 관측하는 로봇의 상대 운동과 IMU 측정값에 포함되는 엘리베이터 가속도](./motion-separation.png)
 
@@ -72,6 +70,16 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 
 - 정차 제약은 엘리베이터의 운동 상태에 적용한다. 속도와 변위 오차의 교차 공분산을 이용해 누적 높이 오차도 보정한다. [정차 측정 갱신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorProcess.cpp#L170-L200)
 
+## 건물 기준 오도메트리 계산
+
+1. **IMU 예측** · 보정한 IMU 가속도에서 필터가 추정한 엘리베이터 가속도를 빼고 적분해 로봇의 상대 위치 <code>p_rel</code>을 예측한다. 엘리베이터 가속도는 별도로 적분해 수직 변위 <code>z_e</code>를 예측한다.
+2. **LiDAR 보정** · 엘리베이터 내부의 점–평면 잔차로 <code>p_rel</code>과 자세를 갱신한다. 이 갱신은 교차 공분산을 통해 <code>z_e</code>에도 반영된다.
+3. **위치 합성** · 건물 기준 위치는 <code>p_world = p_rel + z_e · e_z</code>다. 수직 평행 이동 모델이므로 x·y 위치와 자세는 그대로 쓰고, <code>/LIO/odom_imu</code>의 <code>pose.pose.position.z</code>에 <code>p_z + z_e</code>를 발행한다. [논문 식 (31)](https://arxiv.org/html/2605.24495v1#S5.E31) · [발행 코드](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/node/publish.cpp#L17-L46)
+4. **정차 후 전환** · 엘리베이터의 수직 속도와 가속도가 0인 조건으로 변위를 보정한다. 보정한 <code>z_e</code>를 <code>p_z</code>에 더하고 엘리베이터 상태를 초기화해 도착 층 높이에서 일반 LIO를 이어간다.
+
+- 로봇이 제자리에 서 있는 동안 엘리베이터가 4 m 올라가면 <code>p_z</code>는 거의 일정하고 <code>z_e</code>가 약 4 m 증가한다. 건물 기준 로봇 높이도 약 4 m 증가한다.
+- 같은 메시지의 <code>twist.twist.linear.z</code>에는 탑승 중 로봇의 상대 수직 속도 <code>v_rel.z</code>가 들어간다.
+
 ## 논문 실험과 한계
 
 - **종료 높이 오차** · 실제 환경 20개 시퀀스 중 17개에서 1 cm 미만. 같은 층 재방문이나 계단 경로를 기준으로 종점의 높이를 비교했다. 전체 주행 구간의 절대 오차를 계산할 기준 궤적은 제공되지 않는다.
@@ -94,11 +102,7 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 
 ![Mall2 카메라 영상의 탑승 전 로비, L5 정차, L1 하차 후 장면](./mall2-camera.jpg)
 
-*Mall2 카메라 프레임. 왼쪽부터 탑승 전 로비, L5 정차 시점, L1 하차 후 장면이다. 원본을 자르고 축소했다.* [Zhang 외, Elevator-LIO Dataset](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
-
-![Livox MID-360과 산업용 카메라를 사용한 휴대형 수집 장비](./handheld-platform.jpg)
-
-*논문의 휴대형 수집 장비. 그림 6을 JPEG로 변환했다.* [Zhang 외, Fig. 6, CC BY 4.0](https://arxiv.org/html/2605.24495v1#S6.F6)
+*Mall2의 탑승 전 로비, L5 정차, L1 하차 후 장면.* [Zhang 외, 데이터셋 일부 발췌](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 ## 전체 시퀀스 매핑
 
@@ -115,7 +119,7 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 
 [![논문의 Campus2 매핑 결과와 5층부터 10층까지의 엘리베이터 구간 확대도.](/content/images/blog/elevator-lio/paper-mapping-example.jpg)](/content/images/blog/elevator-lio/paper-mapping-example.jpg)
 
-*논문 저자의 Campus2 매핑 예시. 흰 선은 전체 주행 궤적이다. 오른쪽 확대도에서 5층부터 10층까지의 이동을 볼 수 있다. 그림 8에서 Campus2 부분을 잘라 확대했다.* [Zhang 외, 그림 8](https://arxiv.org/html/2605.24495v1#S6.F8) · [공식 매핑 예시](https://xiaofan4122.github.io/Elevator_LIO_Page/static/images/Scenarios.png) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+*논문의 Campus2 매핑 결과. 흰 선은 전체 주행 궤적이다. 오른쪽은 5층부터 10층까지의 이동 구간이다.* [Zhang 외, 그림 8 일부 확대](https://arxiv.org/html/2605.24495v1#S6.F8) · [공식 매핑 예시](https://xiaofan4122.github.io/Elevator_LIO_Page/static/images/Scenarios.png) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 <details>
 <summary>전체 시퀀스 평면도와 매핑 결과</summary>
@@ -170,5 +174,3 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 ![Office1 점군의 평면도와 측면도](./office1-map.jpg)
 
 *점 273,857개로 구성된 ikd-tree 맵. 빨간 선은 평면에 투영한 오도메트리 궤적이다.*
-
-- <code>/LIO/odom_imu</code>의 pose 중 z 성분에는 엘리베이터 변위가 더해진다. <code>twist.linear.z</code>에는 엘리베이터 속도가 반영되지 않으므로, 두 값을 함께 쓸 때는 기준 좌표계를 확인해야 한다. [odometry 발행 코드](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/node/publish.cpp#L17-L46)
