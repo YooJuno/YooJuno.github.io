@@ -214,6 +214,11 @@
   text-underline-offset: 4px;
 }
 
+.post-header .post-back {
+  font-size: inherit;
+  white-space: nowrap;
+}
+
 .post-header {
   margin-bottom: 36px;
   padding-bottom: 28px;
