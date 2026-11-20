@@ -18,9 +18,11 @@ summary: "엘리베이터의 수직 운동을 분리하는 LiDAR–IMU 추정 �
 - 객실에 로봇이 정지해 있으면 LiDAR에서 벽과 바닥의 위치는 거의 일정하다. IMU에는 객실의 출발과 제동에 따른 수직 가속도가 들어온다.
 - 객실 구조를 건물에 고정된 점군으로 간주하면 LiDAR 정합과 IMU 예측의 기준이 달라진다. 논문은 **객실 기준 로봇 운동**과 **건물 기준 객실 운동**을 분리해 추정한다.
 
-![Office3 시퀀스의 열린 출입구, 닫힌 객실 문, 하차 후 복도](./office3-elevator.jpg)
+## Office3 상승 재생
 
-*Office3의 카메라 프레임. 왼쪽부터 열린 출입구, 닫힌 객실 문, 하차 후 복도. 원본을 자르고 축소했다. 추정에는 LiDAR와 IMU를 사용한다.* [Zhang 외, Elevator-LIO Dataset, CC BY 4.0](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset)
+[![Office3에서 문이 닫히고 엘리베이터가 상승한 뒤 상층 복도로 나오는 장면. 왼쪽은 LiDAR 점군과 추정 궤적, 오른쪽은 실제 카메라 영상.](/content/images/blog/elevator-lio/office3-ascent.gif)](/content/images/blog/elevator-lio/office3-ascent.gif)
+
+*Office3 159–183초 · 1.55배속. 주황색 선은 추정 궤적이고, 청록색은 추정 높이에 맞춰 표시한 LiDAR 스캔이다. 오른쪽은 같은 시각의 현장 영상이다. 정차 후 추정 높이는 상승 전보다 약 4.0 m 높았다.* [GIF 크게 보기](/content/images/blog/elevator-lio/office3-ascent.gif) · [Zhang 외, Elevator-LIO Dataset](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 ## 상태 모델과 IMU 전파
 
@@ -98,17 +100,27 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 
 ## 전체 시퀀스 매핑
 
-- 원본 ROS 1 bag을 SQLite3 rosbag2로 변환하고 ROS 2 Jazzy에서 재생하고 시퀀스마다 별도 지도를 생성했다. LiDAR·IMU와 bag에 기록된 모드 전환 신호를 재생했다. [변환 안내](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/scripts/README.md#convert_rosbag1_to_rosbag2py)
+- 원본 ROS 1 bag을 SQLite3 rosbag2로 변환했다. ROS 2 Jazzy에서 LiDAR·IMU와 기록된 모드 전환 신호를 재생해 시퀀스별 지도를 생성했다. [변환 안내](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/scripts/README.md#convert_rosbag1_to_rosbag2py)
 
 - 20개 시퀀스 모두 개별 3D 점군 맵으로 저장했다. LiDAR 스캔 153,823개 중 153,035개에 대해 매핑 후 자세가 출력됐다. 자세 로그가 포함하는 녹화 구간의 비율은 시퀀스별로 최소 약 97.6%였다.
 - 스캔 기록률은 약 10 Hz가 8개, 약 50 Hz가 12개다. 프레임 수는 기록률과 주행 길이에 따라 달라진다.
 
-![Office·Campus·Dormitory·Mall 전체 20개 시퀀스의 점군 맵 평면도](./dataset-maps.jpg)
+### Campus2 층간 매핑
 
-*시퀀스별 ikd-tree 맵을 위에서 본 모습. 색은 각 맵 내부의 상대 높이, 흰 선은 거리 축척이다.*
+[![직접 재현한 Campus2 점군의 사선 측면도. 층별 구조를 높이별 색으로 나타냈으며 왼쪽 흰 선은 엘리베이터 이동 궤적이다.](/content/images/blog/elevator-lio/campus2-floor-detail.jpg)](/content/images/blog/elevator-lio/campus2-floor-detail.jpg)
+
+*직접 재현한 Campus2 맵. 점의 색은 지도 좌표계의 높이, 흰 선은 탑승 모드가 켜진 여섯 구간의 추정 궤적이다.*
+
+[![논문의 Campus2 매핑 결과와 5층부터 10층까지의 엘리베이터 구간 확대도.](/content/images/blog/elevator-lio/paper-mapping-example.jpg)](/content/images/blog/elevator-lio/paper-mapping-example.jpg)
+
+*논문 저자의 Campus2 매핑 예시. 흰 선은 전체 주행 궤적이다. 오른쪽 확대도에서 5층부터 10층까지의 이동을 볼 수 있다. 그림 8에서 Campus2 부분을 잘라 확대했다.* [Zhang 외, 그림 8](https://arxiv.org/html/2605.24495v1#S6.F8) · [공식 매핑 예시](https://xiaofan4122.github.io/Elevator_LIO_Page/static/images/Scenarios.png) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 <details>
-<summary>시퀀스별 매핑 결과</summary>
+<summary>전체 시퀀스 평면도와 매핑 결과</summary>
+
+![Office·Campus·Dormitory·Mall 전체 20개 시퀀스의 점군 맵 평면도](./dataset-maps.jpg)
+
+*시퀀스별 ikd-tree 맵의 평면도. 색은 각 맵 내부의 상대 높이, 흰 선은 거리 축척이다.*
 
 | 시퀀스 | LiDAR 스캔 | 자세 출력 | ikd-tree 맵 점 수 |
 | --- | ---: | ---: | ---: |
