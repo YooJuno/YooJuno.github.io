@@ -9,10 +9,12 @@ tags:
   - SLAM
   - Localization
   - Path Planning
-summary: "3D LiDAR로 지도를 만들고 지면을 따라 경로를 계산하는 원리와 XT32 재생에서 확인한 지도 왜곡, 위치 도약을 정리했다."
+summary: "3D LiDAR 지도 제작, MCL 3DL 위치 추정, 지면 그래프 경로 계획, XT32 지도 왜곡·위치 도약"
 ---
 
 DDDMR Navigation은 3D LiDAR로 지도를 만들고, 저장한 지도에서 로봇의 자세를 추정해 주행 경로를 계산하는 ROS 2 스택이다. 경사로가 위아래 통로를 잇는 환경에서 지면의 높이와 연결 관계를 경로 계획에 사용한다. 구현은 소스 스냅샷 `02f3bfe`를 기준으로 설명한다. [DDDMR Navigation 소스](https://github.com/dfl-rlab/dddmr_navigation/tree/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4)
+
+## Nav2–DDDMR 구성 비교
 
 ![왼쪽의 Navigation 2는 2D 비용 격자를, 오른쪽의 DDD Navigation은 지면 그래프를 전역 및 로컬 플래너에 연결한다](./demo-architecture.png)
 
@@ -24,9 +26,9 @@ DDDMR Navigation은 3D LiDAR로 지도를 만들고, 저장한 지도에서 로�
 
 *직접 그린 데이터 흐름. 위쪽에서 저장한 지도는 아래쪽에서 두 갈래로 쓰인다. 주변 키프레임의 특징은 MCL의 위치 추정에, 지면 모델은 MCL과 Perception 3D에 쓰인다.*
 
-## LeGO-LOAM-BOR로 지도 만들기
+## LeGO-LOAM-BOR 지도 제작
 
-### 스캔에서 키프레임까지
+### 스캔 투영·특징 정합
 
 회전형 LiDAR 스캔을 수직각과 방위각으로 배열하고 각 칸에 반사점까지의 거리를 놓으면 거리 영상(range image)이 된다. DDDMR은 장착 자세와 지면 관측 범위를 반영해 인접 스캔 행의 점을 비교하고, 점 사이의 기울기가 완만한 곳을 지면 후보로 삼는다. 주변 거리 값의 변화가 큰 점에서는 모서리 특징을, 변화가 작은 점에서는 평탄한 표면 특징을 고른다. [거리 영상과 특징 추출 구현](https://github.com/dfl-rlab/dddmr_navigation/tree/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src)
 
@@ -36,7 +38,7 @@ DDDMR Navigation은 3D LiDAR로 지도를 만들고, 저장한 지도에서 로�
 
 자체 LiDAR 오도메트리(`laser_odometry`)는 연속 스캔의 특징 대응으로 이동량을 추정한다. `wheel_odometry` 모드는 외부 오도메트리를 받는다. 두 경우 모두 지도 정합에서는 예측한 자세를 초기값으로 사용해 현재 모서리 점을 주변 키프레임의 선에, 표면 점을 평면에 맞춘다. 평행한 벽만 길게 이어지면 벽을 따라 움직이는 방향의 오차는 이 거리들에 작게 반영된다. 통로를 가로지르는 구조나 끝점이 보일 때 그 방향의 이동을 더 잘 구분할 수 있다. [특징 대응 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src/featureAssociation.cpp) · [스캔 지도 정합 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src/mapOptimization.cpp)
 
-### 루프 제약과 지도 파일
+### 루프 폐쇄·지도 저장
 
 재방문 후보를 찾으면 현재 키프레임의 점군을 과거 키프레임 주변 점군에 ICP로 맞춘다. 채택한 상대 자세를 포즈 그래프에 넣으면 최적화가 이전 키프레임의 배치도 갱신한다. 맞는 제약은 누적 드리프트를 줄이고, 잘못된 제약은 서로 다른 장소를 가까이 끌어당길 수 있다. [포즈 그래프 최적화와 루프 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src/mapOptimization.cpp)
 
@@ -52,7 +54,7 @@ DDDMR Navigation은 3D LiDAR로 지도를 만들고, 저장한 지도에서 로�
 
 키프레임 자세와 지역 점군을 따로 저장하므로 자세가 바뀌어도 지도를 다시 조립할 수 있고, 위치 추정에서는 가까운 키프레임만 모아 쓸 수 있다. 저장 지면에는 실제 반사점과 관측 사이를 채운 추정 패치가 함께 들어간다. [지도 내보내기 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src/mapOptimization.cpp)
 
-## MCL 3DL로 위치 추정하기
+## MCL 3DL 위치 추정
 
 MCL 3DL은 RViz 등에서 받은 초기 자세 주변에 입자를 뿌린다. 각 입자는 로봇의 위치와 방향에 대한 하나의 가설이다. 이후 오도메트리의 상대 이동과 운동 잡음으로 입자를 옮기고, 현재 스캔을 각 가설의 자세에 놓아 주변 지도와 비교한다. 높은 점수를 받은 자세를 더 자주 뽑아 다음 갱신에 사용한다. 이동량과 회전량이 모두 설정 기준보다 작으면 갱신을 건너뛴다. [입자 필터 갱신 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_mcl_3dl/src/mcl_3dl.cpp)
 
@@ -68,7 +70,7 @@ MCL 3DL은 RViz 등에서 받은 초기 자세 주변에 입자를 뿌린다. �
 
 입자별 최근접점 검색은 현재 서브맵의 특징·지면에 한정된다. 현재 서브맵 중심에서 일정 거리만큼 이동하면 최신 추정 자세 주변의 키프레임을 모아 다음 창의 KD 트리를 준비하고, 준비가 끝나면 다음 관측 갱신에서 교체한다. 큰 지도에서도 입자마다 검색하는 점군의 범위를 줄이는 방식이다. [서브맵 준비와 교체 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_mcl_3dl/src/sub_maps.cpp)
 
-## 지면 그래프의 A*와 3D 충돌 검사
+## 지면 그래프 A*·3D 충돌 검사
 
 Perception 3D는 저장 지면에서 정적 그래프를 만들고 센서가 관측한 장애물로 근처 노드의 통과 비용을 갱신한다. 플러그인은 새 장애물을 표시하고, 해당 공간이 비었다는 관측을 얻으면 이전 표시를 지운다. 전역 경로의 연결은 저장 지면에 달려 있고, 주행 중 피해야 하는 장애물은 실시간 관측으로 갱신된다. [Perception 3D](https://github.com/dfl-rlab/dddmr_navigation/tree/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_perception_3d)
 
@@ -84,9 +86,9 @@ Perception 3D는 저장 지면에서 정적 그래프를 만들고 센서가 관
 
 *공식 로컬 플래너 데모. 보라색 점은 장애물 관측이다. 노란색은 충돌 검사를 통과한 후보이고, 빨간색은 그중 선택된 궤적이다. [로컬 플래너 문서](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_local_planner/README.md)*
 
-## XT32 재생에서 나타난 지도 왜곡
+## XT32 지도 왜곡
 
-### 입력과 비교 조건
+### 입력·재생 조건
 
 언덕이 있는 반복 주행 구간에서 Hesai XT32로 기록한 스캔 16,638개를 사용했다. 기록은 약 28분이며 휠 오도메트리를 포함한 `nav_msgs/Odometry` 메시지는 기록되지 않았다. V1은 자체 LiDAR 오도메트리와 100 m 거리 범위를 사용했다. 이 실행에는 정합의 퇴화 방향과 PCA 선 방향 처리 수정이 포함됐다. 원본 기록의 끝까지 진행해 키프레임 2,191개를 저장했다.
 
@@ -96,7 +98,7 @@ Perception 3D는 저장 지면에서 정적 그래프를 만들고 센서가 관
 
 *직접 내보낸 V1 지도. 상면도의 빨간 점을 따라가면 긴 통로들이 한쪽 끝으로 갈수록 벌어진다. 아래 측면도의 주황색은 관측 사이를 채운 패치를 포함한 지면 모델이다.*
 
-### 통로 방향과 구간 겹침
+### 통로 방향·구간 겹침
 
 각 지도의 원래 좌표계에서 X 범위 양 끝 20 m를 제외했다. 남은 범위에서 X 방향 길이가 80 m 이상이고 자세 표본이 15개 이상인 연속 주행 구간 12개를 골랐다. 구간마다 직선을 적합해 한 지도 안에서 진행 방향이 얼마나 벌어졌는지 비교했다. 참고 2D 지도도 같은 기록에서 만든 추정치다.
 
@@ -113,7 +115,7 @@ Perception 3D는 저장 지면에서 정적 그래프를 만들고 센서가 관
 
 구간 겹침은 별도로 셌다. 기록 시각이 60초 이상 떨어졌고 시험 지도에서는 2 m 이내로 가까운 자세 쌍을 골랐다. 두 끝점의 시각을 각각 0.15초 이내에서 참고 지도와 대응시켜, 그곳에서 5 m 넘게 떨어져 있으면 구조 불일치로 집계했다. 외부 오도메트리에서 루프를 켰을 때 5,883/7,311쌍(80.5%), 껐을 때 409/2,216쌍(18.5%)이 해당했다. 루프를 끈 실행에서도 방향 벌어짐은 12.84°로 남았다. 두 지표는 각각 경로 방향과 서로 다른 구역의 겹침을 보여준다.
 
-## V1 지도에서 관찰한 MCL 위치 도약
+## V1 지도 기반 MCL 위치 도약
 
 V1 지도에서 시작 자세를 대응 키프레임으로 한 번 지정했다. 이후 별도로 계산한 KISS-ICP·IMU 오도메트리로 16,621개 스캔을 재생했다. 입자는 150개를 사용했다. 재표본화 잡음의 표준편차는 X/Y 각각 0.05 m, yaw 0.01185 rad로 줄였다. 측정 갱신 7,372번에서 특징과 오도메트리의 시각 불일치는 0건이었다. 0.5초 이내 상대 XY 이동량이 입력과 1 m 넘게 어긋난 보정은 12번 발생했다.
 
@@ -123,7 +125,7 @@ V1 지도에서 시작 자세를 대응 키프레임으로 한 번 지정했다.
 
 도약 직전 구간의 특징 프레임 23개는 모두 처리됐고, 대응하는 측정 시각도 일치했다. 지도 자체에 통로 왜곡과 겹침이 있으므로, 이 시험에서는 지도 형상과 MCL 계산의 영향을 분리하기 어렵다.
 
-## 20 m 루프 제약과 수정 뒤의 부분 재생
+## 20 m 루프 오정합·수정 후 재생
 
 기록의 141초 부근에서 처음 확인한 문제 루프는 현재 점군과 과거 점군을 이미 공통 지도 좌표에 놓고도, 두 키프레임의 위치 차이 약 20 m를 ICP 초기 보정값으로 다시 적용했다. 현재 관측을 과거 관측 쪽으로 미리 옮겨 놓은 뒤 정합한 셈이다. 두 점군과 ICP 솔버를 고정하고 초기 보정만 바꿔 그 제약을 재현했다. [루프 정합 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src/mapOptimization.cpp)
 
