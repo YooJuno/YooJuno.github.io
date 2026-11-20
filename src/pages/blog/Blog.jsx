@@ -111,7 +111,6 @@ function Blog() {
       <div className="container">
         <header className="section-head">
           <h1>블로그</h1>
-          <p>개발 과정과 기술 메모를 기록합니다.</p>
         </header>
 
         <nav className="blog-category-links" aria-label="글 분류" ref={categoryNavigation}>
@@ -129,33 +128,28 @@ function Blog() {
           ))}
         </nav>
 
-        <section aria-labelledby="blog-list-heading">
-          <div className="blog-list-toolbar">
-            <div className="blog-list-heading">
-              <h2 id="blog-list-heading">{activeCategory || '전체 글'}</h2>
-              <p className="blog-result-summary" role="status">
-                {searching ? '본문 검색 중…' : `${filtered.length}개의 글`}
-              </p>
-            </div>
-            <form className="blog-controls" role="search" onSubmit={event => event.preventDefault()}>
-              <label className="visually-hidden" htmlFor="blog-search">글 검색</label>
-              <input
-                id="blog-search"
-                className="blog-search"
-                ref={searchInput}
-                type="search"
-                placeholder="제목, 본문, 키워드 검색"
-                value={query}
-                onChange={event => updateQuery(event.target.value)}
-              />
-              {query && (
-                <button className="blog-search-clear" type="button" aria-label="검색어 지우기" onClick={() => {
-                  updateQuery('')
-                  searchInput.current?.focus()
-                }}>지우기</button>
-              )}
-            </form>
-          </div>
+        <section aria-label={`${activeCategory || '전체'} 글`}>
+          <form className="blog-controls" role="search" onSubmit={event => event.preventDefault()}>
+            <label className="visually-hidden" htmlFor="blog-search">글 검색</label>
+            <input
+              id="blog-search"
+              className="blog-search"
+              ref={searchInput}
+              type="search"
+              placeholder="제목, 본문, 키워드 검색"
+              value={query}
+              onChange={event => updateQuery(event.target.value)}
+            />
+            {query && (
+              <button className="blog-search-clear" type="button" aria-label="검색어 지우기" onClick={() => {
+                updateQuery('')
+                searchInput.current?.focus()
+              }}>지우기</button>
+            )}
+          </form>
+          <p className="visually-hidden" role="status">
+            {searching ? '본문 검색 중…' : `${filtered.length}개의 글`}
+          </p>
           {searchError && normalizedQuery && <p className="blog-search-error" role="alert">본문 검색을 불러오지 못했습니다. 제목·요약·키워드로 검색한 결과입니다.</p>}
 
           <div className="blog-list" aria-busy={searching}>
@@ -178,7 +172,7 @@ function Blog() {
                 state={{ from: `${location.pathname}${resultSearch ? `?${resultSearch}` : ''}` }}
                 aria-label={`${post.title} 자세히 보기`}
               >
-                <h3>{post.title}</h3>
+                <h2>{post.title}</h2>
                 <div className="post-meta">
                   <span className="post-category">{post.category}</span>
                   <BlogDate date={post.date} />

@@ -8,11 +8,5 @@ const entries = webServices.map(({ id, title, route, availability, github, site,
 
 export default function WebService() {
   useDocumentTitle()
-  return (
-    <ProjectIndex
-      title="웹서비스"
-      intro="실제 구현한 서비스의 화면·기능·API와 소스 코드를 정리했습니다."
-      entries={entries}
-    />
-  )
+  return <ProjectIndex title="웹서비스" entries={entries} />
 }
