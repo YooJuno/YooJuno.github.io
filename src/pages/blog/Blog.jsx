@@ -147,7 +147,7 @@ function Blog() {
               }}>지우기</button>
             )}
           </form>
-          <p className="visually-hidden" role="status">
+          <p className={searching ? 'blog-search-status' : 'visually-hidden'} role="status">
             {searching ? '본문 검색 중…' : `${filtered.length}개의 글`}
           </p>
           {searchError && normalizedQuery && <p className="blog-search-error" role="alert">본문 검색을 불러오지 못했습니다. 제목·요약·키워드로 검색한 결과입니다.</p>}
