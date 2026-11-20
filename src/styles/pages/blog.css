@@ -192,6 +192,10 @@
   white-space: nowrap;
 }
 
+.post-main.section {
+  padding-top: 88px;
+}
+
 .post-main .container {
   max-width: 860px;
 }
@@ -200,7 +204,7 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  margin-bottom: 24px;
+  margin-bottom: 8px;
   color: var(--muted);
   font-size: 14px;
 }
@@ -218,7 +222,7 @@
 }
 
 .post-header h1 {
-  margin: 14px 0 0;
+  margin: 8px 0 0;
   font-size: clamp(28px, 3.2vw, 38px);
   font-weight: 600;
   line-height: 1.45;
@@ -444,6 +448,10 @@
 @media (max-width: 700px) {
   .blog-category-links {
     top: 65px;
+  }
+
+  .post-main.section {
+    padding-top: 84px;
   }
 }
 
