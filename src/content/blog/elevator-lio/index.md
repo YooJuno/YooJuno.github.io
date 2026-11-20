@@ -15,8 +15,8 @@ summary: "엘리베이터의 수직 운동을 분리하는 LiDAR–IMU 추정 �
 
 ## 문제 설정
 
-- 객실에 로봇이 정지해 있으면 LiDAR에서 벽과 바닥의 위치는 거의 일정하다. IMU에는 객실의 출발과 제동에 따른 수직 가속도가 들어온다.
-- 객실 구조를 건물에 고정된 점군으로 간주하면 LiDAR 정합과 IMU 예측의 기준이 달라진다. 논문은 **객실 기준 로봇 운동**과 **건물 기준 객실 운동**을 분리해 추정한다.
+- 엘리베이터 안에 로봇이 정지해 있으면 LiDAR에서 벽과 바닥의 위치는 거의 일정하다. IMU에는 엘리베이터의 출발과 제동에 따른 수직 가속도가 들어온다.
+- 엘리베이터 내부 구조를 건물에 고정된 점군으로 간주하면 LiDAR 정합과 IMU 예측의 기준이 달라진다. 논문은 **엘리베이터 기준 로봇 운동**과 **건물 기준 엘리베이터 운동**을 분리해 추정한다.
 
 ## Office3 상승 재생
 
@@ -26,8 +26,8 @@ summary: "엘리베이터의 수직 운동을 분리하는 LiDAR–IMU 추정 �
 
 ## 상태 모델과 IMU 전파
 
-- 반복 오차 상태 칼만 필터(IESKF)의 21차원 오차 상태에 로봇 자세·위치·속도, IMU 바이어스, 중력 벡터, 객실의 수직 변위·속도·가속도가 포함된다. [상태 정의](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/include/support/type.h#L31-L44)
-- 객실은 중력에 정렬된 수직축을 따라 평행 이동한다고 가정한다. 아래 식의 <code>R</code>은 IMU 좌표를 건물에 정렬된 축으로 회전시키고, <code>e_z</code>는 위쪽 단위벡터다. [IMU 전파 코드](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/estimator/IMUProcess.cpp#L288-L319)
+- 반복 오차 상태 칼만 필터(IESKF)의 21차원 오차 상태에 로봇 자세·위치·속도, IMU 바이어스, 중력 벡터, 엘리베이터의 수직 변위·속도·가속도가 포함된다. [상태 정의](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/include/support/type.h#L31-L44)
+- 엘리베이터은 중력에 정렬된 수직축을 따라 평행 이동한다고 가정한다. 아래 식의 <code>R</code>은 IMU 좌표를 건물에 정렬된 축으로 회전시키고, <code>e_z</code>는 위쪽 단위벡터다. [IMU 전파 코드](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/estimator/IMUProcess.cpp#L288-L319)
 
 ~~~text
 a_world = R · (f_imu − b_a) + g
@@ -42,10 +42,10 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 건물 기준 높이 = p_rel,z + z_e
 ~~~
 
-![객실 상대 운동을 관측하는 LiDAR와 객실 가속도가 섞여 있는 IMU](./motion-separation.png)
+![엘리베이터 내부의 상대 운동을 관측하는 LiDAR와 엘리베이터 가속도가 포함된 IMU](./motion-separation.png)
 
-- <code>f_imu</code>는 IMU 비력, <code>b_a</code>는 가속도 바이어스다. 회전과 중력 보정 후 객실 가속도 <code>a_e</code>를 빼면 로봇의 상대 가속도 <code>a_rel</code>이 된다.
-- 객실 바닥에 정지한 로봇은 <code>a_rel</code>이 0에 가깝다. 객실이 등속으로 이동할 때는 <code>a_e</code>가 거의 0이어도 앞서 추정한 속도 <code>v_e</code>를 적분해 객실 변위 <code>z_e</code>를 갱신한다.
+- <code>f_imu</code>는 IMU 비력, <code>b_a</code>는 가속도 바이어스다. 회전과 중력 보정 후 엘리베이터 가속도 <code>a_e</code>를 빼면 로봇의 상대 가속도 <code>a_rel</code>이 된다.
+- 엘리베이터 내부에서 정지한 로봇의 <code>a_rel</code>은 0에 가깝다. 엘리베이터이 등속으로 이동할 때는 <code>a_e</code>가 거의 0이어도 앞서 추정한 속도 <code>v_e</code>를 적분해 엘리베이터 변위 <code>z_e</code>를 갱신한다.
 
 ## LiDAR 점–평면 정합
 
@@ -54,7 +54,7 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 
 ![수직 벽과 수평 바닥의 높이 방향 관측 차이](./point-plane.png)
 
-- LiDAR 잔차는 로봇 자세와 위치에 직접 의존한다. 객실 가속도가 상대 위치·속도 예측에 들어가 생긴 교차 공분산을 통해 객실 상태도 간접 보정한다. 기본 <code>pose6</code> 경로는 6차원 자세 야코비안으로 전체 상태를 갱신한다. [공분산 전파](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/estimator/IMUProcess.cpp#L356-L372) · [pose6 갱신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/estimator/ESEKF.cpp#L597-L645)
+- LiDAR 잔차는 로봇 자세와 위치에 직접 의존한다. 엘리베이터 가속도가 상대 위치·속도 예측에 들어가 생긴 교차 공분산을 통해 엘리베이터 상태도 간접 보정한다. 기본 <code>pose6</code> 경로는 6차원 자세 야코비안으로 전체 상태를 갱신한다. [공분산 전파](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/estimator/IMUProcess.cpp#L356-L372) · [pose6 갱신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/estimator/ESEKF.cpp#L597-L645)
 - 복셀 크기는 0.05–0.8 m 범위에서 조절한다. 기준은 초당 2만 점이다. 스캔 간격이 달라지면 프레임당 목표 점 수도 함께 바뀐다. [복셀 설정](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/yaml/runtime/mapping.yaml#L9-L16) · [프레임당 목표 점 수](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/node/LidarPipeline.cpp#L66-L95)
 
 ## 탑승 감지와 정차 보정
@@ -62,13 +62,13 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 | 단계 | 기본 매핑 설정 |
 | --- | --- |
 | 진입 | 먼 점 상위 6%를 제외한 최대 거리가 3 m 미만인 상태가 2초간 지속되면 탑승 모드로 전환 |
-| 이동 | 추정 객실 속도와 최근 300개 추정값의 분산으로 가속 → 등속 → 감속 → 정차 판별 |
-| 정차 | 안정 조건을 1.5초간 만족하면 객실 수직 속도와 가속도를 0으로 제약 |
-| 종료 | 객실 변위를 로봇 위치의 z 값에 더하고, 공분산을 변환한 뒤 객실 상태 초기화 |
+| 이동 | 엘리베이터의 추정 속도와 최근 300개 추정값의 분산으로 가속 → 등속 → 감속 → 정차 판별 |
+| 정차 | 안정 조건을 1.5초간 만족하면 엘리베이터의 수직 속도와 가속도를 0으로 제약 |
+| 종료 | 엘리베이터 변위를 로봇 위치의 z 값에 더하고, 공분산을 변환한 뒤 엘리베이터 상태 초기화 |
 
 [기본 설정](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/yaml/runtime/mapping.yaml#L49-L66) · [정차 상태 머신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorSelfExit.cpp#L89-L151) · [종료 시 상태 반영](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/node/LidarPipeline.cpp#L338-L387)
 
-- 정차 시 속도와 가속도가 0으로 제약되는 대상은 객실이다. 속도와 변위 오차 사이의 교차 공분산을 통해 누적 높이 오차도 보정한다. [정차 측정 갱신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorProcess.cpp#L170-L200)
+- 정차 시 속도와 가속도가 0으로 제약되는 대상은 엘리베이터이다. 속도와 변위 오차 사이의 교차 공분산을 통해 누적 높이 오차도 보정한다. [정차 측정 갱신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorProcess.cpp#L170-L200)
 
 ## 논문 실험과 한계
 
@@ -169,4 +169,4 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 
 *273,857점 ikd-tree 맵. 빨간 선은 평면에 투영한 오도메트리 궤적.*
 
-- <code>/LIO/odom_imu</code>의 pose에는 객실 변위가 더해진다. <code>twist.linear.z</code>는 객실 속도를 포함하지 않으므로, 두 필드를 함께 쓰는 후단에서 기준 좌표를 확인해야 한다. [odometry 발행 코드](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/node/publish.cpp#L17-L46)
+- <code>/LIO/odom_imu</code>의 pose에는 엘리베이터 변위가 더해진다. <code>twist.linear.z</code>는 엘리베이터 속도를 포함하지 않으므로, 두 필드를 함께 쓰는 후단에서 기준 좌표를 확인해야 한다. [odometry 발행 코드](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/node/publish.cpp#L17-L46)
