@@ -51,7 +51,8 @@
   background: var(--bg-alt);
 }
 
-.blog-search-error {
+.blog-search-error,
+.blog-search-status {
   margin-bottom: 12px;
   color: var(--muted);
   font-size: 13px;
