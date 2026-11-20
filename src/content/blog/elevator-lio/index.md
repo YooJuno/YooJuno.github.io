@@ -8,7 +8,7 @@ tags:
   - Odometry
   - Sensor Fusion
   - ROS 2
-summary: "엘리베이터의 수직 운동을 분리하는 LiDAR–IMU 추정 모델과 정차 보정. 논문 실험과 Office1 재현 결과."
+summary: "엘리베이터의 수직 운동을 분리하는 LiDAR–IMU 추정 모델과 정차 보정. 논문 실험과 공개 데이터 20개 시퀀스의 매핑 결과."
 ---
 
 **Yifan Zhang 외 · arXiv:2605.24495 · 2026년 5월** [논문](https://arxiv.org/abs/2605.24495) · [공개 구현](https://github.com/xiaofan4122/Elevator-LIO/tree/4868796)
@@ -75,7 +75,76 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 - **감지 조건** · 좁은 복도는 진입 오탐, 거울은 반사로 인한 진입 누락을 일으킬 수 있다. 등속 구간이 짧으면 자동 정차 판별도 실패할 수 있다. 외부 전환 신호는 <code>/LIO/set_elevator_flag</code>로 입력한다. [구현 안내](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/README_en.md#L199-L233)
 - **스캔 왜곡** · 분석한 커밋은 탑승 중 스캔 모션 보정(deskew)을 생략한다. 센서가 빠르게 회전하면 스캔 내부의 왜곡이 정합에 남을 수 있다. [LiDAR 처리 경로](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/node/LidarPipeline.cpp#L522-L545)
 
-## Office1 재현
+## 공개 데이터셋
+
+| 환경 | 시퀀스 | 녹화 시간 합계 |
+| --- | ---: | ---: |
+| 사무실 · Office | 10 | 26분 35초 |
+| 캠퍼스 · Campus | 4 | 24분 18초 |
+| 기숙사 · Dormitory | 4 | 12분 59초 |
+| 쇼핑몰 · Mall | 2 | 5분 53초 |
+| 전체 | 20 | 69분 45초 |
+
+- 모든 시퀀스에 Livox MID-360 점군과 내장 IMU 기록이 있다. 산업용 카메라 영상은 <code>Office3</code>와 <code>Mall2</code>에만 포함된다. [데이터셋과 센서 구성](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset)
+- 네 시퀀스(<code>Campus1</code>, <code>Campus3</code>, <code>Campus4</code>, <code>Mall1</code>)는 외부 모드 전환 신호를 함께 기록했다. 반사와 다중 경로로 자동 진입 감지가 어려웠던 구간이 포함된다. [전환 신호가 포함된 시퀀스](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/DATASET.md#L79-L85)
+
+![Mall2 카메라 영상의 탑승 전 로비, L5 정차, L1 하차 후 장면](./mall2-camera.jpg)
+
+*Mall2 카메라 프레임. 탑승 전 로비, L5 정차, L1 하차 후 순서. 원본을 자르고 축소했다.* [Zhang 외, Elevator-LIO Dataset](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+![Livox MID-360과 산업용 카메라를 사용한 휴대형 수집 장비](./handheld-platform.jpg)
+
+*논문 저자의 휴대형 수집 장비. Fig. 6을 JPEG로 변환했다.* [Zhang 외, Fig. 6, CC BY 4.0](https://arxiv.org/html/2605.24495v1#S6.F6)
+
+## 전체 시퀀스 매핑
+
+- 원본 ROS 1 bag을 SQLite3 rosbag2로 변환하고 ROS 2 Jazzy에서 재생하고 시퀀스마다 별도 지도를 생성했다. LiDAR·IMU와 bag에 기록된 모드 전환 신호를 재생했다. [변환 안내](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/scripts/README.md#convert_rosbag1_to_rosbag2py)
+
+- 20개 시퀀스 모두 개별 3D 점군 맵으로 저장했다. LiDAR 스캔 153,823개 중 153,035개에 대해 매핑 후 자세가 출력됐다. 자세 로그가 포함하는 녹화 구간의 비율은 시퀀스별로 최소 약 97.6%였다.
+- 스캔 기록률은 약 10 Hz가 8개, 약 50 Hz가 12개다. 프레임 수는 기록률과 주행 길이에 따라 달라진다.
+
+![Office·Campus·Dormitory·Mall 전체 20개 시퀀스의 점군 맵 평면도](./dataset-maps.jpg)
+
+*시퀀스별 ikd-tree 맵을 위에서 본 모습. 색은 각 맵 내부의 상대 높이, 흰 선은 거리 축척이다.*
+
+<details>
+<summary>시퀀스별 매핑 결과</summary>
+
+| 시퀀스 | LiDAR 스캔 | 자세 출력 | ikd-tree 맵 점 수 |
+| --- | ---: | ---: | ---: |
+| Office1 | 4,706 | 4,651 | 273,857 |
+| Office2 | 1,095 | 1,080 | 380,525 |
+| Office3 | 11,458 | 11,403 | 1,103,226 |
+| Office4 | 4,805 | 4,755 | 367,205 |
+| Office5 | 955 | 940 | 168,592 |
+| Office6 | 2,746 | 2,731 | 1,230,765 |
+| Office7 | 1,392 | 1,377 | 298,888 |
+| Office8 | 1,081 | 1,066 | 49,965 |
+| Office9 | 2,981 | 2,966 | 1,211,404 |
+| Office10 | 1,502 | 1,487 | 278,670 |
+| Campus1 | 14,038 | 13,988 | 1,826,576 |
+| Campus2 | 35,281 | 35,209 | 5,622,381 |
+| Campus3 | 6,894 | 6,838 | 968,384 |
+| Campus4 | 16,673 | 16,618 | 1,630,165 |
+| Dormitory1 | 4,944 | 4,889 | 109,259 |
+| Dormitory2 | 8,468 | 8,413 | 140,065 |
+| Dormitory3 | 8,368 | 8,313 | 138,777 |
+| Dormitory4 | 17,174 | 17,119 | 348,612 |
+| Mall1 | 2,066 | 2,051 | 502,110 |
+| Mall2 | 7,196 | 7,141 | 332,884 |
+
+</details>
+
+### Campus1 재진입 오탐
+
+- 기본 설정의 2.5배속 재생에서 두 번째 탑승 종료 직후 모드가 다시 켜졌다. 이후 추정 위치가 1초 사이 최대 25.2 m 이동했다.
+- 최종 맵에는 자동 진입 감지를 끄고 bag의 진입 신호를 사용한 2.2배속 재생 결과를 사용했다. 탑승 모드는 두 번 켜졌고, LiDAR 14,038개 중 13,988개에서 자세가 출력됐다.
+
+![Campus1 기본 설정 재생과 기록된 진입 신호 재생의 추정 높이 비교](./campus1-entry-replay.png)
+
+*음영은 탑승 모드 구간. 위는 기본 설정, 아래는 기록된 진입 신호를 사용한 재생이다.*
+
+## Office1 높이 추정
 
 - ROS 2 Jazzy에서 94초 시퀀스를 재생했다. 두 탑승 모두 자동 진입과 종료를 확인했다.
 - 첫 이동 후 추정 높이는 약 −3.8 m에서 유지됐고, 두 번째 이동 후 출발 높이 부근으로 돌아왔다. 탑승 모드 종료 시점에 높이 추정값이 한 번씩 바뀐다.
@@ -89,12 +158,3 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 *273,857점 ikd-tree 맵. 빨간 선은 평면에 투영한 오도메트리 궤적.*
 
 - <code>/LIO/odom_imu</code>의 pose에는 객실 변위가 더해진다. <code>twist.linear.z</code>는 객실 속도를 포함하지 않으므로, 두 필드를 함께 쓰는 후단에서 기준 좌표를 확인해야 한다. [odometry 발행 코드](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/node/publish.cpp#L17-L46)
-
-## 데이터와 재생
-
-![Livox MID-360과 산업용 카메라를 사용한 휴대형 수집 장비](./handheld-platform.jpg)
-
-*논문 저자의 휴대형 수집 장비. Fig. 6을 JPEG로 변환했다.* [Zhang 외, Fig. 6, CC BY 4.0](https://arxiv.org/html/2605.24495v1#S6.F6)
-
-- **데이터** · 실제 환경 20개 시퀀스. <code>Office1</code>은 1분 34초, <code>Campus2</code>는 11분 46초. [데이터셋](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset) · [Office1 다운로드](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset/blob/main/Office1.bag)
-- **재생 환경** · 원본 ROS 1 bag을 제공 스크립트로 SQLite3 rosbag2로 변환. ROS 2 재생 시 <code>livox_ros_driver2/msg/CustomMsg</code> 타입 필요. [변환 안내](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/scripts/README.md#convert_rosbag1_to_rosbag2py)
