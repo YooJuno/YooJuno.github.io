@@ -204,7 +204,6 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  margin-bottom: 8px;
   color: var(--muted);
   font-size: 14px;
 }
@@ -400,10 +399,6 @@
   margin-top: 56px;
   padding-top: 20px;
   border-top: 1px solid var(--border);
-}
-
-.post-footer .post-back {
-  margin: 0;
 }
 
 .post-load-state {
