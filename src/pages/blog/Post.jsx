@@ -53,6 +53,7 @@ function Post() {
       <div className="container">
         <header className="post-header">
           <p className="post-meta">
+            <Link className="post-back" to={backTo} aria-label="블로그 목록으로 돌아가기">← 블로그</Link>
             <Link className="post-category" to={`/blog?category=${encodeURIComponent(metadata.category)}`}>{metadata.category}</Link>
             <BlogDate date={metadata.date} />
           </p>
