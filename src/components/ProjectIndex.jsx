@@ -11,7 +11,7 @@ export default function ProjectIndex({ title, entries }) {
         </header>
         <ul className="catalog-list" role="list">
           {entries.map(({ id, title, route, meta, github, site, siteLabel }) => (
-            <li className="catalog-row" key={id}>
+            <li className={meta ? 'catalog-row catalog-row-with-meta' : 'catalog-row'} key={id}>
               <h2 className="catalog-title"><Link to={route}>{title}</Link></h2>
               {meta && <p className="catalog-meta">{meta}</p>}
               <div className="catalog-actions">
