@@ -102,7 +102,9 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 
 ![Mall2 카메라 영상의 탑승 전 로비, L5 정차, L1 하차 후 장면](./mall2-camera.jpg)
 
-*Mall2 카메라 영상.* [Zhang 외, 데이터셋 일부 발췌](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+[![Mall2에서 엘리베이터 문이 열리고 L1 표지가 있는 로비로 나오는 장면](/content/images/blog/elevator-lio/mall2-elevator-exit.gif)](/content/images/blog/elevator-lio/mall2-elevator-exit.gif)
+
+*Mall2 · L1 하차.* [Zhang 외, 데이터셋 영상 일부](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset) · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 ## 전체 시퀀스 매핑
 
@@ -115,6 +117,10 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 [![직접 재현한 Campus2 점군의 측면도. 점은 층별 높이에 따라 색을 입혔고, 왼쪽 흰 선은 엘리베이터 이동 궤적이다.](/content/images/blog/elevator-lio/campus2-floor-detail.jpg)](/content/images/blog/elevator-lio/campus2-floor-detail.jpg)
 
 *Campus2 재현 결과 · 탑승 모드 6회*
+
+[![Campus2 점군 위의 추정 위치가 10층에서 5층으로 하강해 도착 층 복도로 이어지는 장면](/content/images/blog/elevator-lio/campus2-elevator-trajectory.gif)](/content/images/blog/elevator-lio/campus2-elevator-trajectory.gif)
+
+*마지막 탑승 구간 · 추정 높이 약 24 m 감소*
 
 [![논문의 Campus2 매핑 결과와 5층부터 10층까지의 엘리베이터 구간 확대도.](/content/images/blog/elevator-lio/paper-mapping-example.jpg)](/content/images/blog/elevator-lio/paper-mapping-example.jpg)
 
