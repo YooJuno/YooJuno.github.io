@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 732" role="img" aria-labelledby="title desc">
+  <title id="title">스캔 투영, 특징점 정합, 포즈 그래프</title>
+  <desc id="desc">수직각과 방위각으로 거리를 배열하고, 이웃 관계에서 모서리와 표면을 고른다. 스캔과 지역 지도를 맞춰 키프레임을 배치하고 재방문 제약을 더해 일관된 지도를 추정한다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#525252"/></marker>
+    <pattern id="grid" width="40" height="24" patternUnits="userSpaceOnUse"><path d="M40 0H0V24" fill="none" stroke="#999" stroke-width="2"/></pattern>
+  </defs>
+  <rect width="840" height="732" fill="#fff"/>
+  <g font-family="'Noto Sans KR','Malgun Gothic',sans-serif" fill="#232323">
+    <text x="40" y="62" font-size="34" font-weight="700">스캔에서 포즈 그래프까지</text>
+    <path d="M40 86H800M40 303H800M40 514H800" stroke="#c3c3c3" stroke-width="2"/>
+    <g font-size="30" font-weight="700">
+      <text x="40" y="136">거리 영상</text><text x="40" y="354">특징점 정합</text><text x="40" y="567">포즈 그래프</text>
+    </g>
+    <g font-size="27">
+      <text x="40" y="182">수직각으로 행을 정한다.</text>
+      <text x="40" y="219">방위각으로 열을 정한다.</text>
+      <text x="40" y="256">이웃 점에서 지면을 찾는다.</text>
+      <text x="40" y="400">모서리는 선에,</text>
+      <text x="40" y="437">표면은 평면에 맞춘다.</text>
+      <text x="40" y="474">이동 추정을 초기값으로 쓴다.</text>
+      <text x="40" y="613">연속 자세를 연결한다.</text>
+      <text x="40" y="650">재방문 제약을 추가해</text>
+      <text x="40" y="687">키프레임 배치를 조정한다.</text>
+    </g>
+    <rect x="500" y="153" width="280" height="96" fill="#fff" stroke="#777" stroke-width="2"/>
+    <path d="M500 225h40v-24h120v24h120v24H500Z" fill="#d8d8d8"/>
+    <path d="M620 153h40v48h-40Z" fill="#777"/>
+    <rect x="500" y="153" width="280" height="96" fill="url(#grid)"/>
+    <text x="640" y="281" text-anchor="middle" font-size="25">방위각</text>
+    <text transform="translate(465 245) rotate(-90)" font-size="25">수직각</text>
+    <g stroke="#666" stroke-width="3" fill="none">
+      <path d="M461 437L566 366"/>
+      <path d="M625 417L698 385L780 425L705 458Z" fill="#ddd"/>
+      <path d="M647 424L720 395M674 437L748 409M663 400L744 443M683 391L763 434" stroke="#888" stroke-width="2"/>
+      <path d="M510 378L521 395" marker-end="url(#arrow)"/>
+      <path d="M694 393L704 419" marker-end="url(#arrow)"/>
+    </g>
+    <g fill="#232323">
+      <circle cx="506" cy="372" r="6"/><circle cx="692" cy="385" r="6"/>
+      <text x="516" y="476" text-anchor="middle" font-size="25">모서리</text>
+      <text x="703" y="492" text-anchor="middle" font-size="25">표면</text>
+    </g>
+    <g fill="none" stroke="#555" stroke-width="4">
+      <path d="M470 658L548 625L630 632L710 664L771 615"/>
+      <path d="M548 625Q652 536 771 615" stroke-dasharray="10 8"/>
+    </g>
+    <g fill="#fff" stroke="#444" stroke-width="4">
+      <circle cx="470" cy="658" r="10"/><circle cx="548" cy="625" r="10"/><circle cx="630" cy="632" r="10"/>
+      <circle cx="710" cy="664" r="10"/><circle cx="771" cy="615" r="10"/>
+    </g>
+    <text x="649" y="576" text-anchor="middle" font-size="25">재방문</text>
+  </g>
+</svg>
