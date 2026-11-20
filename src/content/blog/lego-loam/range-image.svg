@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="260" viewBox="0 0 640 260" role="img" aria-labelledby="title desc">
+  <title id="title">LiDAR 반사점을 거리 영상에 놓는 방법</title>
+  <desc id="desc">같은 방위각의 인접한 두 빔이 지면의 A와 B에 닿는다. 두 점을 이은 선과 수평 기준선의 각도로 지면을 판별한다. 거리 영상에서 A와 B는 한 열의 이웃한 두 행을 차지한다.</desc>
+  <rect width="640" height="260" fill="#fff"/>
+  <g fill="#252525" font-family="system-ui, Noto Sans KR, sans-serif" text-anchor="middle">
+    <g font-size="23" font-weight="600">
+      <text x="169" y="44">LiDAR 측면</text>
+      <text x="479" y="44">거리 영상</text>
+    </g>
+    <path d="M49 207L283 179" fill="none" stroke="#8a8a8a" stroke-width="1.5"/>
+    <path d="M151 195H270" fill="none" stroke="#808080" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <path d="M87 99L151 195M87 99L249 183" fill="none" stroke="#8a8a8a" stroke-width="1.7"/>
+    <path d="M151 195L249 183" stroke="#252525" stroke-width="2"/>
+    <rect x="69" y="83" width="36" height="16" rx="3" fill="#373737"/>
+    <circle cx="151" cy="195" r="4.5"/>
+    <circle cx="249" cy="183" r="4.5"/>
+    <g font-size="19">
+      <text x="151" y="225">A</text>
+      <text x="254" y="164">B</text>
+      <text x="67" y="238">지면</text>
+    </g>
+    <path d="M304 140H333M325 132L333 140L325 148" fill="none" stroke="#686868" stroke-width="1.5"/>
+    <rect x="374" y="75" width="210" height="130" fill="#f8f8f8"/>
+    <path d="M404 101H464V127H404ZM494 75H524V101H494ZM524 127H584V153H524ZM374 179H434V205H374ZM554 179H584V205H554Z" fill="#e3e3e3"/>
+    <path d="M374 75H584V205H374ZM404 75V205M434 75V205M464 75V205M494 75V205M524 75V205M554 75V205M374 101H584M374 127H584M374 153H584M374 179H584" fill="none" stroke="#bdbdbd" stroke-width="1.2"/>
+    <path d="M464 153H494V179H464Z" fill="#dedede"/>
+    <path d="M464 179H494V205H464Z" fill="#bdbdbd"/>
+    <path d="M464 153H494V205H464ZM464 179H494" fill="none" stroke="#393939" stroke-width="1.7"/>
+    <g font-size="18">
+      <text x="479" y="173">B</text>
+      <text x="479" y="199">A</text>
+      <text x="479" y="238">방위각</text>
+      <text x="353" y="140" transform="rotate(-90 353 140)">수직 채널</text>
+    </g>
+  </g>
+</svg>
