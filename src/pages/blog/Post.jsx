@@ -51,7 +51,6 @@ function Post() {
   return (
     <main className="section post-main" id="main-content" tabIndex={-1}>
       <div className="container">
-        <Link className="post-back" to={backTo}>← 블로그</Link>
         <header className="post-header">
           <p className="post-meta">
             <Link className="post-category" to={`/blog?category=${encodeURIComponent(metadata.category)}`}>{metadata.category}</Link>
