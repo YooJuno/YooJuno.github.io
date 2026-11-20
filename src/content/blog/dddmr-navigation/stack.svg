@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 780" role="img" aria-labelledby="title desc">
+  <title id="title">DDDMR Navigation의 지도 제작과 주행 흐름</title>
+  <desc id="desc">LiDAR와 이동 추정에서 지도 파일을 만든다. 주행 때는 저장 지도와 실시간 특징으로 위치를 추정한다. 현재 자세, 장애물과 지면 비용, 목표와 상태를 두 플래너가 사용하며, 로컬 플래너는 전역 경로를 따라 실행할 동작을 고른다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#525252"/></marker>
+  </defs>
+  <rect width="840" height="780" fill="#fff"/>
+  <g font-family="'Noto Sans KR','Malgun Gothic',sans-serif" fill="#232323">
+    <text x="40" y="62" font-size="34" font-weight="700">지도 제작과 지도 기반 주행</text>
+    <path d="M40 85H800M40 309H800" stroke="#c3c3c3" stroke-width="2"/>
+    <text x="40" y="124" font-size="27" font-weight="700">지도 제작</text>
+    <text x="40" y="355" font-size="27" font-weight="700">지도 기반 주행</text>
+    <g fill="#fff" stroke="#777" stroke-width="2">
+      <rect x="40" y="150" width="220" height="100"/>
+      <rect x="310" y="150" width="220" height="100"/>
+      <rect x="580" y="150" width="220" height="100" stroke-dasharray="8 5"/>
+      <rect x="40" y="402" width="220" height="130"/>
+      <rect x="310" y="402" width="220" height="130"/>
+      <rect x="580" y="402" width="220" height="130"/>
+      <rect x="95" y="634" width="270" height="106"/>
+      <rect x="475" y="634" width="270" height="106"/>
+    </g>
+    <g fill="none" stroke="#525252" stroke-width="3" marker-end="url(#arrow)">
+      <path d="M263 200H303"/><path d="M533 200H573"/>
+      <path d="M690 253V280H150V394" stroke-dasharray="8 6"/>
+      <path d="M420 280V394" stroke-dasharray="8 6"/>
+      <path d="M230 579V626"/><path d="M610 579V626"/>
+      <path d="M369 686H467"/>
+    </g>
+    <path d="M150 535V579H690V535M420 535V579" fill="none" stroke="#525252" stroke-width="3"/>
+    <g text-anchor="middle" font-size="27">
+      <text x="150" y="193" font-weight="700">센서 입력</text><text x="150" y="226" font-size="25">LiDAR · 이동 추정</text>
+      <text x="420" y="193" font-weight="700">LeGO-LOAM</text><text x="420" y="226" font-size="25">정합 · 최적화</text>
+      <text x="690" y="193" font-weight="700">저장 지도</text><text x="690" y="226" font-size="25">키프레임 · 점군</text>
+      <text x="150" y="438" font-weight="700">MCL 3DL</text>
+      <text x="150" y="471" font-size="25">특징 · odom 입력</text>
+      <text x="150" y="505" font-size="25">현재 자세 추정</text>
+      <text x="420" y="438" font-weight="700">Perception 3D</text>
+      <text x="420" y="471" font-size="25">실시간 센서</text>
+      <text x="420" y="505" font-size="25">지면 · 장애물 정보</text>
+      <text x="690" y="438" font-weight="700">P2P Move Base</text>
+      <text x="690" y="471" font-size="25">목표 접수</text>
+      <text x="690" y="505" font-size="25">계획 · 제어 상태</text>
+      <text x="230" y="679" font-weight="700">글로벌 플래너</text><text x="230" y="712" font-size="25">지면 경로</text>
+      <text x="610" y="679" font-weight="700">로컬 플래너</text><text x="610" y="712" font-size="25">후보 궤적 · 충돌 검사</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 716" role="img" aria-labelledby="title desc">
+  <title id="title">MCL의 입자 예측, 관측 갱신, 재표본화</title>
+  <desc id="desc">초기 자세 주변의 입자를 오도메트리만큼 이동한 뒤 현재 스캔과 지도 특징 및 지면의 일치도로 가중치를 매긴다. 높은 가중치 주변에서 입자를 다시 선택한다.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#525252"/></marker>
+  </defs>
+  <rect width="840" height="716" fill="#fff"/>
+  <g font-family="'Noto Sans KR','Malgun Gothic',sans-serif" fill="#232323">
+    <text x="40" y="62" font-size="34" font-weight="700">MCL의 위치 추정 순환</text>
+    <path d="M40 86H800M40 298H800M40 499H800" stroke="#c3c3c3" stroke-width="2"/>
+    <g font-size="30" font-weight="700">
+      <text x="40" y="140">예측</text><text x="40" y="346">관측 갱신</text><text x="40" y="548">재표본화</text>
+    </g>
+    <g font-size="27">
+      <text x="40" y="189">이동량과 운동 잡음으로</text>
+      <text x="40" y="227">입자들을 옮긴다.</text>
+      <text x="40" y="395">주변 지도의 특징과</text>
+      <text x="40" y="433">지면에 맞춰 가중치를 준다.</text>
+      <text x="40" y="597">가중치가 높은 곳에서</text>
+      <text x="40" y="635">입자를 더 자주 선택한다.</text>
+    </g>
+    <g fill="#fff" stroke="#777" stroke-width="2">
+      <rect x="428" y="125" width="372" height="134"/>
+      <rect x="428" y="325" width="372" height="134"/>
+      <rect x="428" y="526" width="372" height="134"/>
+    </g>
+    <g stroke="#777" stroke-width="3" fill="none">
+      <path d="M452 184L475 160L506 171L520 198L489 225L450 212Z" stroke-dasharray="7 5"/>
+      <path d="M681 160L715 149L764 169L770 219L715 231L660 218Z" stroke-dasharray="7 5"/>
+      <path d="M540 190H631" marker-end="url(#arrow)"/>
+      <path d="M453 431L500 419L555 435L615 410L662 430L721 398L774 413"/>
+      <path d="M453 635L500 623L555 639L615 614L662 634L721 602L774 617"/>
+    </g>
+    <g fill="#858585">
+      <circle cx="473" cy="183" r="5"/><circle cx="484" cy="207" r="5"/><circle cx="504" cy="191" r="5"/>
+      <circle cx="694" cy="179" r="6"/><circle cx="716" cy="171" r="6"/><circle cx="731" cy="203" r="6"/><circle cx="751" cy="183" r="6"/><circle cx="686" cy="213" r="6"/>
+      <circle cx="480" cy="377" r="4"/><circle cx="533" cy="391" r="6"/><circle cx="592" cy="366" r="4"/><circle cx="766" cy="362" r="4"/>
+      <circle cx="574" cy="576" r="4"/><circle cx="759" cy="579" r="4"/>
+    </g>
+    <g fill="#333">
+      <circle cx="662" cy="397" r="9"/><circle cx="703" cy="385" r="13"/><circle cx="731" cy="374" r="10"/>
+      <circle cx="661" cy="591" r="6"/><circle cx="682" cy="584" r="6"/><circle cx="693" cy="567" r="6"/><circle cx="702" cy="588" r="6"/><circle cx="714" cy="568" r="6"/><circle cx="723" cy="585" r="6"/><circle cx="737" cy="562" r="6"/>
+    </g>
+  </g>
+</svg>
