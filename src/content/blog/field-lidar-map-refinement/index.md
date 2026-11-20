@@ -1,5 +1,5 @@
 ---
-title: "차량기지 LiDAR 지도 보정"
+title: "LiDAR 지도 보정"
 slug: "field-lidar-map-refinement"
 date: "2026-11-20"
 category: "Perception"
@@ -7,10 +7,10 @@ tags:
   - LiDAR
   - SLAM
   - Mapping
-summary: "철도 차량기지의 벽 변형과 통로 중복을 기존 LiDAR 기록으로 보정한 결과."
+summary: "기존 LiDAR 기록을 이용한 벽 휨과 통로 중복 보정."
 ---
 
-추가 주행 없이 기존 LiDAR·IMU 기록으로 차량기지의 2D 지도를 보정했다. 스캔 수는 SLAM에 저장된 키프레임 기준이다.
+추가 주행 없이 기존 LiDAR·IMU 기록으로 2D 지도를 보정했다. 스캔 수는 SLAM에 저장된 키프레임 기준이다.
 
 ## 점군 전처리
 
