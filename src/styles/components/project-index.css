@@ -1,0 +1,97 @@
+.catalog-index > .container {
+  max-width: 900px;
+}
+
+.catalog-index .section-head {
+  margin-bottom: 20px;
+}
+
+.catalog-index .section-head h1 {
+  margin-bottom: 6px;
+}
+
+.catalog-index .section-head p {
+  color: var(--muted);
+  word-break: keep-all;
+}
+
+.catalog-list {
+  border-top: 1px solid var(--border);
+  list-style: none;
+}
+
+.catalog-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, max-content) auto;
+  grid-template-areas: "title meta actions";
+  align-items: center;
+  gap: 0 20px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.catalog-title {
+  grid-area: title;
+  font-size: 19px;
+  font-weight: 650;
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+  text-wrap: pretty;
+  overflow-wrap: anywhere;
+}
+
+.catalog-meta {
+  grid-area: meta;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.catalog-actions {
+  grid-area: actions;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.catalog-row a {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+}
+
+.catalog-row a:is(:hover, :focus-visible) {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.catalog-row a:focus-visible {
+  scroll-margin-top: 80px;
+}
+
+.catalog-actions svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 680px) {
+  .catalog-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "title actions" "meta meta";
+    column-gap: 10px;
+    padding-bottom: 9px;
+  }
+
+  .catalog-title {
+    font-size: 18px;
+  }
+
+  .catalog-actions {
+    gap: 10px;
+  }
+}
