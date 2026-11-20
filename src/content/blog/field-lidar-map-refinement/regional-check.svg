@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 319" role="img" aria-labelledby="chart-title chart-description">
+  <title id="chart-title">대상 긴 벽과 인접 관측의 검증 결과</title>
+  <desc id="chart-description">대상 긴 벽 관측 75건의 중앙값은 15.11에서 2.44 cm로 줄고 인접 관측 44쌍은 14.01에서 29.25 cm로 늘었다. 이 후보는 채택하지 않았다.</desc>
+  <rect x="0.5" y="0.5" width="639" height="318" rx="13" fill="#fff" stroke="#d7d7d7"/>
+  <defs>
+    <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="7" height="7" fill="#fff"/>
+      <path d="M0 0V7" stroke="#6a6a6a" stroke-width="2.6"/>
+    </pattern>
+  </defs>
+  <g font-family="'Nanum Gothic', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">
+  <text x="26" y="42" font-size="26" fill="#252525" text-anchor="start" font-weight="700">검증 거리의 중앙값 (cm)</text>
+  <rect x="28" y="64" width="19" height="12" rx="2" fill="url(#hatch)" stroke="#6a6a6a"/>
+  <text x="57" y="78" font-size="22" fill="#252525" text-anchor="start">기존 지도</text>
+  <rect x="235" y="64" width="19" height="12" rx="2" fill="#353535"/>
+  <text x="264" y="78" font-size="22" fill="#252525" text-anchor="start">보정 후보</text>
+  <line x1="216.0" y1="99" x2="216.0" y2="270" stroke="#d7d7d7" stroke-width="1"/>
+  <text x="216.0" y="298" font-size="21" fill="#515151" text-anchor="middle">0</text>
+  <line x1="324.0" y1="99" x2="324.0" y2="270" stroke="#d7d7d7" stroke-width="1"/>
+  <text x="324.0" y="298" font-size="21" fill="#515151" text-anchor="middle">10</text>
+  <line x1="432.0" y1="99" x2="432.0" y2="270" stroke="#d7d7d7" stroke-width="1"/>
+  <text x="432.0" y="298" font-size="21" fill="#515151" text-anchor="middle">20</text>
+  <line x1="540.0" y1="99" x2="540.0" y2="270" stroke="#d7d7d7" stroke-width="1"/>
+  <text x="540.0" y="298" font-size="21" fill="#515151" text-anchor="middle">30</text>
+  <text x="27" y="127" font-size="24" fill="#252525" text-anchor="start" font-weight="700">대상 긴 벽</text>
+  <text x="27" y="154" font-size="21" fill="#515151" text-anchor="start">관측 75건</text>
+  <rect x="216" y="109" width="163.19" height="16" rx="2" fill="url(#hatch)" stroke="#6a6a6a"/>
+  <text x="389.19" y="125" font-size="22" fill="#252525" text-anchor="start">15.11</text>
+  <rect x="216" y="136" width="26.35" height="16" rx="2" fill="#353535"/>
+  <text x="252.35" y="152" font-size="22" fill="#252525" text-anchor="start">2.44</text>
+  <text x="27" y="208" font-size="24" fill="#252525" text-anchor="start" font-weight="700">인접 관측</text>
+  <text x="27" y="235" font-size="21" fill="#515151" text-anchor="start">44쌍</text>
+  <rect x="216" y="190" width="151.31" height="16" rx="2" fill="url(#hatch)" stroke="#6a6a6a"/>
+  <text x="377.31" y="206" font-size="22" fill="#252525" text-anchor="start">14.01</text>
+  <rect x="216" y="217" width="315.9" height="16" rx="2" fill="#353535"/>
+  <text x="541.9" y="233" font-size="22" fill="#252525" text-anchor="start">29.25</text>
+  </g>
+</svg>

@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 578" role="img" aria-labelledby="chart-title chart-description">
+  <title id="chart-title">입력 스캔 수와 고정 기준 지도 일치도</title>
+  <desc id="chart-description">1,901·2,590·3,087개의 스캔을 각각 두 가지 방식으로 재생했다. 같은 179개 스캔의 100,462개 빔 각각의 끝점에서 고정 기준 지도 102818의 가장 가까운 점까지 단방향 거리를 구했다. 벽 방향 보정의 거리 중앙값과 P90은 세 입력 크기에서 비슷했다.</desc>
+  <rect x="0.5" y="0.5" width="639" height="577" rx="13" fill="#fff" stroke="#d7d7d7"/>
+  <g font-family="'Nanum Gothic', 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif">
+  <text x="26" y="42" font-size="26" fill="#252525" text-anchor="start" font-weight="700">고정 기준 지도까지의 거리 (m)</text>
+  <line x1="29" y1="70" x2="62" y2="70" stroke="#626262" stroke-width="3" stroke-dasharray="7 5"/>
+  <path d="M45.00 63.00l7 7l-7 7l-7 -7Z" fill="#626262"/>
+  <text x="76" y="78" font-size="22" fill="#252525" text-anchor="start">기본 오도메트리</text>
+  <line x1="324" y1="70" x2="357" y2="70" stroke="#252525" stroke-width="3"/>
+  <circle cx="340.00" cy="70.00" r="5.8" fill="#252525"/>
+  <text x="370" y="78" font-size="22" fill="#252525" text-anchor="start">벽 방향 보정</text>
+  <text x="28" y="115" font-size="23" fill="#252525" text-anchor="start" font-weight="700">중앙값</text>
+  <line x1="99" y1="265.0" x2="593" y2="265.0" stroke="#d7d7d7" stroke-width="1"/>
+  <text x="86" y="272.0" font-size="21" fill="#515151" text-anchor="end">0.0</text>
+  <line x1="99" y1="223.12" x2="593" y2="223.12" stroke="#d7d7d7" stroke-width="1"/>
+  <text x="86" y="230.12" font-size="21" fill="#515151" text-anchor="end">0.1</text>
+  <line x1="99" y1="181.25" x2="593" y2="181.25" stroke="#d7d7d7" stroke-width="1"/>
+  <text x="86" y="188.25" font-size="21" fill="#515151" text-anchor="end">0.2</text>
+  <line x1="99" y1="139.38" x2="593" y2="139.38" stroke="#d7d7d7" stroke-width="1"/>
+  <text x="86" y="146.38" font-size="21" fill="#515151" text-anchor="end">0.3</text>
+  <line x1="99.0" y1="131" x2="99.0" y2="265" stroke="#d7d7d7" stroke-width="1"/>
+  <line x1="385.99" y1="131" x2="385.99" y2="265" stroke="#d7d7d7" stroke-width="1"/>
+  <line x1="593.0" y1="131" x2="593.0" y2="265" stroke="#d7d7d7" stroke-width="1"/>
+  <polyline points="99.00,152.13 385.99,152.13 593.00,152.13" fill="none" stroke="#626262" stroke-width="3.5" stroke-dasharray="8 5"/>
+  <path d="M99.00 145.13l7 7l-7 7l-7 -7Z" fill="#626262"/>
+  <path d="M385.99 145.13l7 7l-7 7l-7 -7Z" fill="#626262"/>
+  <path d="M593.00 145.13l7 7l-7 7l-7 -7Z" fill="#626262"/>
+  <polyline points="99.00,246.88 385.99,246.88 593.00,246.90" fill="none" stroke="#252525" stroke-width="3.5"/>
+  <circle cx="99.00" cy="246.88" r="5.8" fill="#252525"/>
+  <circle cx="385.99" cy="246.88" r="5.8" fill="#252525"/>
+  <circle cx="593.00" cy="246.90" r="5.8" fill="#252525"/>
+  <text x="28" y="319" font-size="23" fill="#252525" text-anchor="start" font-weight="700">P90</text>
+  <line x1="99" y1="469.0" x2="593" y2="469.0" stroke="#d7d7d7" stroke-width="1"/>
+  <text x="86" y="476.0" font-size="21" fill="#515151" text-anchor="end">0.0</text>
+  <line x1="99" y1="426.68" x2="593" y2="426.68" stroke="#d7d7d7" stroke-width="1"/>
+  <text x="86" y="433.68" font-size="21" fill="#515151" text-anchor="end">0.3</text>
+  <line x1="99" y1="384.37" x2="593" y2="384.37" stroke="#d7d7d7" stroke-width="1"/>
+  <text x="86" y="391.37" font-size="21" fill="#515151" text-anchor="end">0.6</text>
+  <line x1="99" y1="342.05" x2="593" y2="342.05" stroke="#d7d7d7" stroke-width="1"/>
+  <text x="86" y="349.05" font-size="21" fill="#515151" text-anchor="end">0.9</text>
+  <line x1="99.0" y1="335" x2="99.0" y2="469" stroke="#d7d7d7" stroke-width="1"/>
+  <line x1="385.99" y1="335" x2="385.99" y2="469" stroke="#d7d7d7" stroke-width="1"/>
+  <line x1="593.0" y1="335" x2="593.0" y2="469" stroke="#d7d7d7" stroke-width="1"/>
+  <polyline points="99.00,352.04 385.99,352.04 593.00,352.04" fill="none" stroke="#626262" stroke-width="3.5" stroke-dasharray="8 5"/>
+  <path d="M99.00 345.04l7 7l-7 7l-7 -7Z" fill="#626262"/>
+  <path d="M385.99 345.04l7 7l-7 7l-7 -7Z" fill="#626262"/>
+  <path d="M593.00 345.04l7 7l-7 7l-7 -7Z" fill="#626262"/>
+  <polyline points="99.00,428.97 385.99,428.97 593.00,429.00" fill="none" stroke="#252525" stroke-width="3.5"/>
+  <circle cx="99.00" cy="428.97" r="5.8" fill="#252525"/>
+  <circle cx="385.99" cy="428.97" r="5.8" fill="#252525"/>
+  <circle cx="593.00" cy="429.00" r="5.8" fill="#252525"/>
+  <text x="99.0" y="497" font-size="22" fill="#252525" text-anchor="middle" font-weight="700">1,901</text>
+  <text x="99.0" y="522" font-size="19" fill="#515151" text-anchor="middle">449.99초</text>
+  <text x="385.99" y="497" font-size="22" fill="#252525" text-anchor="middle" font-weight="700">2,590</text>
+  <text x="385.99" y="522" font-size="19" fill="#515151" text-anchor="middle">599.99초</text>
+  <text x="593.0" y="497" font-size="22" fill="#252525" text-anchor="middle" font-weight="700">3,087</text>
+  <text x="593.0" y="522" font-size="19" fill="#515151" text-anchor="middle">711.88초</text>
+  <text x="320" y="557" font-size="22" fill="#515151" text-anchor="middle">기록 앞부분에 포함된 입력 스캔 수</text>
+  </g>
+</svg>
