@@ -10,10 +10,10 @@ function Home() {
       <div className="container">
         <h1>{profile.name}</h1>
         <nav className="home-actions" aria-label="주요 페이지">
-          <Link to="/portfolio">포트폴리오</Link>
-          <Link to="/blog">블로그</Link>
-          <Link to="/web-service">웹서비스</Link>
-          <Link to="/utilities">유틸리티</Link>
+          <Link className="btn primary home-primary" to="/portfolio">포트폴리오</Link>
+          <Link className="home-secondary" to="/blog">블로그</Link>
+          <Link className="home-secondary" to="/web-service">웹서비스</Link>
+          <Link className="home-secondary" to="/utilities">유틸리티</Link>
         </nav>
       </div>
     </main>
