@@ -3,6 +3,7 @@ import { Link, useLocation, useParams } from 'react-router-dom'
 import { getLoadedPost, getPostBySlug, loadPostBySlug } from '../../lib/posts'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import BlogDate from '../../components/BlogDate'
+import ErrorBoundary from '../../components/ErrorBoundary'
 import '../../styles/pages/blog.css'
 import '../../styles/components/campus2-maps.css'
 
@@ -18,9 +19,11 @@ function PostContent({ html }) {
   return (
     <article className="post-content">
       <div dangerouslySetInnerHTML={{ __html: html.slice(0, markerIndex) }} />
-      <Suspense fallback={<div className="campus2-maps-loading" role="status">지도를 불러오는 중입니다.</div>}>
-        <Campus2Maps />
-      </Suspense>
+      <ErrorBoundary fallback={<div className="campus2-maps-error" role="alert">Campus2 지도를 불러오지 못했습니다.</div>}>
+        <Suspense fallback={<div className="campus2-maps-loading" role="status">지도를 불러오는 중입니다.</div>}>
+          <Campus2Maps />
+        </Suspense>
+      </ErrorBoundary>
       <div dangerouslySetInnerHTML={{ __html: html.slice(markerIndex + CAMPUS2_MAPS_EMBED.length) }} />
     </article>
   )

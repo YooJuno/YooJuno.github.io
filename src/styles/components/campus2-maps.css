@@ -14,6 +14,14 @@
   font-size: 13px;
 }
 
+.campus2-maps-error {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .campus2-maps-controls,
 .campus2-pgm-toolbar,
 .campus2-pgm-footer,

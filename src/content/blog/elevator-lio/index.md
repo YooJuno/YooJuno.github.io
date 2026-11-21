@@ -22,7 +22,7 @@ summary: "엘리베이터의 수직 운동을 분리하는 LiDAR–IMU 추정 �
 
 <div data-blog-embed="campus2-maps"></div>
 
-[Zhang 외, Elevator-LIO Dataset](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset)으로 재현 · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+<small>[Zhang 외, Elevator-LIO Dataset](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset)으로 재현 · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)</small>
 
 ## Office3 상승 재생
 
