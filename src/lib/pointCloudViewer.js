@@ -132,6 +132,7 @@ export function createPointCloudViewer(container, dataset, { title, controlsId, 
   const tileGeometry = ground && new PlaneGeometry(ground.tileSize, ground.tileSize)
   const layers = new Map()
   let activeFloor = null
+  let fitPending = false
   let showGround = true
   let animationFrame = null
   let disposed = false
@@ -146,6 +147,13 @@ export function createPointCloudViewer(container, dataset, { title, controlsId, 
 
   function resetView() {
     if (!layers.size) return
+    const { clientWidth, clientHeight } = container
+    if (!clientWidth || !clientHeight) {
+      fitPending = true
+      return
+    }
+    fitPending = false
+    camera.aspect = clientWidth / clientHeight
     const selected = layers.get(activeFloor)
     const extentClouds = selected
       ? [showGround && selected.tiles?.length ? selected.tiles : selected.positions]
@@ -201,6 +209,7 @@ export function createPointCloudViewer(container, dataset, { title, controlsId, 
     renderer.setSize(clientWidth, clientHeight, false)
     camera.aspect = clientWidth / clientHeight
     camera.updateProjectionMatrix()
+    if (fitPending) resetView()
     render()
   }
 

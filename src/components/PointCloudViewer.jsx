@@ -1,10 +1,11 @@
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react'
 import { createPointCloudViewer } from '../lib/pointCloudViewer'
 import '../styles/components/point-cloud.css'
 
 /**
  * The structure URL points to a Z-up PCD. Optional ground data stores XY tile centers and a tile size in meters.
  * When floors are configured, the PCD label field identifies the floor in both datasets.
+ * The optional floor prop controls the selected level. Explicit null shows all floors.
  */
 export default function PointCloudViewer(props) {
   const { title, dataset: { structureUrl, ground, floors = [] } } = props
@@ -13,7 +14,7 @@ export default function PointCloudViewer(props) {
   return <PointCloudSession key={key} {...props} />
 }
 
-function PointCloudSession({ title, dataset, children }) {
+function PointCloudSession({ title, dataset, children, floor: controlledFloor, onFloorChange }) {
   // Equivalent dataset props keep the current scene. A new dataset starts a new session.
   const [configuration] = useState(() => dataset)
   const { floors = [], ground } = configuration
@@ -23,9 +24,16 @@ function PointCloudSession({ title, dataset, children }) {
   const instance = useRef(null)
   const [status, setStatus] = useState('loading')
   const [attempt, setAttempt] = useState(0)
-  const [floor, setFloor] = useState(null)
+  const [localFloor, setLocalFloor] = useState(null)
   const [groundVisible, setGroundVisible] = useState(true)
+  const floor = controlledFloor === undefined ? localFloor : controlledFloor
+  const latestFloor = useRef(floor)
   const ready = status === 'ready'
+
+  useLayoutEffect(() => {
+    latestFloor.current = floor
+    if (controlledFloor !== undefined) instance.current?.selectFloor(controlledFloor)
+  }, [controlledFloor, floor])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -46,9 +54,10 @@ function PointCloudSession({ title, dataset, children }) {
           controlsId,
           onContextLoss: showFallback,
         })
+        instance.current = viewer
+        viewer.selectFloor(latestFloor.current)
         await viewer.load(controller.signal)
         if (controller.signal.aborted) return
-        instance.current = viewer
         setStatus('ready')
       } catch {
         showFallback()
@@ -64,8 +73,11 @@ function PointCloudSession({ title, dataset, children }) {
   }, [attempt, configuration, controlsId, title])
 
   function selectFloor(level) {
-    setFloor(level)
-    instance.current?.selectFloor(level)
+    if (controlledFloor === undefined) {
+      setLocalFloor(level)
+      instance.current?.selectFloor(level)
+    }
+    onFloorChange?.(level)
   }
 
   function toggleGround(event) {
@@ -76,7 +88,7 @@ function PointCloudSession({ title, dataset, children }) {
 
   function retry() {
     setStatus('loading')
-    setFloor(null)
+    setLocalFloor(null)
     setGroundVisible(true)
     setAttempt(previous => previous + 1)
   }
