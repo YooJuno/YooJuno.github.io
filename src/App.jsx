@@ -7,6 +7,7 @@ const Utilities = lazy(() => import('./pages/utilities/Utilities.jsx'))
 const UtilityDetail = lazy(() => import('./pages/utilities/UtilityDetail.jsx'))
 const Blog = lazy(() => import('./pages/blog/Blog.jsx'))
 const Post = lazy(() => import('./pages/blog/Post.jsx'))
+const Campus2Viewer = lazy(() => import('./pages/blog/Campus2Viewer.jsx'))
 
 const WebService = lazy(() => import('./pages/webservice/WebService.jsx'))
 const WebServiceBlog = lazy(() => import('./pages/webservice/WebServiceBlog.jsx'))
@@ -234,6 +235,7 @@ const AppRoutes = () => {
           <Route path="/utilities/:slug" element={<UtilityDetail />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<Post />} />
+          <Route path="/blog/elevator-lio/campus2" element={<Campus2Viewer />} />
           <Route path="/web-service" element={<WebService />} />
           <Route path="/web-service/guitar-studio" element={<WebServiceGuitarStudio />} />
           <Route path="/web-service/moim" element={<WebServiceMoim />} />

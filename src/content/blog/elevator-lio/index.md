@@ -114,9 +114,7 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 
 ### Campus2 층간 매핑
 
-[![직접 재현한 Campus2 점군의 측면도. 점은 층별 높이에 따라 색을 입혔고, 왼쪽 흰 선은 엘리베이터 이동 궤적이다.](/content/images/blog/elevator-lio/campus2-floor-detail.jpg)](/content/images/blog/elevator-lio/campus2-floor-detail.jpg)
-
-*Campus2 재현 결과 · 탑승 모드 6회*
+[![직접 재현한 Campus2 점군의 측면도. 점은 층별 높이에 따라 색을 입혔고, 왼쪽 흰 선은 엘리베이터 이동 궤적이다.](/content/images/blog/elevator-lio/campus2-floor-detail.jpg) Campus2 3D 점군 뷰어](/blog/elevator-lio/campus2/) · 탑승 모드 6회
 
 [![Campus2 점군 위의 추정 위치가 10층에서 5층으로 하강해 도착 층 복도로 이어지는 장면](/content/images/blog/elevator-lio/campus2-elevator-trajectory.gif)](/content/images/blog/elevator-lio/campus2-elevator-trajectory.gif)
 
