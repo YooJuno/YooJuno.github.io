@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="466" viewBox="0 0 1040 466" role="img" aria-labelledby="title description">
+  <title id="title">유효 프레임 검사와 거리값 누적</title>
+  <desc id="description">고유 취득 시각의 원본 스캔을 검사하고, 유효 스캔의 거리값만 모은다. 목표 개수에 도달하면 안정성을 검사해 평균을 반환한다. 불안정하면 다음 유효 값이 들어올 때 가장 오래된 값을 교체한다. 제한 시간 도달, 입력 소진 또는 취소 시 유효 거리 없이 종료한다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#526c82" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="1040" height="466" fill="#fff"/>
+  <g font-family="system-ui, Noto Sans CJK KR, Malgun Gothic, sans-serif">
+    <g fill="#f3f8fc" stroke="#9eb9cd" stroke-width="1.5">
+      <rect x="32" y="94" width="208" height="87" rx="9"/>
+      <rect x="288" y="94" width="208" height="87" rx="9"/>
+      <rect x="544" y="94" width="208" height="87" rx="9"/>
+      <rect x="800" y="94" width="208" height="87" rx="9"/>
+    </g>
+    <rect x="800" y="232" width="208" height="103" rx="9" fill="#fbf6ef" stroke="#c5a47e" stroke-width="1.5"/>
+    <rect x="544" y="232" width="208" height="103" rx="9" fill="#eef7f2" stroke="#96b9a4" stroke-width="1.5"/>
+    <rect x="32" y="407" width="976" height="39" rx="8" fill="#f6f8fa" stroke="#b1becc"/>
+    <g fill="none" stroke="#526c82" stroke-width="2" marker-end="url(#arrow)">
+      <path d="M 244 137 H 283"/>
+      <path d="M 500 137 H 539"/>
+      <path d="M 756 137 H 795"/>
+      <path d="M 904 186 V 227"/>
+      <path d="M 795 286 H 757"/>
+      <path d="M 392 89 V 49 H 136 V 89" stroke-dasharray="5 4"/>
+      <path d="M 904 89 V 28 H 136 V 47" stroke-dasharray="5 4"/>
+      <path d="M 904 340 V 379 H 136 V 186" stroke-dasharray="5 4"/>
+    </g>
+    <g fill="#18344b" font-size="20" font-weight="700">
+      <text x="50" y="128">원본 스캔</text>
+      <text x="306" y="128">스캔별 검사</text>
+      <text x="562" y="128">거리값 추가</text>
+      <text x="818" y="128">유효 거리 N개?</text>
+      <text x="818" y="262">안정성 검사</text>
+      <text x="562" y="273">거리 평균 반환</text>
+    </g>
+    <g fill="#415568" font-size="16">
+      <text x="50" y="155">취득 시각 중복 제외</text>
+      <text x="306" y="155">시각·대상점·형상</text>
+      <text x="562" y="155">유효 스캔마다 dᵢ 1개</text>
+      <text x="818" y="155">N = 5·10·20</text>
+      <text x="818" y="289">표본 표준편차 ≤ 6 mm</text>
+      <text x="818" y="313">앞·뒤 평균차 ≤ 5 mm</text>
+      <text x="562" y="301">최근 유효 거리 N개</text>
+    </g>
+    <g fill="#415568" font-size="15" font-weight="600">
+      <text x="218" y="73">검사 탈락 · 개수 유지</text>
+      <text x="736" y="21">N개 미만 · 다음 입력</text>
+      <text x="916" y="211">N개</text>
+      <text x="758" y="271">통과</text>
+      <text x="279" y="365">안정성 미달 · 다음 유효 값으로 가장 오래된 값 교체</text>
+      <text x="49" y="432">처리·데이터 시간 각각 30초 도달, 입력 소진 또는 취소 → 유효 거리 없이 종료</text>
+    </g>
+  </g>
+</svg>

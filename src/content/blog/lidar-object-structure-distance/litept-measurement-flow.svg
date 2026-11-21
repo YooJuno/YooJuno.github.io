@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="306" viewBox="0 0 1000 306" role="img" aria-labelledby="title description">
+  <title id="title">LitePT-L 점 분할과 거리 산출 흐름</title>
+  <desc id="description">기하 보조 라벨을 사용해 LitePT-L을 미세조정한다. 점별 클래스 확률과 추가 검사를 통해 관측점을 고른 뒤, 기준 형상에 정합해 종방향 거리를 계산한다.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#526c82" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+  <rect width="1000" height="306" fill="#fff"/>
+  <g font-family="system-ui, Noto Sans CJK KR, Malgun Gothic, sans-serif">
+    <g fill="#234c6a" font-size="19" font-weight="700">
+      <text x="38" y="32">학습</text>
+      <text x="38" y="177">측정</text>
+    </g>
+    <g fill="#f3f8fc" stroke="#9eb9cd" stroke-width="1.5">
+      <rect x="38" y="46" width="288" height="90" rx="9"/>
+      <rect x="356" y="46" width="288" height="90" rx="9"/>
+      <rect x="674" y="46" width="288" height="90" rx="9"/>
+      <rect x="38" y="191" width="288" height="90" rx="9"/>
+    </g>
+    <rect x="356" y="191" width="288" height="90" rx="9" fill="#fbf6ef" stroke="#c5a47e" stroke-width="1.5"/>
+    <rect x="674" y="191" width="288" height="90" rx="9" fill="#f6f8fa" stroke="#b1becc" stroke-width="1.5"/>
+    <g fill="none" stroke="#526c82" stroke-width="2" marker-end="url(#arrow)">
+      <path d="M 330 91 H 350"/>
+      <path d="M 648 91 H 668"/>
+      <path d="M 330 236 H 350"/>
+      <path d="M 648 236 H 668"/>
+    </g>
+    <g fill="#18344b" font-size="23" font-weight="700">
+      <text x="59" y="82">ROI·기하 보조 라벨</text>
+      <text x="377" y="82">LitePT-L 미세조정</text>
+      <text x="695" y="82">전면·철골 모델</text>
+      <text x="59" y="227">점별 클래스 확률</text>
+      <text x="377" y="227">관측점 선별</text>
+      <text x="695" y="227">기하 정합과 거리</text>
+    </g>
+    <g fill="#415568" font-size="18">
+      <text x="59" y="110">배경·전면 돌출부·상부 철골</text>
+      <text x="377" y="110">nuScenes 사전 학습 기반</text>
+      <text x="695" y="110">검증 점수로 체크포인트 선택</text>
+      <text x="59" y="255">센서 XYZ·반사 강도 입력</text>
+      <text x="377" y="255">전면 트리 점수·ROI·형상 검사</text>
+      <text x="695" y="255">자세 보정·종방향 변위</text>
+    </g>
+  </g>
+</svg>
