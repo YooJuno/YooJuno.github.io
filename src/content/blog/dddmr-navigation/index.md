@@ -54,9 +54,20 @@ DDDMR Navigation은 3D LiDAR로 지도를 만들고, 저장한 지도에서 로�
 | --- | --- |
 | `poses.pcd`, `edges.pcd` | 지도 좌표계의 키프레임 자세와 그래프에서 연결된 키프레임 인덱스 쌍 |
 | `pcd/<id>_feature.pcd`, `_surface.pcd`, `_ground.pcd` | 키프레임별 모서리·표면·지면 점군 |
-| `map.pcd`, `ground.pcd` | 최적화된 자세로 지도 좌표계에 조립한 특징 지도와 지면 모델 |
+| `map.pcd` | 키프레임의 모서리 특징을 지도 좌표계에 모은 점군 |
+| `ground.pcd` | 키프레임의 ground patch를 지도 좌표계에 모은 점군 |
 
-키프레임 자세와 지역 점군을 따로 저장하므로 자세가 바뀌어도 지도를 다시 조립할 수 있고, 위치 추정에서는 가까운 키프레임만 모아 쓸 수 있다. 저장 지면에는 실제 반사점과 관측 사이를 채운 추정 패치가 함께 들어간다. [지도 내보내기 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src/mapOptimization.cpp)
+키프레임 점군을 각자의 좌표계에 저장해 두면 자세가 바뀔 때 지도를 다시 조립할 수 있다.
+
+### Map Points / Ground Points
+
+**Map Points.** 벽 모서리나 기둥처럼 형태 변화가 큰 지점의 특징점이다. `map.pcd`에는 모서리 특징을 모으고, 평면 특징은 키프레임별 `_surface.pcd`에 따로 저장한다. MCL은 주변 키프레임의 모서리와 평면을 현재 스캔과 비교해 자세를 추정한다. [지도 저장 코드](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src/mapOptimization.cpp) · [MCL 서브맵 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_mcl_3dl/src/sub_maps.cpp)
+
+**Ground Points.** 지면으로 판정한 인접 LiDAR 채널의 반사점과 그 사이를 보간한 점을 모은다. MCL은 지면의 높이와 법선을 위치 추정에 사용하고, Perception 3D는 가까운 지면 점을 연결해 경로 계획용 그래프를 만든다. RViz의 `Tiles`는 이 점들을 사각형으로 표시하는 방식이다. [Ground patch 코드](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_lego_loam/lego_loam_bor/src/imageProjection.cpp) · [지면 그래프 구현](https://github.com/dfl-rlab/dddmr_navigation/blob/02f3bfe56217ac4e99f3af1e273cc3cbcb2024e4/src/dddmr_perception_3d/plugins/static_layer.cpp)
+
+![같은 XT32 지도 구간의 두 점군. 위쪽은 벽과 기둥 주변의 회색 모서리 특징, 아래쪽은 바닥을 덮는 청록색 지면점이다.](./xt32-map-ground.png)
+
+*11월 21일 XT32 재생 결과. 같은 지도 구간에서 두 PCD를 같은 각도로 본 모습이다. 오른쪽 일부를 RViz에서 10 cm 타일로 표시했을 때, 위에서 면적이 겹치는 두 타일의 높이 차는 2.93 m였다.*
 
 ## MCL 3DL 위치 추정
 

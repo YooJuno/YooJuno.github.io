@@ -42,3 +42,10 @@ Copyright (c) 2025, Robotics Lab - Dubai Future Labs. BSD 3-Clause. 공식 그�
 - `mapping_quality_audit_20261109/REPORT.txt` — 전체 지도 형상 비교, 링 진단 정정.
 - `root_cause_20261109/first_loop_replay/same_solver_comparison.json` — 관측과 솔버를 고정한 ICP 초기값 비교.
 - `root_cause_20261109/CHECKPOINT.json` — 부분 재생 중단 시점과 구조 불일치 판정.
+
+## XT32 Map Points와 Ground Points
+
+- `xt32-map-ground.png` — 2026-11-21, native odometry·Loop Closing 검색 반경 5 m 설정에서 저장한 `map.pcd`와 `ground.pcd`. 지도 X 35~70 m, Y −26~0 m의 점을 같은 각도로 투영했다. 두 점군은 두께나 연결을 추가하지 않고 그렸다.
+- PCD 위치 — `mapping/resume_guarded_radius5_20261121/output/2026_11_21_05_08_18/`.
+- Ground 겹침 예시 — 지도 좌표 X 약 61.29 m, Y 약 −8.11 m. 10 cm 타일 두 개가 평면에서 겹치며 각각 Z −2.00 m와 0.92 m에 저장됐다.
+- PNG SHA-256 — `5a19285add690aed0e08fad23dda1168b770044403496ffcc003b18a00ed3595`.
