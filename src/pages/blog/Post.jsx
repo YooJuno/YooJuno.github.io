@@ -1,9 +1,30 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { getLoadedPost, getPostBySlug, loadPostBySlug } from '../../lib/posts'
 import useDocumentTitle from '../../hooks/useDocumentTitle'
 import BlogDate from '../../components/BlogDate'
 import '../../styles/pages/blog.css'
+import '../../styles/components/campus2-maps.css'
+
+const Campus2Maps = lazy(() => import('./Campus2Maps'))
+const CAMPUS2_MAPS_EMBED = '<div data-blog-embed="campus2-maps"></div>'
+
+function PostContent({ html }) {
+  const markerIndex = html.indexOf(CAMPUS2_MAPS_EMBED)
+  if (markerIndex === -1) {
+    return <article className="post-content" dangerouslySetInnerHTML={{ __html: html }} />
+  }
+
+  return (
+    <article className="post-content">
+      <div dangerouslySetInnerHTML={{ __html: html.slice(0, markerIndex) }} />
+      <Suspense fallback={<div className="campus2-maps-loading" role="status">지도를 불러오는 중입니다.</div>}>
+        <Campus2Maps />
+      </Suspense>
+      <div dangerouslySetInnerHTML={{ __html: html.slice(markerIndex + CAMPUS2_MAPS_EMBED.length) }} />
+    </article>
+  )
+}
 
 function Post() {
   const { slug } = useParams()
@@ -66,7 +87,7 @@ function Post() {
             <button className="btn ghost" type="button" onClick={() => window.location.reload()}>다시 불러오기</button>
           </section>
         ) : post ? (
-          <article className="post-content" dangerouslySetInnerHTML={{ __html: post.html }} />
+          <PostContent html={post.html} />
         ) : <p className="post-load-state" role="status">글을 불러오는 중입니다.</p>}
         <footer className="post-footer">
           <Link className="post-back" to={backTo}>← 블로그로 돌아가기</Link>

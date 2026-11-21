@@ -18,6 +18,12 @@ summary: "엘리베이터의 수직 운동을 분리하는 LiDAR–IMU 추정 �
 - 로봇이 엘리베이터 안에서 정지해 있으면 LiDAR로 관측한 벽과 바닥의 위치는 거의 일정하다. IMU는 엘리베이터가 출발하거나 제동할 때 수직 가속도를 감지한다.
 - 엘리베이터 내부 구조를 건물에 고정된 점군으로 간주하면 LiDAR 정합과 IMU 예측의 기준이 달라진다. 논문은 **엘리베이터 기준 로봇 운동**과 **건물 기준 엘리베이터 운동**을 분리해 추정한다.
 
+## Campus2 층간 매핑
+
+<div data-blog-embed="campus2-maps"></div>
+
+[Zhang 외, Elevator-LIO Dataset](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset)으로 재현 · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
 ## Office3 상승 재생
 
 [![Office3 데이터의 문 닫힘, 엘리베이터 상승, 상층 복도 진입 장면. 왼쪽은 LiDAR 점군과 추정 궤적, 오른쪽은 현장 영상.](/content/images/blog/elevator-lio/office3-ascent.gif)](/content/images/blog/elevator-lio/office3-ascent.gif)
@@ -112,13 +118,11 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 - LiDAR 스캔 153,823개 중 153,035개에서 자세 추정값을 얻었다. 자세 로그는 각 시퀀스의 녹화 시간 중 최소 약 97.6%를 포함한다.
 - LiDAR 기록률이 약 10 Hz인 시퀀스는 8개, 약 50 Hz인 시퀀스는 12개다.
 
-### Campus2 층간 매핑
-
-[![직접 재현한 Campus2 점군의 측면도. 점은 층별 높이에 따라 색을 입혔고, 왼쪽 흰 선은 엘리베이터 이동 궤적이다.](/content/images/blog/elevator-lio/campus2-floor-detail.jpg) Campus2 3D 점군 뷰어](/blog/elevator-lio/campus2/) · 탑승 모드 6회
+### Campus2 엘리베이터 이동
 
 [![Campus2 점군 위의 추정 위치가 10층에서 5층으로 하강해 도착 층 복도로 이어지는 장면](/content/images/blog/elevator-lio/campus2-elevator-trajectory.gif)](/content/images/blog/elevator-lio/campus2-elevator-trajectory.gif)
 
-*마지막 탑승 구간 · 추정 높이 약 24 m 감소*
+*탑승 모드 6회 · 마지막 구간의 추정 높이 약 24 m 감소*
 
 [![논문의 Campus2 매핑 결과와 5층부터 10층까지의 엘리베이터 구간 확대도.](/content/images/blog/elevator-lio/paper-mapping-example.jpg)](/content/images/blog/elevator-lio/paper-mapping-example.jpg)
 
