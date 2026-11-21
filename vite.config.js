@@ -88,15 +88,32 @@ const readBlogEntries = () => {
 
 // 이미지의 실제 픽셀 크기를 읽는다. PNG 는 IHDR, JPEG 는 SOF 마커,
 // SVG 는 width/height 또는 viewBox 에서 얻는다. 외부 의존성 없이 처리한다.
+const svgNumber = /^[+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?$/i
+const parseSvgNumber = (value) => svgNumber.test(value) ? Number(value) : NaN
+
 const readImageSize = (file) => {
   if (/\.svg$/i.test(file)) {
-    const text = fs.readFileSync(file, 'utf8').slice(0, 2000)
-    const w = text.match(/\bwidth\s*=\s*"([\d.]+)/)
-    const h = text.match(/\bheight\s*=\s*"([\d.]+)/)
-    if (w && h) return { width: Math.round(+w[1]), height: Math.round(+h[1]) }
-    const vb = text.match(/viewBox\s*=\s*"\s*[\d.-]+\s+[\d.-]+\s+([\d.]+)\s+([\d.]+)/)
-    if (vb) return { width: Math.round(+vb[1]), height: Math.round(+vb[2]) }
-    return null
+    const openingTag = fs.readFileSync(file, 'utf8')
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .match(/<svg\b(?:[^>"']|"[^"]*"|'[^']*')*>/)?.[0]
+    if (!openingTag) return null
+
+    const attributes = new Map(Array.from(
+      openingTag.matchAll(/([\w:.-]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g),
+      ([, name, doubleQuoted, singleQuoted]) => [name, doubleQuoted ?? singleQuoted],
+    ))
+    const pixelSize = (name) => parseSvgNumber(attributes.get(name)?.trim().replace(/px$/i, ''))
+    let width = pixelSize('width')
+    let height = pixelSize('height')
+    const isPositiveSize = (size) => Number.isFinite(size) && size > 0
+    if (!isPositiveSize(width) || !isPositiveSize(height)) {
+      const viewBox = attributes.get('viewBox')?.trim().split(/\s*,\s*|\s+/).map(parseSvgNumber)
+      if (viewBox?.length !== 4 || !viewBox.every(Number.isFinite)) return null
+      width = viewBox[2]
+      height = viewBox[3]
+    }
+    if (!isPositiveSize(width) || !isPositiveSize(height)) return null
+    return { width: Math.max(1, Math.round(width)), height: Math.max(1, Math.round(height)) }
   }
 
   const buf = fs.readFileSync(file)
