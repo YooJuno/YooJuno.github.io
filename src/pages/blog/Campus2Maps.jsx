@@ -1,4 +1,5 @@
 import { lazy, Suspense, useLayoutEffect, useRef, useState } from 'react'
+import ErrorBoundary from '../../components/ErrorBoundary'
 import { CAMPUS2_DATA, CAMPUS2_TITLE } from '../../lib/campus2Data'
 
 const PointCloudViewer = lazy(() => import('../../components/PointCloudViewer'))
@@ -68,7 +69,7 @@ function PgmMap({ floor, onFloorChange }) {
 
       <div className="campus2-pgm-footer">
         <div className="campus2-pgm-legend" role="group" aria-label="지도 범례">
-          <span><i className="campus2-pgm-free" aria-hidden="true" />빈 공간</span>
+          <span><i className="campus2-pgm-free" aria-hidden="true" />자유 공간</span>
           <span><i className="campus2-pgm-occupied" aria-hidden="true" />장애물</span>
           <span><i className="campus2-pgm-unknown" aria-hidden="true" />미관측</span>
         </div>
@@ -91,9 +92,11 @@ export default function Campus2Maps() {
       {mode === 'pgm' ? (
         <PgmMap floor={floor} onFloorChange={setFloor} />
       ) : (
-        <Suspense fallback={<div className="campus2-maps-loading campus2-cloud-loading" role="status">점군을 불러오는 중입니다.</div>}>
-          <PointCloudViewer title={CAMPUS2_TITLE} dataset={CAMPUS2_DATA} />
-        </Suspense>
+        <ErrorBoundary fallback={<div className="campus2-maps-error" role="alert">3D 점군을 불러오지 못했습니다.</div>}>
+          <Suspense fallback={<div className="campus2-maps-loading campus2-cloud-loading" role="status">점군을 불러오는 중입니다.</div>}>
+            <PointCloudViewer title={CAMPUS2_TITLE} dataset={CAMPUS2_DATA} />
+          </Suspense>
+        </ErrorBoundary>
       )}
     </section>
   )

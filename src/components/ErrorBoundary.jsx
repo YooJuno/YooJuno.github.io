@@ -22,6 +22,8 @@ class ErrorBoundary extends Component {
 
   render() {
     if (this.state.hasError) {
+      if (this.props.fallback !== undefined) return this.props.fallback
+
       return (
         <main className="section" id="main-content" tabIndex={-1}>
           <div className="container empty-page">
