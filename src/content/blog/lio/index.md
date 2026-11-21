@@ -9,71 +9,68 @@ tags:
   - LIO
   - Odometry
   - ROS 2
-summary: "IMU 상태 전파와 LiDAR 정합을 실측 점군과 주행 궤적으로 정리."
+summary: "Office1 스캔 한 구간의 IMU 예측, 왜곡 보정, 점–평면 정합."
 ---
 
-**LIO**(LiDAR–Inertial Odometry)는 IMU와 LiDAR로 3차원 위치·회전을 추정한다. **IMU 전파 → 스캔 왜곡 보정 → LiDAR 정합**.
+**LIO**(LiDAR–Inertial Odometry)는 IMU와 LiDAR로 위치와 회전을 추정한다. FAST-LIO2처럼 스캔 단위로 처리하는 방식은 먼저 IMU로 스캔 끝 자세를 예측한다. 그 사이의 움직임으로 점들의 좌표를 맞춘 뒤, 앞서 본 벽과 바닥에 정합해 예측 자세를 고친다. [FAST-LIO2 논문 IV절][fast-lio2]
 
-![실제 복도 사진과 같은 장면에 투영한 LiDAR 점.](./office3-scene.jpg)
+Office1 기록의 83.360–83.460초 구간에서는 LiDAR 패킷 5개를 한 스캔으로 묶었다. 이 100 ms 동안 내장 IMU가 20번 값을 기록했고, 자이로를 적분한 회전량은 14.8°였다. [Zhang 외, Office1][office1] · [CC BY 4.0][cc-by]
 
-*복도 사진에 촬영 시각 ±48 ms의 LiDAR 점 투영. [Zhang 외, Office3][office3] · [CC BY 4.0][cc-by]*
+## IMU 전파
 
-## IMU 상태 전파
+직전 스캔에서 보정한 **위치·회전·속도**에서 시작한다. 자이로로 각속도를 읽을 때마다 바이어스를 빼고 짧은 시간 간격만큼 적분해 회전을 갱신한다. 가속도계의 값도 바이어스를 뺀 뒤, 갱신한 회전으로 오도메트리 좌표계에 옮기고 중력 벡터를 더한다. 이렇게 얻은 가속도를 적분해 속도와 위치를 이어 간다. [FAST-LIO2 논문 IV-A절][fast-lio2-model]
 
-- 자이로 · 바이어스 보정 후 각속도 적분, 회전 예측.
-- 가속도계 · 바이어스 보정·좌표 변환·중력 반영 후 속도·위치 적분. [FAST-LIO2 논문 IV절][fast-lio2]
+![Office1 IMU의 각속도와 가속도계 측정값. 음영은 83.360–83.460초 스캔 구간.](./office1-imu.png)
 
-![Office1 IMU의 각속도와 가속도계 측정값 크기. 다음 그림에 사용한 약 100 ms 스캔 구간이 음영으로 표시돼 있다.](./office1-imu.png)
+*음영은 아래에서 왜곡을 보정한 스캔의 시작과 끝을 표시한다.*
 
-*Livox MID-360 내장 IMU 실측값. 음영은 점군 비교 구간. [Zhang 외, Office1][office1] · [CC BY 4.0][cc-by]*
+자이로에 작은 바이어스가 남으면 샘플을 적분할 때 회전 오차가 쌓인다. 기울기 추정이 틀어지면 중력을 보정한 뒤에도 수평 가속도처럼 보이는 오차가 남는다. [LIO-SAM 논문 III-B절][lio-sam-imu]
 
-## 스캔 왜곡 보정 (Deskew)
+## 스캔 왜곡 보정
 
-- 점마다 취득 시각이 달라 센서가 움직이면 벽이 휘어 보임.
-- IMU로 추정한 점별 상대 자세로 공통 시각에 정렬. FAST-LIO2는 스캔 끝 기준. [FAST-LIO2 논문 IV절][fast-lio2]
+한 스캔의 첫 점과 마지막 점은 서로 다른 LiDAR 좌표계에서 찍힌다. 가령 회전축에서 5 m 떨어진 점은 센서가 제자리에서 14.8° 돌 때 좌표가 약 1.29 m 바뀐다. 점별 취득 시각을 무시하고 합치면 곧은 벽도 휘거나 두껍게 보인다.
 
-![같은 스캔의 XY 투영. 왼쪽은 원시 점군, 오른쪽은 점을 스캔 끝 자세로 회전 보정한 점군.](./office1-deskew.png)
+IMU 자세에 LiDAR→IMU 변환을 곱하면 LiDAR 자세를 얻는다. `T_i`는 점 `p_i`를 찍은 시각의 LiDAR 자세, `T_end`는 스캔 끝 자세다. 두 자세 모두 LiDAR 좌표를 같은 오도메트리 좌표계로 옮긴다. `T_i`로 점을 옮긴 뒤 `T_end`를 역으로 적용하면 스캔 끝의 LiDAR 좌표가 된다. FAST-LIO2는 이 시각을 기준으로 모든 점을 맞춘다. [FAST-LIO2 논문 IV-A.2절][fast-lio2-deskew]
 
-*약 100 ms 동안 자이로 적분 기준 14.8° 회전한 구간. 오른쪽은 회전 성분만 보정. [Zhang 외, Office1][office1] · [CC BY 4.0][cc-by]*
+```text
+p_end = inv(T_end) · T_i · p_i
+```
 
-## 점–평면 정합
+![동일한 Office1 점군의 회전 보정 전후. 오른쪽은 각 점을 스캔 끝 좌표계에 맞춘 결과.](./office1-deskew.png)
 
-- 예측 자세로 옮긴 스캔 점 `p`를 참조 점군의 가까운 평면에 대응.
-- 평면 위의 점 `q`, 단위 법선 `n`으로 부호 있는 수직 잔차 `r = nᵀ · (p − q)` 계산. 잔차가 줄도록 자세 갱신. [FAST-LIO2 논문 IV절][fast-lio2]
-- 벽과 평행한 이동에서는 잔차가 그대로. 평행한 벽만 보이는 복도는 진행 방향 보정이 약함. [LION 논문][lion]
+*같은 범위와 축척. 오른쪽은 자이로로 계산한 회전 성분만 적용했다.*
 
-![벽을 따라 점을 옮겨도 벽까지의 수직 거리 r이 그대로인 점–평면 정합 개념도.](./point-plane.png)
+점이 찍힌 시각의 자세를 찾으려면 LiDAR와 IMU가 같은 시간축을 써야 한다. 위 스캔의 회전량을 평균 속도로 환산하면 약 148°/s다. 이 속도에서 시계가 10 ms 어긋나면 점을 옮길 때 쓰는 회전도 약 1.5° 어긋난다. bag에서는 `time`, `t`, `offset_time` 같은 점별 시각 필드의 단위와 기준 시각을 확인한다. [FAST-LIO 입력 설정][fast-lio-input] · [LI-Init 논문][li-init]
 
-## 대표 구현
+## LiDAR 정합
 
-- **FAST-LIO2** · 점–평면 잔차를 반복 확장 칼만 필터에 직접 반영. [논문][fast-lio2] · [시연][fast-lio2-demo]
-- **LIO-SAM** · 모서리·평면 정합으로 구한 상대 자세와 IMU 사전 적분을 팩터 그래프에서 결합. [논문][lio-sam] · [시연][lio-sam-demo]
+스캔 끝 기준으로 정리한 점군을 IMU가 예측한 자세에 놓는다. 그 자세가 조금 빗나갔다면 새로 찍은 벽 점과 참조 점군의 벽 사이에 간격이 남는다. FAST-LIO2는 새 점 `p` 주위에서 참조 점을 찾아 평면을 맞춘다. 평면 위의 점이 `q`, 단위 법선이 `n`이면 `r = nᵀ · (p − q)`가 부호 있는 수직 거리다. 여러 벽과 바닥에서 얻은 잔차가 함께 작아지도록 위치와 회전을 바꾼다. [FAST-LIO2 논문 IV-B절][fast-lio2-update]
 
-## FAST-LIO2 주행 결과
+Office1에서 계산한 예시는 위 스캔과 직전 스캔 사이의 점–평면 ICP다. 두 스캔의 회전 왜곡을 보정한 뒤 자이로 상대 회전과 병진 초기값 0 m에서 정합했다. 평가용 대응 2,097쌍을 고정해 비교하면 수직 거리 절댓값의 중앙값은 **3.0 cm → 1.3 cm**였다.
 
-![야외 실험용 MORPHEUS 로버 사진 두 장. Ouster OS1-32와 Livox Horizon 장착부가 표시돼 있다.](./fast-lio2-rover.jpg)
+![Office1의 같은 평면을 관측한 연속 두 스캔. 자이로 초기값에서는 두 점군이 떨어져 있고, 점–평면 정합 후 가까워진다.](./office1-registration.png)
 
-*FAST-LIO2를 시험한 MORPHEUS 로버와 LiDAR 장착 위치. [Fortuna 외, 그림 2a 발췌][fast-lio2-experiment] · [CC BY 4.0][cc-by]*
+*두 스캔이 함께 본 평면 한 곳을 확대했다. 오른쪽에서 두 점군의 수직 간격이 줄었다.*
 
-![두 LiDAR로 각각 추정한 FAST-LIO2의 평면 주행 궤적과 RTK 기준 궤적 비교.](./fast-lio2-trajectory.png)
+벽 쪽으로 다가가면 수직 거리가 바뀐다. 벽과 평행한 이동에서는 그대로다. 끝이 보이지 않는 복도에서 평행한 벽과 바닥만 잡히면 진행 방향 이동량을 LiDAR로 보정하기 어렵다. 진행 방향을 가로막는 끝 벽까지 관측되면 그 방향의 이동도 제약할 수 있다. [LION 논문][lion]
 
-*GNSS RTK 좌표계에 정렬한 OS1-32·Horizon의 FAST-LIO2 추정 궤적. [Fortuna 외, 그림 4b 발췌][fast-lio2-experiment] · [CC BY 4.0][cc-by]*
+![벽에 평행하게 점을 옮겨도 점에서 벽까지의 수직 잔차 r이 같게 유지되는 개념도.](./point-plane.png)
 
-## ROS 2 bag 점검
+## 상태 갱신
 
-- **점별 시각** · `time`·`t`·`offset_time` 등 필드의 단위와 기준 시각. [FAST-LIO 입력 설정][fast-lio-input]
-- **동기화** · LiDAR와 IMU의 시계 오프셋, 스캔 구간을 덮는 IMU 측정. [LI-Init 논문][li-init]
-- **외부 보정과 단위** · LiDAR→IMU 변환 방향과 축. 자이로 `rad/s`, 가속도계 `m/s²`로 변환. [FAST-LIO 입력 설정][fast-lio-input] · [ROS REP-145][rep-145]
+FAST-LIO2는 **IMU 예측과 점–평면 잔차**를 반복 확장 칼만 필터에 넣는다. IMU 예측의 불확실성과 LiDAR 관측을 함께 반영해 상태를 갱신한다. 복도처럼 특정 방향에서 잔차가 거의 변하지 않으면 그 방향은 IMU 예측에 더 의존한다. 자세 보정은 속도와 IMU 바이어스 추정에도 반영될 수 있다. 다음 스캔에서는 이 상태부터 다시 적분한다. [FAST-LIO2 논문 IV-B절][fast-lio2-update] · [저자 시연][fast-lio2-demo]
 
-[fast-lio2]: https://arxiv.org/html/2107.06829
-[lio-sam]: https://arxiv.org/html/2007.00258
-[lion]: https://arxiv.org/html/2102.03443#S3.SS2
+LIO-SAM은 LiDAR 정합이 구한 상대 자세와 여러 IMU 샘플의 사전 적분을 팩터 그래프로 묶어 상태를 갱신한다. [LIO-SAM 논문 III절][lio-sam]
+
+[fast-lio2]: https://arxiv.org/html/2107.06829#S4
+[fast-lio2-model]: https://arxiv.org/html/2107.06829#S4.SS1
+[fast-lio2-deskew]: https://arxiv.org/html/2107.06829#S4.SS1.SSS2
+[fast-lio2-update]: https://arxiv.org/html/2107.06829#S4.SS2
 [fast-lio2-demo]: https://youtu.be/2OvjGnxszf8
-[lio-sam-demo]: https://youtu.be/A0H8CoORZJU
-[fast-lio2-experiment]: https://www.mdpi.com/1424-8220/25/17/5352
+[lio-sam]: https://arxiv.org/html/2007.00258#S3
+[lio-sam-imu]: https://arxiv.org/html/2007.00258#S3.SS2
+[lion]: https://arxiv.org/html/2102.03443#Ch0.S3.SS2
 [office1]: https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset/blob/main/Office1.bag
-[office3]: https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset/blob/main/Office3.bag
 [cc-by]: https://creativecommons.org/licenses/by/4.0/
 [fast-lio-input]: https://github.com/hku-mars/FAST_LIO#3-directly-run
 [li-init]: https://arxiv.org/abs/2202.11006
-[rep-145]: https://github.com/ros-infrastructure/rep/blob/master/rep-0145.rst#data-reporting
