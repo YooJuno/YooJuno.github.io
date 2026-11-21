@@ -1,0 +1,204 @@
+.point-cloud-page.section {
+  padding-block: 88px 36px;
+}
+
+.post-header.point-cloud-page-header {
+  margin-bottom: 20px;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.point-cloud-page-header .post-back {
+  min-height: 32px;
+  scroll-margin-top: 84px;
+}
+
+.point-cloud-frame {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+}
+
+.point-cloud-toolbar,
+.point-cloud-floors,
+.point-cloud-settings {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.point-cloud-toolbar {
+  justify-content: space-between;
+  gap: 4px 16px;
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.point-cloud-floors,
+.point-cloud-settings {
+  gap: 4px;
+}
+
+.point-cloud button,
+.point-cloud-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink);
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.point-cloud button:enabled:not([aria-pressed='true']):hover,
+.point-cloud-toggle:hover:has(input:enabled) {
+  background: var(--bg-alt);
+}
+
+.point-cloud button[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--bg);
+  font-weight: 600;
+  outline-color: var(--accent);
+}
+
+.point-cloud button:disabled,
+.point-cloud-toggle:has(input:disabled) {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.point-cloud-swatch {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.15);
+}
+
+.point-cloud-toggle input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.point-cloud-stage {
+  position: relative;
+  height: clamp(340px, calc(100svh - 336px), 740px);
+  background: #0b1521;
+}
+
+.point-cloud-canvas,
+.point-cloud-fallback {
+  position: absolute;
+  inset: 0;
+}
+
+.point-cloud-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: grab;
+}
+
+.point-cloud-canvas canvas:active {
+  cursor: grabbing;
+}
+
+.point-cloud-canvas canvas:focus-visible {
+  outline-color: #96cfff;
+  outline-offset: -3px;
+}
+
+.point-cloud-fallback {
+  display: grid;
+  place-items: center;
+  padding: 12px;
+}
+
+.point-cloud-fallback img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0.68;
+}
+
+.point-cloud-status {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--card);
+  font-size: 14px;
+}
+
+.point-cloud-status button {
+  border: 1px solid var(--border);
+}
+
+.point-cloud-notes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.point-cloud-notes a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.point-cloud-notes a:hover {
+  color: var(--ink);
+}
+
+.point-cloud-touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .point-cloud-mouse { display: none; }
+  .point-cloud-touch { display: inline; }
+}
+
+@media (max-width: 700px) {
+  .point-cloud-page.section {
+    padding-block: 84px 28px;
+  }
+
+  .point-cloud-toolbar {
+    padding: 4px 5px;
+  }
+
+  .point-cloud button,
+  .point-cloud-toggle {
+    min-height: 44px;
+  }
+
+  .point-cloud-floors button {
+    gap: 4px;
+    padding-inline: 5px;
+    min-width: 40px;
+  }
+
+  .point-cloud-stage {
+    height: clamp(280px, 88vw, 460px);
+  }
+}

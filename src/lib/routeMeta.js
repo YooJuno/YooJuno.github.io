@@ -27,6 +27,10 @@ export const ROUTE_META = {
     title: '블로그',
     description: '개발 과정과 기술 메모를 기록합니다.',
   },
+  '/blog/elevator-lio/campus2': {
+    title: 'Campus2 3D 점군',
+    description: 'Elevator-LIO Campus2의 5~10층 LiDAR 점군과 DDDMR 바닥 타일을 둘러볼 수 있는 3D 뷰어.',
+  },
   '/web-service': {
     title: '웹서비스',
     description: '웹서비스의 화면·기능·API와 소스 코드를 정리했습니다.',
