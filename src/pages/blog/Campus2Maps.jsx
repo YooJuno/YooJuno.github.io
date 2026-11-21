@@ -6,9 +6,8 @@ const PointCloudViewer = lazy(() => import('../../components/PointCloudViewer'))
 const MAP_DIRECTORY = '/content/maps/campus2'
 const ZOOM_LEVELS = [1, 1.5, 2, 3]
 
-function PgmMap({ floor, onFloorChange }) {
+function PgmMap({ floor, onFloorChange, viewport }) {
   const [zoomIndex, setZoomIndex] = useState(0)
-  const viewport = useRef(null)
   const zoomCenter = useRef(null)
   const zoomed = zoomIndex > 0
   const floorName = String(floor).padStart(2, '0')
@@ -27,10 +26,12 @@ function PgmMap({ floor, onFloorChange }) {
     const center = zoomCenter.current
     if (!center) return
     const map = viewport.current
-    map.scrollLeft = center.x * map.scrollWidth - map.clientWidth / 2
-    map.scrollTop = center.y * map.scrollHeight - map.clientHeight / 2
+    map.scrollTo({
+      left: center.x * map.scrollWidth - map.clientWidth / 2,
+      top: center.y * map.scrollHeight - map.clientHeight / 2,
+    })
     zoomCenter.current = null
-  }, [zoomIndex])
+  }, [viewport, zoomIndex])
 
   return (
     <div className="campus2-pgm">
@@ -80,23 +81,52 @@ function PgmMap({ floor, onFloorChange }) {
 }
 
 export default function Campus2Maps() {
-  const [mode, setMode] = useState('pgm')
-  const [floor, setFloor] = useState(8)
+  const [showPointCloud, setShowPointCloud] = useState(false)
+  const [pointCloudOpened, setPointCloudOpened] = useState(false)
+  const [{ floor, showAll }, setSelection] = useState({ floor: 8, showAll: false })
+  const pgmViewport = useRef(null)
+  const pgmPan = useRef(null)
+
+  useLayoutEffect(() => {
+    if (!showPointCloud && pgmPan.current) pgmViewport.current.scrollTo(pgmPan.current)
+  }, [showPointCloud])
+
+  function openPointCloud() {
+    if (showPointCloud) return
+    const { scrollLeft, scrollTop } = pgmViewport.current
+    pgmPan.current = { left: scrollLeft, top: scrollTop }
+    setPointCloudOpened(true)
+    setShowPointCloud(true)
+  }
+
+  function selectFloor(level) {
+    setSelection(current => level === null
+      ? { ...current, showAll: true }
+      : { floor: level, showAll: false })
+  }
 
   return (
     <section className="campus2-maps" aria-label="Campus2 층별 지도">
       <div className="campus2-maps-controls campus2-maps-modes" role="group" aria-label="지도 유형">
-        <button type="button" aria-pressed={mode === 'pgm'} onClick={() => setMode('pgm')}>PGM 지도</button>
-        <button type="button" aria-pressed={mode === 'point-cloud'} onClick={() => setMode('point-cloud')}>3D 점군</button>
+        <button type="button" aria-pressed={!showPointCloud} onClick={() => setShowPointCloud(false)}>PGM 지도</button>
+        <button type="button" aria-pressed={showPointCloud} onClick={openPointCloud}>3D 점군</button>
       </div>
-      {mode === 'pgm' ? (
-        <PgmMap floor={floor} onFloorChange={setFloor} />
-      ) : (
-        <ErrorBoundary fallback={<div className="campus2-maps-error" role="alert">3D 점군을 불러오지 못했습니다.</div>}>
-          <Suspense fallback={<div className="campus2-maps-loading campus2-cloud-loading" role="status">점군을 불러오는 중입니다.</div>}>
-            <PointCloudViewer title={CAMPUS2_TITLE} dataset={CAMPUS2_DATA} />
-          </Suspense>
-        </ErrorBoundary>
+      <div hidden={showPointCloud}>
+        <PgmMap floor={floor} onFloorChange={selectFloor} viewport={pgmViewport} />
+      </div>
+      {pointCloudOpened && (
+        <div hidden={!showPointCloud}>
+          <ErrorBoundary fallback={<div className="campus2-maps-error" role="alert">3D 점군을 불러오지 못했습니다.</div>}>
+            <Suspense fallback={<div className="campus2-maps-loading campus2-cloud-loading" role="status">점군을 불러오는 중입니다.</div>}>
+              <PointCloudViewer
+                title={CAMPUS2_TITLE}
+                dataset={CAMPUS2_DATA}
+                floor={showAll ? null : floor}
+                onFloorChange={selectFloor}
+              />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
       )}
     </section>
   )
