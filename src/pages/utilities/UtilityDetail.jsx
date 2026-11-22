@@ -14,6 +14,7 @@ function UtilityArticle({ utility }) {
   const previous = utilities[index - 1]
   const next = utilities[index + 1]
   const localSource = utility.sourceState === 'local'
+  const analysis = utility.analysis ?? []
   useDocumentTitle()
 
   useEffect(() => {
@@ -23,9 +24,10 @@ function UtilityArticle({ utility }) {
     const target = document.getElementById(id)
     if (target?.closest('.utility-detail')) {
       if (target.matches('details')) target.open = true
+      if (target.matches('.utility-analysis')) target.querySelector('h2')?.focus({ preventScroll: true })
       target.scrollIntoView({ behavior: 'instant', block: 'start' })
     }
-  }, [location.hash])
+  }, [location.hash, location.key])
 
   return (
     <main className="section utility-detail" id="main-content" tabIndex={-1}>
@@ -44,7 +46,42 @@ function UtilityArticle({ utility }) {
           <dl className="utility-facts"><div><dt>지원 환경</dt><dd>{utility.platforms.join(' · ')}</dd></div><div><dt>기술</dt><dd>{utility.tech.join(' · ')}</dd></div></dl>
         </header>
 
+        {analysis.length > 0 && (
+          <nav className="utility-analysis-nav" aria-label="분석 기능">
+            {analysis.map(section => (
+              <Link
+                key={section.id}
+                to={{ pathname: location.pathname, search: location.search, hash: `#${section.id}` }}
+                aria-current={location.hash === `#${section.id}` ? 'location' : undefined}
+              >
+                {section.title}<span aria-hidden="true">↓</span>
+              </Link>
+            ))}
+          </nav>
+        )}
+
         <UtilityGallery screens={utility.screens} />
+
+        {analysis.map(section => (
+          <section className="utility-section utility-analysis" key={section.id} id={section.id} aria-labelledby={`analysis-${section.id}-heading`}>
+            <div className="utility-analysis-heading">
+              <h2 id={`analysis-${section.id}-heading`} tabIndex={-1}>{section.title}</h2>
+              <p>{section.control}</p>
+            </div>
+            <div className="utility-section-body">
+              <p>{section.description}</p>
+              <dl className="utility-analysis-list">
+                {section.items.map(item => (
+                  <div key={item.name}>
+                    <dt>{item.name}</dt>
+                    <dd>{item.description}</dd>
+                  </div>
+                ))}
+              </dl>
+              {section.note && <p className="utility-analysis-note">{section.note}</p>}
+            </div>
+          </section>
+        ))}
 
         <section className="utility-section utility-purpose" aria-labelledby="purpose-heading">
           <h2 id="purpose-heading">만든 목적</h2>

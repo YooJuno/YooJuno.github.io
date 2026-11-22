@@ -43,6 +43,26 @@ export function validateUtilities(root) {
       check(example.steps.every(step => typeof step === 'string' && step.trim()), '사용 예시의 조작 설명을 입력하세요.')
     }
     examples += entry.examples.length
+    if (entry.analysis !== undefined) {
+      check(Array.isArray(entry.analysis) && entry.analysis.length, '분석 기능을 하나 이상 입력하세요.')
+      const sectionIds = new Set()
+      for (const section of entry.analysis) {
+        check(section && typeof section.id === 'string' && /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(section.id)
+          && !sectionIds.has(section.id), '분석 기능의 주소 또는 중복 ID를 확인하세요.')
+        sectionIds.add(section.id)
+        for (const field of ['title', 'control', 'description']) {
+          check(typeof section[field] === 'string' && section[field].trim(), `분석 기능의 ${field} 값을 입력하세요.`)
+        }
+        check(section.note === undefined || (typeof section.note === 'string' && section.note.trim()), '분석 기능의 참고 내용을 확인하세요.')
+        check(Array.isArray(section.items) && section.items.length, '분석 기능의 세부 항목을 하나 이상 입력하세요.')
+        const names = new Set()
+        for (const item of section.items) {
+          check(item && typeof item.name === 'string' && item.name.trim() && !names.has(item.name.trim()), '분석 기능의 세부 항목 이름 또는 중복을 확인하세요.')
+          names.add(item.name.trim())
+          check(typeof item.description === 'string' && item.description.trim(), '분석 기능의 세부 항목 설명을 입력하세요.')
+        }
+      }
+    }
     if (entry.readings !== undefined) {
       check(Array.isArray(entry.readings), '관련 글은 title·slug 목록으로 입력하세요.')
       const readingSlugs = new Set()
