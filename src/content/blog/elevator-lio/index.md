@@ -24,6 +24,13 @@ summary: "엘리베이터의 수직 운동을 분리하는 LiDAR–IMU 추정 �
 
 <small>[Zhang 외, Elevator-LIO Dataset](https://huggingface.co/datasets/xiaofan0100/Elevator-LIO-Dataset)으로 재현 · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)</small>
 
+### 8층 복도 위치 추정
+
+[![Campus2 8층 PGM 지도에서 복도를 이동하는 Nav2 AMCL 추정 자세와 궤적. 청록색 점은 재생한 LiDAR 스캔 끝점이다.](/content/images/blog/elevator-lio/campus2-8f-amcl.gif)](/content/images/blog/elevator-lio/campus2-8f-amcl.gif)
+
+- Campus2 기록의 260–346초 구간을 같은 기록으로 만든 8층 PGM 지도에서 재생했다. AMCL이 추정한 이동 거리는 약 150 m다.
+- MID-360 점군을 수평 스캔으로 변환하고, Elevator-LIO에서 초기 자세와 상대 오도메트리를 얻었다. AMCL은 이동량으로 입자 위치를 예측하고, 스캔 끝점과 지도의 점유 셀 사이 거리를 이용해 입자 가중치를 갱신했다. [Nav2 AMCL](https://docs.nav2.org/jazzy/configuration_and_development/configuration_guide/others/configuring_amcl/)
+
 ## Office3 상승 재생
 
 [![Office3 데이터의 문 닫힘, 엘리베이터 상승, 상층 복도 진입 장면. 왼쪽은 LiDAR 점군과 추정 궤적, 오른쪽은 현장 영상.](/content/images/blog/elevator-lio/office3-ascent.gif)](/content/images/blog/elevator-lio/office3-ascent.gif)
