@@ -165,11 +165,13 @@ NMS(Non-Maximum Suppression)는 같은 물체 주변의 중복 후보를 줄이�
 
 ## 7. 검출과 추적
 
-검출은 한 프레임의 물체를 찾는다. 추적은 여러 프레임의 검출을 연결해 같은 ID와 상태를 유지한다. **한 장의 점군에서 ID를 붙였다고 지속 추적이 검증된 것은 아니다.**
+![KITTI 주행 장면에서 승용차와 자전거의 3D 검출 박스, 추적 ID와 최근 궤적이 이어지는 GIF](/content/images/utilities/lidar-studio/object-detection.gif)
 
-LiDAR Studio의 추적기는 위치·yaw·치수·속도를 포함한 상태를 Kalman 방식으로 예측·보정하고, gating과 Hungarian 할당으로 검출을 연결한다. CenterPoint 원논문의 greedy matching을 그대로 사용하는 구현은 아니다. 관측이 잠시 없을 때의 `predicted` 박스도 현재 프레임의 새로운 검출과 구분한다. [앱 추적기](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/src/object_tracker.cpp).
+**KITTI Raw 82–153번 연속 스캔.** 노란 `Bicycle #4`를 보면 7.2초 동안 같은 ID와 최근 궤적이 이어진다. 청록색 박스는 승용차다. AWML ShortRange의 최소 점수는 0.60으로 두고 FugSeg로 분리한 지면은 화면에서 숨겼다. [촬영 설정과 데이터 출처](https://github.com/YooJuno/lidar_studio/blob/c8cd339b164f28636bb4be98e250e7d1de5bf252/docs/media/SOURCE.md).
 
-현재 속도·궤적은 센서 기준 상대 운동이다. 자차가 전진하면 정지한 물체도 반대로 움직이는 것처럼 보일 수 있다. 세계 좌표 속도를 얻으려면 시간 정합된 자차 pose·odometry와 좌표 변환이 추가로 필요하다. 추정기의 공분산·관측 보정 개념은 [EKF 센서 융합](/blog/ekf-sensor-fusion/)에서 별도로 다룬다.
+검출은 한 프레임에서 물체를 찾고, 추적은 여러 프레임의 검출을 연결한다. 같은 `#번호`는 이어지는 추적 ID를 뜻한다. 추적기는 Kalman 필터로 상태를 예측·보정하고 Hungarian 할당으로 관측을 연결한다. `weak`는 낮은 점수의 관측으로 기존 ID를 이은 박스이며, `est.`는 해당 프레임에서 예측으로 유지한 박스다. [앱 추적기](https://github.com/YooJuno/lidar_studio/blob/23f4a09599c2ce8200fffbe89ba9825bb587c08b/src/object_tracker.cpp).
+
+궤적과 속도는 센서 기준 상대 운동이다. 자차가 전진하면 정지한 차량의 박스도 화면에서 움직일 수 있다. 세계 좌표 속도에는 시간에 맞춘 자차 자세와 좌표 변환이 필요하다. 추정기의 공분산·관측 보정 개념은 별도 글에서 다룬다. [EKF 센서 융합](/blog/ekf-sensor-fusion/).
 
 ## 8. 적용·평가 기준
 
@@ -211,7 +213,7 @@ TP 판정에는 클래스·거리 또는 IoU 기준과 일대일 매칭 규칙�
 - [Yin 외, CenterPoint, CVPR 2021](https://arxiv.org/abs/2006.11275): 중심 기반 검출과 원논문의 추적 구성.
 - [LiDAR Studio 모델 정의](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/python/lidar_detection/models.py), [전처리·ONNX 연결·복호화](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/python/lidar_detection/centerpoint.py).
 - [Autoware tiny 모델 카드](https://huggingface.co/AutowareFoundation/lidar_centerpoint/blob/494c8171def40bd36cc2feb323e0a5acbfab132b/README.md), [AWML ShortRange 모델 카드](https://github.com/tier4/AWML/blob/9e44a974aae03a196003950898dc909cd0c680ad/projects/CenterPoint/docs/CenterPoint-ShortRange/v2/base.md): 논문과 구분해야 할 실제 배포 모델의 조건.
-- [LiDAR Studio 검출 연결](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/src/learned_detector.cpp), [박스 변환](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/src/algorithms/detection.cpp), [추적](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/src/object_tracker.cpp).
+- [LiDAR Studio 검출 연결](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/src/learned_detector.cpp), [박스 변환](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/src/algorithms/detection.cpp), [시연에 사용한 추적기](https://github.com/YooJuno/lidar_studio/blob/23f4a09599c2ce8200fffbe89ba9825bb587c08b/src/object_tracker.cpp).
 - [화면·모델 출처와 데이터 이용 조건](/content/images/blog/lidar-study/SOURCE.md).
 
 **이전 글:** [포인트 클라우드 클러스터링](/blog/lidar-point-cloud-clustering/)

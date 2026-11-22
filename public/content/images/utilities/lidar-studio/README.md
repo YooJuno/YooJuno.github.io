@@ -6,7 +6,8 @@ GIF와 PNG 미리보기는 실제 LiDAR Studio 화면에서 만들었습니다. 
 
 | 데모 | 데이터와 화면 기록 |
 | --- | --- |
-| `object-detection`, `ground-segmentation` | KITTI Raw `2011_09_26_drive_0005_sync`, 스캔 20–109. LiDAR Studio의 [원본 데모와 캡처 설정](https://github.com/YooJuno/lidar_studio/blob/a97eb7dc8fd8051602a5a4e4e4e3070528f3d193/docs/media/SOURCE.md)에서 가져왔습니다. |
+| `object-detection` | KITTI Raw `2011_09_26_drive_0005_sync`, 스캔 82–153을 10 Hz로 기록했습니다. `23f4a09` 빌드에서 AWML ShortRange(최소 점수 0.60), 승용차·자전거 추적 ID와 최근 궤적을 켜고 FugSeg로 분리한 지면을 숨겼습니다. [캡처 설정](https://github.com/YooJuno/lidar_studio/blob/c8cd339b164f28636bb4be98e250e7d1de5bf252/docs/media/SOURCE.md). |
+| `ground-segmentation` | 같은 KITTI Raw 기록의 스캔 20–109를 사용했습니다. [원본 데모와 캡처 설정](https://github.com/YooJuno/lidar_studio/blob/a97eb7dc8fd8051602a5a4e4e4e3070528f3d193/docs/media/SOURCE.md). |
 | `elevator-lio-replay` | Elevator-LIO `Campus1`, Livox MID-360. ROS 2로 변환한 기록의 시작 부분을 `CustomMsg` 지원을 추가한 로컬 빌드에서 재생했습니다. |
 | `urbanv2x-panorama`, `urbanv2x-clustering` | UrbanV2X `hkstp_s_02`, Hesai AT128P. 각각 앱의 141–181번과 140–185번 연속 스캔을 10 Hz 기록 시간에 맞춰 편집했습니다. |
 | `roi-export`, `dataset-review` | 같은 UrbanV2X 기록의 첫 7프레임에서 도로변 ROI를 추출하고, 저장된 샘플 7개를 검수했습니다. |
@@ -27,7 +28,7 @@ GIF와 PNG 미리보기는 실제 LiDAR Studio 화면에서 만들었습니다. 
 - 데이터 출처·이용 조건: https://www.cvlibs.net/datasets/kitti/raw_data.php 및 https://www.cvlibs.net/datasets/kitti/
 - 파생 이미지 라이선스: CC BY-NC-SA 3.0 — https://creativecommons.org/licenses/by-nc-sa/3.0/
 
-ROI는 수동 영역이며, 검출 영상은 FugSeg로 지면을 숨기고 CenterPoint tiny v4.1의 Car 예측·추적 ID를 표시합니다. 영상은 스캔 20–109를 10 Hz로 재생한 자료입니다. 정답 라벨·성능 벤치마크가 아닙니다. [영상 출처·캡처 조건](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/docs/media/SOURCE.md). 이 이미지의 이용 조건을 사이트 전체나 프로그램 소스의 라이선스로 확장하지 않습니다.
+ROI는 수동 영역입니다. 이 절의 `detection.png`는 해당 버전에서 스캔 20–109를 10 Hz로 재생하며 FugSeg 지면 숨김과 CenterPoint tiny v4.1의 승용차 예측·추적 ID를 표시한 기록에서 가져왔습니다. [이전 영상의 출처·캡처 조건](https://github.com/YooJuno/lidar_studio/blob/4107c96b558ec73ccb3b418c1d66f57c43472769/docs/media/SOURCE.md).
 
 ## 밝은 CPU 빌드 화면
 

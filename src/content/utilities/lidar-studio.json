@@ -8,7 +8,7 @@
     "Windows x64",
     "macOS 15+ · Apple Silicon"
   ],
-  "revision": "a97eb7dc8fd8051602a5a4e4e4e3070528f3d193",
+  "revision": "c8cd339b164f28636bb4be98e250e7d1de5bf252",
   "purpose": "기록 하나를 열어 프레임과 분석 결과를 같은 시점에서 비교하고, 화면에서 지정한 영역을 포인트와 좌표 정보가 담긴 데이터셋으로 저장합니다.",
   "readings": [
     {
@@ -41,12 +41,12 @@
       "title": "객체 검출·추적",
       "image": "/content/images/utilities/lidar-studio/object-detection.png",
       "animation": "/content/images/utilities/lidar-studio/object-detection.gif",
-      "width": 896,
-      "height": 420,
-      "alt": "KITTI 주행 중 청록색 차량 검출 박스와 추적 ID가 계속 표시되는 화면",
-      "caption": "KITTI 연속 스캔에서 지면을 숨기고 CenterPoint tiny의 차량 박스와 추적 ID를 표시합니다.",
+      "width": 1104,
+      "height": 624,
+      "alt": "KITTI 연속 스캔에서 청록색 승용차와 노란색 자전거 박스에 추적 ID와 궤적이 이어지는 화면",
+      "caption": "KITTI 주행 장면에서 승용차·자전거 검출 박스의 ID와 최근 센서 상대 궤적을 보여줍니다.",
       "annotations": [
-        "차량 클래스 · 최소 점수 0.60"
+        "AWML ShortRange · 최소 점수 0.60 · FugSeg 지면 숨김"
       ],
       "source": {
         "label": "KITTI Raw · Geiger 외 · CC BY-NC-SA 3.0",
@@ -251,8 +251,8 @@
   ],
   "route": "/utilities/lidar-studio",
   "site": "",
-  "inspectedAt": "2026-11-20",
-  "reviewedAt": "2026-11-20T13:43:45Z",
+  "inspectedAt": "2026-11-22",
+  "reviewedAt": "2026-11-22T03:21:33Z",
   "sourceState": "published",
   "api": [],
   "compatibility": [
@@ -272,7 +272,7 @@
       "note": "파일·Ethernet·PCAP. 두 검출 모델과 CPU 런타임 포함."
     }
   ],
-  "sourceNote": "기능과 설치 안내는 공개 v0.2.76 기준입니다.",
+  "sourceNote": "설치 안내는 공개 v0.2.76 기준이며, 객체 추적 데모는 23f4a09 빌드에서 촬영했습니다.",
   "examples": [
     {
       "title": "예제부터 재생하기",
