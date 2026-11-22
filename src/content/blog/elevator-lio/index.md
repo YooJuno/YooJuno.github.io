@@ -72,16 +72,20 @@ z_e⁺    = z_e + v_e · Δt + ½ a_e · Δt²
 
 ## 탑승 감지와 정차 보정
 
-| 단계 | 기본 매핑 설정 |
+아래 조건은 공개 구현의 기본 매핑 설정이다. <code>s_e</code>는 엘리베이터의 추정 수직 속도 <code>v_e</code>의 절댓값이고, <code>σ_v²</code>는 최근 IMU 갱신 300개에서 얻은 속도 추정값의 분산이다. [분산 계산](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorSelfExit.cpp#L15-L30) · [창 크기](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/include/elevator/ElevatorSelfExit.h#L80)
+
+| 단계 | 전환 조건 |
 | --- | --- |
-| 진입 | 거리 순으로 가장 먼 6%의 점을 제외한 뒤, 남은 점의 최대 거리가 3 m 미만인 상태가 2초간 지속되면 탑승 모드로 전환 |
-| 이동 | 엘리베이터의 추정 속도와 최근 속도 추정값 300개의 분산으로 가속 → 등속 → 감속 → 정차 판별 |
-| 정차 | 안정 조건을 1.5초간 만족하면 엘리베이터의 수직 속도와 가속도를 0으로 제약 |
-| 종료 | 엘리베이터 변위를 로봇 위치의 z 값에 더하고, 공분산을 변환한 뒤 엘리베이터 상태 초기화 |
+| 탑승 모드 진입 | LiDAR 거리의 94백분위수가 0.1 m 초과, 3 m 미만인 상태가 2초 이상 유지되면 문이 닫힌 것으로 판단 |
+| 출발 | 대기 중 <code>s_e > 0.2 m/s</code>이고 <code>σ_v² > 0.01 (m/s)²</code>이면 가속 단계로 전환 |
+| 등속 | 가속 판정 후 <code>s_e > 0.2 m/s</code>이고 <code>σ_v² < 0.01 (m/s)²</code>이면 등속으로 전환 |
+| 감속 | 등속 구간에서 <code>σ_v² > 0.01 (m/s)²</code>가 되면 감속 단계로 전환 |
+| 정차 확인 | 감속 후 <code>s_e < 0.5 m/s</code>와 <code>σ_v² < 0.01 (m/s)²</code>가 모두 1.5초 이상 유지 |
 
-[기본 설정](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/yaml/runtime/mapping.yaml#L49-L66) · [정차 상태 머신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorSelfExit.cpp#L89-L151) · [종료 시 상태 반영](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/node/LidarPipeline.cpp#L338-L387)
+[진입 감지](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorProcess.cpp#L28-L60) · [기본 설정](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/yaml/runtime/mapping.yaml#L49-L66) · [출발·정차 상태 머신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorSelfExit.cpp#L89-L151)
 
-- 정차 시 속도와 변위 오차의 교차 공분산으로 누적 높이 오차를 보정한다. [정차 측정 갱신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorProcess.cpp#L170-L200)
+- 정차 확인 뒤 LiDAR 갱신에 맞춰 수직 속도와 가속도를 0으로 제약하는 보정(ZUPT)을 3회 적용하고 종료를 요청한다. 교차 공분산을 통해 속도와 함께 수직 변위도 보정한다. 모드 전환 시 한 번 더 보정한 <code>z_e</code>를 <code>p_z</code>에 합산하고 공분산을 변환한다. [ZUPT 갱신](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/elevator/ElevatorProcess.cpp#L170-L200) · [모드 전환](https://github.com/xiaofan4122/Elevator-LIO/blob/4868796/src/node/LidarPipeline.cpp#L338-L387)
+- 층간 자율주행에서는 엘리베이터의 도착 층과 문 열림 상태를 확인한 뒤 하차하고, 도착 층 지도에서 위치를 잡아 주행을 재개한다.
 
 ## 건물 기준 오도메트리 계산
 
