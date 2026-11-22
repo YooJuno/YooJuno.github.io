@@ -1,6 +1,6 @@
 # LiDAR Studio 화면 출처
 
-## 데이터셋 시연 GIF
+## 데이터셋 시연 화면
 
 GIF와 PNG 미리보기는 실제 LiDAR Studio 화면에서 만들었습니다. GIF 인코딩 과정에서 크기와 색상 수를 줄였습니다.
 
@@ -8,6 +8,7 @@ GIF와 PNG 미리보기는 실제 LiDAR Studio 화면에서 만들었습니다. 
 | --- | --- |
 | `object-detection` | KITTI Raw `2011_09_26_drive_0005_sync`, 스캔 82–153을 10 Hz로 기록했습니다. `23f4a09` 빌드에서 AWML ShortRange(최소 점수 0.60), 승용차·자전거 추적 ID와 최근 궤적을 켜고 FugSeg로 분리한 지면을 숨겼습니다. [캡처 설정](https://github.com/YooJuno/lidar_studio/blob/c8cd339b164f28636bb4be98e250e7d1de5bf252/docs/media/SOURCE.md). |
 | `ground-segmentation` | 같은 KITTI Raw 기록의 스캔 20–109를 사용했습니다. [원본 데모와 캡처 설정](https://github.com/YooJuno/lidar_studio/blob/a97eb7dc8fd8051602a5a4e4e4e3070528f3d193/docs/media/SOURCE.md). |
+| `ground-methods.png`, `tracking-details.png` | [LiDAR Studio v0.2.81](https://github.com/YooJuno/lidar_studio/releases/tag/v0.2.81)에서 같은 KITTI Raw 기록의 스캔 134와 140을 각각 캡처했습니다. 스캔 134는 FugSeg가 분리한 지면과 8가지 방식 목록을 보여줍니다. 스캔 140은 AWML ShortRange의 승용차·자전거 검출 박스, 추적 상태, 센서 기준 상대 속도를 보여줍니다. |
 | `elevator-lio-replay` | Elevator-LIO `Campus1`, Livox MID-360. ROS 2로 변환한 기록의 시작 부분을 `CustomMsg` 지원을 추가한 로컬 빌드에서 재생했습니다. |
 | `urbanv2x-panorama`, `urbanv2x-clustering` | UrbanV2X `hkstp_s_02`, Hesai AT128P. 각각 앱의 141–181번과 140–185번 연속 스캔을 10 Hz 기록 시간에 맞춰 편집했습니다. |
 | `roi-export`, `dataset-review` | 같은 UrbanV2X 기록의 첫 7프레임에서 도로변 ROI를 추출하고, 저장된 샘플 7개를 검수했습니다. |

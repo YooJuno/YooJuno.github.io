@@ -71,7 +71,6 @@
 .utility-section-body p, .utility-feature-list dd { color: var(--ink); font-size: 15px; line-height: 1.9; }
 .utility-section-body > p + p, .utility-overview p + p { margin-top: 12px; }
 .utility-analysis-heading h2 { display: inline-block; }
-.utility-analysis-heading p { margin-top: 6px; color: var(--muted); font-size: 13px; line-height: 1.6; }
 .utility-analysis-list { margin-top: 16px; }
 .utility-analysis-list > div { display: grid; grid-template-columns: minmax(140px, 1fr) minmax(0, 3fr); gap: 16px; padding: 10px 0; border-top: 1px solid var(--border); font-size: 14px; line-height: 1.7; }
 .utility-analysis-list > div:last-child { border-bottom: 1px solid var(--border); }

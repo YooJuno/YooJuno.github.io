@@ -28,21 +28,24 @@ export function validateUtilities(root) {
       check(typeof entry.sourceNote === 'string' && entry.sourceNote.trim(), '로컬 작업본의 검토 범위를 설명하세요.')
     }
     check(Array.isArray(entry.platforms) && entry.platforms.length, '지원 환경을 입력하세요.')
-    for (const field of ['tech', 'overview', 'screens', 'features', 'architecture', 'decisions', 'limitations', 'sources', 'examples', 'compatibility']) {
+    for (const field of ['tech', 'overview', 'screens', 'features', 'architecture', 'decisions', 'limitations', 'sources', 'compatibility']) {
       check(Array.isArray(entry[field]) && entry[field].length, `${field} 항목을 입력하세요.`)
     }
-    check(entry.examples.length <= 3, '사용 예시는 핵심 작업 3개 이내로 작성하세요.')
-    const exampleTitles = new Set()
-    for (const example of entry.examples) {
-      for (const field of ['title', 'input', 'result', 'note']) {
-        check(typeof example[field] === 'string' && example[field].trim(), `사용 예시의 ${field} 값을 입력하세요.`)
+    if (entry.examples !== undefined) {
+      check(Array.isArray(entry.examples) && entry.examples.length, 'examples 항목을 입력하세요.')
+      check(entry.examples.length <= 3, '사용 예시는 핵심 작업 3개 이내로 작성하세요.')
+      const exampleTitles = new Set()
+      for (const example of entry.examples) {
+        for (const field of ['title', 'input', 'result', 'note']) {
+          check(typeof example[field] === 'string' && example[field].trim(), `사용 예시의 ${field} 값을 입력하세요.`)
+        }
+        check(!exampleTitles.has(example.title), '사용 예시 제목이 중복되었습니다.')
+        exampleTitles.add(example.title)
+        check(Array.isArray(example.steps) && example.steps.length > 0 && example.steps.length <= 5, '사용 예시의 조작 순서는 1–5단계로 작성하세요.')
+        check(example.steps.every(step => typeof step === 'string' && step.trim()), '사용 예시의 조작 설명을 입력하세요.')
       }
-      check(!exampleTitles.has(example.title), '사용 예시 제목이 중복되었습니다.')
-      exampleTitles.add(example.title)
-      check(Array.isArray(example.steps) && example.steps.length > 0 && example.steps.length <= 5, '사용 예시의 조작 순서는 1–5단계로 작성하세요.')
-      check(example.steps.every(step => typeof step === 'string' && step.trim()), '사용 예시의 조작 설명을 입력하세요.')
+      examples += entry.examples.length
     }
-    examples += entry.examples.length
     if (entry.analysis !== undefined) {
       check(Array.isArray(entry.analysis) && entry.analysis.length, '분석 기능을 하나 이상 입력하세요.')
       const sectionIds = new Set()
@@ -50,7 +53,7 @@ export function validateUtilities(root) {
         check(section && typeof section.id === 'string' && /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/.test(section.id)
           && !sectionIds.has(section.id), '분석 기능의 주소 또는 중복 ID를 확인하세요.')
         sectionIds.add(section.id)
-        for (const field of ['title', 'control', 'description']) {
+        for (const field of ['title', 'description']) {
           check(typeof section[field] === 'string' && section[field].trim(), `분석 기능의 ${field} 값을 입력하세요.`)
         }
         check(section.note === undefined || (typeof section.note === 'string' && section.note.trim()), '분석 기능의 참고 내용을 확인하세요.')

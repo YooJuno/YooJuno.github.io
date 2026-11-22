@@ -15,6 +15,7 @@ function UtilityArticle({ utility }) {
   const next = utilities[index + 1]
   const localSource = utility.sourceState === 'local'
   const analysis = utility.analysis ?? []
+  const examples = utility.examples ?? []
   useDocumentTitle()
 
   useEffect(() => {
@@ -66,7 +67,6 @@ function UtilityArticle({ utility }) {
           <section className="utility-section utility-analysis" key={section.id} id={section.id} aria-labelledby={`analysis-${section.id}-heading`}>
             <div className="utility-analysis-heading">
               <h2 id={`analysis-${section.id}-heading`} tabIndex={-1}>{section.title}</h2>
-              <p>{section.control}</p>
             </div>
             <div className="utility-section-body">
               <p>{section.description}</p>
@@ -88,20 +88,22 @@ function UtilityArticle({ utility }) {
           <div className="utility-section-body"><p>{utility.purpose}</p></div>
         </section>
 
-        <section className="utility-section" aria-labelledby="examples-heading">
-          <h2 id="examples-heading">사용 예시</h2>
-          <div className="utility-section-body utility-examples">
-            {utility.examples.map(example => (
-              <article className="utility-example" key={example.title}>
-                <h3>{example.title}</h3>
-                <p className="utility-example-input"><strong>입력</strong>{example.input}</p>
-                <ol>{example.steps.map(step => <li key={step}>{step}</li>)}</ol>
-                <p className="utility-example-result"><strong>출력·동작</strong>{example.result}</p>
-                <p className="utility-example-note">{example.note}</p>
-              </article>
-            ))}
-          </div>
-        </section>
+        {examples.length > 0 && (
+          <section className="utility-section" aria-labelledby="examples-heading">
+            <h2 id="examples-heading">사용 예시</h2>
+            <div className="utility-section-body utility-examples">
+              {examples.map(example => (
+                <article className="utility-example" key={example.title}>
+                  <h3>{example.title}</h3>
+                  <p className="utility-example-input"><strong>입력</strong>{example.input}</p>
+                  <ol>{example.steps.map(step => <li key={step}>{step}</li>)}</ol>
+                  <p className="utility-example-result"><strong>출력·동작</strong>{example.result}</p>
+                  <p className="utility-example-note">{example.note}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="utility-section" aria-labelledby="features-heading">
           <h2 id="features-heading">주요 기능</h2>
