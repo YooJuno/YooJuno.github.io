@@ -4,10 +4,10 @@ slug: "remmina-desktop-sharing"
 date: "2026-11-24"
 category: "개발 환경·배포"
 tags: [Ubuntu, Remmina, VNC, RDP]
-summary: "Ubuntu Xorg에서는 x11vnc와 SSH 터널로, GNOME Wayland에서는 RDP로 현재 화면을 공유하는 방법."
+summary: "Ubuntu의 현재 데스크톱을 Remmina로 공유하고, Jetson에서 HDMI 더미 없이 RDP로 접속하는 방법."
 ---
 
-Ubuntu에서 모니터에 표시되는 데스크톱을 다른 PC에서 보려면 화면 공유를 켜고 접속 PC에서 Remmina로 연결한다. Xorg에서는 `x11vnc`를, GNOME Wayland에서는 내장 원격 데스크톱을 사용한다.
+Ubuntu에서 모니터에 표시되는 데스크톱을 다른 PC에서 보려면 화면 공유를 켜고 접속 PC에서 Remmina로 연결한다. 일반 Xorg 데스크톱은 `x11vnc`, GNOME Wayland는 내장 원격 데스크톱을 사용한다. Jetson Xorg에서 HDMI 연결 없이 RDP를 쓸 때는 4절을 참고한다.
 
 ## 1. 접속하는 PC에 Remmina 준비
 
@@ -25,7 +25,7 @@ echo "$XDG_SESSION_TYPE"
 echo "$DISPLAY"
 ```
 
-`x11`이면 2절의 VNC 화면 공유를 쓴다. `wayland`이고 GNOME을 사용한다면 3절의 RDP 화면 공유를 쓴다. SSH 터미널의 세션 값은 모니터에 보이는 그래픽 세션과 다를 수 있다.
+`x11`이면 2절의 VNC 화면 공유를 쓴다. Jetson에서 RDP로 접속하려면 4절을 따른다. `wayland`이고 GNOME을 사용한다면 3절의 RDP 화면 공유를 쓴다. SSH 터미널의 세션 값은 모니터에 보이는 그래픽 세션과 다를 수 있다.
 
 ## 2. Xorg 화면을 VNC로 공유
 
@@ -80,7 +80,24 @@ gsettings set org.gnome.desktop.remote-desktop.rdp screen-share-mode extend
 gsettings set org.gnome.desktop.remote-desktop.rdp screen-share-mode mirror-primary
 ```
 
-## 4. 모니터 연결에 따라 복제와 가상 화면 자동 전환
+## 4. Jetson Xorg에서 HDMI 없이 RDP로 접속
+
+JetPack 6.2.1의 Ubuntu 22.04에서 HDMI를 분리한 Jetson Orin NX에 Remmina로 접속해 기존 Xorg 화면을 확인했다. 보드의 FreeRDP Shadow 서버가 물리 모니터에 연결되는 로그인 세션을 직접 공유한다. [FreeRDP Shadow 매뉴얼](https://manpages.ubuntu.com/manpages/jammy/man1/freerdp-shadow-cli.1.html)
+
+1. 공유할 Ubuntu 계정으로 Jetson에 로그인한다.
+2. Robot Studio에서 **설치 → 원격 화면 → 모니터 화면 · RDP → Jetson 준비**를 실행하고 RDP 전용 비밀번호를 정한다.
+3. 같은 네트워크의 PC에서 Remmina의 **RDP**를 선택하고 Jetson IP를 입력한다. Jetson 계정 이름과 RDP 전용 비밀번호로 접속한다. 저장한 프로필을 재사용할 경우 비밀번호를 갱신하고 보안 모드를 **자동 협상** 또는 **NLA**로 설정한다.
+
+HDMI 더미는 필요 없다. 모니터 없이 재부팅한 직후에도 접속하려면 Jetson에서 공유할 계정으로 그래픽 세션이 자동 로그인되도록 설정한다. 검증한 보드에서는 기존 자동 로그인 설정을 그대로 사용했다.
+
+접속이 끊기면 Jetson에서 서비스와 포트 상태를 확인한다.
+
+```bash
+systemctl status robot-studio-rdp.service --no-pager
+ss -ltn '( sport = :3389 )'
+```
+
+## 5. 모니터 연결에 따라 복제와 가상 화면 자동 전환
 
 모니터를 자주 꽂고 빼는 Ubuntu 22.04 GNOME Wayland PC에서는 사용자 서비스로 전환을 자동화할 수 있다. 물리 출력이 연결되면 기본 모니터를 복제하고, 출력이 모두 분리되면 같은 로그인 세션에 원격용 가상 화면을 만든다. 모드를 바꿀 때 RDP 서비스가 재시작되므로 열려 있던 Remmina 연결은 잠시 끊긴다.
 
@@ -198,13 +215,14 @@ journalctl --user -u gnome-rdp-monitor-mode.service -n 10 --no-pager
 ss -tn state established '( sport = :3389 )'
 ```
 
-## 5. 연결이 안 될 때
+## 6. 연결이 안 될 때
 
 | 증상 | 확인할 항목 |
 | --- | --- |
 | RDP가 바로 연결 거부됨 | 공유 PC의 원격 데스크톱이 켜져 있는지 확인한다. 공유 PC에서 `ss -ltn '( sport = :3389 )'`로 포트가 열렸는지 확인할 수 있다. |
 | VNC가 연결 거부됨 | 공유 PC에서 `x11vnc`가 실행 중인지 확인하고, 접속 PC에서 SSH 터널을 연 뒤 Remmina가 `127.0.0.1:15900`을 가리키는지 확인한다. |
 | RDP 포트는 열려 있지만 연결 또는 로그인 실패 | 기존 Remmina 프로필의 사용자 이름과 비밀번호를 GNOME 원격 데스크톱 설정에 표시된 값으로 저장한다. 보안 협상은 **NLA**로 설정해 다시 연결한다. |
+| Jetson에서 RDP 접속 후 검은 화면 | 동일 계정으로 Xorg 데스크톱이 실행 중인지 확인하고 4절의 화면 공유 설정과 서비스 상태를 확인한다. |
 | VNC 로그인 실패 | 공유 PC에서 `x11vnc -storepasswd`로 정한 비밀번호를 입력한다. |
 | 모니터와 다른 화면이 열림 | Xorg에서는 현재 그래픽 세션의 `DISPLAY`에 `x11vnc`를 연결한다. GNOME Wayland에서는 **데스크톱 공유** 메뉴를 사용한다. |
 
