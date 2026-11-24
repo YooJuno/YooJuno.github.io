@@ -82,17 +82,31 @@ gsettings set org.gnome.desktop.remote-desktop.rdp screen-share-mode mirror-prim
 
 ## 4. Jetson Xorg에서 HDMI 없이 RDP로 접속
 
-JetPack 6.2.1의 Ubuntu 22.04에서 HDMI를 분리한 Jetson Orin NX에 Remmina로 접속해 기존 Xorg 화면을 확인했다. 보드의 FreeRDP Shadow 서버가 물리 모니터에 연결되는 로그인 세션을 직접 공유한다. [FreeRDP Shadow 매뉴얼](https://manpages.ubuntu.com/manpages/jammy/man1/freerdp-shadow-cli.1.html)
+JetPack 6.2.1의 Jetson Orin NX에서 HDMI를 분리하면 GNOME이 모니터를 0개로 인식했다. Remmina에 접속해도 배경이 검고 창을 움직일 때 잔상이 남았다. Xorg에 1080p 모니터 정보를 지정한 뒤 기존 데스크톱의 배경과 창 갱신이 정상으로 돌아왔다. [NVIDIA Xorg 설정](https://docs.nvidia.com/jetson/archives/r36.4.4/DeveloperGuide/SD/WindowingSystems/XWindowSystem.html)
 
-1. 공유할 Ubuntu 계정으로 Jetson에 로그인한다.
-2. Robot Studio에서 **설치 → 원격 화면 → 모니터 화면 · RDP → Jetson 준비**를 실행하고 RDP 전용 비밀번호를 정한다.
-3. 같은 네트워크의 PC에서 Remmina의 **RDP**를 선택하고 Jetson IP를 입력한다. Jetson 계정 이름과 RDP 전용 비밀번호로 접속한다. 저장한 프로필을 재사용할 경우 비밀번호를 갱신하고 보안 모드를 **자동 협상** 또는 **NLA**로 설정한다.
+### Jetson의 사전 설정
 
-HDMI 더미는 필요 없다. 모니터 없이 재부팅한 직후에도 접속하려면 Jetson에서 공유할 계정으로 그래픽 세션이 자동 로그인되도록 설정한다. 검증한 보드에서는 기존 자동 로그인 설정을 그대로 사용했다.
+1. 공유할 Ubuntu 계정의 자동 로그인을 설정한다. 화면 설정을 적용하기 전에 열린 작업을 저장하고 HDMI를 분리한다.
+2. Robot Studio에서 **설치 → 원격 화면 → HDMI 없이 사용… → 1080p 적용**을 선택한다. Xorg 설정을 백업하고 그래픽 세션을 다시 시작한다.
+3. 같은 메뉴에서 **모니터 화면 · RDP → Jetson 준비**를 실행하고 RDP 전용 비밀번호를 정한다. Jetson에 설치된 FreeRDP Shadow가 로그인된 Xorg 세션을 공유한다. [FreeRDP Shadow 매뉴얼](https://manpages.ubuntu.com/manpages/jammy/man1/freerdp-shadow-cli.1.html)
 
-접속이 끊기면 Jetson에서 서비스와 포트 상태를 확인한다.
+검증한 보드에서 HDMI 출력의 NVIDIA 드라이버 이름은 `DFP-0`이었다. `/etc/X11/xorg.conf`의 NVIDIA `Device` 섹션에 아래 두 설정을 적용했다. EDID 파일에는 1920×1080, 60Hz 타이밍이 들어 있다. Robot Studio는 Jetson에서 HDMI 출력을 확인해 해당 드라이버 이름을 사용한다.
+
+```text
+Option "ConnectedMonitor" "DFP-0"
+Option "CustomEDID" "DFP-0:/etc/X11/robot-studio-1080p.edid"
+```
+
+실제 모니터의 해상도 감지로 돌아가려면 Robot Studio의 **HDMI 없이 사용… → 기본 설정 복원**을 선택한다. 적용 전 Xorg 설정으로 돌아가고 그래픽 세션을 다시 시작한다.
+
+### PC에서 접속
+
+같은 네트워크의 Remmina에서 **RDP**를 선택하고 Jetson IP를 입력한다. Jetson 계정 이름과 RDP 전용 비밀번호로 접속한다. 저장한 프로필은 비밀번호를 갱신하고 보안 모드를 **자동 협상** 또는 **NLA**로 설정한다. 화면이 잘리면 Remmina의 배율 조정을 켜서 창에 맞춘다.
+
+Jetson의 그래픽 세션에서 화면과 RDP 서비스를 확인한다.
 
 ```bash
+xrandr --listactivemonitors
 systemctl status robot-studio-rdp.service --no-pager
 ss -ltn '( sport = :3389 )'
 ```
@@ -222,7 +236,7 @@ ss -tn state established '( sport = :3389 )'
 | RDP가 바로 연결 거부됨 | 공유 PC의 원격 데스크톱이 켜져 있는지 확인한다. 공유 PC에서 `ss -ltn '( sport = :3389 )'`로 포트가 열렸는지 확인할 수 있다. |
 | VNC가 연결 거부됨 | 공유 PC에서 `x11vnc`가 실행 중인지 확인하고, 접속 PC에서 SSH 터널을 연 뒤 Remmina가 `127.0.0.1:15900`을 가리키는지 확인한다. |
 | RDP 포트는 열려 있지만 연결 또는 로그인 실패 | 기존 Remmina 프로필의 사용자 이름과 비밀번호를 GNOME 원격 데스크톱 설정에 표시된 값으로 저장한다. 보안 협상은 **NLA**로 설정해 다시 연결한다. |
-| Jetson에서 RDP 접속 후 검은 화면 | 동일 계정으로 Xorg 데스크톱이 실행 중인지 확인하고 4절의 화면 공유 설정과 서비스 상태를 확인한다. |
+| Jetson에서 RDP 접속 후 검은 배경 또는 창 잔상 | `xrandr --listactivemonitors`에서 모니터가 0개라면 4절의 1080p 화면 설정을 적용한다. |
 | VNC 로그인 실패 | 공유 PC에서 `x11vnc -storepasswd`로 정한 비밀번호를 입력한다. |
 | 모니터와 다른 화면이 열림 | Xorg에서는 현재 그래픽 세션의 `DISPLAY`에 `x11vnc`를 연결한다. GNOME Wayland에서는 **데스크톱 공유** 메뉴를 사용한다. |
 
