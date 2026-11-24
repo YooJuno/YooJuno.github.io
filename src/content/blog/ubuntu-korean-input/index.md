@@ -1,51 +1,62 @@
 ---
-title: "Ubuntu 한글 입력과 한·영 키 설정"
+title: "Ubuntu 24.04에서 Fcitx 5 설치와 한/영 키 설정"
 slug: "ubuntu-korean-input"
 date: "2025-03-25"
-updated: "2025-07-19"
+updated: "2026-11-24"
 category: "개발 환경·배포"
-tags: [Ubuntu, IBus, Fcitx5]
-summary: "IBus·Fcitx5와 X11·Wayland 입력 문제 구분."
+tags: [Ubuntu, Fcitx5]
+summary: "Ubuntu 24.04에서 Fcitx 5 한글 입력기를 설치하고 한/영 키나 오른쪽 Alt로 전환하는 방법."
 ---
 
-한글 입력 문제는 입력기 엔진, 한·영 전환 키, 앱과 디스플레이 서버의 연동을 나눠 확인한다. 아래는 Ubuntu GNOME 환경 기준이며 메뉴 이름은 버전에 따라 다를 수 있다.
+Ubuntu 24.04 GNOME에서 Fcitx 5 한글 입력기를 설치하고 한/영 키로 전환하는 방법이다.
 
-## 1. 세션 확인
+## 1. Fcitx 5 설치
 
-```bash
-echo "$XDG_SESSION_TYPE"
-locale
-```
-
-`x11`과 `wayland`는 키 매핑·앱 입력기 연동 방식이 다르다. X11용 설정을 Wayland 전체에 그대로 적용하지 않는다.
-
-## 2. GNOME 기본 입력기: IBus
+터미널에서 `fcitx5`와 한글 조합을 담당하는 `fcitx5-hangul`을 설치한다. Ubuntu의 기본 APT 설정에서는 권장 패키지인 `im-config`와 `fcitx5-config-qt`도 함께 설치된다. [Ubuntu Fcitx 5 패키지 정보](https://packages.ubuntu.com/noble/fcitx5), [한글 엔진 패키지 정보](https://packages.ubuntu.com/noble/fcitx5-hangul)
 
 ```bash
 sudo apt update
-sudo apt install ibus-hangul
+sudo apt install fcitx5 fcitx5-hangul
 ```
 
-설정의 키보드·입력 소스에서 **Korean (Hangul)**을 추가한다. 단순한 한국어 키보드 배열과 한글 조합 엔진은 다르다. 항목이 바로 나타나지 않으면 로그아웃 후 다시 로그인한다.
-
-한글 입력기 설정에서 전환 키를 확인한다. 오른쪽 Alt를 사용하는 키보드는 해당 키가 `Hangul`로 인식되는지, 일반 Alt로 처리되는지 구분한다. [GNOME 입력 소스 안내](https://help.gnome.org/gnome-help/keyboard-layouts.html).
-
-## 3. Fcitx5 사용
+로그인할 때 사용할 입력기를 Fcitx 5로 지정한 뒤 로그아웃하고 다시 로그인한다. [Fcitx 5 공식 설정 안내](https://fcitx-im.org/wiki/Setup_Fcitx_5)
 
 ```bash
-sudo apt install fcitx5 fcitx5-hangul fcitx5-config-qt im-config
-im-config
+im-config -n fcitx5
 ```
 
-입력기 선택에서 Fcitx5를 지정하고 다시 로그인한다. `fcitx5-configtool`에서 영문 키보드와 Hangul 입력기를 추가하고 전환 키를 설정한다. IBus·Fcitx5를 동시에 강제로 실행하기보다 사용할 입력 프레임워크를 하나 정한다. [Fcitx5 설정](https://fcitx-im.org/wiki/Setup_Fcitx_5/en).
+## 2. 한글 입력기와 전환 키 설정
 
-GNOME X11에서 오른쪽 Alt 매핑이 필요한 경우에만 키보드의 XKB 옵션을 확인한다.
+터미널에서 Fcitx 5 설정을 연다.
+
+```bash
+fcitx5-configtool
+```
+
+1. **Input Method(입력기)** 탭에서 현재 목록에 영문 키보드(예: **Keyboard - English (US)**)와 **Hangul(한글)**이 있는지 확인한다.
+2. **Hangul**이 없으면 **Only Show Current Language(현재 언어만 표시)**를 해제하고 오른쪽 목록에서 `Hangul`을 검색한다. 항목을 더블클릭하거나 왼쪽 화살표로 현재 목록에 추가한다.
+3. **Global Options(전역 옵션) → Hotkey(단축키) → Trigger Input Method(입력기 전환)**에서 설정 칸을 클릭하고 키보드의 **한/영 키**를 누른다. `Hangul`로 표시되면 **Apply(적용)**를 누른다.
+4. 텍스트 편집기에서 `abc`를 입력한 뒤, 한/영 키를 누르고 두벌식 기준으로 `gksrmf`를 입력한다. 화면에 `한글`이 나오면 전환과 한글 조합이 모두 동작한다.
+
+[Fcitx 5 설정 도구 안내](https://fcitx-im.org/wiki/Configtool_(Fcitx_5))
+
+## 3. GNOME X11에서 오른쪽 Alt를 한/영 키로 사용
+
+한/영으로 쓰려는 키가 일반 오른쪽 Alt로 동작한다면 `echo "$XDG_SESSION_TYPE"`으로 세션 유형을 확인한다. `x11`이면 터미널에서 `xev`를 실행하고 작은 창에 포커스를 둔 상태로 오른쪽 Alt를 눌러 확인한다. 이미 `Hangul`로 처리된다면 위의 Fcitx 5 단축키 설정만 적용하면 된다.
+
+세션 유형이 `x11`이고 키가 `Alt_R`로 나온다면 현재 GNOME 키보드 옵션을 확인한다.
 
 ```bash
 gsettings get org.gnome.desktop.input-sources xkb-options
 ```
 
-`korean:ralt_hangul` 같은 옵션을 적용할 때 기존 옵션 목록을 덮어쓰지 않도록 주의한다. 키보드마다 물리 키·펌웨어가 다르므로 모든 장치에 같은 설정이 필요한 것은 아니다.
+옵션이 비어 있어 출력이 `@as []` 또는 `[]`라면 아래 명령을 실행한다.
+
+```bash
+gsettings set org.gnome.desktop.input-sources xkb-options "['korean:ralt_hangul']"
+```
+
+기존 옵션이 있으면 명령의 대괄호 안에 기존 항목을 모두 적고 `'korean:ralt_hangul'`을 쉼표로 구분해 추가한다. 매핑을 적용하면 오른쪽 Alt는 한/영 키로 동작한다. `xev`에서 `Hangul`로 잡히는지 확인하고 Fcitx 5의 **Trigger Input Method**에 등록한다.
 
 ## 4. 특정 앱에서만 입력이 안 될 때
 
