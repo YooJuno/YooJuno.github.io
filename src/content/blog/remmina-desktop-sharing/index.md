@@ -66,6 +66,20 @@ gsettings get org.gnome.desktop.remote-desktop.rdp view-only
 
 설정값이 `false`이면 원격 제어가 켜진 상태다. Remmina에서 클릭과 입력을 확인한다. 열린 세션에서 동작하지 않으면 탭을 닫고 다시 연결한다. VNC를 쓰는 경우에는 공유 PC의 `x11vnc`를 `-viewonly` 옵션 없이 실행한다.
 
+### 모니터를 뺀 상태에서 RDP로 연결하기
+
+GNOME의 기본값인 `mirror-primary`는 물리 모니터에 표시되는 화면을 복제한다. 모든 모니터를 빼면 복제할 화면이 사라져 RDP 접속이 실패할 수 있다. Ubuntu 22.04의 GNOME Wayland에서 이미 로그인된 데스크톱을 계속 쓰려면 공유 PC의 데스크톱 사용자로 가상 화면 모드인 `extend`를 설정한 뒤 Remmina에서 다시 연결한다. [GNOME RDP 화면 공유 모드](https://lists.gnome.org/archives/commits-list/2022-February/msg14593.html)
+
+```bash
+gsettings set org.gnome.desktop.remote-desktop.rdp screen-share-mode extend
+```
+
+모니터를 다시 꽂고 그 화면과 같은 내용을 보고 싶다면 `mirror-primary`로 바꾼 뒤 다시 연결한다. `extend` 상태에서 물리 모니터를 연결하면 원격 화면은 같은 로그인 세션의 추가 화면이 된다. 이 설정은 이미 로그인한 데스크톱을 공유하는 기능이다. [Ubuntu 데스크톱 공유 안내](https://help.ubuntu.com/stable/ubuntu-help/sharing-desktop.html)
+
+```bash
+gsettings set org.gnome.desktop.remote-desktop.rdp screen-share-mode mirror-primary
+```
+
 ## 4. 연결이 안 될 때
 
 | 증상 | 확인할 항목 |
