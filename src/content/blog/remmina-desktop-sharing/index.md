@@ -80,7 +80,125 @@ gsettings set org.gnome.desktop.remote-desktop.rdp screen-share-mode extend
 gsettings set org.gnome.desktop.remote-desktop.rdp screen-share-mode mirror-primary
 ```
 
-## 4. 연결이 안 될 때
+## 4. 모니터 연결에 따라 복제와 가상 화면 자동 전환
+
+모니터를 자주 꽂고 빼는 Ubuntu 22.04 GNOME Wayland PC에서는 사용자 서비스로 전환을 자동화할 수 있다. 물리 출력이 연결되면 기본 모니터를 복제하고, 출력이 모두 분리되면 같은 로그인 세션에 원격용 가상 화면을 만든다. 모드를 바꿀 때 RDP 서비스가 재시작되므로 열려 있던 Remmina 연결은 잠시 끊긴다.
+
+공유 PC에서 GNOME에 로그인한 사용자로 다음을 실행한다. SSH로 설정할 때도 같은 사용자로 접속하고, 필요하면 `DBUS_SESSION_BUS_ADDRESS`를 그래픽 로그인 세션의 사용자 버스로 지정한다. `python3-gi`는 Python에서 GNOME 설정과 화면 변경 신호를 받는 데 사용한다.
+
+```bash
+sudo apt install python3-gi
+mkdir -p "$HOME/.local/bin" "$HOME/.config/systemd/user"
+
+cat > "$HOME/.local/bin/gnome-rdp-monitor-mode" <<'PY'
+from pathlib import Path
+import subprocess
+
+from gi.repository import Gio, GLib
+
+
+def desired_mode(drm_path):
+    for connector in drm_path.glob("card*-*/status"):
+        try:
+            if connector.read_text().strip() == "connected":
+                return "mirror-primary"
+        except OSError:
+            continue
+    return "extend"
+
+
+def main():
+    settings = Gio.Settings.new("org.gnome.desktop.remote-desktop.rdp")
+    displays = Gio.DBusProxy.new_for_bus_sync(
+        Gio.BusType.SESSION,
+        Gio.DBusProxyFlags.DO_NOT_LOAD_PROPERTIES,
+        None,
+        "org.gnome.Mutter.DisplayConfig",
+        "/org/gnome/Mutter/DisplayConfig",
+        "org.gnome.Mutter.DisplayConfig",
+        None,
+    )
+    pending = 0
+
+    def synchronize():
+        nonlocal pending
+        pending = 0
+        mode = desired_mode(Path("/sys/class/drm"))
+        if mode == settings.get_string("screen-share-mode"):
+            return GLib.SOURCE_REMOVE
+        if not settings.set_string("screen-share-mode", mode):
+            raise RuntimeError("Could not set GNOME RDP sharing mode")
+        Gio.Settings.sync()
+        print(f"RDP sharing mode: {mode}", flush=True)
+        subprocess.run(
+            ["systemctl", "--user", "--no-block", "try-restart",
+             "gnome-remote-desktop.service"],
+            check=True,
+        )
+        return GLib.SOURCE_REMOVE
+
+    def monitors_changed(_proxy, _sender, signal, _parameters):
+        nonlocal pending
+        if signal == "MonitorsChanged":
+            if pending:
+                GLib.source_remove(pending)
+            pending = GLib.timeout_add(1000, synchronize)
+
+    displays.connect("g-signal", monitors_changed)
+    synchronize()
+    GLib.MainLoop().run()
+
+
+if __name__ == "__main__":
+    main()
+PY
+
+cat > "$HOME/.config/systemd/user/gnome-rdp-monitor-mode.service" <<'UNIT'
+[Unit]
+Description=Select GNOME RDP sharing mode for the connected monitor
+PartOf=graphical-session.target
+After=gnome-session-initialized.target
+
+[Service]
+ExecStart=/usr/bin/python3 %h/.local/bin/gnome-rdp-monitor-mode
+Restart=on-failure
+RestartSec=2s
+
+[Install]
+WantedBy=gnome-session.target
+UNIT
+
+systemctl --user daemon-reload
+systemctl --user enable --now gnome-rdp-monitor-mode.service
+```
+
+SSH에서 사용자 버스를 찾지 못한다면 아래 변수를 설정하고 사용자 서비스 명령을 다시 실행한다.
+
+```bash
+export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+export DBUS_SESSION_BUS_ADDRESS="unix:path=$XDG_RUNTIME_DIR/bus"
+```
+
+모니터를 꽂고 뺀 뒤 각각 `mirror-primary`와 `extend`로 바뀌는지 확인한다. 물리 모니터를 꽂았을 때 Remmina와 모니터에 같은 화면이 표시됐고, 다시 빼면 가상 화면으로 접속됐다.
+
+```bash
+gsettings get org.gnome.desktop.remote-desktop.rdp screen-share-mode
+journalctl --user -u gnome-rdp-monitor-mode.service -n 10 --no-pager
+```
+
+자동 전환을 끄려면 `systemctl --user disable --now gnome-rdp-monitor-mode.service`를 실행하고 3절의 명령으로 원하는 모드를 설정한다.
+
+### 같은 Remmina 프로필이 두 번 열릴 때
+
+기존 탭이 자동으로 다시 연결되는 동안 같은 프로필을 새로 열면 RDP 연결이 두 개 생길 수 있다. `extend`에서는 연결마다 가상 화면이 생기므로 새 탭이 빈 데스크톱처럼 보일 수 있다. 기존 창과 작업이 보이는 탭을 두고 추가로 열린 탭을 닫는다. 다음 모니터 전환 때는 기존 탭에서 다시 연결되기를 기다린다. 직접 다시 연결해야 한다면 먼저 끊긴 탭을 닫는다.
+
+공유 PC에서 열린 RDP 연결을 확인할 수 있다.
+
+```bash
+ss -tn state established '( sport = :3389 )'
+```
+
+## 5. 연결이 안 될 때
 
 | 증상 | 확인할 항목 |
 | --- | --- |
