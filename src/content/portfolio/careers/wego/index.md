@@ -17,6 +17,10 @@ hardware: ["Unitree B2", "Unitree Go2", "Unitree A2", "UR3e", "FR3C", "AURORA-S"
 
 [철도 점검 로봇 자율주행](#proj-rail-inspection)
 
+#### Go2 실내 매핑과 자율주행
+
+Elevator-LIO의 공개 구현을 Go2 실기에 적용하고, 건물 안에서 수집한 LiDAR와 IMU 데이터로 지도를 만들었습니다. 생성한 지도와 위치 추정 결과를 실내 주행에 활용할 수 있도록 DDDMR과 연동하는 작업을 진행하고 있습니다.
+
 #### 사족보행 로봇 현장 시험
 
 Go2X의 3D 지도와 고도 지도를 시험했습니다. Go2에서는 IMU 자세를 반영해 LiDAR 점군을 실시간 보정하고 현장에서 불필요한 바닥 점이 줄어드는 것을 확인했습니다.
