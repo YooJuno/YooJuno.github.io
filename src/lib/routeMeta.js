@@ -74,7 +74,7 @@ export const ROUTE_META = {
   },
   '/utilities/lidar-studio': {
     title: 'LiDAR Studio',
-    description: '점군·센서 파노라마 탐색, 지면 분리, 객체 검출과 ROI 데이터 추출을 위한 데스크톱 도구.',
+    description: '공개 LiDAR 데이터를 앱에서 내려받고, 같은 스캔으로 지면 분리·객체 검출·추적의 정확도와 처리 시간을 비교합니다.',
   },
   '/utilities/map-editor': {
     title: 'Map Editor',

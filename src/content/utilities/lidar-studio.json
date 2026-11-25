@@ -1,15 +1,15 @@
 {
   "id": "lidar-studio",
   "title": "LiDAR Studio",
-  "summary": "LiDAR 점군을 재생·녹화하고, 지면 분리 알고리즘을 비교하며, 사람·차량을 검출해 같은 ID로 추적하는 데스크톱 앱. ROI로 원하는 점을 학습용 샘플로 추출합니다.",
+  "summary": "공개 LiDAR 데이터를 앱에서 내려받고, 같은 스캔에 여러 지면 분리·객체 검출 방식을 적용해 정확도와 처리 시간을 비교하는 데스크톱 앱입니다.",
   "github": "https://github.com/YooJuno/lidar_studio",
   "platforms": [
-    "Ubuntu 24.04",
+    "Ubuntu 22.04 / 24.04",
     "Windows x64",
     "macOS 15+ · Apple Silicon"
   ],
-  "revision": "c8cd339b164f28636bb4be98e250e7d1de5bf252",
-  "purpose": "같은 스캔에서 지면 분리 방식과 검출 모델을 바꿔가며 결과를 비교하고, 화면에서 지정한 영역을 좌표 정보가 담긴 데이터셋으로 저장합니다.",
+  "revision": "453d082a94c5159b89614cf274ac2d403cdda3ed",
+  "purpose": "공개 예제나 직접 녹화한 점군에서 여러 오픈소스 알고리즘과 학습 모델을 바로 시험할 수 있게 만들었습니다. 같은 프레임에서 결과를 눈으로 비교하고, nuScenes 정답 데이터에서 정확도와 처리 시간의 차이까지 확인할 수 있습니다.",
   "readings": [
     {
       "title": "[LiDAR] 지면 분리 — GSeg3D·FugSeg",
@@ -36,6 +36,34 @@
     "파일 읽기와 분석은 백그라운드에서 실행하고 OpenGL로 점군을 그립니다. 지면 분리와 객체 검출의 최근 평균 처리 시간을 따로 표시합니다."
   ],
   "screens": [
+    {
+      "id": "LS12",
+      "title": "지면 분리 성능 비교",
+      "image": "/content/images/utilities/lidar-studio/perception-benchmark.png",
+      "width": 1440,
+      "height": 900,
+      "alt": "같은 nuScenes 스캔에 적용한 FugSeg와 Fast grid의 지면 IoU·지연 시간·오분류 수를 나란히 보여주는 LiDAR Studio 리포트",
+      "caption": "nuScenes Mini 검증 장면 2개와 정답 키프레임 81개에서 FugSeg와 Fast grid의 지면 IoU, p50·p95 처리 시간, 오분류 점 수를 비교한 실제 결과입니다.",
+      "annotations": [],
+      "source": {
+        "label": "nuScenes Mini · LiDAR Studio 벤치마크",
+        "url": "https://github.com/YooJuno/lidar_studio/blob/v0.2.95/docs/benchmark.md"
+      }
+    },
+    {
+      "id": "LS13",
+      "title": "장면별 추적 성능",
+      "image": "/content/images/utilities/lidar-studio/benchmark-tracking.png",
+      "width": 1440,
+      "height": 900,
+      "alt": "nuScenes scene-0103에서 세 검출 모델을 같은 추적기에 연결했을 때의 IDF1, 재현율, ID 전환 수 비교 화면",
+      "caption": "같은 추적 설정으로 CenterPoint tiny, AWML ShortRange, TransFusion LiDAR의 검출 결과를 연결한 뒤 장면별 IDF1과 ID 전환 수를 비교합니다.",
+      "annotations": [],
+      "source": {
+        "label": "nuScenes Mini · LiDAR Studio 벤치마크",
+        "url": "https://github.com/YooJuno/lidar_studio/blob/v0.2.95/docs/benchmark.md"
+      }
+    },
     {
       "id": "LS03",
       "title": "객체 검출·추적",
@@ -191,15 +219,38 @@
   ],
   "analysis": [
     {
+      "id": "public-datasets",
+      "title": "데이터셋 가져오기",
+      "description": "공개 주행 기록을 앱에서 로그인 없이 내려받아 바로 재생할 수 있습니다. 저장한 예제는 오프라인에서 다시 열거나 앱에서 지울 수 있습니다.",
+      "items": [
+        { "name": "UrbanV2X", "description": "Velodyne HDL-32E, Hesai XT32·AT128P로 기록한 야외 주행을 30초 또는 60초 분량으로 제공합니다." },
+        { "name": "Ouster SDK", "description": "OS0·OS1·OS2의 128채널 주행 PCAP과 센서 보정 데이터를 제공합니다. 센서마다 다른 수직 시야를 확인할 수 있습니다." },
+        { "name": "Patchwork++", "description": "6개 스캔으로 구성된 약 12MB 미리보기입니다." },
+        { "name": "내 데이터", "description": "BIN·NPY·PCD·LiDAR PCAP 파일이나 점군 폴더를 열 수 있습니다. Jazzy 배포본은 ROS 2 bag도 읽습니다." }
+      ]
+    },
+    {
+      "id": "perception-benchmark",
+      "title": "알고리즘 성능 비교",
+      "description": "Perception benchmark에서 같은 스캔을 같은 순서로 재생해 지면 분리 알고리즘, 객체 검출 모델, 트래킹 설정의 정확도와 처리 시간을 비교합니다.",
+      "items": [
+        { "name": "지면 분리", "description": "지면 IoU·정밀도·재현율과 지면으로 잘못 분류한 비지면 점의 수를 봅니다." },
+        { "name": "객체 검출·추적", "description": "검출 AP와 클래스별 오검출·미검출을 비교합니다. 같은 트래커의 설정을 바꿔 IDF1, ID 전환, 궤적 단절을 확인할 수 있습니다." },
+        { "name": "처리 시간과 실패 분석", "description": "p50·p95 처리 시간, 장면·클래스별 결과, 실패 프레임을 보고 이전 리포트 대비 변화량을 확인합니다. 프레임별 결과는 TSV로 저장됩니다." }
+      ],
+      "note": "정량 평가는 별도로 준비한 nuScenes 정답 데이터를 사용합니다. 지면 평가에는 LiDARSeg 라벨이 필요하며, AP와 IDF1은 LiDAR Studio 평가 방식으로 계산합니다."
+    },
+    {
       "id": "ground-segmentation",
       "title": "지면 분리",
-      "description": "센서 높이와 자세를 보정한 같은 스캔에서 분리 알고리즘을 비교할 수 있습니다. 전체 점군, 지면, 지면 외 점을 각각 표시합니다.",
+      "description": "정렬한 같은 스캔에서 분리 알고리즘을 바꿔 결과를 바로 비교합니다. 전체 점군, 지면, 지면 외 점을 각각 표시합니다.",
       "items": [
         { "name": "Fast grid", "description": "높이 격자로 주변 지면 높이를 빠르게 추정하는 기본 방식입니다. 배포본에서는 CPU로 실행하고 CUDA를 포함해 빌드하면 GPU 경로도 선택할 수 있습니다." },
         { "name": "FugSeg", "description": "극좌표 격자에서 높이의 불확실성을 고려해 지면을 추정합니다. 가려지거나 점이 드문 구간도 주변 셀을 참고합니다." },
         { "name": "GSeg3D", "description": "3D 셀에서 국소 평면을 구하고, 지면 기준에서 시작해 연결된 평면을 찾아갑니다." },
         { "name": "Patchwork++", "description": "센서 주변을 여러 구역으로 나눠 평면을 맞추고, 영역별 지면 높이와 평탄도 기준을 적응시킵니다." },
         { "name": "Patchwork (classic)", "description": "구역별 국소 평면을 고정 높이·평탄도 기준으로 분류하는 Patchwork 원본 방식입니다." },
+        { "name": "LineFit", "description": "극좌표 구간별로 지면을 따라가는 선분을 맞춥니다. 낮은 장애물의 점을 얼마나 보존하는지 비교할 수 있습니다." },
         { "name": "Grid", "description": "주변 높이가 이어지는 격자 셀을 따라 지면을 분류합니다." },
         { "name": "RANSAC", "description": "가장 지배적인 평면을 찾은 뒤 주변 높이 조건을 확인합니다. 바닥이 대체로 평평한 장면에서 비교하기 좋습니다." },
         { "name": "TerraSeg Small", "description": "학습된 지면 분리 모델입니다. Linux x64와 NVIDIA CUDA(Ampere·Ada·Hopper)가 필요하며 비상업용 가중치를 별도로 설치합니다." }
@@ -246,16 +297,12 @@
       "description": "BIN·NPY·PCD·PCAP 파일이나 폴더를 열고 3D·회전 가능한 2D·360° 파노라마로 봅니다. 프레임을 넘겨도 시점을 유지하며, 라이트·다크 테마를 선택할 수 있습니다."
     },
     {
-      "title": "공개 주행 데이터",
-      "description": "앱에서 UrbanV2X의 HDL-32E·XT32·AT128P 기록 30초 또는 1분을 로그인 없이 내려받습니다. 짧은 미리보기와 다운로드 재사용·삭제도 지원합니다."
-    },
-    {
       "title": "Ethernet 라이브와 녹화",
       "description": "Hesai·Velodyne·Livox MID-360·Ouster·RoboSense의 지원 모델에 직접 연결합니다. 화면을 멈춰도 센서와 보조 UDP 패킷을 PCAP에 기록합니다. ROS 2 Jazzy에서는 bag 재생·라이브 구독·녹화도 지원합니다."
     },
     {
       "title": "센서 정렬과 수평 보정",
-      "description": "장착 높이와 회전 각을 조절할 수 있으며, 유효한 IMU 데이터가 있으면 자동 수평 보정을 지원합니다."
+      "description": "센서 회전, 점군의 Z offset과 예상 지면 Z를 조절할 수 있습니다. 유효한 IMU 데이터가 있으면 자동 수평 보정을 지원합니다."
     },
     {
       "title": "ROI와 구간 추출",
@@ -311,12 +358,16 @@
       "path": "docs/examples.md"
     },
     {
+      "label": "벤치마크 데이터와 평가 기준",
+      "path": "docs/benchmark.md"
+    },
+    {
       "label": "KITTI 데모 기록 조건",
       "path": "docs/media/SOURCE.md"
     },
     {
       "label": "지면 분리 구현",
-      "path": "src/algorithms/ground_removal.cpp"
+      "path": "src/algorithms/ground/dispatch.cpp"
     },
     {
       "label": "객체 검출 모델 정의",
@@ -324,20 +375,25 @@
     },
     {
       "label": "객체 추적 구현",
-      "path": "src/object_tracker.cpp"
+      "path": "src/algorithms/tracking/object_tracker.cpp"
     },
     {
       "label": "ROI 내보내기 코드",
-      "path": "src/roi_export.cpp"
+      "path": "src/roi/roi_export.cpp"
     }
   ],
   "route": "/utilities/lidar-studio",
   "site": "",
-  "inspectedAt": "2026-11-22",
-  "reviewedAt": "2026-11-22T03:21:33Z",
+  "inspectedAt": "2026-11-25",
+  "reviewedAt": "2026-11-25",
   "sourceState": "published",
   "api": [],
   "compatibility": [
+    {
+      "environment": "Ubuntu 22.04 · x64",
+      "format": ".deb",
+      "note": "독립 패키지는 파일·Ethernet·PCAP을 지원합니다."
+    },
     {
       "environment": "Ubuntu 24.04 · x64",
       "format": ".deb",
@@ -354,5 +410,5 @@
       "note": "파일·Ethernet·PCAP 지원. AWML ShortRange·CenterPoint tiny와 CPU 런타임 포함."
     }
   ],
-  "sourceNote": "분석 기능은 공개 v0.2.81 기준입니다. 객체 검출·추적 데모는 같은 버전에서 이어지는 스캔을 캡처했습니다."
+  "sourceNote": "기능 설명은 공개 v0.2.95 기준입니다. 벤치마크 캡처에는 nuScenes Mini의 실제 평가 리포트를 사용했습니다."
 }

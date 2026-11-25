@@ -13,6 +13,7 @@ GIF와 PNG 미리보기는 실제 LiDAR Studio 화면에서 만들었습니다. 
 | `urbanv2x-panorama`, `urbanv2x-clustering` | UrbanV2X `hkstp_s_02`, Hesai AT128P. 각각 앱의 141–181번과 140–185번 연속 스캔을 10 Hz 기록 시간에 맞춰 편집했습니다. |
 | `roi-export`, `dataset-review` | 같은 UrbanV2X 기록의 첫 7프레임에서 도로변 ROI를 추출하고, 저장된 샘플 7개를 검수했습니다. |
 | `driving-examples` | 앱에서 저장된 UrbanV2X AT128P 30초 기록을 열고 3D에서 2D로 전환했습니다. |
+| `perception-benchmark.png`, `benchmark-tracking.png` | nuScenes Mini 검증 장면 2개에서 788개 스캔을 재생하고 정답 키프레임 81개를 평가한 실제 리포트입니다. 지면 분리의 요약과 `scene-0103`의 추적 결과를 캡처했습니다. [평가 방식과 데이터 출처](https://github.com/YooJuno/lidar_studio/blob/v0.2.95/docs/benchmark.md). |
 
 - **KITTI Raw** · Andreas Geiger, Philip Lenz, Christoph Stiller, Raquel Urtasun. [데이터](https://www.cvlibs.net/datasets/kitti/raw_data.php) · [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/)
 - **UrbanV2X** · Qijun Qin 외, TAS Lab / The Hong Kong Polytechnic University. [데이터](https://huggingface.co/datasets/polyutaslab/UrbanV2X) · [논문](https://doi.org/10.1109/ITSC60802.2025.11423762) · [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)
