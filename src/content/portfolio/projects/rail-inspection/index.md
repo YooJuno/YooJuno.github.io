@@ -15,9 +15,13 @@ Unitree B2로 철도 차량 하부를 점검하는 프로젝트입니다. 지도
 
 LiDAR·IMU 주행 기록 6개로 초기 통합 지도를 만들었습니다. 재방문 구간을 대조하고 기준 포즈를 고정해 이중 벽과 통로 폭 왜곡을 보정했습니다.
 
+지도와 진입 금지 구역, 감속 구역을 함께 편집하는 개인 도구 [Map Editor](/utilities/map-editor/)를 만들었습니다.
+
 #### 지면 분리·코스트맵
 
 IMU로 점군을 수평화하고 GSeg3D로 지면을 분리했습니다. bag 재생에서는 Ground Consistency Layer로 3D 장애물 반영을 검증했고, 실기에는 높이를 제한한 LaserScan과 Nav2 ObstacleLayer를 썼습니다.
+
+같은 점군 기록으로 지면 분리 기법의 결과를 비교하기 위해 [LiDAR Studio](/utilities/lidar-studio/)를 만들었습니다.
 
 ![RViz에서 공개 LiDAR 데이터를 재생한 화면과 저장된 점유 지도](./images/eth2-mapping.webp "GrandTour ETH-2 · RViz 재생과 지도 저장")
 ![지면을 빨간색으로 표시한 LiDAR Studio의 GSeg3D 실행 화면](./images/gseg3d-ground.webp "GSeg3D 지면 분리 · 공개 예제")
